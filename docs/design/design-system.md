@@ -1,171 +1,130 @@
-# ECOBAZAR — Design System & UI/UX Architecture
+# ECOBAZAR — Enterprise Design System & Component Library
 
-## 1. Brand Identity & Personality
+## 1. Brand Identity & Visual Philosophy
 
-ECOBAZAR represents a new standard of modern grocery retail in Bangladesh. The design language conveys:
-- **Fresh & Organic**: Emphasizing farm-to-shelf freshness, clean living, and environmental responsibility.
-- **Trustworthy & Reliable**: Clear pricing, transparent batch expiry indicators, and bulletproof checkout clarity.
-- **Intelligent & Efficient**: Fast navigation, zero-clutter POS workflows, and smart predictive search.
-- **Bilingual Inclusivity**: Equal visual hierarchy and typography harmony across English and Bangla scripts.
+ECOBAZAR is a commercial-grade, multi-branch supermarket operating system and omnichannel retail platform engineered for Bangladesh.
+
+### Brand Personality Attributes
+- **Premium & Modern**: Sophisticated, clean layout with deliberate whitespace and refined typography.
+- **Fresh & Eco-Conscious**: Rooted in organic farm freshness, sustainability, and quality assurance.
+- **Trustworthy & Transparent**: Explicit batch expiry indicators, real-time stock levels, and precise BDT (৳) pricing with zero ambiguity.
+- **Intelligent & Efficient**: Built for high-throughput retail operations — from instant POS barcode checkouts to deep multi-warehouse replenishment.
+- **Bilingual Inclusivity**: First-class, balanced typography and layout support for both English and Bangla scripts.
 
 ---
 
 ## 2. Design Tokens
 
-### 2.1. Color System
+### 2.1. Brand Core Colors
 
-```css
-/* ECOBAZAR Master Palette */
-:root {
-  /* Brand Core */
-  --ecobazar-forest-green: #123C2D;  /* Primary Brand, Deep Headers, Dark Base */
-  --ecobazar-primary-green: #21A366; /* Interactive Action, Buttons, In-Stock Badges */
-  --ecobazar-mint: #D8F3DC;          /* Soft Accents, Card Highlights, Pill Backdrops */
-  --ecobazar-off-white: #F7F9F5;     /* Page Backgrounds, Crisp Clean Surface */
-  --ecobazar-accent-orange: #F4A340; /* CTAs, Discounts, Flash Sales, Near-Expiry Badges */
+| Token Name | Hex Code | Purpose & Application |
+| :--- | :--- | :--- |
+| **Forest Green** | `#123C2D` | Master brand signature, deep header surfaces, hero sections, primary branding |
+| **Primary Green** | `#21A366` | Primary action buttons, interactive controls, active pagination, in-stock badges |
+| **Mint** | `#D8F3DC` | Subtle surface highlights, pill badge backdrops, table accenting, light tags |
+| **Off White** | `#F7F9F5` | Canvas background, soft neutral card fill, high-contrast readable base |
+| **Accent Orange** | `#F4A340` | Promotional callouts, flash sales, discount tags, near-expiry alerts |
 
-  /* Neutral Slate Palette */
-  --slate-50:  #f8fafc;
-  --slate-100: #f1f5f9;
-  --slate-200: #e2e8f0;
-  --slate-300: #cbd5e1;
-  --slate-400: #94a3b8;
-  --slate-500: #64748b;
-  --slate-600: #475569;
-  --slate-700: #334155;
-  --slate-800: #1e293b;
-  --slate-900: #0f172a;
-  --slate-950: #020617;
+### 2.2. Semantic Colors
 
-  /* Semantic Feedback */
-  --success: #21A366;
-  --warning: #F59E0B;
-  --destructive: #EF4444;
-  --info: #3B82F6;
-}
-```
+| Semantic Role | Primary Shade | 50-Shade (Light BG) | Usage Scenarios |
+| :--- | :--- | :--- | :--- |
+| **Success** | `#21A366` / `#16A34A` | `#F0FDF4` | In-Stock, Payment Verified, Order Delivered, Active Branch |
+| **Warning** | `#F59E0B` / `#D97706` | `#FFFBEB` | Low Stock Alert, Expiring within 7 Days, Pending Dual Approval |
+| **Error / Danger** | `#EF4444` / `#DC2626` | `#FEF2F2` | Out of Stock, Transaction Failed, Inactive Branch, Session Revoked |
+| **Information** | `#3B82F6` / `#2563EB` | `#EFF6FF` | Processing Status, System Audit Log, Warehouse Transfer in Transit |
+| **Neutral** | `#64748B` / `#475569` | `#F8FAFC` | Subtitles, Secondary Metadata, Table Borders, Disabled Controls |
 
-### 2.2. Typography System
-- **English Font**: `Inter`, with fallback to `system-ui`.
-- **Bangla Font**: `Hind Siliguri`, loaded via `@next/font/google` for optimal web font performance without layout shift.
-- **Financial Figures**: `font-variant-numeric: tabular-nums;` to guarantee numeric alignment in invoices, carts, and POS ledgers.
+### 2.3. Typography System
 
-| Scale Token | Font Size | Line Height | Weight | Intended Purpose |
-| :--- | :--- | :--- | :--- | :--- |
-| `display` | 48px (3.0rem) | 1.15 | 800 (Extrabold) | Hero Marketing Headlines |
-| `h1` | 36px (2.25rem) | 1.25 | 700 (Bold) | Page Titles |
-| `h2` | 30px (1.875rem) | 1.30 | 700 (Bold) | Section Headers |
-| `h3` | 24px (1.5rem) | 1.35 | 600 (Semibold) | Product Grouping Headers |
-| `h4` | 20px (1.25rem) | 1.40 | 600 (Semibold) | Card Titles, Modal Headers |
-| `body-lg` | 18px (1.125rem) | 1.50 | 400 / 500 | Hero Subtext, Featured Content |
-| `body-base`| 16px (1.0rem) | 1.50 | 400 / 500 | Default Paragraphs, Inputs |
-| `body-sm` | 14px (0.875rem) | 1.40 | 400 / 500 | Metadata, Secondary Captions |
-| `caption` | 12px (0.75rem) | 1.35 | 500 / 600 | Badges, Table Headers, Microcopy |
+- **English Font**: `Inter` / `Manrope`, with `sans-serif` system fallbacks.
+- **Bangla Font**: `Hind Siliguri`, loaded via Next.js Google font optimization with zero layout shift.
+- **Numeric Formatting**: `font-variant-numeric: tabular-nums;` across all monetary amounts, invoices, carts, and POS ledgers.
 
-### 2.3. Spacing & Elevation (8pt Spatial System)
-- `space-1`: 4px | `space-2`: 8px | `space-3`: 12px | `space-4`: 16px
-- `space-6`: 24px | `space-8`: 32px | `space-12`: 48px | `space-16`: 64px
-- **Border Radii**: Small elements: `rounded-md` (6px); Cards & Dialogs: `rounded-xl` (12px); Buttons & Pills: `rounded-full` (9999px) or `rounded-lg` (8px).
-- **Shadows**:
-  - `shadow-sm`: Subtle border lift for product cards.
-  - `shadow-md`: Hover elevation on interactive tiles.
-  - `shadow-xl`: Modal sheets and floating cart sidebars.
+| Scale Token | Desktop Size | Mobile Size | Line Height | Weight | Application |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `display` | 48px / 3.0rem | 36px / 2.25rem | 1.15 | 800 (Extrabold) | Hero Marketing Headlines |
+| `h1` | 36px / 2.25rem | 28px / 1.75rem | 1.25 | 700 (Bold) | Dashboard & Page Titles |
+| `h2` | 30px / 1.875rem | 24px / 1.5rem | 1.30 | 700 (Bold) | Section Headers |
+| `h3` | 24px / 1.5rem | 20px / 1.25rem | 1.35 | 600 (Semibold) | Category & Modal Headers |
+| `h4` | 20px / 1.25rem | 18px / 1.125rem | 1.40 | 600 (Semibold) | Card Titles, Metric Blocks |
+| `body-lg` | 18px / 1.125rem | 16px / 1.0rem | 1.50 | 400 / 500 | Hero Subtext, Featured Summaries |
+| `body` | 16px / 1.0rem | 15px / 0.9375rem | 1.50 | 400 / 500 | Standard Body Text, Form Labels |
+| `caption` | 14px / 0.875rem | 13px / 0.8125rem | 1.45 | 400 / 500 | Metadata, Secondary Labels |
+| `small` | 12px / 0.75rem | 11px / 0.6875rem | 1.40 | 500 / 600 | Badges, Timestamp, Audit Tags |
 
 ---
 
-## 3. Shared Component Architecture (`packages/ui`)
+## 3. Reusable UI Component Library (`@ecobazar/ui`)
 
-Components are built on headless primitives from **Radix UI** and styled with **Tailwind CSS** using `class-variance-authority` (CVA):
+All components reside in `packages/ui` and are built using React, TypeScript strict typing, Tailwind CSS, Class Variance Authority (`cva`), and Lucide icons.
 
-```
-packages/ui/
-├── src/
-│   ├── components/
-│   │   ├── button/              # Primary, Outline, Ghost, Danger variants
-│   │   ├── badge/               # Stock status, Batch expiry countdown badge
-│   │   ├── card/                # Standard card container with header/body/footer
-│   │   ├── dialog/              # Accessible modal dialog
-│   │   ├── drawer/              # Slide-over cart & mobile navigation
-│   │   ├── input/               # Text, number, barcode-optimized input
-│   │   ├── select/              # Dropdown selector with search
-│   │   ├── table/               # Data-dense enterprise table with sorting
-│   │   ├── price-display/       # BDT ৳ currency formatter with discount strike
-│   │   └── expiry-indicator/    # Color-coded indicator: Fresh (Green), Near (Amber), Expired (Red)
-│   └── styles/
-│       └── globals.css          # CSS Variables & Tailwind utilities
-```
+### Component Index (24 Components)
+
+| # | Component | Primary Responsibility | Key Props |
+| :--- | :--- | :--- | :--- |
+| 1 | `Button` | Interactive trigger with 8 visual variants, 4 sizes, icon slots, and animated spinner loading state | `variant`, `size`, `isLoading`, `leftIcon`, `rightIcon` |
+| 2 | `Input` | Text/search input with labels, helper texts, error states, and left/right icon adornments | `label`, `error`, `helperText`, `leftIcon`, `rightIcon` |
+| 3 | `Textarea` | Multi-line text field with dynamic character count, error display, and accessible labels | `label`, `error`, `helperText`, `showCharCount`, `maxLength` |
+| 4 | `Select` | Dropdown selector with chevron icon, error messaging, and accessible label integration | `label`, `error`, `options`, `helperText` |
+| 5 | `Checkbox` | Custom styled checkable control supporting checked, unchecked, indeterminate, and error states | `label`, `description`, `error`, `indeterminate` |
+| 6 | `RadioGroup` & `Radio` | Accessible single-choice group with circular inner dot indicators and orientation modes | `orientation`, `label`, `error`, `description` |
+| 7 | `Switch` | Smooth toggle switch supporting `sm`, `default`, `lg` sizes with accessible `role="switch"` | `label`, `description`, `size`, `checked` |
+| 8 | `Badge` | Visual tags for statuses with 10 semantic variants, 3 sizes, and live pulsating dot indicators | `variant`, `size`, `dot` |
+| 9 | `Avatar` | Identity component with image fallback, auto initials generator, and presence status indicators | `src`, `name`, `initials`, `size`, `status`, `shape` |
+| 10 | `Tooltip` | Hover & focus accessible popover with 4 directional arrows (`top`, `bottom`, `left`, `right`) | `content`, `position`, `delayMs` |
+| 11 | `Dropdown` | Accessible menu with `DropdownTrigger`, `DropdownContent`, `DropdownItem`, `DropdownSeparator` | `align`, `width`, `variant="danger"` |
+| 12 | `Dialog` / `Modal` | Centered modal with backdrop blur, keyboard `Escape` dismiss, scroll lock, and portal support | `open`, `onOpenChange`, `size` |
+| 13 | `Drawer` | Slide-out sheet from `right`, `left`, `top`, or `bottom` with backdrop blur and header/body/footer | `open`, `onOpenChange`, `position`, `size` |
+| 14 | `Tabs` | Tab navigation with `underline`, `pills`, and `enclosed` visual styles | `value`, `onValueChange`, `variant` |
+| 15 | `Card` | Structured content container with `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` | `className`, `children` |
+| 16 | `DataTable` | Generic typed table with sortable columns, dense mode, zebra striping, and loading skeleton rows | `data`, `columns`, `keyExtractor`, `sortBy`, `sortDirection`, `onSort` |
+| 17 | `Pagination` | Accessible pagination with smart ellipsis algorithm (`1, 2, ..., 10`), edge buttons, and count summary | `currentPage`, `totalPages`, `onPageChange`, `totalItems` |
+| 18 | `Breadcrumb` | Trail navigation with customizable separators, icon slots, and `aria-current="page"` | `items`, `separator` |
+| 19 | `Toast` & `ToastProvider` | Event-driven toast notifications (`success`, `warning`, `error`, `info`) with auto-dismiss and close buttons | `useToast().toast.success(...)`, `duration` |
+| 20 | `Skeleton` | Pulse animated placeholder shapes (`text`, `circular`, `rectangular`, `card`) for async loading | `variant`, `width`, `height` |
+| 21 | `LoadingSpinner` | Multi-size, multi-color SVG circular progress spinner | `size`, `variant` |
+| 22 | `EmptyState` | Empty feedback container with icon slot, title, description, and primary/secondary CTA actions | `icon`, `title`, `description`, `action` |
+| 23 | `ConfirmationDialog` | Danger/warning modal with intent icons, dual actions, and asynchronous button loading | `intent`, `title`, `description`, `onConfirm`, `isLoading` |
+| 24 | `PriceDisplay` | Localized BDT (৳) financial formatter with original price strikethrough and size variations | `amount`, `originalAmount`, `currencySymbol`, `size` |
 
 ---
 
-## 4. Application Interface Layouts
+## 4. Customer Website vs. Admin Dashboard UI Philosophy
 
-### 4.1. Customer Storefront (`apps/web`)
+| Dimension | Customer Website (`apps/web`) | Admin & POS Dashboard (`apps/admin`) |
+| :--- | :--- | :--- |
+| **Atmosphere** | Warm, inviting, consumer-friendly grocery store | Professional, data-dense enterprise SaaS |
+| **Color Density** | Generous Mint (`#D8F3DC`) and Off White (`#F7F9F5`) canvas | Crisp neutral slate borders with Forest Green accenting |
+| **Data Layout** | Visual product cards, imagery, discount tags, ratings | Structured Data Tables, dense metrics, quick action menus |
+| **Interactions** | Add-to-cart, filter drawers, localized search bar | Barcode scan input, batch selector, branch toggle, tab switching |
+| **Typography** | Prominent bilingual headers and promotional badges | Compact tabular-numbers, monospaced SKUs and transaction IDs |
 
+---
+
+## 5. Accessibility & Motion Standards
+
+### WCAG 2.1 AA Compliance
+1. **Color Contrast**: All primary text maintains a minimum contrast ratio of 4.5:1 against surfaces (Forest Green `#123C2D` on white achieves >11:1).
+2. **Keyboard Navigation**:
+   - `Tab` & `Shift+Tab` across interactive elements.
+   - `Escape` dismisses all active modals, drawers, and dropdown menus.
+   - `Enter` / `Space` activates buttons, switches, and checkboxes.
+3. **Focus Indicators**: Consistent `focus-visible:ring-2 focus-visible:ring-primary-green focus-visible:ring-offset-2` styling.
+4. **ARIA Roles**: Explicit `role="dialog"`, `role="switch"`, `role="tablist"`, `role="tab"`, `role="alert"`, `aria-checked`, and `aria-current="page"`.
+
+### Selective Motion Guidelines
+- Standard transition duration: `150ms` to `200ms` with `ease-out`.
+- Modal and drawer entrance: Subtle fade-in (`fade-in-0 zoom-in-95` or slide-in from screen edge).
+- Micro-interactions: Button active scale down (`active:scale-[0.98]`).
+- Screen reader accessibility: Motion respects `prefers-reduced-motion: reduce`.
+
+---
+
+## 6. Live Interactive Showcase
+
+The design system can be visually inspected and tested by navigating to:
 ```
-+-------------------------------------------------------------------+
-| Topbar: Delivery to: [Gulshan-2 ▾] | Contact: 16XXX | বাংলা / EN  |
-+-------------------------------------------------------------------+
-| ECOBAZAR [Search fresh vegetables, rice, spices...  🔍] [Cart 🛒(3)]|
-+-------------------------------------------------------------------+
-| Categories: [Vegetables] [Dairy] [Meat] [Rice & Grains] [Snacks]  |
-+-------------------------------------------------------------------+
-| Hero Banner: "Fresh Daily Catch & Organic Produce Delivered in 1h"|
-+-------------------------------------------------------------------+
-| Daily Flash Sales (Expires in 04:12:30)                           |
-| [ Product Card 1 ]  [ Product Card 2 ]  [ Product Card 3 ]        |
-+-------------------------------------------------------------------+
-| Shop by Category Grid                                             |
-| [ Category 1 ] [ Category 2 ] [ Category 3 ] [ Category 4 ]       |
-+-------------------------------------------------------------------+
-| Footer: Store Locations | Customer Support | Policies | Mobile App|
-+-------------------------------------------------------------------+
+http://localhost:3000/design-system
 ```
-
-### 4.2. Admin & Management Dashboard (`apps/admin`)
-
-```
-+-------------------------------------------------------------------+
-| ECOBAZAR Admin  | Branch: [Dhanmondi Branch #02 ▾] | User: Karim (Mgr)
-+-----------+-------------------------------------------------------+
-| Dashboard | Monthly Revenue: ৳ 4,850,200 | Today's In-Store: ৳ 142,500
-| Catalog   | ───────────────────────────────────────────────────────
-| Inventory | Low Stock Alerts: 14 items   | Near Expiry (30d): 8 Batches
-| Purchasing| ───────────────────────────────────────────────────────
-| POS Store | [ Sales Velocity Chart ]     | [ Branch Comparison ]
-| Orders    | ───────────────────────────────────────────────────────
-| Customers | Recent Orders Table:
-| Financials| #ORD-1092 | Online | ৳ 1,450 | Processing | [Inspect]
-| Audit Logs| #POS-8841 | In-Store| ৳  680 | Completed  | [Receipt]
-+-----------+-------------------------------------------------------+
-```
-
-### 4.3. High-Speed Point of Sale (POS) Interface (`apps/admin/pos`)
-
-The POS interface is optimized for cashier speed, minimal mouse usage, and continuous barcode scanning:
-
-```
-+-------------------------------------------------------------------+
-| POS #01 | Cashier: Rahim | Reg: OPEN | F1: Help | F2: Hold | F12: Pay
-+----------------------------------------+--------------------------+
-| Barcode Scan / Search (Autofocused)    | Current Cart Summary     |
-| [ ||||||||||||||||||||||||||||||||| ]  | Items: 4 | Subtotal: ৳850|
-+----------------------------------------+ VAT (5%):          ৳42.50|
-| Line Items:                            | Discount:         -৳50.00|
-| 1. Aromatic Rice 1kg   x 2  =  ৳ 240   | TOTAL PAYABLE:    ৳842.50|
-|    (Batch: #B-2026-11 | Exp: 2027-04)  +--------------------------+
-| 2. Organic Mustard Oil x 1  =  ৳ 380   | Quick Tender Buttons:    |
-| 3. Farm Eggs (12 pcs)  x 1  =  ৳ 150   | [৳1000] [৳500] [Exact]   |
-| 4. Fresh Mint Leaves   x 1  =  ৳  30   | [ bKash / Nagad QR ]     |
-|                                        | [ Cash (F10) ]           |
-| [ F4: Edit Qty ]  [ F8: Apply Coupon ] | [ F12: COMPLETE SALE ]   |
-+----------------------------------------+--------------------------+
-```
-
-### 4.4. Mobile Application Navigation (`apps/mobile`)
-- **Bottom Navigation Bar**:
-  - `Home`: Personalized product recommendations, flash deals, category carousels.
-  - `Categories`: Visual grocery taxonomy drill-down.
-  - `Scan`: In-store barcode scanner (checks price and adds to self-checkout bag).
-  - `Orders`: Real-time order tracker with live rider location on Google Maps / Barikoi.
-  - `Profile`: Saved delivery addresses, bKash wallet link, loyalty points balance.
-- **Rider / Staff Switcher**: Authenticated staff can toggle from Customer View to Delivery Dispatch or In-Store Picker mode seamlessly with role authorization.
+This page includes live interactive tests for every component, color swatch, typography hierarchy, dialog trigger, drawer slide-over, data table sorting, pagination, and toast notification dispatches.

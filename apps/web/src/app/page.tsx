@@ -69,8 +69,13 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <a href="/design-system">
+              <Button variant="outline" size="sm" className="hidden sm:inline-flex gap-1.5 border-emerald-300 text-emerald-800 hover:bg-emerald-50">
+                <Sparkles className="h-4 w-4 text-emerald-600" />
+                <span>Design System</span>
+              </Button>
+            </a>
             <Button variant="secondary" size="sm" className="hidden sm:inline-flex gap-1.5">
-              <Sparkles className="h-4 w-4" />
               <span>বাংলা / EN</span>
             </Button>
             <Button variant="forest" size="sm" className="gap-2">

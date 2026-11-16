@@ -19,6 +19,12 @@ export const BRAND_COLORS = {
   MINT: '#D8F3DC',
   OFF_WHITE: '#F7F9F5',
   ACCENT_ORANGE: '#F4A340',
+  SUCCESS: '#21A366',
+  WARNING: '#F59E0B',
+  ERROR: '#EF4444',
+  INFO: '#3B82F6',
+  DISABLED: '#94A3B8',
+  NEUTRAL: '#64748B',
 } as const;
 
 export const USER_ROLES = {
