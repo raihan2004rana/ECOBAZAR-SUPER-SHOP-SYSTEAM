@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ecobazar/constants": "workspace:*",
+    "@ecobazar/database": "workspace:*",
     "@ecobazar/types": "workspace:*",
     "@ecobazar/validators": "workspace:*",
     "@nestjs/common": "^10.4.4",

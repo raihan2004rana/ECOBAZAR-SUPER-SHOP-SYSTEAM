@@ -1,0 +1,233 @@
+// ====================================================================
+// ECOBAZAR Master Relational Database Schema
+// Phase 01 / Step 03: PostgreSQL & Prisma Database Foundation
+// ====================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ====================================================================
+// Domain 1: Multi-Tenancy (Organizations, Branches, Warehouses)
+// ====================================================================
+
+model Organization {
+  id              String   @id @default(uuid()) @db.Uuid
+  name            String   @db.VarChar(150)
+  slug            String   @unique @db.VarChar(100)
+  logoUrl         String?  @map("logo_url") @db.Text
+  tradeLicense    String?  @map("trade_license") @db.VarChar(100)
+  taxNumber       String?  @map("tax_number") @db.VarChar(100)
+  defaultCurrency String   @default("BDT") @map("default_currency") @db.VarChar(10)
+  defaultTimezone String   @default("Asia/Dhaka") @map("default_timezone") @db.VarChar(50)
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Enforced child entity relations
+  branches   Branch[]
+  warehouses Warehouse[]
+  users      User[]
+  roles      Role[]
+  auditLogs  AuditLog[]
+
+  @@map("organizations")
+}
+
+model Branch {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String   @db.VarChar(150)
+  code           String   @db.VarChar(20) // e.g., "ECO-DHK-01"
+  addressLine1   String   @map("address_line1") @db.VarChar(255)
+  addressLine2   String?  @map("address_line2") @db.VarChar(255)
+  city           String   @db.VarChar(100)
+  division       String   @db.VarChar(100) // Dhaka, Chittagong, Sylhet, etc.
+  postalCode     String?  @map("postal_code") @db.VarChar(20)
+  latitude       Decimal? @db.Decimal(10, 8)
+  longitude      Decimal? @db.Decimal(11, 8)
+  phone          String   @db.VarChar(30)
+  email          String?  @db.VarChar(150)
+  isMainBranch   Boolean  @default(false) @map("is_main_branch")
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Explicit foreign key relation (restricted delete protects historic sales & inventory)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
+  // Associated users scoped to this branch
+  users     User[]
+  auditLogs AuditLog[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId, isActive])
+  @@index([city, division])
+  @@map("branches")
+}
+
+model Warehouse {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String   @db.VarChar(150)
+  code           String   @db.VarChar(20) // e.g., "WH-TEJ-01"
+  address        String   @db.Text
+  contactPerson  String?  @map("contact_person") @db.VarChar(100)
+  contactPhone   String?  @map("contact_phone") @db.VarChar(30)
+  capacitySqft   Decimal? @map("capacity_sqft") @db.Decimal(10, 2)
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Explicit foreign key relation
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
+  @@unique([organizationId, code])
+  @@index([organizationId, isActive])
+  @@map("warehouses")
+}
+
+// ====================================================================
+// Domain 2: Users & Identity (User, Sessions)
+// ====================================================================
+
+model User {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  branchId       String?   @map("branch_id") @db.Uuid // NULL = Org-Wide (Owner/Admin); Set = Branch-Scoped
+  email          String    @unique @db.VarChar(255)
+  phone          String    @unique @db.VarChar(30)
+  passwordHash   String    @map("password_hash") @db.VarChar(255)
+  firstName      String    @map("first_name") @db.VarChar(100)
+  lastName       String    @map("last_name") @db.VarChar(100)
+  avatarUrl      String?   @map("avatar_url") @db.Text
+  isActive       Boolean   @default(true) @map("is_active")
+  lastLoginAt    DateTime? @map("last_login_at") @db.Timestamptz(6)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  branch       Branch?      @relation(fields: [branchId], references: [id], onDelete: SetNull)
+
+  userRoles UserRole[]
+  sessions  Session[]
+  auditLogs AuditLog[]
+
+  @@index([organizationId, branchId])
+  @@index([phone])
+  @@index([isActive])
+  @@map("users")
+}
+
+model Session {
+  id                 String   @id @default(uuid()) @db.Uuid
+  userId             String   @map("user_id") @db.Uuid
+  refreshTokenHash   String   @map("refresh_token_hash") @db.VarChar(255)
+  ipAddress          String?  @map("ip_address") @db.VarChar(45)
+  userAgent          String?  @map("user_agent") @db.Text
+  deviceFingerprint  String?  @map("device_fingerprint") @db.VarChar(255)
+  isRevoked          Boolean  @default(false) @map("is_revoked")
+  expiresAt          DateTime @map("expires_at") @db.Timestamptz(6)
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRevoked])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+// ====================================================================
+// Domain 3: Access Control (Roles, Permissions, RBAC)
+// ====================================================================
+
+model Role {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String   @db.VarChar(50) // SUPER_ADMIN, OWNER, BRANCH_MANAGER, CASHIER, etc.
+  description    String?  @db.Text
+  isSystem       Boolean  @default(false) @map("is_system")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
+  rolePermissions RolePermission[]
+  userRoles       UserRole[]
+
+  @@unique([organizationId, name])
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.Uuid
+  code        String   @unique @db.VarChar(100) // e.g. "inventory:read", "pos:checkout"
+  name        String   @db.VarChar(150)
+  category    String   @db.VarChar(50) // "Inventory", "POS", "Purchasing", etc.
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  rolePermissions RolePermission[]
+
+  @@index([category])
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String   @map("role_id") @db.Uuid
+  permissionId String   @map("permission_id") @db.Uuid
+  assignedAt   DateTime @default(now()) @map("assigned_at") @db.Timestamptz(6)
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model UserRole {
+  userId     String   @map("user_id") @db.Uuid
+  roleId     String   @map("role_id") @db.Uuid
+  assignedAt DateTime @default(now()) @map("assigned_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+// ====================================================================
+// Domain 4: Audit & Security Logging (Immutable Ledger)
+// ====================================================================
+
+model AuditLog {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  branchId       String?  @map("branch_id") @db.Uuid
+  userId         String?  @map("user_id") @db.Uuid
+  action         String   @db.VarChar(100) // "USER_LOGIN", "BRANCH_UPDATED", "PERMISSION_GRANTED"
+  resourceType   String   @map("resource_type") @db.VarChar(100) // "User", "Branch", "Role"
+  resourceId     String   @map("resource_id") @db.VarChar(100)
+  beforeState    Json?    @map("before_state")
+  afterState     Json?    @map("after_state")
+  ipAddress      String?  @map("ip_address") @db.VarChar(45)
+  userAgent      String?  @map("user_agent") @db.Text
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  branch       Branch?      @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  user         User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt(sort: Desc)])
+  @@index([resourceType, resourceId])
+  @@index([userId])
+  @@map("audit_logs")
+}
