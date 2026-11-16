@@ -402,7 +402,7 @@ function ShowcaseContent() {
                 <Badge variant="warning" dot>
                   Low Stock
                 </Badge>
-                <Badge variant="error" dot>
+                <Badge variant="danger" dot>
                   Out of Stock
                 </Badge>
                 <Badge variant="info">Audit Verified</Badge>
@@ -681,7 +681,7 @@ function ShowcaseContent() {
                           ? 'success'
                           : item.status === 'Low Stock'
                           ? 'warning'
-                          : 'error';
+                          : 'danger';
                       return (
                         <Badge variant={variant} dot size="sm">
                           {item.status}
