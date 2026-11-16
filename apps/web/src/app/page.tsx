@@ -8,6 +8,7 @@ import {
   User,
   ChevronDown,
   ChevronRight,
+  ChevronLeft,
   ArrowRight,
   Sparkles,
   MapPin,
@@ -18,6 +19,7 @@ import {
   Menu,
   X,
   Plus,
+  Minus,
   Check,
   Flame,
   Truck,
@@ -62,9 +64,78 @@ interface QuickBadge {
   image: string;
 }
 
+interface HeroSlide {
+  id: string;
+  tag: string;
+  tagIcon: string;
+  headline: string;
+  subtitle: string;
+  btnText: string;
+  btnLink: string;
+  badgeText: string;
+  image: string;
+  watermark: string;
+  gradient: string;
+}
+
 // ==========================================
 // DATA FIXTURES
 // ==========================================
+const heroSlides: HeroSlide[] = [
+  {
+    id: 'slide-1',
+    tag: 'Exclusive Offer — 25% Off Fresh Harvest',
+    tagIcon: '✨',
+    headline: 'Fast Fresh Groceries\nDelivered Daily',
+    subtitle: 'From breakfast items to crisp organic vegetables, get farm-quality groceries delivered within 30 minutes in Dhaka.',
+    btnText: 'Shop Now',
+    btnLink: '#deals',
+    badgeText: 'ECOBAZAR Express Fleet',
+    image: '/images/hero-deliveryman.jpg',
+    watermark: 'EcoBazar',
+    gradient: 'from-[#123C2D] via-[#1A5C41] to-[#0E3524]',
+  },
+  {
+    id: 'slide-2',
+    tag: 'Pure Grass-Fed Dairy — 100% Organic',
+    tagIcon: '🥛',
+    headline: 'Farm Fresh Cow Milk\n& Pure Golden Ghee',
+    subtitle: 'Directly sourced from trusted Pabna & Sirajganj pastures. Lab certified, antibiotic-free, and rich in natural nutrients.',
+    btnText: 'Explore Dairy',
+    btnLink: '#dairy',
+    badgeText: 'Cold-Chain Certified',
+    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop&q=80',
+    watermark: 'PureDairy',
+    gradient: 'from-[#0B4A3A] via-[#156D55] to-[#0D3828]',
+  },
+  {
+    id: 'slide-3',
+    tag: 'Seasonal Harvest — Sweet & Juicy',
+    tagIcon: '🥭',
+    headline: 'Handpicked Organic\nFruits & Mangoes',
+    subtitle: 'Delicious Himsagar, Langra, sweet ruby pomegranates, and crisp apples harvested at peak ripeness for your family.',
+    btnText: 'Shop Fresh Fruits',
+    btnLink: '#fruits',
+    badgeText: 'Orchard Fresh Today',
+    image: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=600&auto=format&fit=crop&q=80',
+    watermark: 'FreshFruits',
+    gradient: 'from-[#144A29] via-[#217744] to-[#123C2D]',
+  },
+  {
+    id: 'slide-4',
+    tag: 'Dhaka Kitchen Staples — Certified Purity',
+    tagIcon: '🌾',
+    headline: 'Aromatic Chinigura\n& Premium Basmati Rice',
+    subtitle: 'Aged long-grain rice, ghani-broken pure mustard oil, and premium red lentils at unbeatable supermarket prices.',
+    btnText: 'Shop Daily Staples',
+    btnLink: '#staples',
+    badgeText: '100% Stone-Free Guarantee',
+    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80',
+    watermark: 'AromaRice',
+    gradient: 'from-[#1B4332] via-[#2D6A4F] to-[#081C15]',
+  },
+];
+
 const sidebarCategories = [
   { id: '1', name: 'Fresh & Organic', nameBn: 'তাজা ও অর্গানিক', count: '180+', icon: '🌱' },
   { id: '2', name: 'Baby Food & Care', nameBn: 'শিশুখাদ্য ও যত্ন', count: '45+', icon: '🍼' },
@@ -285,23 +356,48 @@ const weeklyProducts: ProductItem[] = [
   },
 ];
 
+const brandShowcaseProducts = [
+  { id: 'bsp-1', name: 'Creamy Milk Bites', brand: 'Pure Joy', price: 95, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&auto=format&fit=crop&q=80' },
+  { id: 'bsp-2', name: 'Silky Sprout Oat Milk', brand: 'SilkBio', price: 210, image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200&auto=format&fit=crop&q=80' },
+  { id: 'bsp-3', name: 'Rich Milk Fudge', brand: 'Sweet Farm', price: 140, image: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&auto=format&fit=crop&q=80' },
+  { id: 'bsp-4', name: 'Sweet Milk Delights', brand: 'Bogura Sweets', price: 260, image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=200&auto=format&fit=crop&q=80' },
+];
+
 // ==========================================
-// MAIN COMPONENT
+// STOREFRONT MAIN COMPONENT
 // ==========================================
 function StorefrontContent() {
   const { toast } = useToast();
 
-  // Interactive UI States
+  // Carousel & UI States
+  const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = React.useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [activeCategoryId, setActiveCategoryId] = React.useState('1');
   const [selectedWeeklyTab, setSelectedWeeklyTab] = React.useState('All');
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [cartItemsCount, setCartItemsCount] = React.useState(2);
+  const [cartQuantities, setCartQuantities] = React.useState<Record<string, number>>({});
   const [wishlistCount, setWishlistCount] = React.useState(3);
   const [likedMap, setLikedMap] = React.useState<Record<string, boolean>>({
     'deal-1': true,
     'wp-2': true,
   });
+
+  // Calculate total cart items count
+  const cartTotalItems = React.useMemo(() => {
+    return Object.values(cartQuantities).reduce((acc, qty) => acc + qty, 0);
+  }, [cartQuantities]);
+
+  // Auto-play hero slider every 5 seconds
+  React.useEffect(() => {
+    const sliderInterval = setInterval(() => {
+      setCurrentSlideIndex((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(sliderInterval);
+  }, []);
+
+  const goToSlide = (idx: number) => setCurrentSlideIndex(idx);
+  const nextSlide = () => setCurrentSlideIndex((prev) => (prev + 1) % heroSlides.length);
+  const prevSlide = () => setCurrentSlideIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
 
   // Countdown Timer State for "Today's Best Deal"
   const [timeLeft, setTimeLeft] = React.useState({
@@ -340,8 +436,25 @@ function StorefrontContent() {
   };
 
   const handleAddToCart = (product: ProductItem) => {
-    setCartItemsCount((c) => c + 1);
-    toast.success('Added to Cart', `${product.name} (৳${product.price}) added.`);
+    setCartQuantities((prev) => {
+      const currentQty = prev[product.id] || 0;
+      const newQty = currentQty + 1;
+      toast.success('Added to Cart', `${product.name} (৳${product.price}) now in cart (${newQty} pcs).`);
+      return { ...prev, [product.id]: newQty };
+    });
+  };
+
+  const handleDecreaseQuantity = (productId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCartQuantities((prev) => {
+      const currentQty = prev[productId] || 0;
+      if (currentQty <= 1) {
+        const nextState = { ...prev };
+        delete nextState[productId];
+        return nextState;
+      }
+      return { ...prev, [productId]: currentQty - 1 };
+    });
   };
 
   const filteredWeeklyProducts = React.useMemo(() => {
@@ -349,50 +462,55 @@ function StorefrontContent() {
     return weeklyProducts.filter((p) => p.category === selectedWeeklyTab);
   }, [selectedWeeklyTab]);
 
+  const currentSlide = heroSlides[currentSlideIndex];
+
   return (
     <div className="min-h-screen bg-[#F4F6F3] text-neutral-900 font-sans selection:bg-emerald-600 selection:text-white antialiased">
       {/* ========================================================= */}
-      {/* 1. TOP UTILITY ANNOUNCEMENT BAR (Deep Teal #123C2D) */}
+      {/* 1. TOP UTILITY ANNOUNCEMENT BAR (SOLID DEEP GREEN #123C2D) */}
       {/* ========================================================= */}
-      <section className="bg-forest-900 text-white text-[11px] sm:text-xs py-2 px-4 sm:px-6 lg:px-8 border-b border-forest-800">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          {/* Left contact & locale */}
-          <div className="flex items-center gap-4 text-emerald-100/90 font-medium">
-            <span className="flex items-center gap-1.5">
-              <Phone className="h-3 w-3 text-emerald-300" />
-              <span>Need Support? Call: </span>
-              <strong className="text-white">+880 1700-000000</strong>
+      <section
+        style={{ backgroundColor: '#123C2D', color: '#FFFFFF' }}
+        className="w-full text-xs py-2 px-4 sm:px-6 lg:px-8 border-b border-[#0D2D22] shadow-sm z-50 relative"
+      >
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
+          {/* Left: Contact Phone & Locale Switchers */}
+          <div className="flex items-center gap-4 text-white font-medium">
+            <span className="flex items-center gap-1.5 text-white">
+              <Phone className="h-3.5 w-3.5 text-emerald-300 shrink-0" />
+              <span>Need Support? Call:</span>
+              <strong className="text-amber-300 font-black tracking-wide">+880 1700-000000</strong>
             </span>
             <span className="hidden md:inline text-emerald-600">|</span>
-            <span className="hidden md:inline-flex items-center gap-1 cursor-pointer hover:text-white transition">
+            <span className="hidden md:inline-flex items-center gap-1 cursor-pointer bg-white/10 hover:bg-white/20 px-2 py-0.5 rounded text-white transition">
               <span>🇧🇩 English / বাংলা</span>
-              <ChevronDown className="h-3 w-3" />
+              <ChevronDown className="h-3 w-3 text-emerald-200" />
             </span>
             <span className="hidden md:inline text-emerald-600">|</span>
-            <span className="hidden md:inline-flex items-center gap-1 cursor-pointer hover:text-white transition">
-              <span>BDT (৳)</span>
-              <ChevronDown className="h-3 w-3" />
+            <span className="hidden md:inline-flex items-center gap-1 cursor-pointer bg-white/10 hover:bg-white/20 px-2 py-0.5 rounded text-white transition">
+              <span className="font-bold text-amber-300">BDT (৳)</span>
+              <ChevronDown className="h-3 w-3 text-emerald-200" />
             </span>
           </div>
 
-          {/* Right utility links */}
-          <div className="flex items-center gap-3 sm:gap-4 text-emerald-100 font-medium ml-auto">
+          {/* Right: Order Tracking & Portal Links */}
+          <div className="flex items-center gap-3 sm:gap-4 font-semibold text-white ml-auto">
             <a
               href="#track"
-              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-400 text-amber-950 font-bold hover:bg-amber-300 transition"
+              className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-400 hover:bg-amber-300 text-neutral-950 font-black text-[11px] shadow-sm transition"
             >
               <span>Track Order</span>
             </a>
-            <a href="/design-system" className="hover:text-white transition hidden sm:inline">
+            <a href="/design-system" className="hover:text-amber-300 text-emerald-100 transition hidden sm:inline">
               Design System
             </a>
-            <a href="http://localhost:3001" target="_blank" className="hover:text-white transition hidden sm:inline">
+            <a href="http://localhost:3001" target="_blank" className="hover:text-amber-300 text-emerald-100 transition hidden sm:inline">
               Admin Portal
             </a>
-            <a href="#about" className="hover:text-white transition hidden lg:inline">
+            <a href="#about" className="hover:text-amber-300 text-emerald-100 transition hidden lg:inline">
               About Us
             </a>
-            <a href="#account" className="hover:text-white transition">
+            <a href="#account" className="hover:text-amber-300 text-white transition">
               My Account
             </a>
           </div>
@@ -402,18 +520,8 @@ function StorefrontContent() {
       {/* ========================================================= */}
       {/* 2. MAIN HEADER & SEARCH BAR */}
       {/* ========================================================= */}
-      <header className="bg-white border-b border-neutral-200 sticky top-0 z-50 shadow-xs">
+      <header className="bg-white border-b border-neutral-200 sticky top-0 z-40 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4 sm:gap-6">
-          {/* Mobile Menu Toggle Button */}
-          <button
-            type="button"
-            className="lg:hidden p-2 rounded-lg text-neutral-700 hover:bg-neutral-100 focus:outline-hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-
           {/* Brand Logo: ECOBAZAR */}
           <a href="/" className="flex items-center gap-2.5 shrink-0 group">
             <div className="h-10 w-10 rounded-xl bg-forest-900 flex items-center justify-center text-white font-black text-xl shadow-xs group-hover:scale-105 transition-transform">
@@ -479,7 +587,7 @@ function StorefrontContent() {
               )}
             </button>
 
-            {/* Cart Button */}
+            {/* Cart Button with Active Pulse Animation */}
             <button
               type="button"
               className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-forest-900 hover:bg-forest-950 text-white text-xs font-bold shadow-xs transition"
@@ -487,31 +595,15 @@ function StorefrontContent() {
               <div className="relative">
                 <ShoppingBag className="h-4 w-4" />
                 <span className="absolute -top-1.5 -right-2 h-4 w-4 rounded-full bg-amber-400 text-neutral-900 text-[10px] font-black flex items-center justify-center">
-                  {cartItemsCount}
+                  {cartTotalItems}
                 </span>
               </div>
-              <span className="hidden sm:inline font-mono">৳ 420.00</span>
+              <span className="hidden sm:inline font-mono">৳ {(cartTotalItems * 210).toFixed(2)}</span>
             </button>
           </div>
         </div>
 
-        {/* Mobile Search row */}
-        <div className="md:hidden px-4 pb-3">
-          <div className="flex w-full items-center rounded-lg border border-neutral-300 bg-neutral-50">
-            <input
-              type="text"
-              placeholder="Search groceries..."
-              className="w-full px-3 py-2 text-xs bg-transparent outline-hidden"
-            />
-            <button type="button" className="p-2 text-forest-900">
-              <Search className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* ========================================================= */}
-        {/* 3. SUB-NAVIGATION BAR WITH "EXPLORE ALL CATEGORIES" */}
-        {/* ========================================================= */}
+        {/* Sub-Navigation Bar */}
         <div className="border-t border-neutral-200 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <div className="flex items-center gap-6">
@@ -573,7 +665,7 @@ function StorefrontContent() {
       </header>
 
       {/* ========================================================= */}
-      {/* 4. HERO SECTION WITH SPLIT CATEGORY SIDEBAR */}
+      {/* 3. HERO SECTION WITH MULTI-SLIDE CAROUSEL & SIDEBAR */}
       {/* ========================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -584,55 +676,91 @@ function StorefrontContent() {
             }`}
           >
             <div className="rounded-2xl lg:rounded-b-2xl lg:rounded-t-none border border-neutral-200 bg-white p-2.5 shadow-sm space-y-1">
-              {sidebarCategories.map((cat) => (
-                <a
-                  key={cat.id}
-                  href={`#category-${cat.id}`}
-                  className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-50 hover:text-forest-900 transition group"
-                >
-                  <div className="flex items-center gap-2.5 truncate">
-                    <span className="text-base">{cat.icon}</span>
-                    <span className="truncate">{cat.name}</span>
-                  </div>
-                  <ChevronRight className="h-3.5 w-3.5 text-neutral-400 group-hover:text-forest-900 group-hover:translate-x-0.5 transition-transform" />
-                </a>
-              ))}
+              {sidebarCategories.map((cat) => {
+                const isActive = activeCategoryId === cat.id;
+
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveCategoryId(cat.id);
+                      toast.info(`Filtered: ${cat.name}`, `${cat.count} items loaded in inventory.`);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition text-left ${
+                      isActive
+                        ? 'bg-forest-900 text-white font-bold shadow-xs border-l-4 border-amber-400 pl-2.5'
+                        : 'text-neutral-700 hover:bg-neutral-50 hover:text-forest-900'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 truncate">
+                      <span className="text-base">{cat.icon}</span>
+                      <span className="truncate">{cat.name}</span>
+                    </div>
+                    <ChevronRight
+                      className={`h-3.5 w-3.5 ${
+                        isActive ? 'text-amber-300' : 'text-neutral-400'
+                      }`}
+                    />
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Right Main Hero Banner */}
+          {/* Right Main Hero Multi-Slide Banner */}
           <div className={isCategorySidebarOpen ? 'lg:col-span-9' : 'lg:col-span-12'}>
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#123C2D] via-[#18533B] to-[#0E3524] text-white shadow-xl p-6 sm:p-10 lg:p-12 min-h-[380px] sm:min-h-[420px] flex items-center">
+            <div
+              className={`relative overflow-hidden rounded-3xl bg-gradient-to-r ${currentSlide.gradient} text-white shadow-xl p-6 sm:p-10 lg:p-12 min-h-[380px] sm:min-h-[420px] flex items-center transition-all duration-500`}
+            >
               {/* Large stylized watermark behind hero */}
               <div
-                className="absolute right-0 top-1/2 -translate-y-1/2 select-none pointer-events-none text-[90px] sm:text-[150px] lg:text-[190px] font-black text-white/[0.06] italic leading-none z-0"
+                className="absolute right-0 top-1/2 -translate-y-1/2 select-none pointer-events-none text-[80px] sm:text-[140px] lg:text-[180px] font-black text-white/[0.07] italic leading-none z-0"
                 aria-hidden="true"
               >
-                EcoBazar
+                {currentSlide.watermark}
               </div>
+
+              {/* Slider Navigation Arrows */}
+              <button
+                type="button"
+                onClick={prevSlide}
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-xs transition"
+                aria-label="Previous Slide"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-xs transition"
+                aria-label="Next Slide"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
 
               <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 items-center gap-6 sm:gap-8 w-full">
                 {/* Left Text Offer */}
                 <div className="md:col-span-7 space-y-4 text-left">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/20 border border-emerald-300/30 text-emerald-200 text-xs font-semibold backdrop-blur-xs">
-                    <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-                    <span>Exclusive Offer — 25% Off Fresh Harvest</span>
+                    <span>{currentSlide.tagIcon}</span>
+                    <span>{currentSlide.tag}</span>
                   </div>
 
-                  <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight text-white leading-tight">
-                    Fast Fresh Groceries <br /> Delivered Daily
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight whitespace-pre-line">
+                    {currentSlide.headline}
                   </h1>
 
                   <p className="text-xs sm:text-sm text-emerald-100/90 max-w-md leading-relaxed font-normal">
-                    From breakfast items to fresh ingredients, get quality groceries quickly and conveniently across Dhaka.
+                    {currentSlide.subtitle}
                   </p>
 
                   <div className="pt-2 flex flex-wrap items-center gap-3">
                     <a
-                      href="#deals"
+                      href={currentSlide.btnLink}
                       className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-green hover:bg-emerald-600 text-white text-xs sm:text-sm font-bold shadow-lg transition-transform hover:scale-102 group"
                     >
-                      <span>Shop Now</span>
+                      <span>{currentSlide.btnText}</span>
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </a>
 
@@ -647,17 +775,34 @@ function StorefrontContent() {
                 <div className="md:col-span-5 relative flex justify-center md:justify-end">
                   <div className="relative w-full max-w-[320px] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 bg-emerald-950/40">
                     <img
-                      src="/images/hero-deliveryman.jpg"
-                      alt="ECOBAZAR Express Delivery Courier"
+                      src={currentSlide.image}
+                      alt={currentSlide.headline}
                       className="w-full h-full object-cover object-center transform hover:scale-103 transition-transform duration-300"
                     />
                     <div className="absolute bottom-2 left-3 text-left">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300 bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-xs">
-                        ECOBAZAR Express
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300 bg-black/50 px-2 py-0.5 rounded-md backdrop-blur-xs">
+                        {currentSlide.badgeText}
                       </span>
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Slider Dots */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+                {heroSlides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => goToSlide(idx)}
+                    className={`h-2.5 rounded-full transition-all duration-300 ${
+                      currentSlideIndex === idx
+                        ? 'w-7 bg-amber-400'
+                        : 'w-2.5 bg-white/40 hover:bg-white/80'
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -665,13 +810,16 @@ function StorefrontContent() {
       </section>
 
       {/* ========================================================= */}
-      {/* 5. SIX CIRCULAR ICON CATEGORY BADGES */}
+      {/* 4. SIX CIRCULAR ICON CATEGORY BADGES */}
       {/* ========================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {quickBadges.map((badge) => (
             <div
               key={badge.id}
+              onClick={() => {
+                toast.info(`Exploring: ${badge.name}`, `Loaded ${badge.count} from local farms.`);
+              }}
               className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white border border-neutral-200/80 shadow-xs hover:shadow-md hover:border-emerald-300 transition-all duration-200 text-center cursor-pointer group"
             >
               <div className="h-16 w-16 rounded-full overflow-hidden bg-neutral-50 mb-2 p-1 border border-neutral-100 group-hover:scale-105 transition-transform">
@@ -693,10 +841,10 @@ function StorefrontContent() {
       </section>
 
       {/* ========================================================= */}
-      {/* 6. TODAY'S BEST DEAL (FLASH SALE WITH LIVE TIMER) */}
+      {/* 5. TODAY'S BEST DEAL (CLEAR BOLD COUNTDOWN & PROGRESS BAR) */}
       {/* ========================================================= */}
       <section id="deals" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-4">
-        {/* Deal Section Header with Live Countdown */}
+        {/* Deal Section Header with HIGH-CONTRAST Live Countdown */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-neutral-200 pb-3">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
@@ -712,22 +860,34 @@ function StorefrontContent() {
             </div>
           </div>
 
-          {/* Animated Countdown Timer Pills */}
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="text-xs font-bold text-neutral-500 mr-1 flex items-center gap-1">
-              <Clock className="h-3.5 w-3.5 text-rose-500" />
+          {/* CRYSTAL-CLEAR High-Contrast Countdown Timer */}
+          <div className="flex items-center gap-2 self-start sm:self-auto bg-neutral-100 px-3 py-1.5 rounded-xl border border-neutral-200">
+            <span className="text-xs font-black text-neutral-700 mr-1 flex items-center gap-1 uppercase tracking-wider">
+              <Clock className="h-4 w-4 text-rose-600" />
               <span>Ends in:</span>
             </span>
-            <div className="flex items-center gap-1.5 font-mono text-xs font-bold">
-              <span className="px-2 py-1 rounded-md bg-forest-900 text-white">
+            <div className="flex items-center gap-1.5 font-mono text-xs font-black">
+              {/* Hours Box */}
+              <span
+                style={{ backgroundColor: '#123C2D', color: '#FFFFFF' }}
+                className="px-2.5 py-1 rounded-md shadow-xs text-sm font-black"
+              >
                 {String(timeLeft.hours).padStart(2, '0')}
               </span>
-              <span className="text-neutral-400">:</span>
-              <span className="px-2 py-1 rounded-md bg-forest-900 text-white">
+              <span className="text-neutral-500 font-black">:</span>
+              {/* Minutes Box */}
+              <span
+                style={{ backgroundColor: '#123C2D', color: '#FFFFFF' }}
+                className="px-2.5 py-1 rounded-md shadow-xs text-sm font-black"
+              >
                 {String(timeLeft.minutes).padStart(2, '0')}
               </span>
-              <span className="text-neutral-400">:</span>
-              <span className="px-2 py-1 rounded-md bg-rose-600 text-white animate-pulse">
+              <span className="text-neutral-500 font-black">:</span>
+              {/* Seconds Box */}
+              <span
+                style={{ backgroundColor: '#DC2626', color: '#FFFFFF' }}
+                className="px-2.5 py-1 rounded-md shadow-xs text-sm font-black animate-pulse"
+              >
                 {String(timeLeft.seconds).padStart(2, '0')}
               </span>
             </div>
@@ -738,6 +898,7 @@ function StorefrontContent() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {dealProducts.map((prod) => {
             const isLiked = Boolean(likedMap[prod.id]);
+            const inCartQty = cartQuantities[prod.id] || 0;
             const soldPercent = Math.round(((prod.soldCount || 0) / (prod.totalStock || 100)) * 100);
 
             return (
@@ -819,16 +980,38 @@ function StorefrontContent() {
                   </div>
                 </div>
 
-                {/* Add to Cart Button */}
+                {/* Add to Cart Button with ACTIVE Counter Feedback */}
                 <div className="mt-3 pt-2 border-t border-neutral-100">
-                  <button
-                    type="button"
-                    onClick={() => handleAddToCart(prod)}
-                    className="w-full py-2 px-3 rounded-xl bg-forest-900 hover:bg-forest-950 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition"
-                  >
-                    <ShoppingBag className="h-3.5 w-3.5" />
-                    <span>Add to Cart</span>
-                  </button>
+                  {inCartQty > 0 ? (
+                    <div className="flex items-center justify-between bg-emerald-600 text-white rounded-xl p-1 shadow-xs">
+                      <button
+                        type="button"
+                        onClick={(e) => handleDecreaseQuantity(prod.id, e)}
+                        className="h-7 w-7 rounded-lg bg-emerald-700 hover:bg-emerald-800 flex items-center justify-center transition"
+                      >
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="font-bold text-xs">
+                        {inCartQty} in cart
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleAddToCart(prod)}
+                        className="h-7 w-7 rounded-lg bg-emerald-700 hover:bg-emerald-800 flex items-center justify-center transition"
+                      >
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleAddToCart(prod)}
+                      className="w-full py-2 px-3 rounded-xl bg-forest-900 hover:bg-forest-950 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition"
+                    >
+                      <ShoppingBag className="h-3.5 w-3.5" />
+                      <span>Add to Cart</span>
+                    </button>
+                  )}
                 </div>
               </div>
             );
@@ -837,7 +1020,101 @@ function StorefrontContent() {
       </section>
 
       {/* ========================================================= */}
-      {/* 7. POPULAR GROCERIES WEEKLY (TABBED PRODUCTS) */}
+      {/* 6. FULL-IMAGE PROMOTIONAL BANNER SECTION (MATCHING SCREENSHOT 2) */}
+      {/* ========================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
+          {/* Left Column: 2 Stacked Cards */}
+          <div className="md:col-span-5 space-y-5 flex flex-col justify-between">
+            {/* Card 1: Your Daily Store */}
+            <div className="rounded-3xl p-6 bg-gradient-to-r from-[#FFF5E6] to-[#FFE6B8] border border-amber-200 flex items-center justify-between shadow-xs hover:shadow-md transition">
+              <div className="space-y-1.5 text-left max-w-[62%]">
+                <span className="text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-200 px-2 py-0.5 rounded-md inline-block">
+                  Super 20% Savings
+                </span>
+                <h3 className="text-lg font-black text-amber-950 leading-tight">
+                  Your Daily Store. Fresh Fruits & Juices
+                </h3>
+                <a
+                  href="#fruits"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-amber-900 hover:underline pt-1"
+                >
+                  <span>Shop Now</span>
+                  <ArrowRight className="h-3 w-3" />
+                </a>
+              </div>
+              <div className="h-24 w-24 rounded-2xl overflow-hidden shadow-sm shrink-0 border-2 border-white">
+                <img
+                  src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=240&auto=format&fit=crop&q=80"
+                  alt="Fresh Fruits"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Card 2: Your Cart, Your Way */}
+            <div className="rounded-3xl p-6 bg-gradient-to-r from-[#EBF7EE] to-[#C8F0D6] border border-emerald-200 flex items-center justify-between shadow-xs hover:shadow-md transition">
+              <div className="space-y-1.5 text-left max-w-[62%]">
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-900 bg-emerald-200 px-2 py-0.5 rounded-md inline-block">
+                  Super 15% Savings
+                </span>
+                <h3 className="text-lg font-black text-emerald-950 leading-tight">
+                  Your Cart, Your Way. Farm Crisp Greens
+                </h3>
+                <a
+                  href="#veg"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-emerald-900 hover:underline pt-1"
+                >
+                  <span>Shop Now</span>
+                  <ArrowRight className="h-3 w-3" />
+                </a>
+              </div>
+              <div className="h-24 w-24 rounded-2xl overflow-hidden shadow-sm shrink-0 border-2 border-white">
+                <img
+                  src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=240&auto=format&fit=crop&q=80"
+                  alt="Farm Fresh Greens"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Giant Rich Golden Yogurt Banner (Matched to Reference) */}
+          <div className="md:col-span-7 rounded-3xl p-8 sm:p-10 bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#D97706] text-amber-950 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg border border-amber-300">
+            <div className="space-y-3 text-left max-w-sm">
+              <span className="text-xs font-black uppercase tracking-wider text-white bg-amber-950/40 px-3 py-1 rounded-full inline-block backdrop-blur-xs">
+                NATURAL FLAVOR
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-black text-amber-950 leading-tight">
+                Yogurt BANANA — ENJOY RICH TASTE
+              </h2>
+              <p className="text-xs sm:text-sm text-amber-900 font-medium">
+                Traditional Bogura sweet curd, probiotic greek yogurt, and fresh milk smoothies made with 100% pasture-raised cow milk.
+              </p>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => toast.info('Dairy Category', 'Filtered to fresh yogurt and dairy products.')}
+                  className="px-6 py-2.5 rounded-full bg-forest-900 hover:bg-black text-white text-xs font-bold shadow-md transition"
+                >
+                  Explore Dairy Deals
+                </button>
+              </div>
+            </div>
+
+            <div className="h-44 sm:h-52 w-44 sm:w-52 rounded-2xl overflow-hidden shadow-xl border-4 border-white/50 shrink-0">
+              <img
+                src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&auto=format&fit=crop&q=80"
+                alt="Fresh Yogurt Banana"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 7. POPULAR GROCERIES WEEKLY (CLEAR ACTIVE TAB STYLING) */}
       {/* ========================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-neutral-200 pb-3">
@@ -850,22 +1127,26 @@ function StorefrontContent() {
             </p>
           </div>
 
-          {/* Category Tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-            {['All', 'Vegetables', 'Fruits', 'Dairy', 'Snacks'].map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setSelectedWeeklyTab(tab)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap ${
-                  selectedWeeklyTab === tab
-                    ? 'bg-forest-900 text-white shadow-xs'
-                    : 'bg-white border border-neutral-200 text-neutral-600 hover:bg-neutral-50'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+          {/* Category Tabs with UNMISTAKABLE Active Indicator */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            {['All', 'Vegetables', 'Fruits', 'Dairy', 'Snacks'].map((tab) => {
+              const isTabActive = selectedWeeklyTab === tab;
+
+              return (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setSelectedWeeklyTab(tab)}
+                  className={`px-4 py-2 rounded-full text-xs font-black transition whitespace-nowrap ${
+                    isTabActive
+                      ? 'bg-forest-900 text-white shadow-md ring-2 ring-emerald-500/40 scale-102'
+                      : 'bg-white border border-neutral-300 text-neutral-700 hover:bg-neutral-100 font-semibold'
+                  }`}
+                >
+                  {tab}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -873,6 +1154,7 @@ function StorefrontContent() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {filteredWeeklyProducts.map((prod) => {
             const isLiked = Boolean(likedMap[prod.id]);
+            const inCartQty = cartQuantities[prod.id] || 0;
 
             return (
               <div
@@ -932,16 +1214,38 @@ function StorefrontContent() {
                   </div>
                 </div>
 
-                {/* Add to Cart CTA */}
+                {/* Add to Cart CTA with Active Counter */}
                 <div className="mt-2.5 pt-2 border-t border-neutral-100">
-                  <button
-                    type="button"
-                    onClick={() => handleAddToCart(prod)}
-                    className="w-full py-1.5 rounded-lg border border-neutral-200 hover:bg-forest-900 hover:text-white hover:border-forest-900 text-neutral-800 text-xs font-bold transition flex items-center justify-center gap-1"
-                  >
-                    <Plus className="h-3 w-3" />
-                    <span>Add</span>
-                  </button>
+                  {inCartQty > 0 ? (
+                    <div className="flex items-center justify-between bg-emerald-600 text-white rounded-lg p-1 text-xs">
+                      <button
+                        type="button"
+                        onClick={(e) => handleDecreaseQuantity(prod.id, e)}
+                        className="h-5 w-5 rounded bg-emerald-700 hover:bg-emerald-800 flex items-center justify-center transition"
+                      >
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="font-bold text-[11px]">
+                        {inCartQty} in cart
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleAddToCart(prod)}
+                        className="h-5 w-5 rounded bg-emerald-700 hover:bg-emerald-800 flex items-center justify-center transition"
+                      >
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleAddToCart(prod)}
+                      className="w-full py-1.5 rounded-lg border border-neutral-200 hover:bg-forest-900 hover:text-white hover:border-forest-900 text-neutral-800 text-xs font-bold transition flex items-center justify-center gap-1"
+                    >
+                      <Plus className="h-3 w-3" />
+                      <span>Add</span>
+                    </button>
+                  )}
                 </div>
               </div>
             );
@@ -950,92 +1254,66 @@ function StorefrontContent() {
       </section>
 
       {/* ========================================================= */}
-      {/* 8. MID-PAGE PROMO BANNER TRIO (YOGURT & DAILY HARVEST) */}
+      {/* 8. DUAL PROMO BANNERS: FRESH FOOD & SHOP THE SMART WAY */}
       {/* ========================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
-          {/* Left Column: 2 Stacked Mini Banners */}
-          <div className="md:col-span-5 space-y-5 flex flex-col justify-between">
-            {/* Mini Banner 1: Fresh Fruits */}
-            <div className="rounded-3xl p-6 bg-gradient-to-r from-[#FFF5E6] to-[#FFE6B8] border border-amber-200 flex items-center justify-between shadow-xs">
-              <div className="space-y-1.5 text-left max-w-[60%]">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 bg-amber-200 px-2 py-0.5 rounded-md">
-                  Your Daily Store
-                </span>
-                <h3 className="text-lg font-black text-amber-950 leading-tight">
-                  Fresh Organic Smoothies & Juice
-                </h3>
-                <a
-                  href="#deals"
-                  className="inline-flex items-center gap-1 text-xs font-bold text-amber-900 hover:underline pt-1"
-                >
-                  <span>Shop Juice</span>
-                  <ArrowRight className="h-3 w-3" />
-                </a>
-              </div>
-              <div className="h-20 w-20 rounded-2xl overflow-hidden shadow-sm shrink-0 border-2 border-white">
-                <img
-                  src="https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?w=200&auto=format&fit=crop&q=80"
-                  alt="Fresh Juice"
-                  className="h-full w-full object-cover"
-                />
-              </div>
+          {/* Left Banner: Fresh Food, Fast Delivery */}
+          <div className="md:col-span-5 rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#7C1E14] via-[#9B2C1C] to-[#5A140C] text-white flex flex-col justify-between shadow-md border border-rose-900">
+            <div className="space-y-2 text-left">
+              <span className="text-[10px] font-black uppercase tracking-wider text-rose-950 bg-rose-200 px-2.5 py-1 rounded-full inline-block">
+                Enjoy 20% Savings
+              </span>
+              <h3 className="text-2xl font-black text-white leading-tight">
+                Fresh Food. Fast Delivery.
+              </h3>
+              <p className="text-xs text-rose-100/90 leading-relaxed">
+                Directly pressed cold mustard oil, raw spices, and pantry essentials delivered to your kitchen table.
+              </p>
             </div>
-
-            {/* Mini Banner 2: Fresh Vegetables */}
-            <div className="rounded-3xl p-6 bg-gradient-to-r from-[#EBF7EE] to-[#C8F0D6] border border-emerald-200 flex items-center justify-between shadow-xs">
-              <div className="space-y-1.5 text-left max-w-[60%]">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-900 bg-emerald-200 px-2 py-0.5 rounded-md">
-                  Your Cart, Your Way
-                </span>
-                <h3 className="text-lg font-black text-emerald-950 leading-tight">
-                  Crisp Green Garden Salads
-                </h3>
-                <a
-                  href="#deals"
-                  className="inline-flex items-center gap-1 text-xs font-bold text-emerald-900 hover:underline pt-1"
-                >
-                  <span>Shop Greens</span>
-                  <ArrowRight className="h-3 w-3" />
-                </a>
-              </div>
-              <div className="h-20 w-20 rounded-2xl overflow-hidden shadow-sm shrink-0 border-2 border-white">
+            <div className="mt-6 flex items-center justify-between">
+              <button
+                type="button"
+                className="px-5 py-2 rounded-full bg-white text-rose-950 font-black text-xs hover:bg-rose-100 transition shadow-sm"
+              >
+                Shop Now →
+              </button>
+              <div className="h-16 w-16 rounded-xl overflow-hidden shadow-sm shrink-0 border border-white/20">
                 <img
-                  src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=200&auto=format&fit=crop&q=80"
-                  alt="Crisp Salad Greens"
+                  src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=200&auto=format&fit=crop&q=80"
+                  alt="Pure Mustard Oil"
                   className="h-full w-full object-cover"
                 />
               </div>
             </div>
           </div>
 
-          {/* Right Column: Giant Rich Gold Yogurt Banner */}
-          <div className="md:col-span-7 rounded-3xl p-8 sm:p-10 bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#D97706] text-amber-950 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg border border-amber-300">
+          {/* Right Banner: Shop the Smart Way Anytime, Anywhere (Sweet Corn) */}
+          <div className="md:col-span-7 rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-[#DFF2E4] via-[#C5E9CE] to-[#A3D9B1] text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md border border-emerald-300">
             <div className="space-y-3 text-left max-w-sm">
-              <span className="text-xs font-black uppercase tracking-wider text-white bg-amber-950/40 px-3 py-1 rounded-full inline-block backdrop-blur-xs">
-                NATURAL FLAVOR
+              <span className="text-[10px] font-black uppercase tracking-wider text-white bg-forest-900 px-3 py-1 rounded-full inline-block">
+                Enjoy 15% Savings
               </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-amber-950 leading-tight">
-                Fresh Farm Yogurt & Sweet Curd
-              </h2>
-              <p className="text-xs sm:text-sm text-amber-900 font-medium">
-                Traditional Bogura sweet doi, Greek yogurt, and probiotic drinks made from 100% pure cow milk.
+              <h3 className="text-2xl sm:text-3xl font-black text-emerald-950 leading-tight">
+                Shop the Smart Way — Anytime, Anywhere
+              </h3>
+              <p className="text-xs text-emerald-900/90 font-medium">
+                Get your daily essential farm fresh produce delivered in 30 mins. Experience convenience that fits your busy lifestyle.
               </p>
-              <div className="pt-2">
+              <div className="pt-1">
                 <button
                   type="button"
-                  onClick={() => toast.info('Dairy Category', 'Filtered to fresh yogurt and dairy products.')}
-                  className="px-6 py-2.5 rounded-full bg-forest-900 hover:bg-black text-white text-xs font-bold shadow-md transition"
+                  className="px-5 py-2.5 rounded-full bg-forest-900 hover:bg-black text-white text-xs font-bold shadow-md transition"
                 >
-                  Explore Dairy Deals
+                  Shop Now →
                 </button>
               </div>
             </div>
 
-            <div className="h-44 sm:h-52 w-44 sm:w-52 rounded-2xl overflow-hidden shadow-xl border-4 border-white/50 shrink-0">
+            <div className="h-36 sm:h-44 w-36 sm:w-44 rounded-2xl overflow-hidden shadow-xl border-4 border-white/70 shrink-0">
               <img
-                src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&auto=format&fit=crop&q=80"
-                alt="Fresh Yogurt"
+                src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=400&auto=format&fit=crop&q=80"
+                alt="Fresh Sweet Corn"
                 className="h-full w-full object-cover"
               />
             </div>
@@ -1044,48 +1322,69 @@ function StorefrontContent() {
       </section>
 
       {/* ========================================================= */}
-      {/* 9. SHOP THE SMART WAY — ANYTIME, ANYWHERE (APP BANNER) */}
+      {/* 9. FARM FRESH GROCERY / BRAND SHOWCASE (MATCHING SCREENSHOT 2) */}
       {/* ========================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="rounded-3xl bg-gradient-to-r from-[#E6F4EA] via-[#D0EEDB] to-[#E6F4EA] border border-emerald-300 p-8 sm:p-12 text-forest-900 shadow-md">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">
-            <div className="lg:col-span-8 space-y-4 text-left">
-              <span className="px-3 py-1 rounded-full bg-forest-900 text-white text-xs font-bold">
-                ECOBAZAR Mobile App
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-forest-900">
-                Shop the Smart Way — Anytime, Anywhere
-              </h2>
-              <p className="text-xs sm:text-sm text-forest-800 max-w-xl leading-relaxed">
-                Experience real-time supermarket inventory, 30-minute delivery in Dhaka, contactless bKash/Nagad checkout, and seamless order re-ordering on Android & iOS.
-              </p>
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => toast.info('App Store', 'iOS release in Phase 02.')}
-                  className="px-5 py-2.5 rounded-xl bg-forest-900 hover:bg-black text-white text-xs font-bold shadow-md transition flex items-center gap-2"
-                >
-                  <span>Download on App Store</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => toast.info('Google Play', 'Android release in Phase 02.')}
-                  className="px-5 py-2.5 rounded-xl bg-forest-900 hover:bg-black text-white text-xs font-bold shadow-md transition flex items-center gap-2"
-                >
-                  <span>Get it on Google Play</span>
-                </button>
-              </div>
-            </div>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+        <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
+          <h2 className="text-xl font-black text-neutral-900 tracking-tight">
+            Farm Fresh Grocery & Pantry Brands
+          </h2>
+          <a href="#pantry" className="text-xs font-bold text-forest-900 hover:underline">
+            View All Brands →
+          </a>
+        </div>
 
-            <div className="lg:col-span-4 flex justify-center lg:justify-end">
-              <div className="h-44 w-full max-w-xs rounded-2xl overflow-hidden shadow-xl border-4 border-white">
-                <img
-                  src="https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=600&auto=format&fit=crop&q=80"
-                  alt="Fresh farm produce harvest"
-                  className="h-full w-full object-cover"
-                />
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
+          {/* Left Vertical Promo Card: Premium Nuts */}
+          <div className="md:col-span-4 rounded-3xl p-6 bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] border border-amber-300 text-amber-950 flex flex-col justify-between shadow-xs">
+            <div className="space-y-2 text-left">
+              <span className="text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-200 px-2.5 py-0.5 rounded-full inline-block">
+                Healthy Living
+              </span>
+              <h3 className="text-2xl font-black text-amber-950 leading-tight">
+                Premium Nuts & Dry Fruits
+              </h3>
+              <p className="text-xs text-amber-900/90 leading-relaxed">
+                Roasted cashews, California almonds, and premium walnuts sealed for maximum freshness.
+              </p>
             </div>
+            <div className="h-44 w-full rounded-2xl overflow-hidden mt-4 shadow-sm border-2 border-white">
+              <img
+                src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=80"
+                alt="Premium Nuts"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Right 4-Item Showcase */}
+          <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {brandShowcaseProducts.map((prod) => (
+              <div
+                key={prod.id}
+                className="rounded-2xl border border-neutral-200 bg-white p-3.5 flex flex-col justify-between shadow-xs hover:shadow-md transition text-left"
+              >
+                <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-neutral-50 mb-2">
+                  <img
+                    src={prod.image}
+                    alt={prod.name}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] text-neutral-400 font-semibold uppercase">{prod.brand}</span>
+                  <h4 className="text-xs font-bold text-neutral-900 line-clamp-1">{prod.name}</h4>
+                  <p className="text-xs font-black text-forest-900">৳ {prod.price}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => toast.success('Added to Cart', `${prod.name} added.`)}
+                  className="mt-2 w-full py-1 rounded-lg bg-forest-900 hover:bg-forest-950 text-white text-[11px] font-bold transition"
+                >
+                  + Add
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </section>
