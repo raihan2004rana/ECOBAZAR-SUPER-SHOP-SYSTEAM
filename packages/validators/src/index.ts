@@ -23,6 +23,25 @@ export const verifyOtpSchema = phoneOtpSchema.extend({
 
 export type VerifyOtpInput = z.infer<typeof verifyOtpSchema>;
 
+export const refreshTokenSchema = z.object({
+  refreshToken: z.string().min(1, 'Refresh token is required'),
+});
+
+export type RefreshTokenInput = z.infer<typeof refreshTokenSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Invalid email address').min(1, 'Email is required'),
+});
+
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, 'Reset token is required'),
+  newPassword: z.string().min(8, 'New password must be at least 8 characters'),
+});
+
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+
 // Products & Variants
 export const createProductSchema = z.object({
   organizationId: z.string().uuid(),

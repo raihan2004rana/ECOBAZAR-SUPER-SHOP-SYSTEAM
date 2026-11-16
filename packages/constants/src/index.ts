@@ -25,13 +25,39 @@ export const USER_ROLES = {
   SUPER_ADMIN: 'SUPER_ADMIN',
   OWNER: 'OWNER',
   BRANCH_MANAGER: 'BRANCH_MANAGER',
+  INVENTORY_MANAGER: 'INVENTORY_MANAGER',
   CASHIER: 'CASHIER',
+  MARKETING_MANAGER: 'MARKETING_MANAGER',
+  ACCOUNTANT: 'ACCOUNTANT',
+  STAFF: 'STAFF',
   WAREHOUSE_STAFF: 'WAREHOUSE_STAFF',
-  DELIVERY_AGENT: 'DELIVERY_AGENT',
+  DELIVERY_PERSONNEL: 'DELIVERY_PERSONNEL',
   CUSTOMER: 'CUSTOMER',
 } as const;
 
 export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
+
+export const PERMISSIONS = {
+  PRODUCTS_READ: 'products.read',
+  PRODUCTS_CREATE: 'products.create',
+  PRODUCTS_UPDATE: 'products.update',
+  PRODUCTS_DELETE: 'products.delete',
+  INVENTORY_READ: 'inventory.read',
+  INVENTORY_ADJUST: 'inventory.adjust',
+  INVENTORY_TRANSFER: 'inventory.transfer',
+  ORDERS_READ: 'orders.read',
+  ORDERS_MANAGE: 'orders.manage',
+  SALES_CREATE: 'sales.create',
+  SALES_REFUND: 'sales.refund',
+  PURCHASES_CREATE: 'purchases.create',
+  CAMPAIGNS_MANAGE: 'campaigns.manage',
+  REPORTS_READ: 'reports.read',
+  BRANCHES_MANAGE: 'branches.manage',
+  USERS_MANAGE: 'users.manage',
+  SETTINGS_MANAGE: 'settings.manage',
+} as const;
+
+export type PermissionKey = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
 
 export const ORDER_CHANNELS = {
   POS_STORE: 'POS_STORE',

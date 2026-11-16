@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@ecobazar/constants": "workspace:*",
-    "@ecobazar/types": "workspace:*"
+    "@ecobazar/types": "workspace:*",
+    "@ecobazar/validators": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.5"
