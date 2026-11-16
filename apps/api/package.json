@@ -1,0 +1,31 @@
+{
+  "name": "@ecobazar/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main",
+    "lint": "eslint \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ecobazar/constants": "workspace:*",
+    "@ecobazar/types": "workspace:*",
+    "@ecobazar/validators": "workspace:*",
+    "@nestjs/common": "^10.4.4",
+    "@nestjs/core": "^10.4.4",
+    "@nestjs/platform-express": "^10.4.4",
+    "@nestjs/config": "^3.2.3",
+    "@nestjs/swagger": "^7.4.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.5",
+    "@nestjs/schematics": "^10.1.4",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.16.11",
+    "typescript": "^5.4.5"
+  }
+}

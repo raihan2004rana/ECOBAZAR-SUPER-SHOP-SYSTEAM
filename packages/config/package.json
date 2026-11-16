@@ -1,0 +1,9 @@
+{
+  "name": "@ecobazar/config",
+  "version": "0.1.0",
+  "main": "./index.js",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "tailwindcss": "^3.4.14"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "ECOBAZAR",
+    "slug": "ecobazar-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#123C2D"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ecobazar.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#123C2D"
+      },
+      "package": "com.ecobazar.app"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "ecobazar"
+  }
+}
