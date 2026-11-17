@@ -695,7 +695,7 @@ export const masterCatalogProducts: ProductItem[] = [
     stock: 75,
     badge: 'RED PADDY',
     badgeColor: 'green',
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80',
+    image: '/images/products/deshired-chira.jpg',
     description: 'Unpolished red paddy flattened rice. Rich in complex carbs, dietary iron, and prebiotic bran fiber.',
     specifications: { 'Grain': 'Unpolished Red Paddy', 'Clean': 'Stone & Dust Free', 'Weight': '500g' },
   },
