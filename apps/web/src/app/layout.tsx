@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Providers } from '../components/providers';
 
 export const metadata: Metadata = {
   title: 'ECOBAZAR | Fresh Groceries & Organic Supermarket',
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased text-[#17251F] bg-[#F7F9F5]">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
