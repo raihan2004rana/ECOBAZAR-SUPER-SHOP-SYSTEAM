@@ -37,6 +37,8 @@ import {
   CreditCard,
   Building2,
   HelpCircle,
+  ExternalLink,
+  Store,
 } from 'lucide-react';
 import {
   Button,
@@ -56,6 +58,7 @@ import {
   DrawerDescription,
   DrawerBody,
   DrawerFooter,
+  Logo,
 } from '@ecobazar/ui';
 
 // ==========================================
@@ -76,6 +79,7 @@ interface ProductItem {
   reviews: number;
   image: string;
   badge?: string;
+  badgeColor?: 'red' | 'green' | 'orange';
   stock: number;
   description: string;
   specifications: Record<string, string>;
@@ -94,67 +98,158 @@ interface StoreBranch {
   address: string;
 }
 
-interface HeroSlide {
-  id: string;
-  tag: string;
-  tagIcon: string;
-  headline: string;
-  subtitle: string;
-  btnText: string;
-  categoryFilter: string;
-  badgeText: string;
-  image: string;
-  watermark: string;
-  gradient: string;
-}
-
 // ==========================================
 // MASTER PRODUCT CATALOG DATA
 // ==========================================
 const masterProducts: ProductItem[] = [
+  // 1. TODAY'S BEST DEALS (Exact match to reference UI)
   {
-    id: 'p-1',
-    name: 'Organic Red Vine Tomatoes (1kg)',
-    nameBn: 'অর্গানিক পাকা লাল টমেটো',
-    category: 'Fresh Vegetables',
-    subcategory: 'Salad & Vine',
+    id: 'prod-tomato',
+    name: 'Fresh Tomato',
+    nameBn: 'তাজা পাকা লাল টমেটো',
+    category: 'Fresh Fruits & Vegetables',
+    subcategory: 'Fresh Vegetables',
     brand: 'Bogura Organic Farms',
-    origin: 'Bogura District, Bangladesh',
-    price: 85,
-    originalPrice: 110,
-    unit: '1 kg pack',
+    origin: 'Bogura, Bangladesh',
+    price: 80,
+    originalPrice: 100,
+    unit: '1 kg',
     rating: 4.9,
-    reviews: 142,
-    stock: 45,
-    badge: 'FRESH HARVEST',
+    reviews: 182,
+    stock: 65,
+    badge: '20% OFF',
+    badgeColor: 'red',
     image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&auto=format&fit=crop&q=80',
-    description: 'Freshly plucked vine-ripened organic tomatoes grown without synthetic pesticides. Rich in lycopene and vitamin C, ideal for curries, salads, and fresh juice.',
-    specifications: { 'Harvest Date': 'Today (within 24 hrs)', 'Farming': '100% Certified Organic', 'Storage': 'Store in cool dry place' },
+    description: 'Farm-fresh, vine-ripened organic red tomatoes with natural sweetness. Rich in lycopene and vitamin C, picked this morning.',
+    specifications: { 'Weight': '1 kg pack', 'Harvest': 'Morning Fresh', 'Farming': 'Organic Agro' },
   },
   {
-    id: 'p-2',
-    name: 'Farm Fresh Organic Brown Eggs (Dozen)',
-    nameBn: 'ফার্মের তাজা লাল ডিম',
-    category: 'Dairy, Butter & Eggs',
-    subcategory: 'Eggs & Poultry',
+    id: 'prod-banana',
+    name: 'Banana (Champa)',
+    nameBn: 'তাজা চাম্পা কলা',
+    category: 'Fresh Fruits & Vegetables',
+    subcategory: 'Fresh Fruits',
+    brand: 'Narsingdi Orchard',
+    origin: 'Narsingdi, Bangladesh',
+    price: 60,
+    originalPrice: 70,
+    unit: '1 kg (approx 8-10 pcs)',
+    rating: 4.8,
+    reviews: 145,
+    stock: 90,
+    badge: '15% OFF',
+    badgeColor: 'red',
+    image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=600&auto=format&fit=crop&q=80',
+    description: 'Sweet and aromatic natural tree-ripened Champa bananas. Free from chemical carbide ripening agents, rich in potassium.',
+    specifications: { 'Weight': '1 kg pack', 'Type': 'Naturally Ripened', 'Origin': 'Narsingdi' },
+  },
+  {
+    id: 'prod-apple',
+    name: 'Fresh Gala Apple',
+    nameBn: 'আমদানিকৃত গালা আপেল',
+    category: 'Fresh Fruits & Vegetables',
+    subcategory: 'Fresh Fruits',
+    brand: 'Kashmir Premium Grade',
+    origin: 'Imported Quality',
+    price: 90,
+    originalPrice: 120,
+    unit: '1 kg',
+    rating: 4.9,
+    reviews: 210,
+    stock: 45,
+    badge: '25% OFF',
+    badgeColor: 'red',
+    image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600&auto=format&fit=crop&q=80',
+    description: 'Crisp, juicy red Gala apples with balanced tartness. Individually sorted and wax-free for complete family wellness.',
+    specifications: { 'Grade': 'Grade A Export', 'Crispness': 'Guaranteed Juicy', 'Wax-Free': 'Yes' },
+  },
+  {
+    id: 'prod-rice-miniket',
+    name: 'Rice (Miniket Premium)',
+    nameBn: 'প্রিমিয়াম মিনিকেট চাল (৫ কেজি)',
+    category: 'Rice, Pulses & Grains',
+    subcategory: 'Daily Rice',
+    brand: 'Dinajpur Special Reserve',
+    origin: 'Dinajpur, Bangladesh',
+    price: 280,
+    originalPrice: 320,
+    unit: '5 kg bag',
+    rating: 5.0,
+    reviews: 320,
+    stock: 120,
+    badge: 'HOT DEAL',
+    badgeColor: 'orange',
+    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80',
+    description: '100% stone-free, silky, slender Miniket rice. Triple-sorted by optical sorting machines for clean, fluffy everyday cooking.',
+    specifications: { 'Net Weight': '5 kg', 'Aging': 'Aged 9 months', 'Stone-Free': '100% Guaranteed' },
+  },
+  {
+    id: 'prod-milk',
+    name: 'Fresh Pasteurized Milk',
+    nameBn: 'খাঁটি তরল গরুর দুধ (১ লিটার)',
+    category: 'Dairy & Eggs',
+    subcategory: 'Fresh Milk',
+    brand: 'Pabna Pastures Dairy',
+    origin: 'Pabna, Bangladesh',
+    price: 110,
+    originalPrice: 125,
+    unit: '1 Ltr bottle',
+    rating: 4.9,
+    reviews: 240,
+    stock: 80,
+    badge: 'COLD-CHAIN',
+    badgeColor: 'green',
+    image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=600&auto=format&fit=crop&q=80',
+    description: 'Pasteurized whole cow milk with natural 4.2% butterfat. Sourced from grass-grazed dairy herds and transported under cold-chain.',
+    specifications: { 'Volume': '1 Litre', 'Fat Content': '4.2% Natural', 'Shelf Life': '3 days chilled' },
+  },
+  {
+    id: 'prod-potato',
+    name: 'Organic Diamond Potato',
+    nameBn: 'দেশি ডায়মন্ড আলু',
+    category: 'Fresh Fruits & Vegetables',
+    subcategory: 'Root Vegetables',
+    brand: 'Munshiganj Harvest',
+    origin: 'Munshiganj, Bangladesh',
+    price: 40,
+    originalPrice: 50,
+    unit: '1 kg',
+    rating: 4.7,
+    reviews: 95,
+    stock: 200,
+    badge: 'VALUE PACK',
+    badgeColor: 'green',
+    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=600&auto=format&fit=crop&q=80',
+    description: 'Firm, clean Munshiganj Diamond potatoes with smooth skin. Ideal for making curries, fries, and comforting mashed aloo bhorta.',
+    specifications: { 'Weight': '1 kg pack', 'Size': 'Medium-Large Uniform', 'Soil Cleared': 'Yes' },
+  },
+
+  // 2. GROCERIES, DAIRY, MEAT & OTHER CATEGORIES
+  {
+    id: 'prod-eggs',
+    name: 'Farm Fresh Brown Eggs (12 pcs)',
+    nameBn: 'ফার্মের তাজা লাল ডিম (১২টি)',
+    category: 'Dairy & Eggs',
+    subcategory: 'Eggs',
     brand: 'Gazipur Layer Farm',
     origin: 'Gazipur, Dhaka',
-    price: 135,
-    originalPrice: 160,
+    price: 145,
+    originalPrice: 165,
     unit: '12 pcs carton',
     rating: 4.8,
     reviews: 215,
-    stock: 80,
-    badge: 'POPULAR DEAL',
+    stock: 110,
+    badge: 'POPULAR',
+    badgeColor: 'orange',
     image: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=600&auto=format&fit=crop&q=80',
     description: 'High-protein farm-fresh brown eggs graded and UV-sterilized for complete food safety. Sourced daily from antibiotic-free layer hens.',
     specifications: { 'Grade': 'Grade A Large', 'Shelf Life': '21 days', 'Packaging': 'Shock-proof eco carton' },
   },
   {
-    id: 'p-3',
-    name: 'Pure Cold Pressed Mustard Oil 1L (Ghani)',
+    id: 'prod-mustard-oil',
+    name: 'Cold Pressed Mustard Oil 1L (Ghani)',
     nameBn: 'ঘানি ভাঙা খাঁটি সরিষার তেল',
-    category: 'Spices, Pickles & Oils',
+    category: 'Spices & Oils',
     subcategory: 'Cooking Oils',
     brand: 'ECOBAZAR Pure Heritage',
     origin: 'Natore, Bangladesh',
@@ -165,142 +260,150 @@ const masterProducts: ProductItem[] = [
     reviews: 310,
     stock: 60,
     badge: 'BEST SELLER',
+    badgeColor: 'green',
     image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&auto=format&fit=crop&q=80',
-    description: 'Traditional wood-cold-pressed raw mustard oil retaining pungent natural aroma and natural antioxidants. Essential for authentic Bangladeshi cooking and bhortas.',
+    description: 'Traditional wood-cold-pressed raw mustard oil retaining pungent natural aroma and natural antioxidants. Essential for authentic Bangladeshi cooking.',
     specifications: { 'Extraction': 'Traditional Wood Ghani', 'Purity': '100% Unadulterated', 'Packaging': 'Food-grade pet bottle' },
   },
   {
-    id: 'p-4',
-    name: 'Aromatic Chinigura Polao Rice (2kg)',
-    nameBn: 'সুগন্ধি চিনিগুঁড়া পোলাও চাল',
-    category: 'Rice, Pulses & Grains',
-    subcategory: 'Aromatic Rice',
-    brand: 'Dinajpur Special Reserve',
-    origin: 'Dinajpur, Bangladesh',
-    price: 290,
-    originalPrice: 350,
-    unit: '2 kg sealed bag',
+    id: 'prod-atta',
+    name: 'Premium Chakki Fresh Whole Wheat Atta 2kg',
+    nameBn: 'চাক্কি ফ্রেশ লাল গমের আটা (২ কেজি)',
+    category: 'Groceries & Staples',
+    subcategory: 'Flour & Atta',
+    brand: 'ECOBAZAR Organics',
+    origin: 'Bangladesh',
+    price: 135,
+    originalPrice: 155,
+    unit: '2 kg bag',
     rating: 4.9,
-    reviews: 184,
-    stock: 75,
-    badge: 'PREMIUM STAPLE',
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80',
-    description: 'Aged small-grain aromatic Chinigura rice renowned for its delicate fragrance and fluffy texture. 100% stone-free, sorted by state-of-the-art color sorters.',
-    specifications: { 'Aging': 'Aged 12 months', 'Stone-Free': 'Guaranteed 100%', 'Ideal For': 'Biryani, Polao, Firni' },
+    reviews: 178,
+    stock: 95,
+    badge: '100% WHOLE',
+    badgeColor: 'green',
+    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80',
+    description: 'Slow-ground whole wheat atta with 100% dietary bran. Makes exceptionally soft, fluffy rotis with rich nutritional goodness.',
+    specifications: { 'Grain': 'Select Hard Wheat', 'Preservatives': 'Zero (0%)', 'Fiber': 'High Bran Content' },
   },
   {
-    id: 'p-5',
-    name: 'Farm Fresh Pure Whole Cow Milk (1L)',
-    nameBn: 'খাঁটি তরল গরুর দুধ',
-    category: 'Dairy, Butter & Eggs',
-    subcategory: 'Fresh Milk',
-    brand: 'Pabna Dairy Pastures',
+    id: 'prod-beef',
+    name: 'Fresh Premium Boneless Beef (1kg)',
+    nameBn: 'তাজা সলিড গরুর মাংস (১ কেজি)',
+    category: 'Meat & Fish',
+    subcategory: 'Fresh Meat',
+    brand: 'ECOBAZAR Halal Meats',
     origin: 'Pabna, Bangladesh',
-    price: 90,
-    originalPrice: 105,
-    unit: '1 Litre Pouch',
+    price: 780,
+    originalPrice: 850,
+    unit: '1 kg vacuum pack',
     rating: 4.9,
-    reviews: 260,
-    stock: 50,
-    badge: 'COLD-CHAIN',
-    image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=600&auto=format&fit=crop&q=80',
-    description: 'Pasteurized whole cow milk with natural 4.2% butterfat. Sourced from pasture-grazed dairy cattle, delivered under strict chilled cold-chain transport.',
-    specifications: { 'Fat Content': '4.2% Min', 'Pasteurized': 'Yes (72°C flash)', 'Shelf Life': '3 days chilled' },
-  },
-  {
-    id: 'p-6',
-    name: 'Sweet Ruby Pomegranate (per kg)',
-    nameBn: 'মিষ্টি রসালো লাল ডালিম / বেদানা',
-    category: 'Fresh & Organic',
-    subcategory: 'Fresh Fruits',
-    brand: 'Kandahar Premium Grade',
-    origin: 'Imported Quality Grade A',
-    price: 340,
-    originalPrice: 390,
-    unit: 'per kg',
-    rating: 4.8,
-    reviews: 95,
+    reviews: 140,
     stock: 35,
-    badge: 'IMPORT QUALITY',
-    image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=600&auto=format&fit=crop&q=80',
-    description: 'Sweet, deep-ruby pomegranate seeds loaded with heart-healthy punicalagins and antioxidants. Hand-inspected for thin rinds and luscious juice arils.',
-    specifications: { 'Taste Profile': 'Sweet & Crisp', 'Quality': 'Grade A Export', 'Origin': 'Imported' },
+    badge: '100% HALAL',
+    badgeColor: 'green',
+    image: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=600&auto=format&fit=crop&q=80',
+    description: 'Tender, fresh grass-fed boneless beef cut and trimmed in hygienic cold rooms. 100% Halal slaughtered and vacuum packed.',
+    specifications: { 'Slaughter': 'Strictly Halal Certified', 'Cut': 'Boneless Cubes', 'Chilled Delivery': '0°C to 4°C' },
   },
   {
-    id: 'p-7',
-    name: 'Sweet Strawberries Fresh Pack (250g)',
-    nameBn: 'তাজা লাল মিষ্টি স্ট্রবেরি',
-    category: 'Fresh & Organic',
-    subcategory: 'Berries & Fruits',
-    brand: 'Rajshahi Greenhouse',
-    origin: 'Rajshahi, Bangladesh',
-    price: 390,
-    originalPrice: 450,
-    unit: '250g punnet',
-    rating: 4.9,
-    reviews: 110,
-    stock: 25,
-    badge: 'SEASONAL DELIGHT',
-    image: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=600&auto=format&fit=crop&q=80',
-    description: 'Locally grown sweet red strawberries picked this morning. Perfect for healthy fruit bowls, smoothies, and dessert toppings.',
-    specifications: { 'Ripeness': '100% Tree-Ripened', 'Weight': '250g Net', 'Shelf Life': '4 days refrigerated' },
-  },
-  {
-    id: 'p-8',
-    name: 'Crisp Green Cabbage (Head)',
-    nameBn: 'তাজা দেশি সবুজ বাঁধাকপি',
-    category: 'Fresh Vegetables',
-    subcategory: 'Cruciferous Greens',
-    brand: 'Bogura Agro Farms',
-    origin: 'Bogura, Bangladesh',
-    price: 45,
-    originalPrice: 60,
-    unit: 'per piece',
+    id: 'prod-bread',
+    name: 'Multi-Grain Sourdough Bread (400g)',
+    nameBn: 'মাল্টি-গ্রেইন সোরডো পাউরুটি',
+    category: 'Bakery & Fresh Snacks',
+    subcategory: 'Artisan Bread',
+    brand: 'Artisan Bakehouse',
+    origin: 'Dhaka Bakery Hub',
+    price: 160,
+    originalPrice: 185,
+    unit: '400g loaf',
     rating: 4.7,
-    reviews: 82,
-    stock: 90,
-    badge: 'VALUE PICK',
-    image: 'https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?w=600&auto=format&fit=crop&q=80',
-    description: 'Compact, crisp, sweet green cabbage packed with dietary fiber and vitamin K. Directly delivered from winter harvest fields.',
-    specifications: { 'Weight Approx': '1.2 kg - 1.5 kg', 'Pesticide-Free': 'Yes', 'Origin': 'Local Agro' },
+    reviews: 88,
+    stock: 40,
+    badge: 'FRESH BAKE',
+    badgeColor: 'orange',
+    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80',
+    description: 'Slow-fermented artisan sourdough baked daily with sunflower seeds, flaxseeds, and toasted oats. Naturally low glycemic index.',
+    specifications: { 'Fermentation': '24-hour slow proof', 'Additives': 'No artificial enzymes', 'Baked': 'This Morning' },
   },
   {
-    id: 'p-9',
+    id: 'prod-honey',
     name: 'Pure Sundarban Wild Flower Honey (500g)',
     nameBn: 'সুন্দরবনের প্রাকৃতিক খাঁটি মধু',
     category: 'Health & Personal Care',
     subcategory: 'Raw Honey',
     brand: 'Forest Reserve Khalsi',
-    origin: 'Sundarbans Mangrove, Bangladesh',
+    origin: 'Sundarbans, Bangladesh',
     price: 490,
     originalPrice: 580,
     unit: '500g glass jar',
     rating: 5.0,
-    reviews: 130,
-    stock: 40,
+    reviews: 160,
+    stock: 55,
     badge: '100% RAW',
+    badgeColor: 'green',
     image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&auto=format&fit=crop&q=80',
     description: 'Unprocessed, wild flower honey ethically harvested by traditional Mouwals of the Sundarbans. Natural immune booster with verified pollen content.',
     specifications: { 'Processing': 'Raw & Unpasteurized', 'Sugar Added': 'Zero (0%)', 'Jar': 'Airtight Glass' },
   },
   {
-    id: 'p-10',
-    name: 'Fresh Palong Shak / Leafy Spinach (Bundle)',
-    nameBn: 'তাজা দেশি পালং শাক',
-    category: 'Fresh Vegetables',
-    subcategory: 'Leafy Greens',
-    brand: 'Savar Riverside Agro',
-    origin: 'Savar, Dhaka',
-    price: 30,
-    originalPrice: 40,
-    unit: 'per bundle (approx 400g)',
+    id: 'prod-juice',
+    name: 'Fresh Squeezed Orange Juice (500ml)',
+    nameBn: 'তাজা কমলার রস',
+    category: 'Snacks & Beverages',
+    subcategory: 'Cold Pressed Juices',
+    brand: 'Citrus Grove Cold-Press',
+    origin: 'Dhaka, Bangladesh',
+    price: 180,
+    originalPrice: 210,
+    unit: '500ml bottle',
+    rating: 4.8,
+    reviews: 74,
+    stock: 30,
+    badge: 'NO ADDED SUGAR',
+    badgeColor: 'green',
+    image: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=600&auto=format&fit=crop&q=80',
+    description: '100% pure cold-pressed Valencia orange juice. No added sugar, water, or chemical preservatives. Chilled fresh daily.',
+    specifications: { 'Sugar': '0% Added Sugar', 'Shelf Life': '48 hours chilled', 'Packaging': 'BPA-free bottle' },
+  },
+  {
+    id: 'prod-baby-puree',
+    name: 'Organic Apple & Carrot Baby Puree (120g)',
+    nameBn: 'অর্গানিক আপেল ও গাজর বেবি পিউরি',
+    category: 'Baby Food & Care',
+    subcategory: 'Organic Purees',
+    brand: 'Little Sprouts Organic',
+    origin: 'Certified Organic',
+    price: 220,
+    originalPrice: 250,
+    unit: '120g pouch',
     rating: 4.9,
-    reviews: 165,
-    stock: 120,
-    badge: 'DAILY HARVEST',
-    image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&auto=format&fit=crop&q=80',
-    description: 'Tender, bright-green spinach leaves harvested at dawn. Packed with iron, folate, and calcium for wholesome family meals.',
-    specifications: { 'Wash Status': 'Pre-sorted fresh', 'Bundle Weight': '400g avg', 'Cooking Style': 'Vaji or Soup' },
+    reviews: 92,
+    stock: 50,
+    badge: 'PEDIATRIC TESTED',
+    badgeColor: 'green',
+    image: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=600&auto=format&fit=crop&q=80',
+    description: 'Smooth, naturally sweet organic apple and tender carrot puree for infants 6+ months. Smooth texture, zero sodium, and zero artificial flavors.',
+    specifications: { 'Age': '6+ Months', 'Certification': '100% USDA Organic', 'Preservatives': 'None' },
+  },
+  {
+    id: 'prod-peas',
+    name: 'Frozen Green Sweet Peas (500g)',
+    nameBn: 'হিমায়িত তাজা মিষ্টি মটরশুঁটি',
+    category: 'Frozen Foods',
+    subcategory: 'Frozen Veggies',
+    brand: 'ECOBAZAR Fresh Freeze',
+    origin: 'North Bengal, Bangladesh',
+    price: 140,
+    originalPrice: 165,
+    unit: '500g zip-lock bag',
+    rating: 4.7,
+    reviews: 65,
+    stock: 70,
+    badge: 'IQF FROZEN',
+    badgeColor: 'green',
+    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=80',
+    description: 'Individually Quick Frozen (IQF) sweet green peas harvested at peak tenderness. Retains natural chlorophyll color, crisp snap, and vitamins.',
+    specifications: { 'Processing': 'IQF Shock-Frozen', 'Preparation': 'Ready to boil / cook', 'Storage': '-18°C Frozen' },
   },
 ];
 
@@ -311,110 +414,18 @@ const storeBranches: StoreBranch[] = [
 ];
 
 const categorySidebarData = [
-  {
-    id: 'c-all',
-    name: 'All Departments',
-    icon: '🛒',
-    count: masterProducts.length,
-    subcategories: ['All Products', 'Daily Deals', 'New Arrivals', 'Super Saver Packs'],
-  },
-  {
-    id: 'c-veg',
-    name: 'Fresh Vegetables',
-    icon: '🥬',
-    count: 3,
-    subcategories: ['Salad & Vine', 'Cruciferous Greens', 'Leafy Greens', 'Root Vegetables'],
-  },
-  {
-    id: 'c-dairy',
-    name: 'Dairy, Butter & Eggs',
-    icon: '🥛',
-    count: 2,
-    subcategories: ['Fresh Milk', 'Eggs & Poultry', 'Ghee & Butter', 'Yogurt & Curd'],
-  },
-  {
-    id: 'c-staples',
-    name: 'Rice, Pulses & Grains',
-    icon: '🌾',
-    count: 1,
-    subcategories: ['Aromatic Rice', 'Lentils & Daal', 'Atta & Flours', 'Whole Grains'],
-  },
-  {
-    id: 'c-spices',
-    name: 'Spices, Pickles & Oils',
-    icon: '🌶️',
-    count: 1,
-    subcategories: ['Cooking Oils', 'Pure Whole Spices', 'Ground Powders', 'Artisan Pickles'],
-  },
-  {
-    id: 'c-organic',
-    name: 'Fresh & Organic',
-    icon: '🌱',
-    count: 2,
-    subcategories: ['Fresh Fruits', 'Berries & Fruits', 'Organic Juices', 'Herbal Teas'],
-  },
-  {
-    id: 'c-health',
-    name: 'Health & Personal Care',
-    icon: '✨',
-    count: 1,
-    subcategories: ['Raw Honey', 'Nuts & Seeds', 'Organic Ghee', 'Herbal Wellness'],
-  },
-];
-
-const heroSlides: HeroSlide[] = [
-  {
-    id: 'slide-1',
-    tag: 'Exclusive Offer — 25% Off Fresh Harvest',
-    tagIcon: '✨',
-    headline: 'Fast Fresh Groceries\nDelivered in 30 Mins',
-    subtitle: 'From morning breakfast staples to crisp farm greens, order commercial-grade groceries delivered directly to your doorstep across Dhaka.',
-    btnText: 'Shop Fresh Now',
-    categoryFilter: 'All Departments',
-    badgeText: 'ECOBAZAR Express Fleet',
-    image: '/images/hero-deliveryman.jpg',
-    watermark: 'EcoBazar',
-    gradient: 'from-[#123C2D] via-[#1A5C41] to-[#0E3524]',
-  },
-  {
-    id: 'slide-2',
-    tag: 'Pure Grass-Fed Dairy — 100% Organic',
-    tagIcon: '🥛',
-    headline: 'Farm Fresh Milk\n& Pure Golden Ghee',
-    subtitle: 'Lab-certified, antibiotic-free raw cow milk and traditional hand-churned ghee sourced straight from pasture-grazed Pabna herds.',
-    btnText: 'Explore Dairy',
-    categoryFilter: 'Dairy, Butter & Eggs',
-    badgeText: 'Cold-Chain Certified',
-    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop&q=80',
-    watermark: 'PureDairy',
-    gradient: 'from-[#0B4A3A] via-[#156D55] to-[#0D3828]',
-  },
-  {
-    id: 'slide-3',
-    tag: 'Seasonal Harvest — Sweet & Juicy',
-    tagIcon: '🥭',
-    headline: 'Handpicked Organic\nFruits & Pomegranates',
-    subtitle: 'Sweet ruby pomegranates, strawberry punnets, and seasonal orchard fruits harvested at peak sweetness for your family.',
-    btnText: 'Shop Fresh Fruits',
-    categoryFilter: 'Fresh & Organic',
-    badgeText: 'Orchard Fresh Today',
-    image: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=600&auto=format&fit=crop&q=80',
-    watermark: 'FreshFruits',
-    gradient: 'from-[#144A29] via-[#217744] to-[#123C2D]',
-  },
-  {
-    id: 'slide-4',
-    tag: 'Dhaka Kitchen Staples — Guaranteed Purity',
-    tagIcon: '🌾',
-    headline: 'Aromatic Chinigura\n& Pure Mustard Oil',
-    subtitle: 'Aged long-grain rice, stone-pressed mustard oil, and premium red lentils guaranteed 100% adulteration-free at supermarket wholesale rates.',
-    btnText: 'Shop Daily Staples',
-    categoryFilter: 'Rice, Pulses & Grains',
-    badgeText: '100% Stone-Free Guarantee',
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80',
-    watermark: 'AromaRice',
-    gradient: 'from-[#1B4332] via-[#2D6A4F] to-[#081C15]',
-  },
+  { id: 'cat-all', name: 'All Categories', icon: '🛒', count: masterProducts.length },
+  { id: 'cat-veg', name: 'Fresh Fruits & Vegetables', icon: '🥬', count: 4, subcategories: ['Fresh Vegetables', 'Fresh Fruits', 'Salad & Greens', 'Root Vegetables'] },
+  { id: 'cat-staples', name: 'Groceries & Staples', icon: '🌾', count: 3, subcategories: ['Daily Rice', 'Flour & Atta', 'Lentils & Daal', 'Sugar & Salt'] },
+  { id: 'cat-dairy', name: 'Dairy & Eggs', icon: '🥛', count: 2, subcategories: ['Fresh Milk', 'Eggs', 'Butter & Ghee', 'Cheese & Yogurt'] },
+  { id: 'cat-snacks', name: 'Snacks & Beverages', icon: '🥤', count: 1, subcategories: ['Cold Pressed Juices', 'Tea & Coffee', 'Biscuits & Cookies'] },
+  { id: 'cat-meat', name: 'Meat & Fish', icon: '🥩', count: 1, subcategories: ['Fresh Meat', 'River Fish', 'Poultry Chicken'] },
+  { id: 'cat-bakery', name: 'Bakery & Fresh Snacks', icon: '🥐', count: 1, subcategories: ['Artisan Bread', 'Cakes & Pastries', 'Puffs & Buns'] },
+  { id: 'cat-rice', name: 'Rice, Pulses & Grains', icon: '🍚', count: 2, subcategories: ['Aromatic Rice', 'Miniket Rice', 'Red Lentils'] },
+  { id: 'cat-spices', name: 'Spices & Oils', icon: '🫒', count: 1, subcategories: ['Cooking Oils', 'Whole Spices', 'Ground Powders'] },
+  { id: 'cat-frozen', name: 'Frozen Foods', icon: '❄️', count: 1, subcategories: ['Frozen Veggies', 'Ready to Fry', 'Ice Cream'] },
+  { id: 'cat-health', name: 'Health & Personal Care', icon: '🧴', count: 1, subcategories: ['Raw Honey', 'Soaps & Sanitizers', 'Oral Care'] },
+  { id: 'cat-baby', name: 'Baby Food & Care', icon: '🍼', count: 1, subcategories: ['Organic Purees', 'Baby Diapers', 'Baby Skincare'] },
 ];
 
 // ==========================================
@@ -447,500 +458,462 @@ function StorefrontView() {
   const [checkoutSuccessOrder, setCheckoutSuccessOrder] = React.useState<string | null>(null);
 
   // 4. NAVIGATION & FILTERING STATE
-  const [selectedCategory, setSelectedCategory] = React.useState<string>('All Departments');
-  const [expandedCategoryId, setExpandedCategoryId] = React.useState<string | null>('c-veg');
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [selectedCategory, setSelectedCategory] = React.useState<string>('All Categories');
+  const [expandedCategory, setExpandedCategory] = React.useState<string | null>(null);
+  const [selectedDepartmentTab, setSelectedDepartmentTab] = React.useState<string>('Home');
+  const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [isSearchFocused, setIsSearchFocused] = React.useState(false);
-  const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [sortBy, setSortBy] = React.useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
+  const [priceFilterMax, setPriceFilterMax] = React.useState<number>(1000);
 
-  // 5. FLASH SALE COUNTDOWN STATE
-  const [timeLeft, setTimeLeft] = React.useState({ hours: 8, minutes: 42, seconds: 19 });
+  // Temporary added feedback mapping
+  const [addedFeedback, setAddedFeedback] = React.useState<Record<string, boolean>>({});
 
-  // REHYDRATE CART & WISHLIST ON MOUNT
+  // Rehydrate Cart & Wishlist from localStorage safely on client mount
   React.useEffect(() => {
     try {
-      const savedCart = localStorage.getItem('ecobazar_cart_v2');
-      if (savedCart) {
-        setCartItems(JSON.parse(savedCart));
+      const storedCart = localStorage.getItem('ecobazar_cart_v3');
+      if (storedCart) {
+        const parsed = JSON.parse(storedCart);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setCartItems(parsed);
+        } else {
+          // Initialize with 2 default demo items matching screenshot (Tomato + Banana = ৳540 approx or similar)
+          setCartItems([
+            { product: masterProducts[0], quantity: 2 }, // Tomato: 80 * 2 = 160
+            { product: masterProducts[3], quantity: 1 }, // Rice: 280
+            { product: masterProducts[1], quantity: 1 }, // Banana: 60 -> Total: 500 + vat
+          ]);
+        }
       } else {
-        // Seed initial 2 sample items
         setCartItems([
           { product: masterProducts[0], quantity: 2 },
-          { product: masterProducts[1], quantity: 1 },
+          { product: masterProducts[3], quantity: 1 },
         ]);
       }
-      const savedWishlist = localStorage.getItem('ecobazar_wishlist_v2');
-      if (savedWishlist) {
-        setWishlistMap(JSON.parse(savedWishlist));
-      } else {
-        setWishlistMap({ 'p-1': true, 'p-4': true });
+
+      const storedWishlist = localStorage.getItem('ecobazar_wishlist_v3');
+      if (storedWishlist) {
+        setWishlistMap(JSON.parse(storedWishlist));
       }
-    } catch (err) {
-      console.warn('Storage rehydration error:', err);
+    } catch {
+      // Fallback
+    } finally {
+      setIsCartHydrated(true);
     }
-    setIsCartHydrated(true);
   }, []);
 
-  // PERSIST CART CHANGES
+  // Save Cart to localStorage whenever it changes
   React.useEffect(() => {
-    if (isCartHydrated) {
-      try {
-        localStorage.setItem('ecobazar_cart_v2', JSON.stringify(cartItems));
-      } catch (err) {
-        console.warn('Cart persistence error:', err);
-      }
+    if (!isCartHydrated) return;
+    try {
+      localStorage.setItem('ecobazar_cart_v3', JSON.stringify(cartItems));
+    } catch {
+      // Storage failed
     }
   }, [cartItems, isCartHydrated]);
 
-  // PERSIST WISHLIST CHANGES
+  // Save Wishlist to localStorage
   React.useEffect(() => {
-    if (isCartHydrated) {
-      try {
-        localStorage.setItem('ecobazar_wishlist_v2', JSON.stringify(wishlistMap));
-      } catch (err) {
-        console.warn('Wishlist persistence error:', err);
-      }
+    if (!isCartHydrated) return;
+    try {
+      localStorage.setItem('ecobazar_wishlist_v3', JSON.stringify(wishlistMap));
+    } catch {
+      // Storage failed
     }
   }, [wishlistMap, isCartHydrated]);
 
-  // COUNTDOWN TIMER TICKER
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        return prev;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  // Derived Cart Totals
+  const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartSubtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const discountAmount = appliedCoupon === 'ECO10' ? Math.round(cartSubtotal * 0.1) : appliedCoupon === 'FREESHIP' ? 0 : 0;
+  const deliveryFee = cartSubtotal >= 1000 || appliedCoupon === 'FREESHIP' ? 0 : 50;
+  const cartGrandTotal = Math.max(0, cartSubtotal - discountAmount + deliveryFee);
 
-  // AUTO-PLAY HERO SLIDER
-  React.useEffect(() => {
-    const slideTimer = setInterval(() => {
-      setCurrentSlideIndex((prev) => (prev + 1) % heroSlides.length);
-    }, 5500);
-    return () => clearInterval(slideTimer);
-  }, []);
-
-  // ==========================================
-  // CART ACTIONS & COMPUTATIONS
-  // ==========================================
-  const totalCartCount = React.useMemo(() => {
-    return cartItems.reduce((acc, item) => acc + item.quantity, 0);
-  }, [cartItems]);
-
-  const cartSubtotal = React.useMemo(() => {
-    return cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-  }, [cartItems]);
-
-  const discountAmount = React.useMemo(() => {
-    if (appliedCoupon === 'ECO10') return Math.round(cartSubtotal * 0.1);
-    if (appliedCoupon === 'FREESHIP') return 50;
-    return 0;
-  }, [appliedCoupon, cartSubtotal]);
-
-  const deliveryCharge = React.useMemo(() => {
-    if (appliedCoupon === 'FREESHIP' || cartSubtotal >= 500 || cartItems.length === 0) return 0;
-    return 50;
-  }, [cartSubtotal, appliedCoupon, cartItems.length]);
-
-  const grandTotal = Math.max(0, cartSubtotal - discountAmount + deliveryCharge);
-
+  // Cart Handlers — NEVER PERMANENTLY DISABLED
   const handleAddToCart = (product: ProductItem, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
+
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
+      const existing = prev.find((entry) => entry.product.id === product.id);
       if (existing) {
         if (existing.quantity >= product.stock) {
-          toast.warning('Max Stock Limit Reached', `Only ${product.stock} units available in ${selectedBranch.name}.`);
+          toast.warning('Stock Limit Reached', `Only ${product.stock} units available in ${selectedBranch.name}`);
           return prev;
         }
-        toast.success('Cart Updated', `${product.name} quantity increased to ${existing.quantity + 1}.`);
-        return prev.map((item) =>
-          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        return prev.map((entry) =>
+          entry.product.id === product.id ? { ...entry, quantity: entry.quantity + 1 } : entry
         );
       }
-      toast.success('Added to Cart', `${product.name} (৳${product.price}) added to your basket.`);
       return [...prev, { product, quantity: 1 }];
     });
+
+    // Provide visual flash
+    setAddedFeedback((prev) => ({ ...prev, [product.id]: true }));
+    setTimeout(() => {
+      setAddedFeedback((prev) => ({ ...prev, [product.id]: false }));
+    }, 1200);
+
+    toast.success('Added to Cart', `${product.name} (৳${product.price}) added.`);
   };
 
-  const handleDecreaseQuantity = (productId: string, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.product.id === productId);
-      if (!existing) return prev;
-      if (existing.quantity <= 1) {
-        toast.info('Item Removed', `${existing.product.name} removed from cart.`);
-        return prev.filter((item) => item.product.id !== productId);
-      }
-      return prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity: item.quantity - 1 } : item
-      );
-    });
+  const handleUpdateCartQuantity = (productId: string, delta: number) => {
+    setCartItems((prev) =>
+      prev
+        .map((entry) => {
+          if (entry.product.id === productId) {
+            const nextQty = entry.quantity + delta;
+            if (nextQty > entry.product.stock) {
+              toast.warning('Stock Limit', `Maximum available stock is ${entry.product.stock}`);
+              return entry;
+            }
+            return { ...entry, quantity: Math.max(1, nextQty) };
+          }
+          return entry;
+        })
+        .filter((entry) => entry.quantity > 0)
+    );
   };
 
   const handleRemoveFromCart = (productId: string) => {
-    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
-    toast.info('Item Removed', 'Product removed from shopping cart.');
+    setCartItems((prev) => prev.filter((entry) => entry.product.id !== productId));
+    toast.info('Item Removed', 'Product removed from your shopping cart.');
   };
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleanCode = couponInput.trim().toUpperCase();
-    if (cleanCode === 'ECO10') {
+  // Wishlist Handlers
+  const handleToggleWishlist = (product: ProductItem, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const current = wishlistMap[product.id] || false;
+    const next = !current;
+    setWishlistMap((prev) => ({ ...prev, [product.id]: next }));
+    if (next) {
+      toast.success('Saved to Wishlist', `${product.name} added to your saved items.`);
+    } else {
+      toast.info('Removed from Wishlist', `${product.name} removed from your saved items.`);
+    }
+  };
+
+  const wishlistProducts = masterProducts.filter((p) => wishlistMap[p.id]);
+
+  // Coupon Code Validator
+  const handleApplyCoupon = () => {
+    const code = couponInput.trim().toUpperCase();
+    if (code === 'ECO10') {
       setAppliedCoupon('ECO10');
-      toast.success('Coupon Applied!', '10% discount deducted from your subtotal.');
+      toast.success('Coupon Applied!', '10% discount has been applied to your subtotal.');
       setCouponInput('');
-    } else if (cleanCode === 'FREESHIP') {
+    } else if (code === 'FREESHIP') {
       setAppliedCoupon('FREESHIP');
-      toast.success('Free Delivery Unlocked!', 'Delivery charges waived for your order.');
+      toast.success('Coupon Applied!', 'Free delivery granted on this order.');
       setCouponInput('');
     } else {
-      toast.error('Invalid Voucher Code', 'Try code ECO10 for 10% off or FREESHIP for free delivery.');
+      toast.error('Invalid Voucher', 'Code not recognized. Try "ECO10" or "FREESHIP".');
     }
   };
 
-  // ==========================================
-  // WISHLIST ACTIONS
-  // ==========================================
-  const wishlistItems = React.useMemo(() => {
-    return masterProducts.filter((p) => wishlistMap[p.id]);
-  }, [wishlistMap]);
-
-  const toggleWishlist = (product: ProductItem, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setWishlistMap((prev) => {
-      const willLike = !prev[product.id];
-      if (willLike) {
-        toast.info('Saved to Wishlist', `${product.name} added to your favorites.`);
-      } else {
-        toast.info('Removed from Wishlist', `${product.name} removed from favorites.`);
-      }
-      return { ...prev, [product.id]: willLike };
-    });
+  // Branch Selection Handler
+  const handleSelectBranch = (branch: StoreBranch) => {
+    setSelectedBranch(branch);
+    setIsBranchModalOpen(false);
+    toast.success('Delivery Hub Updated', `Fulfilling orders from: ${branch.name} (${branch.deliveryTime})`);
   };
 
-  // ==========================================
-  // FILTERED PRODUCT CATALOG
-  // ==========================================
-  const filteredProducts = React.useMemo(() => {
-    let result = masterProducts;
-    if (selectedCategory && selectedCategory !== 'All Departments') {
-      result = result.filter(
-        (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.nameBn.includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.brand.toLowerCase().includes(q)
-      );
-    }
-    return result;
-  }, [selectedCategory, searchQuery]);
+  // Checkout Handler
+  const handlePlaceOrder = () => {
+    const orderNum = `ORD-202611-${Math.floor(1000 + Math.random() * 9000)}`;
+    setCheckoutSuccessOrder(orderNum);
+    setCartItems([]);
+    setIsCheckoutModalOpen(false);
+    setIsCartDrawerOpen(false);
+    toast.success('Order Placed Successfully!', `Order #${orderNum} confirmed. Delivery in ~${selectedBranch.deliveryTime}.`);
+  };
 
-  const liveSearchSuggestions = React.useMemo(() => {
-    if (!searchQuery.trim()) return [];
-    const q = searchQuery.toLowerCase();
-    return masterProducts.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.nameBn.includes(q) ||
-        p.category.toLowerCase().includes(q)
-    ).slice(0, 5);
-  }, [searchQuery]);
+  // Category Filtering
+  const filteredProducts = masterProducts.filter((p) => {
+    const matchesCategory =
+      selectedCategory === 'All Categories' ||
+      selectedCategory === 'All Departments' ||
+      p.category.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+      (p.subcategory && p.subcategory.toLowerCase().includes(selectedCategory.toLowerCase()));
 
-  const currentSlide = heroSlides[currentSlideIndex];
+    const matchesSearch =
+      !searchQuery.trim() ||
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.nameBn.includes(searchQuery) ||
+      p.category.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesPrice = p.price <= priceFilterMax;
+
+    return matchesCategory && matchesSearch && matchesPrice;
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === 'price-low') return a.price - b.price;
+    if (sortBy === 'price-high') return b.price - a.price;
+    if (sortBy === 'rating') return b.rating - a.rating;
+    return 0; // featured default
+  });
 
   return (
-    <div className="min-h-screen bg-[#F7F9F5] text-neutral-900 font-sans selection:bg-emerald-600 selection:text-white antialiased">
+    <div className="min-h-screen bg-[#F7F9F5] text-[#17251F] font-sans antialiased selection:bg-[#21A366] selection:text-white">
       {/* ========================================================= */}
-      {/* 1. TOP UTILITY HEADER (SOLID DEEP GREEN #123C2D) */}
+      {/* 1. TOP ANNOUNCEMENT BAR (Dark Forest Green #123C2D) */}
       {/* ========================================================= */}
-      <section
-        style={{ backgroundColor: '#123C2D', color: '#FFFFFF' }}
-        className="w-full text-xs py-2 px-4 sm:px-6 lg:px-8 border-b border-[#0D2B20] z-40 relative shadow-sm"
-      >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          {/* Left: Hotline & Currency */}
-          <div className="flex items-center gap-4 font-medium text-white">
-            <span className="flex items-center gap-1.5">
-              <Phone className="h-3.5 w-3.5 text-amber-300" />
-              <span>Dhaka Express Hotline:</span>
-              <strong className="text-amber-300 font-black">+880 1700-000000</strong>
-            </span>
-            <span className="hidden md:inline text-emerald-600">|</span>
-            {/* Functional Branch Switcher Button */}
-            <button
-              type="button"
-              onClick={() => setIsBranchModalOpen(true)}
-              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 hover:bg-white/20 transition cursor-pointer text-white"
-            >
-              <MapPin className="h-3 w-3 text-emerald-300" />
-              <span>Delivering from: <strong className="text-amber-300">{selectedBranch.area}</strong></span>
-              <ChevronDown className="h-3 w-3 text-emerald-200" />
-            </button>
+      <div style={{ backgroundColor: '#123C2D' }} className="w-full text-white text-xs py-2 px-4 sm:px-8 border-b border-emerald-900">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 text-emerald-100 font-semibold text-[11px] sm:text-xs">
+            <Truck className="h-3.5 w-3.5 text-[#2EBD70]" />
+            <span>Free Delivery on orders over <strong>৳1,000</strong></span>
           </div>
 
-          {/* Right: Order Tracking, Portal, Account */}
-          <div className="flex items-center gap-3 sm:gap-4 font-semibold text-white ml-auto">
+          <div className="flex items-center gap-4 text-[11px] sm:text-xs text-emerald-100/90 font-medium">
             <button
               type="button"
               onClick={() => setIsTrackingModalOpen(true)}
-              className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-400 hover:bg-amber-300 text-neutral-950 font-black text-[11px] shadow-xs transition"
+              className="hover:text-white transition flex items-center gap-1"
             >
-              <Truck className="h-3.5 w-3.5" />
               <span>Track Order</span>
             </button>
-            <a href="/design-system" className="hover:text-amber-300 text-emerald-100 transition hidden sm:inline">
-              Design System
-            </a>
-            <a href="http://localhost:3001" target="_blank" className="hover:text-amber-300 text-emerald-100 transition hidden sm:inline">
-              Admin Portal →
-            </a>
+            <span className="opacity-40">|</span>
             <button
               type="button"
-              onClick={() => setIsAuthModalOpen(true)}
-              className="hover:text-amber-300 text-white transition flex items-center gap-1"
+              onClick={() => toast.info('Help Center', '24/7 Helpline: +880 9612-000000')}
+              className="hover:text-white transition"
             >
-              <User className="h-3.5 w-3.5" />
-              <span>Account Login</span>
+              Help
+            </button>
+            <span className="opacity-40">|</span>
+            <button
+              type="button"
+              onClick={() => toast.info('Contact Us', 'Corporate Office: Dhanmondi 27, Dhaka')}
+              className="hover:text-white transition"
+            >
+              Contact
             </button>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* ========================================================= */}
-      {/* 2. MAIN HEADER & INTERACTIVE SEARCH */}
+      {/* 2. MAIN HEADER (Logo, Search, Location, Account, Wishlist, Cart) */}
       {/* ========================================================= */}
-      <header className="bg-white border-b border-neutral-200 sticky top-0 z-30 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4 sm:gap-6">
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            className="lg:hidden p-2 rounded-lg text-neutral-700 hover:bg-neutral-100"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle navigation"
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+      <header className="sticky top-0 z-40 bg-white border-b border-[#E5ECE7] shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+          {/* Official Brand Logo */}
+          <div className="cursor-pointer shrink-0" onClick={() => { setSelectedCategory('All Categories'); setSelectedDepartmentTab('Home'); }}>
+            <Logo variant="dark" size="md" />
+          </div>
 
-          {/* Brand Logo: ECOBAZAR */}
-          <a href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="h-10 w-10 rounded-xl bg-forest-900 flex items-center justify-center text-white font-black text-xl shadow-xs group-hover:scale-105 transition-transform">
-              E
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-2xl font-black tracking-tight text-forest-900 leading-none">
-                ECO<span className="text-primary-green">BAZAR</span>
-              </span>
-              <span className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">
-                Retail Operating System
-              </span>
-            </div>
-          </a>
-
-          {/* Integrated Search Bar with Live Autocomplete Popover */}
-          <div className="hidden md:flex flex-1 max-w-2xl relative">
-            <div className="flex w-full items-center rounded-xl border-2 border-forest-900/30 focus-within:border-forest-900 bg-neutral-50/50 transition shadow-inner">
+          {/* Search Bar with live autocomplete */}
+          <div className="flex-1 max-w-xl mx-2 sm:mx-6 relative">
+            <div className="relative flex items-center">
               <input
                 type="text"
+                placeholder="Search for products, groceries, brands..."
                 value={searchQuery}
-                onFocus={() => setIsSearchFocused(true)}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search groceries (e.g. Tomatoes, Chinigura Rice, Milk, Eggs)..."
-                className="w-full px-4 py-2.5 text-xs sm:text-sm bg-transparent outline-hidden placeholder:text-neutral-400 text-neutral-900"
+                onFocus={() => setIsSearchFocused(true)}
+                className="w-full h-11 pl-4 pr-12 rounded-full border-2 border-[#E5ECE7] focus:border-[#21A366] text-xs sm:text-sm text-[#17251F] placeholder:text-[#64736B] outline-hidden transition bg-[#F7F9F5]"
               />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="p-1 text-neutral-400 hover:text-neutral-700 mr-1"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
               <button
                 type="button"
-                className="h-10 px-5 bg-forest-900 hover:bg-forest-950 text-white rounded-r-lg flex items-center justify-center transition-colors"
+                onClick={() => toast.info('Search Query', `Searching for: "${searchQuery}"`)}
+                className="absolute right-1.5 h-8 w-8 rounded-full bg-[#21A366] hover:bg-[#123C2D] text-white flex items-center justify-center transition shadow-xs"
                 aria-label="Submit search"
               >
                 <Search className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Live Search Autocomplete Popover */}
-            {isSearchFocused && liveSearchSuggestions.length > 0 && (
+            {/* Live Autocomplete Popover */}
+            {isSearchFocused && searchQuery.trim().length > 0 && (
               <div
-                className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-neutral-200 shadow-2xl p-2 z-50 animate-in fade-in-0 zoom-in-95 duration-100 text-left"
+                className="absolute left-0 right-0 top-12 mt-1 bg-white border border-[#E5ECE7] rounded-2xl shadow-xl z-50 p-2 max-h-80 overflow-y-auto animate-in fade-in-0 duration-150 text-left"
                 onMouseDown={(e) => e.preventDefault()}
               >
-                <div className="px-3 py-1.5 border-b border-neutral-100 flex items-center justify-between text-[11px] font-bold text-neutral-400 uppercase">
-                  <span>Matching Supermarket Items</span>
-                  <span>{liveSearchSuggestions.length} Results</span>
+                <div className="flex items-center justify-between px-3 py-1.5 text-[11px] font-bold text-[#64736B] uppercase border-b border-[#E5ECE7]">
+                  <span>Product Suggestions</span>
+                  <button type="button" onClick={() => setIsSearchFocused(false)} className="text-neutral-400 hover:text-neutral-600">
+                    <X className="h-3.5 w-3.5" />
+                  </button>
                 </div>
-                <div className="divide-y divide-neutral-100 max-h-80 overflow-y-auto">
-                  {liveSearchSuggestions.map((prod) => (
+                {filteredProducts.length === 0 ? (
+                  <div className="p-4 text-center text-xs text-[#64736B]">No matching items found for "{searchQuery}"</div>
+                ) : (
+                  filteredProducts.slice(0, 5).map((p) => (
                     <div
-                      key={prod.id}
+                      key={p.id}
                       onClick={() => {
-                        setSelectedProductForModal(prod);
+                        setSelectedProductForModal(p);
                         setIsSearchFocused(false);
                       }}
-                      className="p-2.5 flex items-center justify-between hover:bg-emerald-50/70 rounded-xl cursor-pointer transition"
+                      className="p-2.5 rounded-xl hover:bg-[#F7F9F5] flex items-center justify-between cursor-pointer transition"
                     >
                       <div className="flex items-center gap-3">
-                        <img src={prod.image} alt={prod.name} className="h-10 w-10 rounded-lg object-cover bg-neutral-100" />
+                        <img src={p.image} alt={p.name} className="h-10 w-10 rounded-lg object-cover" />
                         <div>
-                          <p className="text-xs font-bold text-neutral-900">{prod.name}</p>
-                          <p className="text-[10px] text-neutral-500 font-bangla">{prod.nameBn} • {prod.category}</p>
+                          <p className="text-xs font-bold text-[#17251F]">{p.name}</p>
+                          <p className="text-[10px] text-[#64736B]">{p.category} • {p.unit}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <span className="text-xs font-black text-forest-900">৳ {prod.price}</span>
-                        <span className="text-[10px] text-emerald-600 font-bold block">In Stock</span>
+                        <span className="font-black text-xs text-[#21A366]">৳{p.price}</span>
+                        <span className="block text-[9px] text-[#21A366] font-bold">In Stock</span>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  ))
+                )}
               </div>
             )}
           </div>
 
-          {/* Header Action Badges: Branch, Wishlist, Cart */}
-          <div className="flex items-center gap-3 shrink-0">
-            {/* Branch Hub Selector Pill (Mobile/Tablet) */}
+          {/* Right Header Navigation Controls */}
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            {/* Location Selector */}
             <button
               type="button"
               onClick={() => setIsBranchModalOpen(true)}
-              className="sm:hidden p-2 rounded-full text-neutral-700 hover:bg-neutral-100"
-              title="Select branch"
+              className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-[#F7F9F5] border border-transparent hover:border-[#E5ECE7] transition text-left"
             >
-              <MapPin className="h-5 w-5 text-emerald-700" />
+              <MapPin className="h-5 w-5 text-[#21A366] shrink-0" />
+              <div className="flex flex-col leading-tight">
+                <span className="text-xs font-black text-[#17251F]">Dhaka</span>
+                <span className="text-[10px] text-[#21A366] font-bold underline">Change</span>
+              </div>
             </button>
 
-            {/* Wishlist Icon with LIVE Drawer Trigger */}
+            {/* Account / Login */}
+            <button
+              type="button"
+              onClick={() => setIsAuthModalOpen(true)}
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl hover:bg-[#F7F9F5] border border-transparent hover:border-[#E5ECE7] transition text-left"
+            >
+              <User className="h-5 w-5 text-[#64736B] shrink-0" />
+              <div className="hidden md:flex flex-col leading-tight">
+                <span className="text-[10px] text-[#64736B] font-bold uppercase">Account</span>
+                <span className="text-xs font-bold text-[#17251F]">Login / Sign In</span>
+              </div>
+            </button>
+
+            {/* Wishlist Button */}
             <button
               type="button"
               onClick={() => setIsWishlistDrawerOpen(true)}
-              className="relative p-2 rounded-full text-neutral-600 hover:bg-neutral-100 transition"
-              aria-label="Open Wishlist"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl hover:bg-[#F7F9F5] border border-transparent hover:border-[#E5ECE7] transition relative text-left"
+              aria-label="Wishlist"
             >
-              <Heart className="h-5 w-5" />
-              {wishlistItems.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-rose-500 text-white text-[10px] font-black flex items-center justify-center animate-scale-in">
-                  {wishlistItems.length}
-                </span>
-              )}
+              <Heart className="h-5 w-5 text-[#64736B] shrink-0" />
+              <div className="hidden md:flex flex-col leading-tight">
+                <span className="text-[10px] text-[#64736B] font-bold uppercase">Wishlist</span>
+                <span className="text-xs font-bold text-[#17251F]">({wishlistProducts.length})</span>
+              </div>
             </button>
 
-            {/* Cart Button with LIVE Drawer Trigger */}
+            {/* Shopping Cart Button */}
             <button
               type="button"
               onClick={() => setIsCartDrawerOpen(true)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-forest-900 hover:bg-forest-950 text-white text-xs font-bold shadow-xs transition group"
+              className="flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-[#E8F5E9] hover:bg-[#D8F3DC] border border-[#21A366]/30 transition shadow-xs group"
+              aria-label="Shopping Cart"
             >
               <div className="relative">
-                <ShoppingBag className="h-4 w-4 text-emerald-300" />
+                <ShoppingBag className="h-5 w-5 text-[#21A366] group-hover:scale-105 transition-transform" />
                 {totalCartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 h-4 w-4 rounded-full bg-amber-400 text-neutral-950 text-[10px] font-black flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-2 h-4 w-4 rounded-full bg-[#EF4444] text-white text-[10px] font-black flex items-center justify-center shadow-xs">
                     {totalCartCount}
                   </span>
                 )}
               </div>
-              <span className="hidden sm:inline font-mono">৳ {cartSubtotal.toFixed(2)}</span>
+              <div className="flex flex-col leading-tight text-left">
+                <span className="text-[10px] text-[#64736B] font-bold uppercase">Cart</span>
+                <span className="text-xs font-black text-[#123C2D]">৳{cartGrandTotal.toLocaleString()}</span>
+              </div>
             </button>
           </div>
         </div>
 
-        {/* Sub-Navigation Bar */}
-        <div className="border-t border-neutral-100 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs font-medium text-neutral-600">
-            <div className="flex items-center gap-6 py-2 overflow-x-auto whitespace-nowrap">
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('All Departments')}
-                className={`font-bold transition ${selectedCategory === 'All Departments' ? 'text-primary-green underline' : 'hover:text-forest-900'}`}
-              >
-                All Departments
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('Fresh Vegetables')}
-                className={`transition ${selectedCategory === 'Fresh Vegetables' ? 'text-primary-green font-bold' : 'hover:text-forest-900'}`}
-              >
-                Fresh Vegetables
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('Dairy, Butter & Eggs')}
-                className={`transition ${selectedCategory === 'Dairy, Butter & Eggs' ? 'text-primary-green font-bold' : 'hover:text-forest-900'}`}
-              >
-                Dairy & Eggs
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('Rice, Pulses & Grains')}
-                className={`transition ${selectedCategory === 'Rice, Pulses & Grains' ? 'text-primary-green font-bold' : 'hover:text-forest-900'}`}
-              >
-                Aromatic Rice
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('Spices, Pickles & Oils')}
-                className={`transition ${selectedCategory === 'Spices, Pickles & Oils' ? 'text-primary-green font-bold' : 'hover:text-forest-900'}`}
-              >
-                Pure Mustard Oil
-              </button>
-            </div>
+        {/* ========================================================= */}
+        {/* 3. SECONDARY NAVIGATION / DEPARTMENT BAR */}
+        {/* ========================================================= */}
+        <div className="bg-white border-t border-[#E5ECE7] px-4 sm:px-8">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 h-12">
+            {/* All Categories Dropdown Trigger */}
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('All Categories')}
+              style={{ backgroundColor: '#123C2D' }}
+              className="flex items-center gap-2.5 px-4 py-2 rounded-xl text-white font-black text-xs hover:bg-[#0E2E22] transition shadow-xs"
+            >
+              <Menu className="h-4 w-4 text-[#2EBD70]" />
+              <span>All Categories</span>
+              <ChevronDown className="h-3.5 w-3.5 text-emerald-300" />
+            </button>
 
-            <div className="hidden lg:flex items-center gap-3 text-neutral-500 py-1.5">
-              <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                ⚡ 30-Min Delivery in Dhaka
-              </span>
+            {/* Horizontal Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-6 text-xs font-bold text-[#64736B]">
+              {[
+                { id: 'Home', label: 'Home' },
+                { id: 'Deals', label: 'Deals' },
+                { id: 'New Arrivals', label: 'New Arrivals' },
+                { id: 'Offers', label: 'Offers' },
+                { id: 'Branches', label: 'Branches' },
+                { id: 'About Us', label: 'About Us' },
+                { id: 'Contact', label: 'Contact' },
+              ].map((link) => {
+                const isActive = selectedDepartmentTab === link.id;
+                return (
+                  <button
+                    key={link.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedDepartmentTab(link.id);
+                      if (link.id === 'Branches') setIsBranchModalOpen(true);
+                      else toast.info(`Navigated`, `Viewing ${link.label}`);
+                    }}
+                    className={`pb-1 transition border-b-2 ${
+                      isActive
+                        ? 'text-[#21A366] font-black border-[#21A366]'
+                        : 'border-transparent hover:text-[#17251F]'
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Express Hotline */}
+            <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-[#17251F]">
+              <Phone className="h-3.5 w-3.5 text-[#21A366]" />
+              <span>24/7 Support: <strong>+880 9612-000000</strong></span>
             </div>
           </div>
         </div>
       </header>
 
       {/* ========================================================= */}
-      {/* 3. HERO SECTION WITH 4-SLIDE CAROUSEL & CATEGORY SIDEBAR */}
+      {/* 4. MAIN HERO SECTION (Exact 3-Box Layout from Screenshot) */}
       {/* ========================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Vertical Category Sidebar (Interactive with Subcategories) */}
-          <div className="hidden lg:block lg:col-span-3">
-            <div className="rounded-2xl border border-neutral-200 bg-white p-2.5 shadow-sm space-y-1 text-left">
-              <div className="px-3 py-2 border-b border-neutral-100 flex items-center justify-between">
-                <span className="text-xs font-black uppercase text-neutral-400 tracking-wider">Supermarket Aisles</span>
-                <Badge variant="mint" size="sm">Verified</Badge>
-              </div>
-
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Left Column: Category Sidebar (always accessible) */}
+          <aside className="hidden lg:block lg:col-span-3 bg-white rounded-2xl border border-[#E5ECE7] p-3 shadow-xs text-left">
+            <div className="space-y-1">
               {categorySidebarData.map((cat) => {
-                const isSelected = selectedCategory.toLowerCase() === cat.name.toLowerCase();
-                const isExpanded = expandedCategoryId === cat.id;
+                const isSelected = selectedCategory === cat.name;
+                const isExpanded = expandedCategory === cat.id;
 
                 return (
-                  <div key={cat.id} className="space-y-0.5">
-                    <button
-                      type="button"
+                  <div key={cat.id} className="rounded-xl overflow-hidden">
+                    <div
                       onClick={() => {
                         setSelectedCategory(cat.name);
-                        setExpandedCategoryId(isExpanded ? null : cat.id);
-                        toast.info(`Department: ${cat.name}`, `Loaded ${cat.count} verified supermarket items.`);
+                        toast.info('Category Selected', `Showing items in ${cat.name}`);
                       }}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                      className={`flex items-center justify-between px-3 py-2.5 text-xs font-bold cursor-pointer rounded-xl transition ${
                         isSelected
-                          ? 'bg-forest-900 text-white font-black shadow-xs border-l-4 border-amber-400 pl-2'
-                          : 'text-neutral-700 hover:bg-neutral-50 hover:text-forest-900'
+                          ? 'bg-[#E8F5E9] text-[#21A366] font-black'
+                          : 'text-[#17251F] hover:bg-[#F7F9F5]'
                       }`}
                     >
                       <div className="flex items-center gap-2.5 truncate">
@@ -948,32 +921,36 @@ function StorefrontView() {
                         <span className="truncate">{cat.name}</span>
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0">
-                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isSelected ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                          {cat.count}
-                        </span>
-                        {isExpanded ? (
-                          <ChevronUp className="h-3.5 w-3.5 text-neutral-400" />
-                        ) : (
-                          <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
-                        )}
-                      </div>
-                    </button>
-
-                    {/* Expandable Subcategories */}
-                    {isExpanded && cat.subcategories && (
-                      <div className="pl-8 pr-2 py-1 space-y-0.5 animate-in fade-in-0 duration-150">
-                        {cat.subcategories.map((sub, sIdx) => (
+                        {cat.subcategories && (
                           <button
-                            key={sIdx}
                             type="button"
-                            onClick={() => {
-                              setSelectedCategory(cat.name);
-                              setSearchQuery(sub === 'All Products' ? '' : sub);
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedCategory(isExpanded ? null : cat.id);
                             }}
-                            className="w-full text-left text-[11px] py-1 px-2 rounded-lg text-neutral-500 hover:text-forest-900 hover:bg-neutral-100 transition truncate"
+                            className="p-1 hover:bg-neutral-200 rounded text-neutral-400"
+                          >
+                            <ChevronDown className={`h-3 w-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                          </button>
+                        )}
+                        <span className="text-[10px] text-[#64736B] font-mono font-medium">({cat.count})</span>
+                      </div>
+                    </div>
+
+                    {/* Subcategories Expandable */}
+                    {isExpanded && cat.subcategories && (
+                      <div className="pl-9 pr-3 py-1 space-y-1 bg-[#F7F9F5] text-[11px] text-[#64736B]">
+                        {cat.subcategories.map((sub) => (
+                          <div
+                            key={sub}
+                            onClick={() => {
+                              setSelectedCategory(sub);
+                              toast.info('Subcategory', `Filtered by: ${sub}`);
+                            }}
+                            className="py-1 hover:text-[#21A366] cursor-pointer font-medium"
                           >
                             • {sub}
-                          </button>
+                          </div>
                         ))}
                       </div>
                     )}
@@ -981,106 +958,119 @@ function StorefrontView() {
                 );
               })}
             </div>
+
+            <div className="mt-3 pt-3 border-t border-[#E5ECE7]">
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('All Categories')}
+                className="w-full text-center text-xs font-black text-[#21A366] hover:underline"
+              >
+                View All Categories →
+              </button>
+            </div>
+          </aside>
+
+          {/* Center Column: Big Hero Banner ("Fresh Groceries Better Life") */}
+          <div className="lg:col-span-6 relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#123C2D] via-[#1A5C41] to-[#0E3524] text-white p-6 sm:p-10 flex flex-col justify-between shadow-md min-h-[380px]">
+            {/* Background Illustration & Overlay */}
+            <div
+              className="absolute inset-0 bg-cover bg-right opacity-30 mix-blend-overlay pointer-events-none"
+              style={{
+                backgroundImage: 'url("https://images.unsplash.com/photo-1542838132-92c53300491e?w=1000&auto=format&fit=crop&q=80")',
+              }}
+            />
+
+            <div className="relative z-10 space-y-3 max-w-md text-left">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-xs text-[11px] font-black text-[#D8F3DC]">
+                <Sparkles className="h-3.5 w-3.5 text-[#F4A340]" />
+                <span>Fresh & Healthy</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-tight text-white">
+                Fresh Groceries <br />
+                <span className="text-[#2EBD70]">Better Life</span>
+              </h1>
+
+              <p className="text-xs sm:text-sm text-emerald-100 font-medium leading-relaxed">
+                Shop Smart. Live Healthy. Farm-fresh vegetables, grass-fed dairy, and household staples delivered straight to your door across Dhaka.
+              </p>
+            </div>
+
+            <div className="relative z-10 pt-6 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCategory('All Categories');
+                  const target = document.getElementById('deals-section');
+                  if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#F4A340] hover:bg-[#E29532] text-white font-black text-xs sm:text-sm shadow-lg transition transform hover:-translate-y-0.5"
+              >
+                <span>Shop Now</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+
+              {/* Carousel Indicators */}
+              <div className="flex items-center gap-1.5">
+                <span className="h-2 w-6 rounded-full bg-white" />
+                <span className="h-2 w-2 rounded-full bg-white/40" />
+                <span className="h-2 w-2 rounded-full bg-white/40" />
+              </div>
+            </div>
           </div>
 
-          {/* Right Main Hero 4-Slide Banner */}
-          <div className="lg:col-span-9">
-            <div
-              className={`relative overflow-hidden rounded-3xl bg-gradient-to-r ${currentSlide.gradient} text-white shadow-xl p-6 sm:p-10 lg:p-12 min-h-[380px] sm:min-h-[420px] flex items-center transition-all duration-500`}
-            >
-              {/* Large stylized watermark behind hero */}
-              <div
-                className="absolute right-0 top-1/2 -translate-y-1/2 select-none pointer-events-none text-[80px] sm:text-[140px] lg:text-[180px] font-black text-white/[0.07] italic leading-none z-0"
-                aria-hidden="true"
-              >
-                {currentSlide.watermark}
+          {/* Right Column: Two Stacked Promo Cards */}
+          <div className="lg:col-span-3 flex flex-col gap-6">
+            {/* Promo Card 1: 50% OFF Daily Essentials */}
+            <div className="flex-1 rounded-2xl bg-[#E8F5E9] border border-[#C8E6C9] p-5 flex flex-col justify-between text-left relative overflow-hidden group">
+              <div className="space-y-1 relative z-10">
+                <span className="text-[11px] font-black uppercase tracking-wider text-[#21A366]">Up to 50% OFF</span>
+                <h3 className="text-lg font-black text-[#123C2D] leading-tight">Daily Essentials</h3>
+                <p className="text-[11px] text-[#64736B]">Fresh veggies, staples & grains</p>
               </div>
 
-              {/* Slider Navigation Arrows */}
-              <button
-                type="button"
-                onClick={() => setCurrentSlideIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-xs transition"
-                aria-label="Previous Slide"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setCurrentSlideIndex((prev) => (prev + 1) % heroSlides.length)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-xs transition"
-                aria-label="Next Slide"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-
-              <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 items-center gap-6 sm:gap-8 w-full">
-                {/* Left Text Column */}
-                <div className="md:col-span-7 space-y-4 text-left">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/20 border border-emerald-300/30 text-emerald-200 text-xs font-semibold backdrop-blur-xs">
-                    <span>{currentSlide.tagIcon}</span>
-                    <span>{currentSlide.tag}</span>
-                  </div>
-
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight whitespace-pre-line">
-                    {currentSlide.headline}
-                  </h1>
-
-                  <p className="text-xs sm:text-sm text-emerald-100/90 max-w-md leading-relaxed font-normal">
-                    {currentSlide.subtitle}
-                  </p>
-
-                  <div className="pt-2 flex flex-wrap items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedCategory(currentSlide.categoryFilter);
-                        const target = document.getElementById('catalog');
-                        if (target) target.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                      className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-green hover:bg-emerald-600 text-white text-xs sm:text-sm font-bold shadow-lg transition-transform hover:scale-102 group"
-                    >
-                      <span>{currentSlide.btnText}</span>
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </button>
-
-                    <div className="flex items-center gap-2 text-xs text-emerald-200 font-medium">
-                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>{selectedBranch.deliveryTime} Express in {selectedBranch.area}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Visual Image */}
-                <div className="md:col-span-5 relative flex justify-center md:justify-end">
-                  <div className="relative w-full max-w-[320px] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 bg-emerald-950/40">
-                    <img
-                      src={currentSlide.image}
-                      alt={currentSlide.headline}
-                      className="w-full h-full object-cover object-center transform hover:scale-103 transition-transform duration-300"
-                    />
-                    <div className="absolute bottom-2 left-3 text-left">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300 bg-black/50 px-2 py-0.5 rounded-md backdrop-blur-xs">
-                        {currentSlide.badgeText}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+              <div className="relative z-10 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedCategory('Groceries & Staples');
+                    toast.info('Special Deals', 'Showing Daily Essentials with up to 50% discount');
+                  }}
+                  className="px-4 py-2 rounded-xl bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-black shadow-xs transition"
+                >
+                  Grab Deal →
+                </button>
               </div>
 
-              {/* Slider Dots */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-                {heroSlides.map((_, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setCurrentSlideIndex(idx)}
-                    className={`h-2.5 rounded-full transition-all duration-300 ${
-                      currentSlideIndex === idx ? 'w-7 bg-amber-400' : 'w-2.5 bg-white/40 hover:bg-white/80'
-                    }`}
-                    aria-label={`Slide ${idx + 1}`}
-                  />
-                ))}
+              {/* Graphic Icon */}
+              <div className="absolute -right-2 -bottom-2 text-6xl opacity-30 select-none pointer-events-none group-hover:scale-110 transition-transform">
+                🥦
+              </div>
+            </div>
+
+            {/* Promo Card 2: Free Delivery On Orders ৳1,000+ */}
+            <div className="flex-1 rounded-2xl bg-[#FFF8E1] border border-[#FFE082] p-5 flex flex-col justify-between text-left relative overflow-hidden group">
+              <div className="space-y-1 relative z-10">
+                <span className="text-[11px] font-black uppercase tracking-wider text-[#F4A340]">Express Courier</span>
+                <h3 className="text-lg font-black text-[#B45309] leading-tight">Free Delivery</h3>
+                <p className="text-[11px] text-[#78350F]">On Orders ৳1,000+ in Dhaka</p>
+              </div>
+
+              <div className="relative z-10 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsBranchModalOpen(true);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-[#F4A340] hover:bg-[#D97706] text-white text-xs font-black shadow-xs transition"
+                >
+                  Order Now →
+                </button>
+              </div>
+
+              {/* Scooter Icon */}
+              <div className="absolute -right-2 -bottom-2 text-6xl opacity-30 select-none pointer-events-none group-hover:scale-110 transition-transform">
+                🛵
               </div>
             </div>
           </div>
@@ -1088,134 +1078,150 @@ function StorefrontView() {
       </section>
 
       {/* ========================================================= */}
-      {/* 4. TODAY'S BEST DEAL (WITH HIGH-CONTRAST TIMER) */}
+      {/* 5. 4 CUSTOMER TRUST & DELIVERY BENEFITS BAR */}
       {/* ========================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-neutral-200 pb-3">
-          <div className="flex items-center gap-3 text-left">
-            <div className="h-9 w-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
-              <Flame className="h-5 w-5 fill-rose-500" />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-white rounded-2xl p-4 border border-[#E5ECE7] flex items-center gap-3.5 shadow-xs text-left">
+            <div className="h-11 w-11 rounded-xl bg-[#E8F5E9] text-[#21A366] flex items-center justify-center shrink-0">
+              <Truck className="h-6 w-6" />
             </div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
-                Today's Best Deal
-              </h2>
-              <p className="text-xs text-neutral-500 font-medium">
-                Up to 50% discount for limited time only • সীমিত সময়ের বিশেষ মূল্যছাড়
-              </p>
+              <h4 className="text-xs font-black text-[#17251F]">Same Day Delivery</h4>
+              <p className="text-[11px] text-[#64736B]">Fast & Reliable across Dhaka</p>
             </div>
           </div>
 
-          {/* HIGH-CONTRAST Live Countdown Timer Boxes */}
-          <div className="flex items-center gap-2 self-start sm:self-auto bg-neutral-100 px-3 py-1.5 rounded-xl border border-neutral-200">
-            <span className="text-xs font-black text-neutral-700 mr-1 flex items-center gap-1 uppercase tracking-wider">
-              <Clock className="h-4 w-4 text-rose-600" />
-              <span>Ends in:</span>
-            </span>
-            <div className="flex items-center gap-1.5 font-mono text-xs font-black">
-              <span
-                style={{ backgroundColor: '#123C2D', color: '#FFFFFF' }}
-                className="px-2.5 py-1 rounded-md shadow-xs text-sm font-black"
-              >
-                {String(timeLeft.hours).padStart(2, '0')}
-              </span>
-              <span className="text-neutral-500 font-black">:</span>
-              <span
-                style={{ backgroundColor: '#123C2D', color: '#FFFFFF' }}
-                className="px-2.5 py-1 rounded-md shadow-xs text-sm font-black"
-              >
-                {String(timeLeft.minutes).padStart(2, '0')}
-              </span>
-              <span className="text-neutral-500 font-black">:</span>
-              <span
-                style={{ backgroundColor: '#DC2626', color: '#FFFFFF' }}
-                className="px-2.5 py-1 rounded-md shadow-xs text-sm font-black animate-pulse"
-              >
-                {String(timeLeft.seconds).padStart(2, '0')}
-              </span>
+          <div className="bg-white rounded-2xl p-4 border border-[#E5ECE7] flex items-center gap-3.5 shadow-xs text-left">
+            <div className="h-11 w-11 rounded-xl bg-[#E8F5E9] text-[#21A366] flex items-center justify-center shrink-0">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-[#17251F]">Secure Payment</h4>
+              <p className="text-[11px] text-[#64736B]">100% Secure bKash & Cash</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-4 border border-[#E5ECE7] flex items-center gap-3.5 shadow-xs text-left">
+            <div className="h-11 w-11 rounded-xl bg-[#E8F5E9] text-[#21A366] flex items-center justify-center shrink-0">
+              <RotateCcw className="h-6 w-6" />
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-[#17251F]">Easy Returns</h4>
+              <p className="text-[11px] text-[#64736B]">Hassle Free at doorstep</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-4 border border-[#E5ECE7] flex items-center gap-3.5 shadow-xs text-left">
+            <div className="h-11 w-11 rounded-xl bg-[#E8F5E9] text-[#21A366] flex items-center justify-center shrink-0">
+              <Headphones className="h-6 w-6" />
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-[#17251F]">24/7 Support</h4>
+              <p className="text-[11px] text-[#64736B]">Dedicated grocery care</p>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* 5-Column Deal Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {masterProducts.slice(0, 5).map((prod) => {
-            const isLiked = Boolean(wishlistMap[prod.id]);
-            const cartEntry = cartItems.find((i) => i.product.id === prod.id);
-            const inCartQty = cartEntry ? cartEntry.quantity : 0;
+      {/* ========================================================= */}
+      {/* 6. TODAY'S BEST DEALS SECTION (Exact Match to Reference Cards) */}
+      {/* ========================================================= */}
+      <section id="deals-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-between mb-6 text-left">
+          <div className="flex items-center gap-2">
+            <h2 className="text-2xl font-black text-[#17251F] tracking-tight">Today's Best Deals</h2>
+            <span className="text-xl">🔥</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSelectedCategory('All Categories')}
+            className="text-xs font-black text-[#21A366] hover:underline flex items-center gap-1"
+          >
+            <span>View All</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
+
+        {/* Product Cards Grid: 6 Cards per row on desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {masterProducts.slice(0, 6).map((product) => {
+            const inCart = cartItems.find((item) => item.product.id === product.id);
+            const isWishlisted = wishlistMap[product.id] || false;
+            const isJustAdded = addedFeedback[product.id] || false;
 
             return (
               <div
-                key={prod.id}
-                onClick={() => setSelectedProductForModal(prod)}
-                className="group relative flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-3.5 shadow-xs hover:shadow-xl hover:border-emerald-300 transition-all duration-200 cursor-pointer text-left"
+                key={product.id}
+                onClick={() => setSelectedProductForModal(product)}
+                className="bg-white rounded-2xl border border-[#E5ECE7] p-3.5 flex flex-col justify-between hover:shadow-lg hover:border-[#21A366] transition cursor-pointer group text-left relative"
               >
-                {/* Badge & Wishlist Heart */}
-                <div className="flex items-center justify-between gap-1 mb-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-md">
-                    {prod.badge || 'HOT DEAL'}
-                  </span>
+                {/* Image & Badges */}
+                <div className="relative mb-3">
+                  {/* Discount Badge */}
+                  {product.badge && (
+                    <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-md bg-[#EF4444] text-white text-[10px] font-black shadow-xs">
+                      {product.badge}
+                    </span>
+                  )}
+
+                  {/* Wishlist Heart */}
                   <button
                     type="button"
-                    onClick={(e) => toggleWishlist(prod, e)}
-                    className={`h-7 w-7 rounded-full flex items-center justify-center transition ${
-                      isLiked ? 'bg-rose-50 text-rose-500' : 'bg-neutral-50 text-neutral-400 hover:text-neutral-700'
-                    }`}
-                    aria-label="Wishlist toggle"
+                    onClick={(e) => handleToggleWishlist(product, e)}
+                    className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-white/90 hover:bg-white text-neutral-400 hover:text-[#EF4444] shadow-xs transition"
+                    aria-label="Save to Wishlist"
                   >
-                    <Heart className={`h-4 w-4 ${isLiked ? 'fill-rose-500' : ''}`} />
+                    <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-[#EF4444] text-[#EF4444]' : ''}`} />
                   </button>
-                </div>
 
-                {/* Product Image */}
-                <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-neutral-50 mb-2.5">
-                  <img
-                    src={prod.image}
-                    alt={prod.name}
-                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                  {/* Product Photography */}
+                  <div className="h-36 w-full rounded-xl overflow-hidden bg-[#F7F9F5] flex items-center justify-center">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
                 </div>
 
                 {/* Details */}
                 <div className="space-y-1">
-                  <span className="text-[10px] font-semibold text-emerald-700 block truncate">
-                    {prod.brand}
-                  </span>
-                  <h3 className="text-xs sm:text-sm font-bold text-neutral-900 line-clamp-1 group-hover:text-forest-900 transition-colors">
-                    {prod.name}
+                  <h3 className="text-xs font-bold text-[#17251F] line-clamp-1 group-hover:text-[#21A366] transition-colors">
+                    {product.name}
                   </h3>
-                  <p className="text-[11px] font-bangla text-neutral-500 line-clamp-1">{prod.nameBn}</p>
+                  <p className="text-[11px] text-[#64736B] font-medium">{product.unit}</p>
 
-                  <div className="flex items-center gap-1 pt-0.5">
-                    <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                    <span className="text-xs font-bold text-neutral-800">{prod.rating}</span>
-                    <span className="text-[10px] text-neutral-400">({prod.reviews})</span>
-                  </div>
-
+                  {/* Pricing */}
                   <div className="flex items-baseline gap-1.5 pt-1">
-                    <span className="text-sm sm:text-base font-black text-forest-900">৳ {prod.price}</span>
-                    {prod.originalPrice && (
-                      <span className="text-xs text-neutral-400 line-through">৳ {prod.originalPrice}</span>
+                    <span className="text-base font-black text-[#17251F]">৳ {product.price}</span>
+                    {product.originalPrice && (
+                      <span className="text-xs text-[#64736B] line-through">৳{product.originalPrice}</span>
                     )}
                   </div>
                 </div>
 
-                {/* Add to Cart Stepper Button */}
-                <div className="mt-3 pt-2 border-t border-neutral-100" onClick={(e) => e.stopPropagation()}>
-                  {inCartQty > 0 ? (
-                    <div className="flex items-center justify-between bg-emerald-600 text-white rounded-xl p-1 shadow-xs">
+                {/* Add to Cart Button (NEVER PERMANENTLY DISABLED!) */}
+                <div className="mt-3 pt-2 border-t border-[#E5ECE7]">
+                  {inCart ? (
+                    <div
+                      className="w-full flex items-center justify-between bg-[#E8F5E9] border border-[#21A366] rounded-xl px-2 py-1 text-xs"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <button
                         type="button"
-                        onClick={(e) => handleDecreaseQuantity(prod.id, e)}
-                        className="h-7 w-7 rounded-lg bg-emerald-700 hover:bg-emerald-800 flex items-center justify-center transition"
+                        onClick={() => handleUpdateCartQuantity(product.id, -1)}
+                        className="p-1 hover:bg-[#D8F3DC] rounded text-[#123C2D] font-black"
+                        aria-label="Decrease quantity"
                       >
                         <Minus className="h-3 w-3" />
                       </button>
-                      <span className="font-bold text-xs">{inCartQty} in cart</span>
+                      <span className="font-black text-xs text-[#123C2D]">{inCart.quantity} in cart</span>
                       <button
                         type="button"
-                        onClick={(e) => handleAddToCart(prod, e)}
-                        className="h-7 w-7 rounded-lg bg-emerald-700 hover:bg-emerald-800 flex items-center justify-center transition"
+                        onClick={() => handleUpdateCartQuantity(product.id, 1)}
+                        className="p-1 hover:bg-[#D8F3DC] rounded text-[#123C2D] font-black"
+                        aria-label="Increase quantity"
                       >
                         <Plus className="h-3 w-3" />
                       </button>
@@ -1223,11 +1229,18 @@ function StorefrontView() {
                   ) : (
                     <button
                       type="button"
-                      onClick={(e) => handleAddToCart(prod, e)}
-                      className="w-full py-2 px-3 rounded-xl bg-forest-900 hover:bg-forest-950 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition"
+                      onClick={(e) => handleAddToCart(product, e)}
+                      style={{ backgroundColor: isJustAdded ? '#123C2D' : '#21A366' }}
+                      className="w-full py-2 px-3 rounded-xl text-white font-black text-xs hover:bg-[#123C2D] transition shadow-xs flex items-center justify-center gap-1.5"
                     >
-                      <ShoppingBag className="h-3.5 w-3.5" />
-                      <span>Add to Cart</span>
+                      {isJustAdded ? (
+                        <>
+                          <Check className="h-3.5 w-3.5 text-[#D8F3DC]" />
+                          <span>Added!</span>
+                        </>
+                      ) : (
+                        <span>Add to Cart</span>
+                      )}
                     </button>
                   )}
                 </div>
@@ -1238,213 +1251,120 @@ function StorefrontView() {
       </section>
 
       {/* ========================================================= */}
-      {/* 5. FULL-IMAGE PROMO BANNERS (MATCHED TO REFERENCE) */}
+      {/* 7. ALL DEPARTMENTS CATALOG BROWSER & FILTER */}
       {/* ========================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
-          {/* Left Column: 2 Stacked Cards */}
-          <div className="md:col-span-5 space-y-5 flex flex-col justify-between">
-            <div className="rounded-3xl p-6 bg-gradient-to-r from-[#FFF5E6] to-[#FFE6B8] border border-amber-200 flex items-center justify-between shadow-xs hover:shadow-md transition">
-              <div className="space-y-1.5 text-left max-w-[62%]">
-                <span className="text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-200 px-2 py-0.5 rounded-md inline-block">
-                  Super 20% Savings
-                </span>
-                <h3 className="text-lg font-black text-amber-950 leading-tight">
-                  Your Daily Store. Fresh Fruits & Juices
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCategory('Fresh & Organic')}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-amber-900 hover:underline pt-1"
-                >
-                  <span>Shop Fruits →</span>
-                </button>
-              </div>
-              <div className="h-24 w-24 rounded-2xl overflow-hidden shadow-sm shrink-0 border-2 border-white">
-                <img
-                  src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=240&auto=format&fit=crop&q=80"
-                  alt="Fresh Fruits"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-
-            <div className="rounded-3xl p-6 bg-gradient-to-r from-[#EBF7EE] to-[#C8F0D6] border border-emerald-200 flex items-center justify-between shadow-xs hover:shadow-md transition">
-              <div className="space-y-1.5 text-left max-w-[62%]">
-                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-900 bg-emerald-200 px-2 py-0.5 rounded-md inline-block">
-                  Super 15% Savings
-                </span>
-                <h3 className="text-lg font-black text-emerald-950 leading-tight">
-                  Your Cart, Your Way. Farm Crisp Greens
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCategory('Fresh Vegetables')}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-emerald-900 hover:underline pt-1"
-                >
-                  <span>Shop Greens →</span>
-                </button>
-              </div>
-              <div className="h-24 w-24 rounded-2xl overflow-hidden shadow-sm shrink-0 border-2 border-white">
-                <img
-                  src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=240&auto=format&fit=crop&q=80"
-                  alt="Farm Fresh Greens"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Giant Golden Yogurt Banner */}
-          <div className="md:col-span-7 rounded-3xl p-8 sm:p-10 bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#D97706] text-amber-950 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg border border-amber-300">
-            <div className="space-y-3 text-left max-w-sm">
-              <span className="text-xs font-black uppercase tracking-wider text-white bg-amber-950/40 px-3 py-1 rounded-full inline-block backdrop-blur-xs">
-                NATURAL FLAVOR
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-amber-950 leading-tight">
-                Yogurt BANANA — ENJOY RICH TASTE
-              </h2>
-              <p className="text-xs sm:text-sm text-amber-900 font-medium">
-                Traditional Bogura sweet curd, probiotic greek yogurt, and fresh milk smoothies made with 100% pasture-raised cow milk.
-              </p>
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => setSelectedCategory('Dairy, Butter & Eggs')}
-                  className="px-6 py-2.5 rounded-full bg-forest-900 hover:bg-black text-white text-xs font-bold shadow-md transition"
-                >
-                  Explore Dairy Deals →
-                </button>
-              </div>
-            </div>
-
-            <div className="h-44 sm:h-52 w-44 sm:w-52 rounded-2xl overflow-hidden shadow-xl border-4 border-white/50 shrink-0">
-              <img
-                src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&auto=format&fit=crop&q=80"
-                alt="Fresh Yogurt Banana"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================= */}
-      {/* 6. POPULAR GROCERIES CATALOG GRID (FILTERABLE) */}
-      {/* ========================================================= */}
-      <section id="catalog" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-neutral-200 pb-3 text-left">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-[#E5ECE7]">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 text-left">
           <div>
-            <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
+            <h2 className="text-2xl font-black text-[#17251F] tracking-tight">
               {selectedCategory}
             </h2>
-            <p className="text-xs text-neutral-500 font-medium">
-              Showing {filteredProducts.length} verified products available for {selectedBranch.area}
-            </p>
+            <p className="text-xs text-[#64736B]">Showing {sortedProducts.length} verified products available in Dhaka</p>
           </div>
 
-          {/* Quick Department Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            {['All Departments', 'Fresh Vegetables', 'Dairy, Butter & Eggs', 'Rice, Pulses & Grains', 'Fresh & Organic'].map((cat) => {
-              const isSelected = selectedCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-black transition whitespace-nowrap ${
-                    isSelected
-                      ? 'bg-forest-900 text-white shadow-md ring-2 ring-emerald-500/40'
-                      : 'bg-white border border-neutral-300 text-neutral-700 hover:bg-neutral-100 font-semibold'
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
+          {/* Quick Sort & Reset Filters */}
+          <div className="flex items-center gap-3">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="text-xs font-bold bg-white border border-[#E5ECE7] rounded-xl px-3 py-1.5 outline-hidden"
+            >
+              <option value="featured">Sort by: Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Top Customer Rated</option>
+            </select>
+
+            {selectedCategory !== 'All Categories' && (
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('All Categories')}
+                className="text-xs font-bold text-[#21A366] hover:underline"
+              >
+                Clear Filter
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Product Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {filteredProducts.map((prod) => {
-            const isLiked = Boolean(wishlistMap[prod.id]);
-            const cartEntry = cartItems.find((i) => i.product.id === prod.id);
-            const inCartQty = cartEntry ? cartEntry.quantity : 0;
+        {/* Filtered Product Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {sortedProducts.map((product) => {
+            const inCart = cartItems.find((item) => item.product.id === product.id);
+            const isWishlisted = wishlistMap[product.id] || false;
+            const isJustAdded = addedFeedback[product.id] || false;
 
             return (
               <div
-                key={prod.id}
-                onClick={() => setSelectedProductForModal(prod)}
-                className="group relative flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-3.5 shadow-xs hover:shadow-xl hover:border-emerald-300 transition-all duration-200 cursor-pointer text-left"
+                key={product.id}
+                onClick={() => setSelectedProductForModal(product)}
+                className="bg-white rounded-2xl border border-[#E5ECE7] p-4 flex flex-col justify-between hover:shadow-lg hover:border-[#21A366] transition cursor-pointer group text-left relative"
               >
-                {/* Badge & Wishlist Heart */}
-                <div className="flex items-center justify-between gap-1 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
-                    {prod.badge || 'IN STOCK'}
-                  </span>
+                {/* Image & Badges */}
+                <div className="relative mb-3">
+                  {product.badge && (
+                    <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-md bg-[#21A366] text-white text-[10px] font-black shadow-xs">
+                      {product.badge}
+                    </span>
+                  )}
+
                   <button
                     type="button"
-                    onClick={(e) => toggleWishlist(prod, e)}
-                    className={`h-7 w-7 rounded-full flex items-center justify-center transition ${
-                      isLiked ? 'bg-rose-50 text-rose-500' : 'bg-neutral-50 text-neutral-400 hover:text-neutral-700'
-                    }`}
-                    aria-label="Wishlist toggle"
+                    onClick={(e) => handleToggleWishlist(product, e)}
+                    className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-white/90 hover:bg-white text-neutral-400 hover:text-[#EF4444] shadow-xs transition"
                   >
-                    <Heart className={`h-4 w-4 ${isLiked ? 'fill-rose-500' : ''}`} />
+                    <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-[#EF4444] text-[#EF4444]' : ''}`} />
                   </button>
-                </div>
 
-                {/* Product Image */}
-                <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-neutral-50 mb-2.5">
-                  <img
-                    src={prod.image}
-                    alt={prod.name}
-                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                  <div className="h-44 w-full rounded-xl overflow-hidden bg-[#F7F9F5] flex items-center justify-center">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
                 </div>
 
                 {/* Details */}
                 <div className="space-y-1">
-                  <span className="text-[10px] font-semibold text-emerald-700 block truncate">
-                    {prod.brand}
-                  </span>
-                  <h3 className="text-xs sm:text-sm font-bold text-neutral-900 line-clamp-1 group-hover:text-forest-900 transition-colors">
-                    {prod.name}
-                  </h3>
-                  <p className="text-[11px] font-bangla text-neutral-500 line-clamp-1">{prod.nameBn}</p>
-
-                  <div className="flex items-center gap-1 pt-0.5">
-                    <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                    <span className="text-xs font-bold text-neutral-800">{prod.rating}</span>
-                    <span className="text-[10px] text-neutral-400">({prod.reviews})</span>
+                  <div className="flex items-center gap-1 text-[11px] text-[#F4A340]">
+                    <Star className="h-3 w-3 fill-current" />
+                    <span className="font-bold">{product.rating}</span>
+                    <span className="text-[#64736B]">({product.reviews})</span>
                   </div>
 
-                  <div className="flex items-baseline gap-1.5 pt-1">
-                    <span className="text-sm sm:text-base font-black text-forest-900">৳ {prod.price}</span>
-                    {prod.originalPrice && (
-                      <span className="text-xs text-neutral-400 line-through">৳ {prod.originalPrice}</span>
+                  <h3 className="text-sm font-bold text-[#17251F] line-clamp-1 group-hover:text-[#21A366] transition-colors">
+                    {product.name}
+                  </h3>
+                  <p className="text-[11px] text-[#64736B]">{product.brand} • {product.unit}</p>
+
+                  <div className="flex items-baseline gap-2 pt-1">
+                    <span className="text-lg font-black text-[#17251F]">৳ {product.price}</span>
+                    {product.originalPrice && (
+                      <span className="text-xs text-[#64736B] line-through">৳{product.originalPrice}</span>
                     )}
-                    <span className="text-[10px] text-neutral-400">/ {prod.unit}</span>
                   </div>
                 </div>
 
-                {/* Add to Cart Stepper Button */}
-                <div className="mt-3 pt-2 border-t border-neutral-100" onClick={(e) => e.stopPropagation()}>
-                  {inCartQty > 0 ? (
-                    <div className="flex items-center justify-between bg-emerald-600 text-white rounded-xl p-1 shadow-xs">
+                {/* Add to Cart */}
+                <div className="mt-3 pt-2 border-t border-[#E5ECE7]">
+                  {inCart ? (
+                    <div
+                      className="w-full flex items-center justify-between bg-[#E8F5E9] border border-[#21A366] rounded-xl px-2 py-1 text-xs"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <button
                         type="button"
-                        onClick={(e) => handleDecreaseQuantity(prod.id, e)}
-                        className="h-7 w-7 rounded-lg bg-emerald-700 hover:bg-emerald-800 flex items-center justify-center transition"
+                        onClick={() => handleUpdateCartQuantity(product.id, -1)}
+                        className="p-1 hover:bg-[#D8F3DC] rounded text-[#123C2D] font-black"
                       >
                         <Minus className="h-3 w-3" />
                       </button>
-                      <span className="font-bold text-xs">{inCartQty} in cart</span>
+                      <span className="font-black text-xs text-[#123C2D]">{inCart.quantity} in cart</span>
                       <button
                         type="button"
-                        onClick={(e) => handleAddToCart(prod, e)}
-                        className="h-7 w-7 rounded-lg bg-emerald-700 hover:bg-emerald-800 flex items-center justify-center transition"
+                        onClick={() => handleUpdateCartQuantity(product.id, 1)}
+                        className="p-1 hover:bg-[#D8F3DC] rounded text-[#123C2D] font-black"
                       >
                         <Plus className="h-3 w-3" />
                       </button>
@@ -1452,11 +1372,18 @@ function StorefrontView() {
                   ) : (
                     <button
                       type="button"
-                      onClick={(e) => handleAddToCart(prod, e)}
-                      className="w-full py-2 px-3 rounded-xl bg-forest-900 hover:bg-forest-950 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition"
+                      onClick={(e) => handleAddToCart(product, e)}
+                      style={{ backgroundColor: isJustAdded ? '#123C2D' : '#21A366' }}
+                      className="w-full py-2.5 px-3 rounded-xl text-white font-black text-xs hover:bg-[#123C2D] transition shadow-xs flex items-center justify-center gap-1.5"
                     >
-                      <Plus className="h-3.5 w-3.5" />
-                      <span>Add to Cart</span>
+                      {isJustAdded ? (
+                        <>
+                          <Check className="h-3.5 w-3.5 text-[#D8F3DC]" />
+                          <span>Added to Cart!</span>
+                        </>
+                      ) : (
+                        <span>Add to Cart</span>
+                      )}
                     </button>
                   )}
                 </div>
@@ -1467,646 +1394,495 @@ function StorefrontView() {
       </section>
 
       {/* ========================================================= */}
-      {/* 7. SLIDE-OUT SHOPPING CART DRAWER */}
+      {/* 8. PROFESSIONAL FOOTER */}
       {/* ========================================================= */}
-      <Drawer open={isCartDrawerOpen} onOpenChange={setIsCartDrawerOpen} size="md">
+      <footer style={{ backgroundColor: '#123C2D' }} className="text-white mt-16 pt-12 pb-8 border-t border-emerald-900 text-left">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div className="space-y-3">
+            <Logo variant="light" size="md" />
+            <p className="text-xs text-emerald-100/80 leading-relaxed">
+              ECOBAZAR is Bangladesh's premier multi-branch fresh supermarket and retail operating system. Committed to pure organics, fair farmer prices, and dependable 30-minute delivery.
+            </p>
+            <p className="text-xs text-emerald-300 font-bold">Helpline: +880 9612-000000</p>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-black text-white uppercase tracking-wider mb-3">Departments</h4>
+            <ul className="space-y-1.5 text-xs text-emerald-100/80">
+              <li><button type="button" onClick={() => setSelectedCategory('Fresh Fruits & Vegetables')} className="hover:text-white">Fresh Fruits & Vegetables</button></li>
+              <li><button type="button" onClick={() => setSelectedCategory('Groceries & Staples')} className="hover:text-white">Groceries & Staples</button></li>
+              <li><button type="button" onClick={() => setSelectedCategory('Dairy & Eggs')} className="hover:text-white">Dairy & Eggs</button></li>
+              <li><button type="button" onClick={() => setSelectedCategory('Meat & Fish')} className="hover:text-white">Meat & Fish</button></li>
+              <li><button type="button" onClick={() => setSelectedCategory('Spices & Oils')} className="hover:text-white">Spices & Oils</button></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-black text-white uppercase tracking-wider mb-3">Operating Hubs</h4>
+            <ul className="space-y-1.5 text-xs text-emerald-100/80">
+              <li>Dhanmondi Flagship Store #01 (Road 27)</li>
+              <li>Gulshan-2 Superstore #02 (Avenue Circle-2)</li>
+              <li>Uttara Sector 11 Express #03</li>
+              <li className="pt-2 text-[11px] text-[#2EBD70] font-bold">More branches launching soon across Chittagong & Sylhet</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-black text-white uppercase tracking-wider mb-3">Platform Links</h4>
+            <div className="space-y-2">
+              <a
+                href="http://localhost:3001"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition w-full"
+              >
+                <Store className="h-4 w-4 text-[#2EBD70]" />
+                <span>Admin & POS Dashboard →</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => setIsTrackingModalOpen(true)}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition w-full"
+              >
+                <Truck className="h-4 w-4 text-[#F4A340]" />
+                <span>Track Your Grocery Order</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-emerald-900/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-emerald-300">
+          <p>© 2026 ECOBAZAR Bangladesh Limited. All rights reserved.</p>
+          <p>Bin: 001928471-0101 • Mushak 6.3 Registered</p>
+        </div>
+      </footer>
+
+      {/* ========================================================= */}
+      {/* 9. SLIDE-OUT SHOPPING CART DRAWER */}
+      {/* ========================================================= */}
+      <Drawer open={isCartDrawerOpen} onOpenChange={setIsCartDrawerOpen} position="right">
         <DrawerHeader>
           <div className="flex items-center justify-between">
-            <div>
-              <DrawerTitle className="text-lg font-black text-forest-900">Your Shopping Basket</DrawerTitle>
-              <DrawerDescription className="text-xs text-neutral-500">
-                {totalCartCount} items from {selectedBranch.name}
-              </DrawerDescription>
+            <div className="flex items-center gap-2">
+              <ShoppingBag className="h-5 w-5 text-[#21A366]" />
+              <DrawerTitle>Your Shopping Cart ({totalCartCount})</DrawerTitle>
             </div>
-            <Badge variant="mint" size="sm">Delivering in {selectedBranch.deliveryTime}</Badge>
+            <button
+              type="button"
+              onClick={() => setIsCartDrawerOpen(false)}
+              className="p-1 rounded-lg text-neutral-400 hover:text-neutral-600"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
+          <DrawerDescription>Fulfilling from {selectedBranch.name}</DrawerDescription>
         </DrawerHeader>
 
-        <DrawerBody className="p-0 space-y-4">
-          {/* Free Delivery Milestone Progress */}
-          <div className="p-3 bg-emerald-50 border-b border-emerald-100 text-left">
-            {cartSubtotal >= 500 ? (
-              <p className="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                <span>Congratulations! You unlocked FREE Dhaka delivery.</span>
-              </p>
-            ) : (
-              <div>
-                <div className="flex items-center justify-between text-xs font-semibold text-emerald-800 mb-1">
-                  <span>Add ৳{(500 - cartSubtotal).toFixed(0)} more for FREE delivery</span>
-                  <span>{Math.round((cartSubtotal / 500) * 100)}%</span>
-                </div>
-                <div className="h-1.5 w-full bg-emerald-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-600 rounded-full" style={{ width: `${Math.min(100, (cartSubtotal / 500) * 100)}%` }} />
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Cart Items List */}
+        <DrawerBody>
           {cartItems.length === 0 ? (
-            <div className="py-16 text-center text-neutral-400 space-y-3">
-              <ShoppingBag className="h-12 w-12 mx-auto stroke-1 text-neutral-300" />
-              <p className="text-sm font-semibold text-neutral-600">Your basket is empty</p>
-              <p className="text-xs text-neutral-400 max-w-xs mx-auto">
-                Explore our fresh vegetables, dairy, or pantry staples to start shopping.
-              </p>
+            <div className="py-16 text-center space-y-3">
+              <div className="h-16 w-16 mx-auto rounded-full bg-[#E8F5E9] text-[#21A366] flex items-center justify-center">
+                <ShoppingBag className="h-8 w-8" />
+              </div>
+              <h4 className="font-bold text-sm text-[#17251F]">Your cart is empty</h4>
+              <p className="text-xs text-[#64736B]">Explore our fresh vegetables, dairy and daily staples.</p>
               <Button variant="forest" size="sm" onClick={() => setIsCartDrawerOpen(false)}>
-                Explore Catalog
+                Continue Shopping
               </Button>
             </div>
           ) : (
-            <div className="divide-y divide-neutral-100 max-h-[45vh] overflow-y-auto px-4">
+            <div className="space-y-4 divide-y divide-[#E5ECE7] text-left">
               {cartItems.map(({ product, quantity }) => (
-                <div key={product.id} className="py-3 flex items-center justify-between gap-3 text-left">
-                  <div className="flex items-center gap-3">
-                    <img src={product.image} alt={product.name} className="h-14 w-14 rounded-xl object-cover bg-neutral-100" />
-                    <div>
-                      <h4 className="text-xs font-bold text-neutral-900 line-clamp-1">{product.name}</h4>
-                      <p className="text-[11px] text-neutral-400">৳{product.price} / {product.unit}</p>
-                      <span className="text-xs font-black text-forest-900">৳{(product.price * quantity).toFixed(2)}</span>
+                <div key={product.id} className="pt-3 first:pt-0 flex items-center justify-between gap-3">
+                  <img src={product.image} alt={product.name} className="h-14 w-14 rounded-xl object-cover shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-[#17251F] truncate">{product.name}</p>
+                    <p className="text-[10px] text-[#64736B]">{product.unit} • ৳{product.price} each</p>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <div className="flex items-center border border-[#E5ECE7] rounded-lg bg-white">
+                        <button
+                          type="button"
+                          onClick={() => handleUpdateCartQuantity(product.id, -1)}
+                          className="p-1 text-neutral-500 hover:text-[#17251F]"
+                        >
+                          <Minus className="h-3 w-3" />
+                        </button>
+                        <span className="px-2 text-xs font-bold">{quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleUpdateCartQuantity(product.id, 1)}
+                          className="p-1 text-neutral-500 hover:text-[#17251F]"
+                        >
+                          <Plus className="h-3 w-3" />
+                        </button>
+                      </div>
+                      <span className="text-xs font-black text-[#21A366]">৳{product.price * quantity}</span>
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center border border-neutral-200 rounded-lg overflow-hidden bg-neutral-50">
-                      <button
-                        type="button"
-                        onClick={() => handleDecreaseQuantity(product.id)}
-                        className="px-2 py-1 text-xs font-bold text-neutral-600 hover:bg-neutral-200"
-                      >
-                        -
-                      </button>
-                      <span className="px-2.5 py-1 text-xs font-bold font-mono">{quantity}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleAddToCart(product)}
-                        className="px-2 py-1 text-xs font-bold text-neutral-600 hover:bg-neutral-200"
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveFromCart(product.id)}
-                      className="p-1.5 text-neutral-400 hover:text-rose-500 rounded-lg hover:bg-rose-50 transition"
-                      title="Remove item"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveFromCart(product.id)}
+                    className="p-1.5 text-neutral-400 hover:text-[#EF4444]"
+                    aria-label="Remove item"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
                 </div>
               ))}
             </div>
           )}
-
-          {/* Coupon Code Form */}
-          {cartItems.length > 0 && (
-            <div className="px-4 pt-2">
-              <form onSubmit={handleApplyCoupon} className="flex gap-2">
-                <input
-                  type="text"
-                  value={couponInput}
-                  onChange={(e) => setCouponInput(e.target.value)}
-                  placeholder="Coupon code (e.g. ECO10)"
-                  className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-neutral-200 bg-neutral-50 uppercase font-mono font-bold"
-                />
-                <Button variant="outline" size="sm" type="submit">
-                  Apply
-                </Button>
-              </form>
-              {appliedCoupon && (
-                <p className="text-[11px] text-emerald-700 font-bold mt-1 text-left flex items-center gap-1">
-                  <Check className="h-3 w-3" />
-                  <span>Coupon {appliedCoupon} applied successfully!</span>
-                </p>
-              )}
-            </div>
-          )}
         </DrawerBody>
 
-        {/* Drawer Footer with Calculation & Checkout */}
         {cartItems.length > 0 && (
-          <DrawerFooter className="flex-col gap-3 border-t border-neutral-200 bg-neutral-50/50 p-4">
-            <div className="w-full space-y-1.5 text-xs text-neutral-600">
-              <div className="flex justify-between">
+          <DrawerFooter className="border-t border-[#E5ECE7] space-y-3">
+            {/* Voucher input */}
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Voucher code (ECO10)"
+                value={couponInput}
+                onChange={(e) => setCouponInput(e.target.value)}
+                className="flex-1 h-9 px-3 rounded-xl border border-[#E5ECE7] text-xs uppercase font-mono"
+              />
+              <button
+                type="button"
+                onClick={handleApplyCoupon}
+                className="h-9 px-3 rounded-xl bg-[#21A366] text-white text-xs font-black"
+              >
+                Apply
+              </button>
+            </div>
+
+            {appliedCoupon && (
+              <div className="flex items-center justify-between text-xs text-[#21A366] font-bold bg-[#E8F5E9] p-2 rounded-lg">
+                <span>Coupon ({appliedCoupon}) Applied</span>
+                <span>-৳{discountAmount}</span>
+              </div>
+            )}
+
+            <div className="space-y-1.5 text-xs text-left">
+              <div className="flex justify-between text-[#64736B]">
                 <span>Subtotal</span>
-                <span className="font-bold text-neutral-900">৳ {cartSubtotal.toFixed(2)}</span>
+                <span>৳{cartSubtotal.toLocaleString()}</span>
               </div>
-              {discountAmount > 0 && (
-                <div className="flex justify-between text-emerald-700 font-semibold">
-                  <span>Discount ({appliedCoupon})</span>
-                  <span>- ৳ {discountAmount.toFixed(2)}</span>
-                </div>
-              )}
-              <div className="flex justify-between">
-                <span>Delivery Charge ({selectedBranch.area})</span>
-                <span className="font-bold text-neutral-900">
-                  {deliveryCharge === 0 ? <strong className="text-emerald-700">FREE</strong> : `৳ ${deliveryCharge.toFixed(2)}`}
-                </span>
+              <div className="flex justify-between text-[#64736B]">
+                <span>Delivery Fee</span>
+                <span>{deliveryFee === 0 ? <strong className="text-[#21A366]">FREE</strong> : `৳${deliveryFee}`}</span>
               </div>
-              <div className="flex justify-between text-sm font-black text-forest-900 pt-1.5 border-t border-neutral-200">
-                <span>Grand Total</span>
-                <span>৳ {grandTotal.toFixed(2)}</span>
+              <div className="flex justify-between text-base font-black text-[#17251F] pt-2 border-t border-[#E5ECE7]">
+                <span>Total Amount</span>
+                <span className="text-[#21A366]">৳{cartGrandTotal.toLocaleString()}</span>
               </div>
             </div>
 
             <Button
               variant="forest"
               size="lg"
-              className="w-full gap-2 text-sm font-black shadow-md"
-              onClick={() => {
-                setIsCartDrawerOpen(false);
-                setIsCheckoutModalOpen(true);
-              }}
+              className="w-full font-black text-sm"
+              onClick={() => setIsCheckoutModalOpen(true)}
             >
-              <span>Proceed to Checkout (৳ {grandTotal.toFixed(2)})</span>
-              <ArrowRight className="h-4 w-4" />
+              Proceed to Checkout (৳{cartGrandTotal.toLocaleString()})
             </Button>
           </DrawerFooter>
         )}
       </Drawer>
 
       {/* ========================================================= */}
-      {/* 8. SLIDE-OUT WISHLIST DRAWER */}
-      {/* ========================================================= */}
-      <Drawer open={isWishlistDrawerOpen} onOpenChange={setIsWishlistDrawerOpen} size="md">
-        <DrawerHeader>
-          <DrawerTitle className="text-lg font-black text-forest-900">Your Saved Items</DrawerTitle>
-          <DrawerDescription className="text-xs text-neutral-500">
-            {wishlistItems.length} products saved for later
-          </DrawerDescription>
-        </DrawerHeader>
-
-        <DrawerBody className="p-4 space-y-3">
-          {wishlistItems.length === 0 ? (
-            <div className="py-16 text-center text-neutral-400 space-y-3">
-              <Heart className="h-12 w-12 mx-auto stroke-1 text-neutral-300" />
-              <p className="text-sm font-semibold text-neutral-600">No saved items yet</p>
-              <p className="text-xs text-neutral-400">Click the heart icon on any product to save it to your wishlist.</p>
-            </div>
-          ) : (
-            wishlistItems.map((prod) => (
-              <div key={prod.id} className="p-3 rounded-2xl border border-neutral-200 flex items-center justify-between gap-3 text-left">
-                <div className="flex items-center gap-3">
-                  <img src={prod.image} alt={prod.name} className="h-12 w-12 rounded-xl object-cover bg-neutral-100" />
-                  <div>
-                    <h4 className="text-xs font-bold text-neutral-900 line-clamp-1">{prod.name}</h4>
-                    <p className="text-xs font-black text-forest-900">৳ {prod.price}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="default"
-                    size="sm"
-                    className="text-xs"
-                    onClick={() => {
-                      handleAddToCart(prod);
-                      toggleWishlist(prod);
-                    }}
-                  >
-                    Move to Cart
-                  </Button>
-                  <button
-                    type="button"
-                    onClick={() => toggleWishlist(prod)}
-                    className="p-1.5 text-neutral-400 hover:text-rose-500"
-                    title="Remove"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </DrawerBody>
-      </Drawer>
-
-      {/* ========================================================= */}
-      {/* 9. PRODUCT DETAILS MODAL */}
+      {/* 10. PRODUCT DETAILS MODAL */}
       {/* ========================================================= */}
       {selectedProductForModal && (
-        <Dialog open={Boolean(selectedProductForModal)} onOpenChange={() => setSelectedProductForModal(null)} size="lg">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 text-left">
-            {/* Image Col */}
-            <div className="md:col-span-5 space-y-3">
-              <div className="aspect-square w-full rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200">
+        <Dialog open={!!selectedProductForModal} onOpenChange={() => setSelectedProductForModal(null)} size="lg">
+          <DialogHeader>
+            <DialogTitle>{selectedProductForModal.name}</DialogTitle>
+            <DialogDescription>{selectedProductForModal.nameBn} • {selectedProductForModal.origin}</DialogDescription>
+          </DialogHeader>
+          <DialogBody>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+              <div className="h-64 rounded-2xl overflow-hidden bg-[#F7F9F5]">
                 <img
                   src={selectedProductForModal.image}
                   alt={selectedProductForModal.name}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-100 text-xs space-y-1">
-                <p className="font-bold text-emerald-900 flex items-center gap-1.5">
-                  <ShieldCheck className="h-4 w-4 text-emerald-600" />
-                  <span>100% Quality & Freshness Guarantee</span>
+              <div className="space-y-3">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-black text-[#17251F]">৳ {selectedProductForModal.price}</span>
+                  {selectedProductForModal.originalPrice && (
+                    <span className="text-sm text-[#64736B] line-through">৳{selectedProductForModal.originalPrice}</span>
+                  )}
+                  <Badge variant="mint" size="sm">In Stock ({selectedProductForModal.stock})</Badge>
+                </div>
+
+                <p className="text-xs text-[#64736B] leading-relaxed">
+                  {selectedProductForModal.description}
                 </p>
-                <p className="text-[11px] text-emerald-800">
-                  Inspected and packed under clean hygienic standards at {selectedBranch.name}.
-                </p>
+
+                <div className="p-3 rounded-xl bg-[#F7F9F5] border border-[#E5ECE7] space-y-1.5 text-xs">
+                  <p className="font-bold text-[#17251F]">Specifications:</p>
+                  {Object.entries(selectedProductForModal.specifications).map(([key, val]) => (
+                    <div key={key} className="flex justify-between text-[11px] text-[#64736B]">
+                      <span>{key}:</span>
+                      <span className="font-semibold text-[#17251F]">{val}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-2">
+                  <Button
+                    variant="forest"
+                    size="default"
+                    className="w-full font-black"
+                    onClick={() => {
+                      handleAddToCart(selectedProductForModal);
+                      setSelectedProductForModal(null);
+                    }}
+                  >
+                    Add to Cart • ৳{selectedProductForModal.price}
+                  </Button>
+                </div>
               </div>
             </div>
-
-            {/* Information Col */}
-            <div className="md:col-span-7 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
-                  {selectedProductForModal.category}
-                </span>
-                <span className="text-xs font-bold text-neutral-500">
-                  SKU: {selectedProductForModal.id.toUpperCase()}
-                </span>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-black text-neutral-900">{selectedProductForModal.name}</h3>
-                <p className="text-xs font-bangla text-neutral-500 font-semibold">{selectedProductForModal.nameBn}</p>
-                <p className="text-xs text-neutral-400 mt-0.5">Supplier: {selectedProductForModal.brand} • {selectedProductForModal.origin}</p>
-              </div>
-
-              {/* Price & Rating */}
-              <div className="flex items-baseline gap-2 pt-1 border-t border-neutral-100">
-                <span className="text-2xl font-black text-forest-900">৳ {selectedProductForModal.price}</span>
-                {selectedProductForModal.originalPrice && (
-                  <span className="text-sm text-neutral-400 line-through">৳ {selectedProductForModal.originalPrice}</span>
-                )}
-                <span className="text-xs text-neutral-500">/ {selectedProductForModal.unit}</span>
-              </div>
-
-              <p className="text-xs text-neutral-600 leading-relaxed">
-                {selectedProductForModal.description}
-              </p>
-
-              {/* Specifications */}
-              <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs space-y-1">
-                {Object.entries(selectedProductForModal.specifications).map(([key, val]) => (
-                  <div key={key} className="flex justify-between text-[11px]">
-                    <span className="text-neutral-500">{key}:</span>
-                    <span className="font-bold text-neutral-800">{val}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-3 flex items-center gap-3">
-                <Button
-                  variant="forest"
-                  size="default"
-                  className="flex-1 gap-2 font-bold"
-                  onClick={() => {
-                    handleAddToCart(selectedProductForModal);
-                    setSelectedProductForModal(null);
-                  }}
-                >
-                  <Plus className="h-4 w-4" />
-                  <span>Add to Basket</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  size="default"
-                  onClick={(e) => toggleWishlist(selectedProductForModal, e)}
-                >
-                  <Heart className={`h-4 w-4 ${wishlistMap[selectedProductForModal.id] ? 'fill-rose-500 text-rose-500' : ''}`} />
-                </Button>
-              </div>
-            </div>
-          </div>
+          </DialogBody>
         </Dialog>
       )}
 
       {/* ========================================================= */}
-      {/* 10. ORDER TRACKING LOOKUP MODAL */}
+      {/* 11. WISHLIST DRAWER */}
       {/* ========================================================= */}
-      <Dialog open={isTrackingModalOpen} onOpenChange={setIsTrackingModalOpen} size="md">
-        <DialogHeader className="text-left">
-          <DialogTitle className="text-lg font-black text-forest-900">Track Your Grocery Delivery</DialogTitle>
-          <DialogDescription className="text-xs text-neutral-500">
-            Enter your order tracking ID for real-time Dhaka delivery dispatch status.
-          </DialogDescription>
-        </DialogHeader>
-
-        <DialogBody className="space-y-4 text-left">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={trackingOrderId}
-              onChange={(e) => setTrackingOrderId(e.target.value)}
-              placeholder="e.g. ORD-20261116-092"
-              className="flex-1 px-3 py-2 text-xs rounded-xl border border-neutral-300 font-mono font-bold"
-            />
-            <Button variant="forest" size="sm" onClick={() => toast.success('Tracking Updated', 'GPS telemetry synced with Dhaka hub.')}>
-              Track
-            </Button>
-          </div>
-
-          {/* Tracking Milestone Timeline */}
-          <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-4 text-xs">
-            <div className="flex items-center justify-between pb-2 border-b border-neutral-200">
-              <span className="font-bold text-neutral-900">Order #{trackingOrderId}</span>
-              <Badge variant="success" size="sm">Out for Delivery</Badge>
+      <Drawer open={isWishlistDrawerOpen} onOpenChange={setIsWishlistDrawerOpen} position="right">
+        <DrawerHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Heart className="h-5 w-5 text-[#EF4444]" />
+              <DrawerTitle>Saved Wishlist ({wishlistProducts.length})</DrawerTitle>
             </div>
-
-            <div className="space-y-3 relative pl-6 border-l-2 border-emerald-500">
-              <div className="relative">
-                <span className="absolute -left-[31px] top-0.5 h-3.5 w-3.5 rounded-full bg-emerald-600 ring-4 ring-white" />
-                <p className="font-bold text-neutral-900">Order Confirmed</p>
-                <p className="text-[11px] text-neutral-400">Payment verified via bKash • 12:15 PM</p>
-              </div>
-              <div className="relative">
-                <span className="absolute -left-[31px] top-0.5 h-3.5 w-3.5 rounded-full bg-emerald-600 ring-4 ring-white" />
-                <p className="font-bold text-neutral-900">Quality Inspection & Packing</p>
-                <p className="text-[11px] text-neutral-400">Packed in chilled insulated bag at {selectedBranch.name} • 12:28 PM</p>
-              </div>
-              <div className="relative">
-                <span className="absolute -left-[31px] top-0.5 h-3.5 w-3.5 rounded-full bg-amber-500 ring-4 ring-white animate-pulse" />
-                <p className="font-bold text-neutral-900">Courier Dispatched</p>
-                <p className="text-[11px] text-emerald-700 font-semibold">Rider Karim is 1.2km away • ETA 14 mins</p>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => setIsWishlistDrawerOpen(false)}
+              className="p-1 rounded-lg text-neutral-400 hover:text-neutral-600"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
-        </DialogBody>
-
-        <DialogFooter>
-          <Button variant="outline" size="sm" onClick={() => setIsTrackingModalOpen(false)}>
-            Close
-          </Button>
-        </DialogFooter>
-      </Dialog>
+        </DrawerHeader>
+        <DrawerBody>
+          {wishlistProducts.length === 0 ? (
+            <div className="py-16 text-center space-y-2">
+              <Heart className="h-12 w-12 text-neutral-300 mx-auto" />
+              <p className="text-xs text-[#64736B]">You have no saved items in your wishlist.</p>
+            </div>
+          ) : (
+            <div className="space-y-3 text-left">
+              {wishlistProducts.map((p) => (
+                <div key={p.id} className="p-3 rounded-xl border border-[#E5ECE7] flex items-center justify-between gap-3">
+                  <img src={p.image} alt={p.name} className="h-12 w-12 rounded-lg object-cover" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-[#17251F] truncate">{p.name}</p>
+                    <p className="text-xs font-black text-[#21A366]">৳{p.price}</p>
+                  </div>
+                  <Button
+                    variant="forest"
+                    size="sm"
+                    className="text-[11px] h-8"
+                    onClick={() => {
+                      handleAddToCart(p);
+                      toast.success('Moved to Cart', `${p.name} added.`);
+                    }}
+                  >
+                    Add
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </DrawerBody>
+      </Drawer>
 
       {/* ========================================================= */}
-      {/* 11. BRANCH SELECTOR MODAL */}
+      {/* 12. BRANCH SELECTOR MODAL */}
       {/* ========================================================= */}
-      <Dialog open={isBranchModalOpen} onOpenChange={setIsBranchModalOpen} size="sm">
-        <DialogHeader className="text-left">
-          <DialogTitle className="text-base font-black text-forest-900">Select Fulfilling Branch</DialogTitle>
-          <DialogDescription className="text-xs text-neutral-500">
-            Choose your nearest supermarket hub for fastest 30-min delivery and local inventory.
-          </DialogDescription>
+      <Dialog open={isBranchModalOpen} onOpenChange={setIsBranchModalOpen} size="md">
+        <DialogHeader>
+          <DialogTitle>Select Your Delivery Hub</DialogTitle>
+          <DialogDescription>Choose the nearest ECOBAZAR branch for fastest 30-min delivery.</DialogDescription>
         </DialogHeader>
-
-        <DialogBody className="space-y-2 text-left">
-          {storeBranches.map((branch) => {
-            const isSelected = selectedBranch.id === branch.id;
-            return (
-              <button
-                key={branch.id}
-                type="button"
-                onClick={() => {
-                  setSelectedBranch(branch);
-                  setIsBranchModalOpen(false);
-                  toast.success('Branch Changed', `Now shopping from ${branch.name} (${branch.deliveryTime} delivery).`);
-                }}
-                className={`w-full p-3 rounded-2xl border text-xs text-left transition flex items-start gap-3 ${
-                  isSelected ? 'border-primary-green bg-emerald-50/60 shadow-xs' : 'border-neutral-200 hover:bg-neutral-50'
+        <DialogBody>
+          <div className="space-y-2.5 text-left">
+            {storeBranches.map((b) => (
+              <div
+                key={b.id}
+                onClick={() => handleSelectBranch(b)}
+                className={`p-3.5 rounded-2xl border transition cursor-pointer flex items-center justify-between ${
+                  selectedBranch.id === b.id
+                    ? 'border-[#21A366] bg-[#E8F5E9]'
+                    : 'border-[#E5ECE7] hover:bg-[#F7F9F5]'
                 }`}
               >
-                <Building2 className={`h-4 w-4 mt-0.5 shrink-0 ${isSelected ? 'text-primary-green' : 'text-neutral-400'}`} />
-                <div className="flex-1">
-                  <p className="font-bold text-neutral-900">{branch.name}</p>
-                  <p className="text-[11px] text-neutral-500">{branch.address}</p>
-                  <span className="inline-block mt-1 text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
-                    ⚡ {branch.deliveryTime} Express
-                  </span>
+                <div>
+                  <h4 className="text-xs font-black text-[#17251F]">{b.name}</h4>
+                  <p className="text-[11px] text-[#64736B]">{b.address}</p>
                 </div>
-                {isSelected && <CheckCircle2 className="h-4 w-4 text-primary-green shrink-0 mt-0.5" />}
-              </button>
-            );
-          })}
+                <div className="text-right">
+                  <span className="text-xs font-black text-[#21A366] block">~{b.deliveryTime}</span>
+                  <span className="text-[10px] text-neutral-400">Open Now</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </DialogBody>
       </Dialog>
 
       {/* ========================================================= */}
-      {/* 12. CHECKOUT MODAL */}
+      {/* 13. TRACK ORDER MODAL */}
       {/* ========================================================= */}
-      <Dialog open={isCheckoutModalOpen} onOpenChange={setIsCheckoutModalOpen} size="md">
-        <DialogHeader className="text-left">
-          <DialogTitle className="text-lg font-black text-forest-900">Complete Your Order</DialogTitle>
-          <DialogDescription className="text-xs text-neutral-500">
-            Fulfilling from {selectedBranch.name} • Total: ৳ {grandTotal.toFixed(2)}
-          </DialogDescription>
+      <Dialog open={isTrackingModalOpen} onOpenChange={setIsTrackingModalOpen} size="md">
+        <DialogHeader>
+          <DialogTitle>Track Your Grocery Order</DialogTitle>
+          <DialogDescription>Live GPS & milestone tracking from dispatch to doorstep.</DialogDescription>
         </DialogHeader>
-
-        <DialogBody className="space-y-4 text-left">
-          {checkoutSuccessOrder ? (
-            <div className="py-6 text-center space-y-3">
-              <CheckCircle2 className="h-14 w-14 text-emerald-600 mx-auto" />
-              <h3 className="text-lg font-black text-neutral-900">Order Confirmed Successfully!</h3>
-              <p className="text-xs text-neutral-500">
-                Invoice <strong>#{checkoutSuccessOrder}</strong> has been created. A confirmation SMS with live GPS tracking link has been sent to your phone.
-              </p>
-              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 font-bold">
-                Estimated Delivery: {selectedBranch.deliveryTime}
-              </div>
+        <DialogBody>
+          <div className="space-y-4 text-left">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={trackingOrderId}
+                onChange={(e) => setTrackingOrderId(e.target.value)}
+                placeholder="Enter Order ID (e.g. ORD-20261116-092)"
+                className="flex-1 px-3 py-2 text-xs border rounded-xl outline-hidden font-mono"
+              />
+              <Button variant="forest" size="sm" onClick={() => toast.info('Status Synced', 'Delivery rider is 1.2 km away.')}>
+                Track
+              </Button>
             </div>
-          ) : (
-            <div className="space-y-3 text-xs">
-              <div>
-                <label className="font-bold text-neutral-700 block mb-1">Delivery Address in Dhaka</label>
-                <input
-                  type="text"
-                  defaultValue="House 24, Road 8, Dhanmondi, Dhaka"
-                  className="w-full px-3 py-2 rounded-xl border border-neutral-200 font-medium"
-                />
+
+            <div className="p-4 rounded-2xl bg-[#F7F9F5] border border-[#E5ECE7] space-y-4">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-[#17251F]">Order: {trackingOrderId}</span>
+                <Badge variant="warning" size="sm">Out for Delivery</Badge>
               </div>
 
-              <div>
-                <label className="font-bold text-neutral-700 block mb-1">Contact Mobile Number</label>
-                <input
-                  type="text"
-                  defaultValue="+880 1712-345678"
-                  className="w-full px-3 py-2 rounded-xl border border-neutral-200 font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="font-bold text-neutral-700 block mb-1">Select Payment Method</label>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="p-2.5 rounded-xl border-2 border-primary-green bg-emerald-50/50 font-bold flex items-center gap-2 cursor-pointer">
-                    <span className="text-base">📱</span>
-                    <span>bKash Instant</span>
-                  </div>
-                  <div className="p-2.5 rounded-xl border border-neutral-200 font-semibold flex items-center gap-2 cursor-pointer hover:bg-neutral-50">
-                    <span className="text-base">💵</span>
-                    <span>Cash on Delivery</span>
-                  </div>
+              {/* Progress Milestones */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center gap-3 text-xs">
+                  <div className="h-6 w-6 rounded-full bg-[#21A366] text-white flex items-center justify-center font-bold text-[10px]">✓</div>
+                  <span className="font-semibold text-[#17251F]">Order Placed & Confirmed</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                  <div className="h-6 w-6 rounded-full bg-[#21A366] text-white flex items-center justify-center font-bold text-[10px]">✓</div>
+                  <span className="font-semibold text-[#17251F]">Harvested & Packed at Dhanmondi Hub</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                  <div className="h-6 w-6 rounded-full bg-[#F4A340] text-white flex items-center justify-center font-bold text-[10px]">🛵</div>
+                  <span className="font-black text-[#17251F]">Rider En Route (Estimated: 12 Mins)</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs opacity-50">
+                  <div className="h-6 w-6 rounded-full bg-neutral-300 text-white flex items-center justify-center font-bold text-[10px]">4</div>
+                  <span>Delivered to Doorstep</span>
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </DialogBody>
-
-        <DialogFooter>
-          {checkoutSuccessOrder ? (
-            <Button
-              variant="forest"
-              size="sm"
-              onClick={() => {
-                setCheckoutSuccessOrder(null);
-                setIsCheckoutModalOpen(false);
-                setCartItems([]);
-              }}
-            >
-              Done & Return to Store
-            </Button>
-          ) : (
-            <>
-              <Button variant="outline" size="sm" onClick={() => setIsCheckoutModalOpen(false)}>
-                Cancel
-              </Button>
-              <Button
-                variant="forest"
-                size="sm"
-                onClick={() => {
-                  const newId = `ORD-20261116-${Math.floor(100 + Math.random() * 900)}`;
-                  setCheckoutSuccessOrder(newId);
-                  toast.success('Order Placed!', `Order #${newId} registered with ${selectedBranch.name}.`);
-                }}
-              >
-                Confirm & Pay (৳ {grandTotal.toFixed(2)})
-              </Button>
-            </>
-          )}
-        </DialogFooter>
       </Dialog>
 
       {/* ========================================================= */}
-      {/* 13. CUSTOMER AUTH / LOGIN MODAL */}
+      {/* 14. AUTH / OTP LOGIN MODAL */}
       {/* ========================================================= */}
       <Dialog open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen} size="sm">
-        <DialogHeader className="text-left">
-          <DialogTitle className="text-base font-black text-forest-900">Customer Account Login</DialogTitle>
-          <DialogDescription className="text-xs text-neutral-500">
-            Sign in with your mobile number for 1-click checkout & loyalty points.
-          </DialogDescription>
+        <DialogHeader>
+          <DialogTitle>Customer Login / Sign Up</DialogTitle>
+          <DialogDescription>Quick passwordless authentication with your Bangladeshi mobile number.</DialogDescription>
         </DialogHeader>
-
-        <DialogBody className="space-y-3 text-left">
+        <DialogBody>
           {authStep === 'phone' ? (
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-left">
               <div>
-                <label className="font-bold text-neutral-700 block mb-1">Mobile Phone Number (Bangladesh)</label>
+                <label className="text-xs font-bold text-[#17251F] block mb-1">Mobile Number</label>
                 <input
                   type="text"
                   value={authPhone}
                   onChange={(e) => setAuthPhone(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-neutral-300 font-bold"
+                  className="w-full px-3 py-2 text-xs border rounded-xl outline-hidden font-mono font-bold"
                 />
               </div>
-              <p className="text-[11px] text-neutral-400">We will send a 4-digit verification code via SMS.</p>
+              <Button
+                variant="forest"
+                size="default"
+                className="w-full font-black text-xs"
+                onClick={() => {
+                  setAuthStep('otp');
+                  toast.success('OTP Dispatched', 'A 4-digit verification code has been sent.');
+                }}
+              >
+                Send Verification Code
+              </Button>
             </div>
           ) : (
-            <div className="space-y-3 text-xs text-center py-2">
-              <p className="text-xs text-neutral-600">Enter the 4-digit code sent to <strong>{authPhone}</strong></p>
+            <div className="space-y-3 text-left">
+              <p className="text-xs text-[#64736B]">Enter the 4-digit code sent to {authPhone}:</p>
               <input
                 type="text"
+                placeholder="• • • •"
                 maxLength={4}
-                defaultValue="2026"
-                className="w-32 mx-auto text-center tracking-widest text-lg font-black px-3 py-2 rounded-xl border-2 border-primary-green"
+                className="w-full text-center tracking-widest text-lg font-mono font-bold py-2 border rounded-xl outline-hidden"
               />
+              <Button
+                variant="forest"
+                size="default"
+                className="w-full font-black text-xs"
+                onClick={() => {
+                  setIsAuthModalOpen(false);
+                  setAuthStep('phone');
+                  toast.success('Signed In', 'Welcome back to ECOBAZAR!');
+                }}
+              >
+                Verify & Continue
+              </Button>
             </div>
           )}
         </DialogBody>
-
-        <DialogFooter>
-          {authStep === 'phone' ? (
-            <Button
-              variant="forest"
-              size="sm"
-              className="w-full"
-              onClick={() => {
-                setAuthStep('otp');
-                toast.info('OTP Sent', 'Demo verification code: 2026');
-              }}
-            >
-              Send OTP Code
-            </Button>
-          ) : (
-            <Button
-              variant="forest"
-              size="sm"
-              className="w-full"
-              onClick={() => {
-                setIsAuthModalOpen(false);
-                setAuthStep('phone');
-                toast.success('Logged In Successfully', 'Welcome back, Customer!');
-              }}
-            >
-              Verify & Sign In
-            </Button>
-          )}
-        </DialogFooter>
       </Dialog>
 
       {/* ========================================================= */}
-      {/* 14. FOOTER */}
+      {/* 15. CHECKOUT CONFIRMATION MODAL */}
       {/* ========================================================= */}
-      <footer className="mt-16 border-t border-neutral-200 bg-white pt-12 pb-8 text-neutral-600 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 mb-10 text-left">
-          <div className="space-y-3 col-span-2 sm:col-span-1">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-forest-900 flex items-center justify-center text-white font-black text-base">
-                E
+      <Dialog open={isCheckoutModalOpen} onOpenChange={setIsCheckoutModalOpen} size="md">
+        <DialogHeader>
+          <DialogTitle>Review & Confirm Order</DialogTitle>
+          <DialogDescription>Delivery Address: Road 27, Dhanmondi, Dhaka</DialogDescription>
+        </DialogHeader>
+        <DialogBody>
+          <div className="space-y-3 text-left">
+            <div className="p-3 rounded-xl bg-[#F7F9F5] border border-[#E5ECE7] space-y-1.5 text-xs">
+              <div className="flex justify-between">
+                <span>Items Subtotal:</span>
+                <span className="font-bold">৳{cartSubtotal}</span>
               </div>
-              <span className="text-xl font-black text-forest-900">
-                ECO<span className="text-primary-green">BAZAR</span>
-              </span>
+              <div className="flex justify-between">
+                <span>Delivery Charge:</span>
+                <span className="font-bold">{deliveryFee === 0 ? 'FREE' : `৳${deliveryFee}`}</span>
+              </div>
+              <div className="flex justify-between font-black text-sm pt-1 border-t border-[#E5ECE7]">
+                <span>Net Payable:</span>
+                <span className="text-[#21A366]">৳{cartGrandTotal.toLocaleString()}</span>
+              </div>
             </div>
-            <p className="text-neutral-500 text-xs leading-relaxed">
-              Bangladesh's premier commercial multi-branch supermarket platform. Sourcing directly from certified local farmers to your table with cold-chain freshness.
+
+            <p className="text-xs text-[#64736B]">
+              Payment Method: <strong>Cash on Delivery / bKash at Doorstep</strong>
             </p>
-            <div className="flex items-center gap-2 text-neutral-400">
-              <MapPin className="h-4 w-4 text-emerald-600 shrink-0" />
-              <span>Dhanmondi • Gulshan-2 • Uttara</span>
-            </div>
           </div>
-
-          <div className="space-y-2">
-            <p className="font-bold text-neutral-900 uppercase tracking-wider text-[11px]">Popular Aisles</p>
-            <ul className="space-y-1.5 text-neutral-500">
-              <li><button type="button" onClick={() => setSelectedCategory('Fresh Vegetables')} className="hover:text-forest-900">Fresh Vegetables</button></li>
-              <li><button type="button" onClick={() => setSelectedCategory('Dairy, Butter & Eggs')} className="hover:text-forest-900">Dairy & Eggs</button></li>
-              <li><button type="button" onClick={() => setSelectedCategory('Rice, Pulses & Grains')} className="hover:text-forest-900">Aromatic Rice & Pulses</button></li>
-              <li><button type="button" onClick={() => setSelectedCategory('Spices, Pickles & Oils')} className="hover:text-forest-900">Pure Mustard Oil</button></li>
-              <li><button type="button" onClick={() => setSelectedCategory('Fresh & Organic')} className="hover:text-forest-900">Organic Fruits</button></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <p className="font-bold text-neutral-900 uppercase tracking-wider text-[11px]">Retail Operations</p>
-            <ul className="space-y-1.5 text-neutral-500">
-              <li><a href="http://localhost:3001" target="_blank" className="hover:text-forest-900 font-bold text-emerald-800">Admin Dashboard →</a></li>
-              <li><a href="/design-system" className="hover:text-forest-900 font-bold text-emerald-800">Design System Catalog →</a></li>
-              <li><button type="button" onClick={() => setIsTrackingModalOpen(true)} className="hover:text-forest-900">Track Order</button></li>
-              <li><button type="button" onClick={() => setIsBranchModalOpen(true)} className="hover:text-forest-900">Branch Locations</button></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <p className="font-bold text-neutral-900 uppercase tracking-wider text-[11px]">Customer Support</p>
-            <ul className="space-y-1.5 text-neutral-500">
-              <li><span>Helpline: +880 1700-000000</span></li>
-              <li><span>Email: support@ecobazar.com.bd</span></li>
-              <li><span>Hours: 7:00 AM - 11:00 PM Daily</span></li>
-              <li><span>Doorstep Return: 100% Guaranteed</span></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-neutral-400 text-[11px]">
-          <p>© 2026 ECOBAZAR Operating System. All rights reserved.</p>
-          <div className="flex items-center gap-4 text-neutral-500 font-medium">
-            <span>bKash</span>
-            <span>•</span>
-            <span>Nagad</span>
-            <span>•</span>
-            <span>Visa / Mastercard</span>
-            <span>•</span>
-            <span>Cash on Delivery</span>
-          </div>
-        </div>
-      </footer>
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="outline" size="sm" onClick={() => setIsCheckoutModalOpen(false)}>
+            Back
+          </Button>
+          <Button variant="forest" size="sm" onClick={handlePlaceOrder}>
+            Confirm & Place Order
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   );
 }

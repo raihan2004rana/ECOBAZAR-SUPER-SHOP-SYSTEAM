@@ -83,6 +83,7 @@ import {
   DialogDescription,
   DialogBody,
   DialogFooter,
+  Logo,
 } from '@ecobazar/ui';
 
 // ==========================================
@@ -646,19 +647,7 @@ function AdminDashboardShell() {
         {/* Brand & Collapse Header */}
         <div className="h-16 px-4 border-b border-emerald-900/60 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3 overflow-hidden cursor-pointer" onClick={() => setActiveRouteId('dashboard')}>
-            <div className="h-10 w-10 rounded-xl bg-primary-green flex items-center justify-center font-black text-white text-xl shadow-md shrink-0">
-              E
-            </div>
-            {!isSidebarCollapsed && (
-              <div className="flex flex-col text-left leading-none truncate">
-                <span className="font-black text-lg tracking-tight text-white">
-                  ECO<span className="text-emerald-400">BAZAR</span>
-                </span>
-                <span className="text-[10px] font-bold text-emerald-300 tracking-wider uppercase mt-0.5">
-                  Retail OS & POS
-                </span>
-              </div>
-            )}
+            <Logo variant="light" size={isSidebarCollapsed ? 'sm' : 'md'} showTagline={!isSidebarCollapsed} />
           </div>
 
           {/* Desktop Collapse Toggle */}
@@ -1334,13 +1323,13 @@ function AdminDashboardShell() {
               </div>
 
               {/* ========================================================= */}
-              {/* 5 KEY KPI STAT CARDS */}
+              {/* 4 KEY KPI STAT CARDS (Matches Reference Screenshot) */}
               {/* ========================================================= */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-left">
-                {/* 1. Today's Revenue */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
+                {/* 1. Total Revenue */}
                 <Card className="p-4 flex flex-col justify-between hover:shadow-md transition">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-neutral-500">Today's Revenue</span>
+                    <span className="text-xs font-semibold text-neutral-500">Total Revenue</span>
                     <span className="h-8 w-8 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-primary-green flex items-center justify-center font-bold">
                       ৳
                     </span>
@@ -1366,25 +1355,27 @@ function AdminDashboardShell() {
                     <div className="text-2xl font-black text-neutral-900 dark:text-white tracking-tight">
                       {metrics.orders.toLocaleString()}
                     </div>
-                    <p className="text-[11px] text-neutral-400 mt-1">
-                      {metrics.ordersPos} In-Store POS • {metrics.ordersOnline} Online
-                    </p>
+                    <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 font-bold">
+                      <TrendingUp className="h-3 w-3" />
+                      <span>+8.5% vs yesterday</span>
+                    </div>
                   </div>
                 </Card>
 
-                {/* 3. Total Products */}
+                {/* 3. Active SKUs */}
                 <Card className="p-4 flex flex-col justify-between hover:shadow-md transition">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-neutral-500">Active SKUs</span>
-                    <Package className="h-4 w-4 text-indigo-500" />
+                    <Package className="h-4 w-4 text-amber-500" />
                   </div>
                   <div className="mt-3">
                     <div className="text-2xl font-black text-neutral-900 dark:text-white tracking-tight">
                       {metrics.activeProducts.toLocaleString()}
                     </div>
-                    <p className="text-[11px] text-emerald-600 font-bold mt-1">
-                      100% In-Stock Catalog
-                    </p>
+                    <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 font-bold">
+                      <TrendingUp className="h-3 w-3" />
+                      <span>+12.1% in stock</span>
+                    </div>
                   </div>
                 </Card>
 
@@ -1396,131 +1387,156 @@ function AdminDashboardShell() {
                   </div>
                   <div className="mt-3">
                     <div className="text-2xl font-black text-amber-950 dark:text-amber-200 tracking-tight">
-                      {metrics.lowStockCount} SKUs
+                      {metrics.lowStockCount}
                     </div>
                     <p className="text-[11px] text-amber-700 dark:text-amber-400 mt-1 font-medium">
-                      Requires warehouse dispatch
-                    </p>
-                  </div>
-                </Card>
-
-                {/* 5. Expiry Alerts */}
-                <Card className="p-4 flex flex-col justify-between hover:shadow-md transition border-rose-200 dark:border-rose-900/50 bg-rose-50/20">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-rose-700 dark:text-rose-400">FEFO Expiry (7d)</span>
-                    <CalendarClock className="h-4 w-4 text-rose-500" />
-                  </div>
-                  <div className="mt-3">
-                    <div className="text-2xl font-black text-rose-950 dark:text-rose-200 tracking-tight">
-                      {metrics.expiryAlertsCount} Batches
-                    </div>
-                    <p className="text-[11px] text-rose-700 dark:text-rose-400 mt-1 font-medium">
-                      Markdown action suggested
+                      Requires attention
                     </p>
                   </div>
                 </Card>
               </div>
 
               {/* ========================================================= */}
-              {/* SALES PERFORMANCE CHART & BRANCH TEAMS */}
+              {/* SALES PERFORMANCE CHART & BRANCH PERFORMANCE */}
               {/* ========================================================= */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
                 {/* Left 8 Cols: Sales Chart */}
-                <Card className="lg:col-span-8 p-5">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+                <Card className="lg:col-span-8 p-5 relative overflow-hidden">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                     <div>
                       <h3 className="text-base font-bold text-neutral-900 dark:text-white">
-                        7-Day Consolidated Revenue Performance
+                        Sales Performance
                       </h3>
-                      <p className="text-xs text-neutral-400">Omnichannel sales split: Physical Store POS vs Online Delivery</p>
+                      <p className="text-xs text-neutral-400">Omnichannel revenue trajectory</p>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2 text-xs font-semibold">
-                        <span className="h-3 w-3 rounded-full bg-forest-900 dark:bg-emerald-500" />
-                        <span>POS Store</span>
-                        <span className="h-3 w-3 rounded-full bg-amber-400 ml-2" />
-                        <span>Online Web/App</span>
-                      </div>
+                    <div className="flex items-center gap-2">
+                      <select className="text-xs font-bold bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl px-2.5 py-1 outline-hidden">
+                        <option>Last 30 Days</option>
+                        <option>Last 7 Days</option>
+                        <option>This Month</option>
+                      </select>
                     </div>
                   </div>
 
-                  {/* Responsive SVG Bar Chart */}
-                  <div className="h-64 w-full flex items-end justify-between gap-2 sm:gap-4 pt-6 px-2 border-b border-neutral-100 dark:border-neutral-800">
-                    {salesChartData.map((d, i) => {
-                      const maxTotal = 250000;
-                      const posHeight = Math.round((d.pos / maxTotal) * 200);
-                      const onlineHeight = Math.round((d.online / maxTotal) * 200);
+                  {/* Floating tooltip on curve (from screenshot) */}
+                  <div className="absolute top-16 right-20 bg-white dark:bg-neutral-800 border border-emerald-300 dark:border-emerald-700 shadow-md px-3 py-1.5 rounded-xl text-center z-10">
+                    <span className="text-xs font-black text-neutral-900 dark:text-white">৳120,500</span>
+                    <span className="text-[10px] text-primary-green font-bold block">+12.5% ↗</span>
+                  </div>
 
-                      return (
-                        <div key={i} className="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                          <div className="text-[10px] font-bold text-neutral-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                            ৳{Math.round(d.total / 1000)}k
-                          </div>
-                          <div className="w-full max-w-[36px] flex flex-col-reverse items-center rounded-t-lg overflow-hidden">
-                            <div
-                              style={{ height: `${posHeight}px` }}
-                              className="w-full bg-forest-900 dark:bg-emerald-600 transition-all duration-300 group-hover:brightness-110"
-                            />
-                            <div
-                              style={{ height: `${onlineHeight}px` }}
-                              className="w-full bg-amber-400 dark:bg-amber-500 transition-all duration-300"
-                            />
-                          </div>
-                          <span className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 truncate max-w-[48px]">
-                            {d.day}
-                          </span>
-                        </div>
-                      );
-                    })}
+                  {/* Smooth Curved Spline Line Chart (SVG) */}
+                  <div className="h-64 w-full pt-4 relative">
+                    <svg viewBox="0 0 500 200" className="w-full h-full overflow-visible">
+                      <defs>
+                        <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#21A366" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#21A366" stopOpacity="0.0" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Horizontal Grid lines */}
+                      <line x1="30" y1="30" x2="480" y2="30" stroke="#E5ECE7" strokeDasharray="3 3" />
+                      <line x1="30" y1="80" x2="480" y2="80" stroke="#E5ECE7" strokeDasharray="3 3" />
+                      <line x1="30" y1="130" x2="480" y2="130" stroke="#E5ECE7" strokeDasharray="3 3" />
+                      <line x1="30" y1="180" x2="480" y2="180" stroke="#E5ECE7" strokeWidth="1" />
+
+                      {/* Y-Axis Labels */}
+                      <text x="5" y="35" fontSize="9" fill="#9CA3AF" fontFamily="sans-serif">150k</text>
+                      <text x="5" y="85" fontSize="9" fill="#9CA3AF" fontFamily="sans-serif">100k</text>
+                      <text x="5" y="135" fontSize="9" fill="#9CA3AF" fontFamily="sans-serif">50k</text>
+                      <text x="5" y="185" fontSize="9" fill="#9CA3AF" fontFamily="sans-serif">0k</text>
+
+                      {/* Filled Area */}
+                      <path
+                        d="M 50 140 Q 100 110, 150 125 T 250 85 T 350 115 T 450 45 L 450 180 L 50 180 Z"
+                        fill="url(#areaGradient)"
+                      />
+
+                      {/* Smooth Green Curve */}
+                      <path
+                        d="M 50 140 Q 100 110, 150 125 T 250 85 T 350 115 T 450 45"
+                        fill="none"
+                        stroke="#21A366"
+                        strokeWidth="3.5"
+                        strokeLinecap="round"
+                      />
+
+                      {/* Key Data Point Markers */}
+                      <circle cx="50" cy="140" r="3.5" fill="#21A366" stroke="#FFFFFF" strokeWidth="2" />
+                      <circle cx="150" cy="125" r="3.5" fill="#21A366" stroke="#FFFFFF" strokeWidth="2" />
+                      <circle cx="250" cy="85" r="3.5" fill="#21A366" stroke="#FFFFFF" strokeWidth="2" />
+                      <circle cx="350" cy="115" r="3.5" fill="#21A366" stroke="#FFFFFF" strokeWidth="2" />
+                      <circle cx="450" cy="45" r="5" fill="#123C2D" stroke="#2EBD70" strokeWidth="3" />
+
+                      {/* X-Axis Day Labels */}
+                      <text x="45" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Mon</text>
+                      <text x="110" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Tue</text>
+                      <text x="180" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Wed</text>
+                      <text x="250" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Thu</text>
+                      <text x="320" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Fri</text>
+                      <text x="390" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Sat</text>
+                      <text x="450" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Sun</text>
+                    </svg>
                   </div>
                 </Card>
 
-                {/* Right 4 Cols: Branch Performance Comparison */}
+                {/* Right 4 Cols: Branch Performance */}
                 <Card className="lg:col-span-4 p-5 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-base font-bold text-neutral-900 dark:text-white">
-                      Branch Performance
-                    </h3>
-                    <p className="text-xs text-neutral-400 mb-4">Direct multi-store metric tally</p>
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-base font-bold text-neutral-900 dark:text-white">
+                        Branch Performance
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => setActiveRouteId('branches')}
+                        className="text-xs font-bold text-primary-green hover:underline"
+                      >
+                        View All →
+                      </button>
+                    </div>
 
                     <div className="space-y-4">
-                      <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/60 space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs text-neutral-900 dark:text-white">Dhanmondi #01 (Flagship)</span>
-                          <Badge variant="forest" size="sm">45% Share</Badge>
+                      {/* Branch 1 */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-bold text-neutral-900 dark:text-white">Dhanmondi #01</span>
+                          <span className="font-black text-forest-900 dark:text-emerald-400">৳83,025</span>
                         </div>
-                        <div className="flex items-center justify-between text-xs text-neutral-500">
-                          <span>Today's Sales: <strong>৳ 83,025</strong></span>
-                          <span>154 Orders</span>
+                        <div className="h-2 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                          <div className="h-full bg-primary-green rounded-full" style={{ width: '45%' }} />
                         </div>
+                        <span className="text-[10px] text-neutral-400 font-semibold block text-right">45%</span>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/60 space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs text-neutral-900 dark:text-white">Gulshan-2 #02</span>
-                          <Badge variant="mint" size="sm">35% Share</Badge>
+                      {/* Branch 2 */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-bold text-neutral-900 dark:text-white">Gulshan #02</span>
+                          <span className="font-black text-forest-900 dark:text-emerald-400">৳64,575</span>
                         </div>
-                        <div className="flex items-center justify-between text-xs text-neutral-500">
-                          <span>Today's Sales: <strong>৳ 64,575</strong></span>
-                          <span>119 Orders</span>
+                        <div className="h-2 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                          <div className="h-full bg-primary-green rounded-full" style={{ width: '35%' }} />
                         </div>
+                        <span className="text-[10px] text-neutral-400 font-semibold block text-right">35%</span>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/60 space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs text-neutral-900 dark:text-white">Uttara Sector 11 #03</span>
-                          <Badge variant="outline" size="sm">20% Share</Badge>
+                      {/* Branch 3 */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-bold text-neutral-900 dark:text-white">Uttara #03</span>
+                          <span className="font-black text-forest-900 dark:text-emerald-400">৳36,900</span>
                         </div>
-                        <div className="flex items-center justify-between text-xs text-neutral-500">
-                          <span>Today's Sales: <strong>৳ 36,900</strong></span>
-                          <span>69 Orders</span>
+                        <div className="h-2 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                          <div className="h-full bg-primary-green rounded-full" style={{ width: '20%' }} />
                         </div>
+                        <span className="text-[10px] text-neutral-400 font-semibold block text-right">20%</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-neutral-400">Total 3 Operating Stores</span>
+                    <span className="text-xs font-semibold text-neutral-400">Dhaka Region Active</span>
                     <Button variant="outline" size="sm" onClick={() => setActiveRouteId('branches')}>
                       Manage Branches →
                     </Button>
@@ -1529,226 +1545,206 @@ function AdminDashboardShell() {
               </div>
 
               {/* ========================================================= */}
-              {/* LIVE RECENT TRANSACTIONS TABLE */}
+              {/* BOTTOM 3-COLUMN ROW (Matches Reference Screenshot) */}
               {/* ========================================================= */}
-              <Card className="text-left">
-                <CardHeader className="p-5 pb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div>
-                    <CardTitle className="text-base font-bold text-neutral-900 dark:text-white">
-                      Live Omnichannel Transactions
-                    </CardTitle>
-                    <CardDescription className="text-xs text-neutral-500">
-                      Real-time feed of in-store POS receipts & online orders
-                    </CardDescription>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
+                {/* Column 1: Top Selling Products */}
+                <Card className="p-5">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-base font-bold text-neutral-900 dark:text-white">
+                      Top Selling Products
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setActiveRouteId('products')}
+                      className="text-xs font-bold text-primary-green hover:underline"
+                    >
+                      View All →
+                    </button>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" onClick={() => setActiveRouteId('orders')}>
-                      View All Orders
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-xs text-left border-collapse">
-                      <thead className="bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 uppercase font-bold border-y border-neutral-200 dark:border-neutral-800">
-                        <tr>
-                          <th className="py-3 px-4">Order ID</th>
-                          <th className="py-3 px-4">Channel</th>
-                          <th className="py-3 px-4">Branch</th>
-                          <th className="py-3 px-4">Customer</th>
-                          <th className="py-3 px-4 text-center">Items</th>
-                          <th className="py-3 px-4 text-right">Total Amount</th>
-                          <th className="py-3 px-4 text-center">Payment</th>
-                          <th className="py-3 px-4 text-center">Status</th>
-                          <th className="py-3 px-4 text-right">Time</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
-                        {demoOrders.map((ord) => (
-                          <tr key={ord.id} className="hover:bg-neutral-50/80 dark:hover:bg-neutral-800/40 transition">
-                            <td className="py-3.5 px-4 font-mono font-bold text-neutral-900 dark:text-white">
-                              {ord.id}
-                            </td>
-                            <td className="py-3.5 px-4">
-                              <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
-                                ord.channel === 'POS_STORE'
-                                  ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
-                                  : 'bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300'
-                              }`}>
-                                {ord.channel}
-                              </span>
-                            </td>
-                            <td className="py-3.5 px-4 text-neutral-600 dark:text-neutral-300">{ord.branch}</td>
-                            <td className="py-3.5 px-4 font-medium text-neutral-900 dark:text-white truncate max-w-[160px]">
-                              {ord.customer}
-                            </td>
-                            <td className="py-3.5 px-4 text-center font-mono">{ord.itemsCount}</td>
-                            <td className="py-3.5 px-4 text-right font-black text-forest-900 dark:text-emerald-400">
-                              ৳ {ord.total.toLocaleString()}
-                            </td>
-                            <td className="py-3.5 px-4 text-center">
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
-                                {ord.paymentMethod}
-                              </span>
-                            </td>
-                            <td className="py-3.5 px-4 text-center">
-                              <Badge
-                                variant={
-                                  ord.status === 'COMPLETED' ? 'success' : ord.status === 'PROCESSING' ? 'warning' : 'info'
-                                }
-                                size="sm"
-                              >
-                                {ord.status}
-                              </Badge>
-                            </td>
-                            <td className="py-3.5 px-4 text-right text-neutral-400 text-[11px] whitespace-nowrap">
-                              {ord.createdAt}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* ========================================================= */}
-              {/* TOP SELLING PRODUCTS & AI INSIGHTS PREVIEW */}
-              {/* ========================================================= */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
-                {/* Top Selling Products (7 cols) */}
-                <Card className="lg:col-span-7 p-5">
-                  <h3 className="text-base font-bold text-neutral-900 dark:text-white mb-1">
-                    Top Selling SKUs Today
-                  </h3>
-                  <p className="text-xs text-neutral-400 mb-4">Fastest moving inventory items across store registers</p>
 
                   <div className="space-y-3">
-                    {demoCatalogProducts.slice(0, 4).map((p) => (
-                      <div
-                        key={p.id}
-                        className="flex items-center justify-between p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/40 hover:bg-white dark:hover:bg-neutral-800 transition"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="h-12 w-12 rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-700 shrink-0">
-                            <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
-                          </div>
-                          <div className="space-y-0.5">
-                            <p className="text-xs font-bold text-neutral-900 dark:text-white">{p.name}</p>
-                            <p className="text-[10px] text-neutral-400 font-mono">SKU: {p.sku} • {p.category}</p>
-                          </div>
+                    <div className="flex items-center justify-between p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-lg overflow-hidden bg-neutral-100 shrink-0">
+                          <img
+                            src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=160&auto=format&fit=crop&q=80"
+                            alt="Fresh Tomato"
+                            className="h-full w-full object-cover"
+                          />
                         </div>
-                        <div className="text-right">
-                          <p className="text-xs font-black text-forest-900 dark:text-emerald-400">৳ {p.revenue.toLocaleString()}</p>
-                          <p className="text-[10px] text-neutral-400 font-semibold">{p.soldUnits} units sold</p>
+                        <div>
+                          <p className="text-xs font-bold text-neutral-900 dark:text-white">Fresh Tomato</p>
+                          <p className="text-[11px] text-neutral-500 font-black">৳ 80</p>
                         </div>
                       </div>
-                    ))}
+                      <span className="text-xs font-black text-emerald-600">+24%</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-lg overflow-hidden bg-neutral-100 shrink-0">
+                          <img
+                            src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=160&auto=format&fit=crop&q=80"
+                            alt="Banana"
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-neutral-900 dark:text-white">Banana</p>
+                          <p className="text-[11px] text-neutral-500 font-black">৳ 60</p>
+                        </div>
+                      </div>
+                      <span className="text-xs font-black text-emerald-600">+20%</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-lg overflow-hidden bg-neutral-100 shrink-0">
+                          <img
+                            src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=160&auto=format&fit=crop&q=80"
+                            alt="Rice (Miniket)"
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-neutral-900 dark:text-white">Rice (Miniket)</p>
+                          <p className="text-[11px] text-neutral-500 font-black">৳ 280</p>
+                        </div>
+                      </div>
+                      <span className="text-xs font-black text-emerald-600">+18%</span>
+                    </div>
                   </div>
                 </Card>
 
-                {/* AI Insights & Pending Tasks (5 cols) */}
-                <div className="lg:col-span-5 space-y-5">
-                  {/* High-Contrast AI Insights Box */}
-                  <div
-                    style={{ backgroundColor: '#123C2D' }}
-                    className="rounded-3xl p-5 text-white shadow-xl border border-emerald-700/60 space-y-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="h-4 w-4 text-amber-300" />
-                        <span className="text-xs font-black uppercase tracking-wider text-emerald-200">
-                          ECOBAZAR AI Intelligence
-                        </span>
-                      </div>
-                      <Badge variant="mint" size="sm" className="bg-emerald-300 text-forest-950 font-black text-[10px]">
-                        Active Model
-                      </Badge>
+                {/* Column 2: ECOBAZAR Intelligence */}
+                <Card className="p-5 flex flex-col justify-between border-emerald-200 dark:border-emerald-800">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">💡</span>
+                      <h3 className="text-base font-bold text-neutral-900 dark:text-white">
+                        ECOBAZAR Intelligence
+                      </h3>
                     </div>
 
-                    <h4 className="text-base font-black leading-snug text-white">
-                      Automated Restock & Margin Insights
-                    </h4>
+                    <p className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                      Sales are expected to increase by <strong>25%</strong> this week.
+                    </p>
 
-                    <div className="space-y-2.5 text-xs">
-                      <div className="p-3 rounded-xl bg-forest-800/90 border border-emerald-700/60">
-                        <p className="font-extrabold text-amber-300 flex items-center gap-1.5">
-                          <span>💡</span> Demand Spike Forecast
-                        </p>
-                        <p className="text-[11px] text-white mt-1 leading-relaxed">
-                          Aromatic Chinigura Rice expected to surge +35% this weekend. Suggested PO: 200 bags to avoid stockout.
-                        </p>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-forest-800/90 border border-emerald-700/60">
-                        <p className="font-extrabold text-emerald-300 flex items-center gap-1.5">
-                          <span>⚡</span> FEFO Markdown Opportunity
-                        </p>
-                        <p className="text-[11px] text-white mt-1 leading-relaxed">
-                          8 batches of farm milk expire in 72 hours. Applying a 15% flash sale will recover ৳ 9,400 in revenue.
-                        </p>
-                      </div>
-                    </div>
+                    <Button
+                      variant="forest"
+                      size="sm"
+                      onClick={() => {
+                        setActiveRouteId('ai-assistant');
+                        toast.info('AI Intelligence', 'Opening demand forecast & FEFO recommendations');
+                      }}
+                      className="mt-2 font-black"
+                    >
+                      View Insights →
+                    </Button>
                   </div>
 
-                  {/* Pending Operational Checklist */}
-                  <Card className="p-5">
-                    <h4 className="text-sm font-bold text-neutral-900 dark:text-white mb-2">
-                      Pending Operational Tasks
-                    </h4>
+                  {/* Growth chart graphic */}
+                  <div className="mt-4 pt-3 flex items-end justify-center gap-2 h-20">
+                    <div className="w-5 bg-emerald-100 rounded-t h-8" />
+                    <div className="w-5 bg-emerald-200 rounded-t h-12" />
+                    <div className="w-5 bg-emerald-400 rounded-t h-16" />
+                    <div className="w-5 bg-primary-green rounded-t h-20" />
+                    <TrendingUp className="h-6 w-6 text-primary-green ml-2" />
+                  </div>
+                </Card>
+
+                {/* Column 3: Stacked Recent Orders & Pending Tasks */}
+                <div className="space-y-6">
+                  {/* Recent Orders */}
+                  <Card className="p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Recent Orders</h4>
+                      <button
+                        type="button"
+                        onClick={() => setActiveRouteId('orders')}
+                        className="text-xs font-bold text-primary-green hover:underline"
+                      >
+                        View All →
+                      </button>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-mono font-bold text-neutral-900 dark:text-white">#ORD-2026116-992</span>
+                        <span className="font-black text-forest-900 dark:text-emerald-400">৳1,250</span>
+                        <Badge variant="warning" size="sm">Processing</Badge>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-mono font-bold text-neutral-900 dark:text-white">#ORD-2026116-991</span>
+                        <span className="font-black text-forest-900 dark:text-emerald-400">৳4,800</span>
+                        <Badge variant="info" size="sm">Shipped</Badge>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-mono font-bold text-neutral-900 dark:text-white">#ORD-2026116-990</span>
+                        <span className="font-black text-forest-900 dark:text-emerald-400">৳1,420</span>
+                        <Badge variant="success" size="sm">Delivered</Badge>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Pending Tasks with Interactive Checkmarks */}
+                  <Card className="p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Pending Tasks</h4>
+                      <span className="text-xs text-neutral-400 font-semibold">Today</span>
+                    </div>
+
                     <div className="space-y-2 text-xs">
                       {/* Task 1 */}
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
-                        <div className="flex items-center gap-2">
-                          <Clock className={`h-4 w-4 ${taskVerificationStatus === 'verified' ? 'text-primary-green' : 'text-amber-500'}`} />
-                          <span className={taskVerificationStatus === 'verified' ? 'line-through text-neutral-400' : ''}>
-                            Cashier Drawer Reconciliation (Reg #03)
-                          </span>
+                      <div
+                        onClick={() => {
+                          setTaskVerificationStatus((prev) => (prev === 'verified' ? 'pending' : 'verified'));
+                          toast.success('Task Toggled', 'Milk restock task updated');
+                        }}
+                        className="flex items-center gap-2.5 p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800 cursor-pointer hover:bg-neutral-100 transition"
+                      >
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center ${
+                          taskVerificationStatus === 'verified' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300'
+                        }`}>
+                          {taskVerificationStatus === 'verified' && <Check className="h-3 w-3" />}
                         </div>
-                        {taskVerificationStatus === 'pending' ? (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-7 text-[11px] font-bold"
-                            onClick={() => {
-                              setTaskVerificationStatus('verified');
-                              toast.success('Task Verified', 'Cashier register drawer verified and balanced.');
-                            }}
-                          >
-                            Verify
-                          </Button>
-                        ) : (
-                          <span className="text-[11px] font-bold text-primary-green flex items-center gap-1">
-                            <Check className="h-3 w-3" /> Done
-                          </span>
-                        )}
+                        <span className={taskVerificationStatus === 'verified' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
+                          Restock Milk Products
+                        </span>
                       </div>
 
                       {/* Task 2 */}
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
-                        <div className="flex items-center gap-2">
-                          <Truck className={`h-4 w-4 ${taskReceivingStatus === 'received' ? 'text-primary-green' : 'text-blue-500'}`} />
-                          <span className={taskReceivingStatus === 'received' ? 'line-through text-neutral-400' : ''}>
-                            Inspect Bogura Agro Produce Delivery
-                          </span>
+                      <div
+                        onClick={() => {
+                          setTaskReceivingStatus((prev) => (prev === 'received' ? 'pending' : 'received'));
+                          toast.success('Task Toggled', 'Expiry alert checked');
+                        }}
+                        className="flex items-center gap-2.5 p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800 cursor-pointer hover:bg-neutral-100 transition"
+                      >
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center ${
+                          taskReceivingStatus === 'received' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300'
+                        }`}>
+                          {taskReceivingStatus === 'received' && <Check className="h-3 w-3" />}
                         </div>
-                        {taskReceivingStatus === 'pending' ? (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-7 text-[11px] font-bold"
-                            onClick={() => {
-                              setTaskReceivingStatus('received');
-                              toast.success('Goods Received', 'Bogura Agro produce GRN signed and added to inventory.');
-                            }}
-                          >
-                            Receive
-                          </Button>
-                        ) : (
-                          <span className="text-[11px] font-bold text-primary-green flex items-center gap-1">
-                            <Check className="h-3 w-3" /> Done
-                          </span>
-                        )}
+                        <span className={taskReceivingStatus === 'received' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
+                          Check Expiry Alert (2 items)
+                        </span>
+                      </div>
+
+                      {/* Task 3 */}
+                      <div
+                        onClick={() => {
+                          toast.info('Sales Report', 'Generating today\'s register audit report');
+                        }}
+                        className="flex items-center gap-2.5 p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800 cursor-pointer hover:bg-neutral-100 transition"
+                      >
+                        <div className="h-4 w-4 rounded-md border border-neutral-300 flex items-center justify-center" />
+                        <span className="font-bold text-neutral-700 dark:text-neutral-200">
+                          Review Today's Sales Report
+                        </span>
                       </div>
                     </div>
                   </Card>

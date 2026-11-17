@@ -23,4 +23,5 @@ export * from './components/toast';
 export * from './components/skeleton';
 export * from './components/empty-state';
 export * from './components/confirmation-dialog';
+export * from './components/logo';
 export * from './utils/cn';
