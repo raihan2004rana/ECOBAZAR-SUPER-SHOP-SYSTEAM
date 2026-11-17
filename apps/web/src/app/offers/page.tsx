@@ -59,7 +59,7 @@ export default function OffersPage() {
       price: 320,
       originalPrice: 440,
       savings: '27% Off',
-      image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=80',
+      image: 'https://i.ibb.co.com/4gjhSSh9/Gemini-Generated-Image-zgrqmtzgrqmtzgrq.jpg',
       items: [masterCatalogProducts[0], masterCatalogProducts[1]],
     },
     {
@@ -69,7 +69,7 @@ export default function OffersPage() {
       price: 490,
       originalPrice: 640,
       savings: '23% Off',
-      image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop&q=80',
+      image: 'https://i.ibb.co.com/LXW3pD94/Gemini-Generated-Image-83hhw683hhw683hh.jpg',
       items: [masterCatalogProducts[2], masterCatalogProducts[1]],
     },
   ];

@@ -1060,7 +1060,7 @@ export const masterCatalogProducts: ProductItem[] = [
     stock: 30,
     badge: 'RIVER FRESH',
     badgeColor: 'green',
-    image: 'https://images.unsplash.com/photo-1534948216015-843149f72be3?w=600&auto=format&fit=crop&q=80',
+    image: '/images/products/katla-fish.avif',
     description: 'Firm, fleshy Katla steaks cut from 3kg+ wild river fish. Ideal for rich Bengali mustard and tomato shorshe jhol.',
     specifications: { 'Fish Weight': 'From 3kg+ size', 'Dressed': 'Cleaned and cut', 'Chilled': '0°C to 2°C' },
   },
