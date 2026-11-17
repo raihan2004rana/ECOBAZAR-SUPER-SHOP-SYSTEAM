@@ -60,6 +60,11 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
     }
   }, [searchParams?.sub]);
 
+  // Reset pagination when filter criteria change
+  React.useEffect(() => {
+    setVisibleCount(8);
+  }, [selectedSubcategory, selectedPriceRange, sortBy]);
+
   // Promo slider autoplay
   React.useEffect(() => {
     if (category.promoSlides.length <= 1) return;

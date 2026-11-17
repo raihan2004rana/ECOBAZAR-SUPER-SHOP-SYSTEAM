@@ -18,11 +18,12 @@ interface CartContextType {
   cartGrandTotal: number;
   appliedCoupon: string | null;
   applyCoupon: (code: string) => boolean;
-  addToCart: (product: ProductItem, e?: React.MouseEvent) => void;
+  addToCart: (product: ProductItem, e?: React.MouseEvent, quantityToAdd?: number) => void;
   updateQuantity: (productId: string, delta: number) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
   addedFeedback: Record<string, boolean>;
+  isHydrated: boolean;
 
   // Wishlist
   wishlistMap: Record<string, boolean>;
@@ -75,30 +76,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     try {
       const storedCart = localStorage.getItem('ecobazar_cart_v4');
-      if (storedCart) {
+      if (storedCart !== null) {
         const parsed = JSON.parse(storedCart);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           setCartItems(parsed);
-        } else {
-          // Default initial items
-          setCartItems([
-            { product: masterCatalogProducts[0], quantity: 2 },
-            { product: masterCatalogProducts[1], quantity: 1 },
-          ]);
         }
-      } else {
-        setCartItems([
-          { product: masterCatalogProducts[0], quantity: 2 },
-          { product: masterCatalogProducts[1], quantity: 1 },
-        ]);
       }
 
       const storedWishlist = localStorage.getItem('ecobazar_wishlist_v4');
-      if (storedWishlist) {
-        setWishlistMap(JSON.parse(storedWishlist));
+      if (storedWishlist !== null) {
+        const parsedWish = JSON.parse(storedWishlist);
+        if (parsedWish && typeof parsedWish === 'object') {
+          setWishlistMap(parsedWish);
+        }
+      }
+
+      const storedBranchId = localStorage.getItem('ecobazar_branch_v4');
+      if (storedBranchId) {
+        const found = storeBranches.find((b) => b.id === storedBranchId);
+        if (found) setSelectedBranch(found);
       }
     } catch {
-      // Fallback
+      // Fallback safely
     } finally {
       setIsHydrated(true);
     }
@@ -120,10 +119,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [wishlistMap, isHydrated]);
 
+  // Sync Branch
+  React.useEffect(() => {
+    if (!isHydrated) return;
+    try {
+      localStorage.setItem('ecobazar_branch_v4', selectedBranch.id);
+    } catch {}
+  }, [selectedBranch, isHydrated]);
+
   // Totals
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const cartSubtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-  const discountAmount = appliedCoupon === 'ECO10' ? Math.round(cartSubtotal * 0.1) : 0;
+  const discountAmount =
+    appliedCoupon === 'ECO10'
+      ? Math.round(cartSubtotal * 0.1)
+      : appliedCoupon === 'DHAKA25'
+      ? Math.min(100, cartSubtotal)
+      : 0;
   const deliveryFee = cartSubtotal >= 1000 || appliedCoupon === 'FREESHIP' ? 0 : 50;
   const cartGrandTotal = Math.max(0, cartSubtotal - discountAmount + deliveryFee);
 
@@ -139,25 +151,35 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       toast.success('Coupon Applied!', 'Free delivery granted on this order.');
       return true;
     }
-    toast.error('Invalid Voucher', 'Code not recognized. Try "ECO10" or "FREESHIP".');
+    if (clean === 'DHAKA25') {
+      setAppliedCoupon('DHAKA25');
+      toast.success('Coupon Applied!', '৳100 Instant Discount applied.');
+      return true;
+    }
+    toast.error('Invalid Voucher', 'Code not recognized. Try "ECO10", "FREESHIP", or "DHAKA25".');
     return false;
   };
 
-  const addToCart = (product: ProductItem, e?: React.MouseEvent) => {
+  const addToCart = (product: ProductItem, e?: React.MouseEvent, quantityToAdd: number = 1) => {
     if (e) e.stopPropagation();
+
+    const qty = Math.max(1, quantityToAdd);
 
     setCartItems((prev) => {
       const existing = prev.find((item) => item.product.id === product.id);
       if (existing) {
-        if (existing.quantity >= product.stock) {
+        const targetQty = existing.quantity + qty;
+        if (targetQty > product.stock) {
           toast.warning('Stock Limit', `Only ${product.stock} units available in stock.`);
-          return prev;
+          return prev.map((item) =>
+            item.product.id === product.id ? { ...item, quantity: product.stock } : item
+          );
         }
         return prev.map((item) =>
-          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.product.id === product.id ? { ...item, quantity: targetQty } : item
         );
       }
-      return [...prev, { product, quantity: 1 }];
+      return [...prev, { product, quantity: Math.min(product.stock, qty) }];
     });
 
     setAddedFeedback((prev) => ({ ...prev, [product.id]: true }));
@@ -165,7 +187,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setAddedFeedback((prev) => ({ ...prev, [product.id]: false }));
     }, 1200);
 
-    toast.success('Added to Cart', `${product.name} (৳${product.price}) added.`);
+    toast.success(
+      'Added to Cart',
+      `${qty > 1 ? `${qty}x ` : ''}${product.name} (৳${product.price * qty}) added.`
+    );
   };
 
   const updateQuantity = (productId: string, delta: number) => {
@@ -178,7 +203,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               toast.warning('Stock Limit', `Maximum available stock is ${entry.product.stock}`);
               return entry;
             }
-            return { ...entry, quantity: Math.max(1, nextQty) };
+            return { ...entry, quantity: nextQty };
           }
           return entry;
         })
@@ -193,6 +218,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = () => {
     setCartItems([]);
+    toast.info('Cart Cleared', 'All items removed from your shopping cart.');
   };
 
   const toggleWishlist = (product: ProductItem, e?: React.MouseEvent) => {
@@ -214,7 +240,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     clearCart();
     setIsCheckoutModalOpen(false);
     setIsCartDrawerOpen(false);
-    toast.success('Order Placed Successfully!', `Order #${orderNum} confirmed. Delivery in ~${selectedBranch.deliveryTime}.`);
+    toast.success(
+      'Order Placed Successfully!',
+      `Order #${orderNum} confirmed. Delivery in ~${selectedBranch.deliveryTime}.`
+    );
     return orderNum;
   };
 
@@ -234,6 +263,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         removeFromCart,
         clearCart,
         addedFeedback,
+        isHydrated,
         wishlistMap,
         wishlistProducts,
         toggleWishlist,

@@ -65,6 +65,9 @@ export const WishlistDrawer: React.FC = () => {
                   src={product.image}
                   alt={product.name}
                   className="w-16 h-16 rounded-lg object-cover bg-[#F7F9F5] border border-[#E5ECE7]"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/hero-fruits-veggies.jpg';
+                  }}
                 />
                 <div className="flex-1 min-w-0">
                   <h4 className="text-xs font-bold text-[#17251F] truncate leading-tight">

@@ -140,6 +140,17 @@ export const Modals: React.FC = () => {
       const orderId = handlePlaceOrder();
       setIsSubmittingOrder(false);
       setTrackingId(orderId);
+      setTrackedOrder({
+        id: orderId,
+        date: 'Just Now',
+        status: 'Order Confirmed',
+        step: 1,
+        riderName: 'Assigning nearest rider...',
+        riderPhone: '+880 9612-000000',
+        eta: selectedBranch.deliveryTime,
+        branch: selectedBranch.name,
+        address: deliveryAddress,
+      });
     }, 800);
   };
 
@@ -261,9 +272,7 @@ export const Modals: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      for (let i = 0; i < modalQty; i++) {
-                        addToCart(selectedProductForModal);
-                      }
+                      addToCart(selectedProductForModal, undefined, modalQty);
                       setSelectedProductForModal(null);
                     }}
                     className="flex-1 flex items-center justify-center gap-2 bg-[#21A366] hover:bg-[#123C2D] text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all"

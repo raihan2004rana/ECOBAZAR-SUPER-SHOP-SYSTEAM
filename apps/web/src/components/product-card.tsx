@@ -96,6 +96,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           alt={product.name}
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = '/images/hero-fruits-veggies.jpg';
+          }}
         />
         {product.stock <= 5 && product.stock > 0 && (
           <span className="absolute bottom-2 left-2 text-[10px] font-semibold bg-amber-500/90 text-white px-2 py-0.5 rounded-md backdrop-blur-xs">

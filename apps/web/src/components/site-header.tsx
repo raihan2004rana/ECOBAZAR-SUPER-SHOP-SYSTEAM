@@ -31,6 +31,7 @@ export const SiteHeader: React.FC = () => {
     totalCartCount,
     cartGrandTotal,
     wishlistProducts,
+    isHydrated,
     setIsCartDrawerOpen,
     setIsWishlistDrawerOpen,
     setIsBranchModalOpen,
@@ -184,12 +185,26 @@ export const SiteHeader: React.FC = () => {
                 value={searchQuery}
                 onFocus={() => setIsSearchFocused(true)}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && searchResults.length > 0) {
+                    setSelectedProductForModal(searchResults[0]);
+                    setIsSearchFocused(false);
+                    setSearchQuery('');
+                  }
+                }}
                 className="w-full pl-11 pr-24 py-2.5 bg-[#F7F9F5] hover:bg-white focus:bg-white text-sm rounded-full border border-[#E5ECE7] focus:border-[#21A366] focus:ring-2 focus:ring-[#21A366]/20 transition-all text-[#17251F] placeholder:text-[#64736B]"
               />
               <Search className="w-4 h-4 text-[#64736B] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
 
               <button
                 type="button"
+                onClick={() => {
+                  if (searchResults.length > 0) {
+                    setSelectedProductForModal(searchResults[0]);
+                    setIsSearchFocused(false);
+                    setSearchQuery('');
+                  }
+                }}
                 className="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold rounded-full transition-colors"
               >
                 Search
@@ -279,7 +294,7 @@ export const SiteHeader: React.FC = () => {
               <div className="w-9 h-9 rounded-full bg-[#F7F9F5] border border-[#E5ECE7] flex items-center justify-center text-gray-700">
                 <Heart className="w-4 h-4" />
               </div>
-              {wishlistProducts.length > 0 && (
+              {isHydrated && wishlistProducts.length > 0 && (
                 <span className="absolute top-1 right-1 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
                   {wishlistProducts.length}
                 </span>
@@ -295,7 +310,7 @@ export const SiteHeader: React.FC = () => {
             >
               <div className="relative">
                 <ShoppingBag className="w-5 h-5" />
-                {totalCartCount > 0 && (
+                {isHydrated && totalCartCount > 0 && (
                   <span className="absolute -top-2 -right-2.5 w-4 h-4 rounded-full bg-[#F4A340] text-[#17251F] text-[10px] font-black flex items-center justify-center">
                     {totalCartCount}
                   </span>
@@ -303,7 +318,7 @@ export const SiteHeader: React.FC = () => {
               </div>
               <div className="hidden sm:block text-left text-xs leading-none">
                 <p className="text-[10px] text-white/80 font-medium">Cart</p>
-                <p className="font-extrabold text-white mt-0.5">৳{cartGrandTotal}</p>
+                <p className="font-extrabold text-white mt-0.5">৳{isHydrated ? cartGrandTotal : 0}</p>
               </div>
             </button>
           </div>
@@ -318,6 +333,13 @@ export const SiteHeader: React.FC = () => {
               value={searchQuery}
               onFocus={() => setIsSearchFocused(true)}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchResults.length > 0) {
+                  setSelectedProductForModal(searchResults[0]);
+                  setIsSearchFocused(false);
+                  setSearchQuery('');
+                }
+              }}
               className="w-full pl-10 pr-4 py-2 bg-[#F7F9F5] text-xs rounded-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366]"
             />
             <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />

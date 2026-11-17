@@ -76,7 +76,7 @@ export default function DealsPage() {
                 <p className="text-xs uppercase font-extrabold text-rose-300 tracking-wider mb-2">
                   DEALS REFRESH IN:
                 </p>
-                <div className="flex items-center gap-2 font-mono text-2xl font-black text-white">
+                <div className="flex items-center gap-2 font-mono text-2xl font-black text-white" suppressHydrationWarning>
                   <div className="bg-white/20 px-3 py-1.5 rounded-xl">
                     {String(timeLeft.hours).padStart(2, '0')}
                     <span className="text-[10px] block font-sans font-normal text-white/70">HRS</span>

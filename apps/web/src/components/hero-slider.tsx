@@ -122,6 +122,9 @@ export const HeroSlider: React.FC = () => {
               src={slide.image}
               alt={slide.title}
               className="w-full h-full object-cover object-center transition-all duration-700 ease-out transform scale-100 group-hover:scale-102"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/images/hero-fruits-veggies.jpg';
+              }}
             />
             {/* Multi-stage dark green backdrop gradient for crystal-clear readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#123C2D]/95 via-[#123C2D]/85 to-transparent sm:w-3/4" />

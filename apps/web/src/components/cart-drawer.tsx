@@ -126,6 +126,9 @@ export const CartDrawer: React.FC = () => {
                   src={product.image}
                   alt={product.name}
                   className="w-16 h-16 rounded-lg object-cover bg-[#F7F9F5] border border-[#E5ECE7]"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/hero-fruits-veggies.jpg';
+                  }}
                 />
                 <div className="flex-1 min-w-0">
                   <h4 className="text-xs font-bold text-[#17251F] truncate leading-tight">
@@ -184,7 +187,7 @@ export const CartDrawer: React.FC = () => {
                 <Tag className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Voucher code (ECO10 or FREESHIP)"
+                  placeholder="Voucher code (ECO10, FREESHIP, DHAKA25)"
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366] bg-white font-medium uppercase tracking-wider"
@@ -213,7 +216,13 @@ export const CartDrawer: React.FC = () => {
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-emerald-600 font-semibold">
-                  <span>Voucher Discount (10%):</span>
+                  <span>
+                    {appliedCoupon === 'ECO10'
+                      ? 'Voucher Discount (10%):'
+                      : appliedCoupon === 'DHAKA25'
+                      ? 'bKash Special Voucher:'
+                      : 'Discount:'}
+                  </span>
                   <span>- ৳{discountAmount}</span>
                 </div>
               )}

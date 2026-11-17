@@ -161,7 +161,7 @@ export default function HomePage() {
                 <div className="flex items-center gap-1.5 text-xs font-bold text-[#17251F] bg-[#F7F9F5] px-3.5 py-1.5 rounded-xl border border-[#E5ECE7]">
                   <Clock className="w-4 h-4 text-rose-500" />
                   <span className="text-[#64736B]">Ends in:</span>
-                  <span className="font-mono text-rose-600 font-extrabold">
+                  <span className="font-mono text-rose-600 font-extrabold" suppressHydrationWarning>
                     {String(timeLeft.hours).padStart(2, '0')}:
                     {String(timeLeft.minutes).padStart(2, '0')}:
                     {String(timeLeft.seconds).padStart(2, '0')}
