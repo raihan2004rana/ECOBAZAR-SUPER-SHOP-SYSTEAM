@@ -255,42 +255,40 @@ export default function HomePage() {
               {index === 2 && (
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="rounded-3xl bg-gradient-to-r from-amber-500 to-amber-600 p-6 sm:p-8 text-white flex items-center justify-between shadow-md">
-                      <div className="space-y-2 max-w-sm">
-                        <span className="text-xs font-black uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
-                          Yogurt & Dessert Special
-                        </span>
-                        <h3 className="text-2xl font-black">Sweet & Sour Bogura Doi</h3>
-                        <p className="text-xs text-white/90">
-                          Traditional earthen pot curd made from fresh cow milk.
-                        </p>
+                    {/* 1. Bogura Doi Promotional Banner */}
+                    <div className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] hover:shadow-xl transition-all duration-300 min-h-[220px] sm:min-h-[260px] flex flex-col justify-end p-6 sm:p-8">
+                      <img
+                        src="/images/banner-bogura-doi.jpg"
+                        alt="ঐতিহ্যবাহী বগুড়ার দই"
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                      />
+                      <div className="relative z-10">
                         <Link
                           href="/category/dairy-eggs"
-                          className="inline-block bg-white text-amber-700 px-4 py-2 rounded-xl text-xs font-black mt-2 hover:bg-[#123C2D] hover:text-white transition-colors"
+                          className="inline-flex items-center gap-1.5 bg-[#123C2D] hover:bg-[#21A366] text-white px-5 py-2.5 rounded-xl text-xs font-black shadow-md hover:shadow-lg transition-all active:scale-95"
                         >
-                          Order Curd Now →
+                          <span>Order Curd Now</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
-                      <div className="text-5xl hidden sm:block">🥣</div>
                     </div>
 
-                    <div className="rounded-3xl bg-gradient-to-r from-[#123C2D] to-[#21A366] p-6 sm:p-8 text-white flex items-center justify-between shadow-md">
-                      <div className="space-y-2 max-w-sm">
-                        <span className="text-xs font-black uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
-                          Dhaka Fast Delivery
-                        </span>
-                        <h3 className="text-2xl font-black">Farm Fresh Grocery Pass</h3>
-                        <p className="text-xs text-white/90">
-                          Get unlimited FREE delivery on orders over ৳500 with code FREESHIP.
-                        </p>
+                    {/* 2. Farm Fresh Grocery Promotional Banner */}
+                    <div className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] hover:shadow-xl transition-all duration-300 min-h-[220px] sm:min-h-[260px] flex flex-col justify-end p-6 sm:p-8">
+                      <img
+                        src="/images/banner-farm-grocery.jpg"
+                        alt="ফার্ম ফ্রেশ গ্রোসারি"
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                      />
+                      <div className="relative z-10">
                         <Link
-                          href="/offers"
-                          className="inline-block bg-[#F4A340] text-[#17251F] px-4 py-2 rounded-xl text-xs font-black mt-2 hover:bg-white transition-colors"
+                          href="/category/fresh-fruits-vegetables"
+                          className="inline-flex items-center gap-1.5 bg-[#123C2D] hover:bg-[#21A366] text-white px-5 py-2.5 rounded-xl text-xs font-black shadow-md hover:shadow-lg transition-all active:scale-95"
                         >
-                          View All Offers →
+                          <span>Shop Fresh Groceries</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
-                      <div className="text-5xl hidden sm:block">🛵</div>
                     </div>
                   </div>
                 </section>
