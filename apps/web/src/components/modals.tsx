@@ -191,27 +191,24 @@ export const Modals: React.FC = () => {
                     </span>
                   </div>
 
-                  <h2 className="text-xl font-black text-[#17251F] leading-tight mb-1">
+                  <h2 className="text-xl font-black text-[#17251F] leading-tight mb-4">
                     {selectedProductForModal.name}
                   </h2>
-                  {selectedProductForModal.nameBn && (
-                    <p className="text-sm font-semibold text-[#64736B] mb-3">
-                      {selectedProductForModal.nameBn}
-                    </p>
-                  )}
 
-                  {/* Rating */}
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="flex items-center text-amber-400">
-                      <Star className="w-4 h-4 fill-amber-400" />
+                  {/* Rating (Only shown when explicitly enabled for a specific product) */}
+                  {selectedProductForModal.showReviews && (
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="flex items-center text-amber-400">
+                        <Star className="w-4 h-4 fill-amber-400" />
+                      </div>
+                      <span className="text-sm font-bold text-[#17251F]">
+                        {selectedProductForModal.rating}
+                      </span>
+                      <span className="text-xs text-[#64736B]">
+                        ({selectedProductForModal.reviews} verified reviews)
+                      </span>
                     </div>
-                    <span className="text-sm font-bold text-[#17251F]">
-                      {selectedProductForModal.rating}
-                    </span>
-                    <span className="text-xs text-[#64736B]">
-                      ({selectedProductForModal.reviews} verified reviews)
-                    </span>
-                  </div>
+                  )}
 
                   {/* Price */}
                   <div className="flex items-baseline gap-2 mb-4 p-3 bg-[#F7F9F5] rounded-xl border border-[#E5ECE7]">

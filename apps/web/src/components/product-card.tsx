@@ -127,21 +127,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {product.name}
           </h3>
 
-          {/* Bengali Name */}
-          {product.nameBn && (
-            <p className="text-xs text-[#64736B] font-medium mt-0.5 line-clamp-1">
-              {product.nameBn}
-            </p>
-          )}
-
-          {/* Rating */}
-          <div className="flex items-center gap-1.5 mt-2">
-            <div className="flex items-center text-amber-400">
-              <Star className="w-3.5 h-3.5 fill-amber-400" />
+          {/* Rating (Only shown when explicitly enabled for a specific product) */}
+          {product.showReviews && (
+            <div className="flex items-center gap-1.5 mt-2">
+              <div className="flex items-center text-amber-400">
+                <Star className="w-3.5 h-3.5 fill-amber-400" />
+              </div>
+              <span className="text-xs font-bold text-[#17251F]">{product.rating}</span>
+              <span className="text-[11px] text-[#64736B]">({product.reviews})</span>
             </div>
-            <span className="text-xs font-bold text-[#17251F]">{product.rating}</span>
-            <span className="text-[11px] text-[#64736B]">({product.reviews})</span>
-          </div>
+          )}
         </div>
 
         {/* Pricing & Add to Cart */}
