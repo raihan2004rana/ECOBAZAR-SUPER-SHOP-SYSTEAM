@@ -17,6 +17,7 @@ import { SiteFooter } from '../../components/site-footer';
 import { CartDrawer } from '../../components/cart-drawer';
 import { WishlistDrawer } from '../../components/wishlist-drawer';
 import { Modals } from '../../components/modals';
+import { AboutHeroSlider } from '../../components/about-hero-slider';
 
 export default function AboutUsPage() {
   const stats = [
@@ -54,27 +55,12 @@ export default function AboutUsPage() {
       <SiteHeader />
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className="bg-gradient-to-r from-[#123C2D] via-[#154634] to-[#21A366] text-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold mb-4">
-                <Sparkles className="w-4 h-4 text-[#F4A340]" />
-                <span>BANGLADESH&apos;S PREMIER FRESH SUPERMARKET</span>
-              </div>
-              <h1 className="text-3xl sm:text-5xl font-black leading-tight">
-                Bringing Safe, Farm-Fresh Food to Every Family in Dhaka
-              </h1>
-              <p className="text-base sm:text-lg text-white/80 mt-4 leading-relaxed font-medium">
-                Founded with a mission to bring transparency and uncompromised food purity to Bangladesh, ECOBAZAR connects organic farmers directly with urban households through a high-efficiency retail network.
-              </p>
-            </div>
-          </div>
-        </section>
+        {/* Hero Slider */}
+        <AboutHeroSlider />
 
         {/* Stats */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
-          <div className="bg-white rounded-3xl border border-[#E5ECE7] p-6 shadow-sm grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-12 relative z-20">
+          <div className="bg-white rounded-3xl border border-[#E5ECE7] p-6 sm:p-8 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {stats.map((s) => (
               <div key={s.label} className="p-3">
                 <p className="text-3xl sm:text-4xl font-black text-[#123C2D]">{s.value}</p>
@@ -85,7 +71,7 @@ export default function AboutUsPage() {
         </section>
 
         {/* Brand Mission & Story */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <section id="our-story" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <span className="text-xs font-black uppercase text-[#21A366] bg-[#D8F3DC] px-3 py-1 rounded-full">
@@ -135,7 +121,7 @@ export default function AboutUsPage() {
         </section>
 
         {/* Quality Pillars */}
-        <section className="bg-white py-14 border-t border-[#E5ECE7]">
+        <section id="quality-standards" className="bg-white py-14 border-t border-[#E5ECE7] scroll-mt-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-10">
               <span className="text-xs font-black uppercase text-[#21A366] bg-[#D8F3DC] px-3 py-1 rounded-full">
