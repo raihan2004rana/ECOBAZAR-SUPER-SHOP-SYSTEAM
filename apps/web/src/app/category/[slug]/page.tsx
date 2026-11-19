@@ -15,6 +15,7 @@ import {
   ShoppingBag,
   ShieldCheck,
   Truck,
+  Clock,
 } from 'lucide-react';
 import { SiteHeader } from '../../../components/site-header';
 import { SiteFooter } from '../../../components/site-footer';
@@ -52,6 +53,220 @@ const categoryBannerMap: Record<string, string> = {
   'baby-food-care': '/images/banner-farm-grocery.jpg',
 };
 
+interface RibbonPoint {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  subtitle: string;
+}
+
+const categoryRibbonMap: Record<string, RibbonPoint[]> = {
+  'bakery-fresh-snacks': [
+    {
+      icon: Clock,
+      title: 'Baked Fresh at 5:00 AM',
+      subtitle: 'Oven-warm daily morning delivery in Dhaka',
+    },
+    {
+      icon: ShieldCheck,
+      title: '100% Unbleached Flour',
+      subtitle: 'Zero chemical improvers, preservatives or trans-fat',
+    },
+    {
+      icon: Truck,
+      title: 'Artisanal Sourdough & Breads',
+      subtitle: 'Cultured dairy butter & slow naturally fermented dough',
+    },
+  ],
+  'rice-pulses-grains': [
+    {
+      icon: ShieldCheck,
+      title: '100% Stone-Free Sorted',
+      subtitle: 'Triple optical machine cleaned grains',
+    },
+    {
+      icon: Sparkles,
+      title: 'Aged Aromatic Harvest',
+      subtitle: 'Naturally cured 12 months for royal aroma',
+    },
+    {
+      icon: Truck,
+      title: 'Zero Chemical Polish',
+      subtitle: 'Unpolished pure grains from northern mills',
+    },
+  ],
+  'fresh-fruits-vegetables': [
+    {
+      icon: Clock,
+      title: 'Picked Today at 5:00 AM',
+      subtitle: 'Zero cold storage dehydration guarantee',
+    },
+    {
+      icon: ShieldCheck,
+      title: '100% Pesticide Screened',
+      subtitle: 'Certified chemical-free farm harvest',
+    },
+    {
+      icon: Truck,
+      title: 'Same Day Express Delivery',
+      subtitle: '30-minute doorstep dispatch across Dhaka',
+    },
+  ],
+  'dairy-eggs': [
+    {
+      icon: ShieldCheck,
+      title: 'Sub-4°C Cold Chain',
+      subtitle: 'Maintained chilled until your doorstep',
+    },
+    {
+      icon: Sparkles,
+      title: 'Grass-Fed Pure Cow Milk',
+      subtitle: 'Pasteurized with zero water or starch added',
+    },
+    {
+      icon: Truck,
+      title: 'Free-Range Country Eggs',
+      subtitle: 'Sourced daily from rural organic poultry farms',
+    },
+  ],
+  'meat-fish': [
+    {
+      icon: ShieldCheck,
+      title: '100% Halal Certified Meat',
+      subtitle: 'Dressed & cleaned in sterile chilled facility',
+    },
+    {
+      icon: Sparkles,
+      title: 'Daily Dawn River Catch',
+      subtitle: 'Padma Ilish, live Ruhit, Katla & bay prawns',
+    },
+    {
+      icon: Truck,
+      title: 'Ice-Box Chilled Delivery',
+      subtitle: 'Strict sub-4°C temperature preserved in transit',
+    },
+  ],
+  'spices-oils': [
+    {
+      icon: ShieldCheck,
+      title: 'Wood Cold-Pressed Ghani Oil',
+      subtitle: '100% pure mustard & black seed oil, zero heat',
+    },
+    {
+      icon: Sparkles,
+      title: 'Stone-Ground Whole Spices',
+      subtitle: 'High curcumin turmeric & chili with zero artificial color',
+    },
+    {
+      icon: Truck,
+      title: 'Lab-Tested Food Purity',
+      subtitle: 'BSTI verified 100% adulteration-free',
+    },
+  ],
+  'snacks-beverages': [
+    {
+      icon: ShieldCheck,
+      title: 'Healthy Snack Options',
+      subtitle: 'Baked not fried, roasted seeds & cold drinks',
+    },
+    {
+      icon: Sparkles,
+      title: 'Zero Artificial Additives',
+      subtitle: 'Real fruit pulps & whole wheat ingredients',
+    },
+    {
+      icon: Truck,
+      title: 'Chilled Refreshment Delivery',
+      subtitle: 'Dispatched cool & ready to serve immediately',
+    },
+  ],
+  'frozen-foods': [
+    {
+      icon: ShieldCheck,
+      title: 'Quick-Freeze Freshness',
+      subtitle: 'Locks in taste, vitamins & natural texture',
+    },
+    {
+      icon: Sparkles,
+      title: 'Ready in 5-10 Minutes',
+      subtitle: 'Parathas, nuggets, samosas & marinated cuts',
+    },
+    {
+      icon: Truck,
+      title: 'Insulated Thermal Bags',
+      subtitle: 'Guaranteed zero thawing during delivery',
+    },
+  ],
+  'groceries-staples': [
+    {
+      icon: ShieldCheck,
+      title: 'Daily Essential Staples',
+      subtitle: 'Verified highest grade sugar, salt, atta & daal',
+    },
+    {
+      icon: Sparkles,
+      title: 'Bulk & Family Pack Savings',
+      subtitle: 'Best value wholesale prices directly to home',
+    },
+    {
+      icon: Truck,
+      title: 'Express Doorstep Delivery',
+      subtitle: 'Heavy grocery sacks carried right inside your home',
+    },
+  ],
+  'health-personal-care': [
+    {
+      icon: ShieldCheck,
+      title: '100% Authentic Brands',
+      subtitle: 'Sourced directly from authorized distributors',
+    },
+    {
+      icon: Sparkles,
+      title: 'Dermatologically Tested',
+      subtitle: 'Gentle organic herbal personal care items',
+    },
+    {
+      icon: Truck,
+      title: 'Discreet Express Packaging',
+      subtitle: 'Delivered securely in sealed eco-friendly packs',
+    },
+  ],
+  'baby-food-care': [
+    {
+      icon: ShieldCheck,
+      title: 'Infant-Grade Certified Safe',
+      subtitle: 'Zero harmful chemicals, phthalates or parabens',
+    },
+    {
+      icon: Sparkles,
+      title: 'Freshly Dated Stock Only',
+      subtitle: 'Long expiry dates checked before every dispatch',
+    },
+    {
+      icon: Truck,
+      title: 'Care & Priority Handling',
+      subtitle: 'Fast delivery for urgent infant diapers & foods',
+    },
+  ],
+};
+
+const defaultRibbonPoints: RibbonPoint[] = [
+  {
+    icon: ShieldCheck,
+    title: '100% Farm Fresh Quality',
+    subtitle: 'Directly sourced from trusted partner producers',
+  },
+  {
+    icon: Sparkles,
+    title: 'Guaranteed Purity & Safety',
+    subtitle: 'Screened & inspected for zero adulteration',
+  },
+  {
+    icon: Truck,
+    title: 'Fast 30-Min Delivery',
+    subtitle: 'Temperature controlled doorstep dispatch in Dhaka',
+  },
+];
+
 export default function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const category = getCategoryBySlug(params.slug);
 
@@ -60,6 +275,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
   }
 
   const categoryBanner = categoryBannerMap[category.slug] || '/images/banner-farm-grocery.jpg';
+  const ribbonPoints = categoryRibbonMap[category.slug] || defaultRibbonPoints;
 
   const allCategoryProducts = getProductsByCategorySlug(params.slug);
 
@@ -68,7 +284,6 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
   const [selectedSubcategory, setSelectedSubcategory] = React.useState<string>(initialSubcategory);
   const [selectedPriceRange, setSelectedPriceRange] = React.useState<string>('all');
   const [sortBy, setSortBy] = React.useState<'featured' | 'price-asc' | 'price-desc' | 'rating'>('featured');
-  const [promoSlideIndex, setPromoSlideIndex] = React.useState(0);
   const [visibleCount, setVisibleCount] = React.useState(8);
 
   // Sync if searchParams changes
@@ -82,15 +297,6 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
   React.useEffect(() => {
     setVisibleCount(8);
   }, [selectedSubcategory, selectedPriceRange, sortBy]);
-
-  // Promo slider autoplay
-  React.useEffect(() => {
-    if (category.promoSlides.length <= 1) return;
-    const interval = setInterval(() => {
-      setPromoSlideIndex((prev) => (prev + 1) % category.promoSlides.length);
-    }, 4500);
-    return () => clearInterval(interval);
-  }, [category.promoSlides.length]);
 
   // Filtered & sorted products
   const filteredProducts = React.useMemo(() => {
@@ -200,103 +406,22 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
           </div>
         </section>
 
-        {/* B. CATEGORY PROMOTIONAL SECTION */}
-        {category.slug === 'rice-pulses-grains' ? (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
-            <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 sm:p-5 shadow-lg grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-              <div className="flex items-center gap-3">
+        {/* B. CATEGORY BENEFITS RIBBON */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
+          <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 sm:p-5 shadow-lg grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            {ribbonPoints.map((item, idx) => (
+              <div key={idx} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center font-bold shrink-0">
-                  <ShieldCheck className="w-4 h-4" />
+                  <item.icon className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="font-extrabold text-[#17251F]">100% Stone-Free Sorted</p>
-                  <p className="text-[#64736B]">Triple optical machine cleaned grains</p>
+                  <p className="font-extrabold text-[#17251F]">{item.title}</p>
+                  <p className="text-[#64736B]">{item.subtitle}</p>
                 </div>
               </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center font-bold shrink-0">
-                  <Sparkles className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="font-extrabold text-[#17251F]">Aged Aromatic Harvest</p>
-                  <p className="text-[#64736B]">Naturally cured 12 months for royal aroma</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center font-bold shrink-0">
-                  <Truck className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="font-extrabold text-[#17251F]">Zero Chemical Polish</p>
-                  <p className="text-[#64736B]">Unpolished pure grains from northern mills</p>
-                </div>
-              </div>
-            </div>
-          </section>
-        ) : category.promoSlides.length > 0 ? (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
-            <div className="relative rounded-3xl overflow-hidden shadow-xl border border-emerald-900/30 min-h-[160px] sm:min-h-[180px] bg-[#071F15]">
-              {category.promoSlides.map((slide, idx) => (
-                <div
-                  key={idx}
-                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                    promoSlideIndex === idx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                  }`}
-                >
-                  {/* Background Image */}
-                  <img
-                    src={categoryBanner}
-                    alt={slide.title}
-                    className="w-full h-full object-cover object-right sm:object-center"
-                  />
-                  {/* Dark emerald gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/75 md:to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-
-                  {/* Content */}
-                  <div className="relative z-10 h-full p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="space-y-1.5 max-w-lg">
-                      <span className="text-xs font-black uppercase tracking-wider bg-[#2EBD70] text-[#071F15] px-3 py-1 rounded-full shadow-sm inline-block">
-                        {slide.discountText}
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-black text-white drop-shadow-md">{slide.title}</h3>
-                      <p className="text-xs sm:text-sm text-emerald-50/90 font-medium drop-shadow-sm">{slide.subtitle}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedPriceRange('all');
-                        setSelectedSubcategory('all');
-                      }}
-                      className="inline-flex items-center gap-2 bg-white hover:bg-[#2EBD70] text-[#071F15] px-6 py-3 rounded-2xl font-black text-xs shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 shrink-0 self-start sm:self-auto"
-                    >
-                      <span>{slide.cta}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-              {/* Slider Dots */}
-              {category.promoSlides.length > 1 && (
-                <div className="absolute bottom-3 right-5 z-20 flex gap-1.5">
-                  {category.promoSlides.map((_, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setPromoSlideIndex(idx)}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        promoSlideIndex === idx ? 'w-6 bg-[#2EBD70]' : 'w-2 bg-white/50 hover:bg-white/80'
-                      }`}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </section>
-        ) : null}
+            ))}
+          </div>
+        </section>
 
         {/* C. HOT DEALS IN THIS CATEGORY */}
         {hotDealsInCategory.length > 0 && (
