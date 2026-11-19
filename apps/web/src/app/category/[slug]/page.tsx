@@ -198,8 +198,68 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
           </div>
         </section>
 
-        {/* B. CATEGORY PROMOTIONAL SLIDER */}
-        {category.promoSlides.length > 0 && (
+        {/* B. CATEGORY PROMOTIONAL SECTION */}
+        {category.slug === 'rice-pulses-grains' ? (
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
+            <div className="rounded-3xl bg-gradient-to-r from-[#0C2B1F] via-[#123C2D] to-[#1A4E3B] border border-emerald-700/40 p-6 sm:p-8 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="space-y-3 max-w-2xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-black uppercase tracking-wider bg-[#2EBD70] text-[#071F15] px-3.5 py-1 rounded-full shadow-sm">
+                    100% UNPOLISHED • DINAJPUR & BOGURA RESERVE
+                  </span>
+                  <span className="text-[11px] font-bold text-emerald-200 bg-white/10 px-2.5 py-0.5 rounded-full border border-white/10">
+                    Aged 12 Months
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight">
+                  Dinajpur Reserve Chinigura, Slender Miniket & Premium Pulses
+                </h3>
+                <p className="text-xs sm:text-sm text-emerald-50/90 leading-relaxed font-medium">
+                  Direct from certified regional farmer cooperatives. Naturally aged for authentic royal aroma, 100% stone-free machine sorted, and strictly free from chemical bleaching, artificial scents, or whitening polish.
+                </p>
+                {/* 3 Quality Assurance Badges */}
+                <div className="flex flex-wrap items-center gap-2.5 pt-1 text-xs font-bold text-white/90">
+                  <div className="flex items-center gap-1.5 bg-black/25 px-3 py-1.5 rounded-xl border border-white/10">
+                    <Check className="w-3.5 h-3.5 text-[#2EBD70]" />
+                    <span>Zero Chemical Polishing</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-black/25 px-3 py-1.5 rounded-xl border border-white/10">
+                    <Check className="w-3.5 h-3.5 text-[#2EBD70]" />
+                    <span>Triple Machine Sorted</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-black/25 px-3 py-1.5 rounded-xl border border-white/10">
+                    <Check className="w-3.5 h-3.5 text-[#2EBD70]" />
+                    <span>5kg, 10kg & 25kg Fresh Sacks</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedSubcategory('Daily Rice');
+                    setSelectedPriceRange('all');
+                  }}
+                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#2EBD70] text-[#0C2B1F] hover:text-[#071F15] px-6 py-3.5 rounded-2xl font-black text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
+                >
+                  <span>Explore Rice Bags</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedSubcategory('Lentils & Pulses');
+                    setSelectedPriceRange('all');
+                  }}
+                  className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-3 rounded-2xl font-bold text-xs transition-colors"
+                >
+                  <span>View Lentils & Pulses</span>
+                </button>
+              </div>
+            </div>
+          </section>
+        ) : category.promoSlides.length > 0 ? (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
             <div className="relative rounded-3xl overflow-hidden shadow-xl border border-emerald-900/30 min-h-[160px] sm:min-h-[180px] bg-[#071F15]">
               {category.promoSlides.map((slide, idx) => (
@@ -260,7 +320,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
               )}
             </div>
           </section>
-        )}
+        ) : null}
 
         {/* C. HOT DEALS IN THIS CATEGORY */}
         {hotDealsInCategory.length > 0 && (
@@ -443,25 +503,44 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
 
         {/* E. CATEGORY CAMPAIGN BANNER CARD */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="rounded-3xl bg-gradient-to-r from-[#123C2D] via-[#1a4e3b] to-[#21A366] p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md">
-            <div className="space-y-2">
-              <span className="text-xs font-black uppercase tracking-wider bg-[#F4A340] text-[#17251F] px-3 py-1 rounded-full">
+          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#0C2B1F] via-[#123C2D] to-[#1A4E3B] border border-emerald-800/40 p-6 sm:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+            {/* Left Content */}
+            <div className="space-y-2.5 max-w-xl z-10">
+              <span className="inline-block text-xs font-black uppercase tracking-wider bg-[#F4A340] text-[#17251F] px-3.5 py-1 rounded-full shadow-sm">
                 VOUCHER SAVINGS
               </span>
-              <h3 className="text-xl sm:text-2xl font-black">
-                Save 10% on your entire basket with code ECO10
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight drop-shadow-md">
+                Save 10% on your entire basket with code <span className="text-[#2EBD70] font-mono">ECO10</span>
               </h3>
-              <p className="text-xs text-white/80 max-w-lg">
-                Applies on all fresh produce, groceries, and staples. Free delivery included for orders above ৳1,000.
+              <p className="text-xs sm:text-sm text-emerald-50/90 max-w-lg font-medium leading-relaxed drop-shadow-sm">
+                Applies on all fresh produce, groceries, and staples. Free express delivery included for orders above ৳1,000.
               </p>
+              <div className="pt-1">
+                <Link
+                  href="/offers"
+                  className="inline-flex items-center gap-2 bg-white hover:bg-[#2EBD70] text-[#0C2B1F] hover:text-[#061A12] px-6 py-3 rounded-2xl font-black text-xs sm:text-sm transition-all duration-200 active:scale-95 shadow-md group/btn"
+                >
+                  <span>Explore All Offers</span>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                </Link>
+              </div>
             </div>
-            <Link
-              href="/offers"
-              className="inline-flex items-center gap-2 bg-white text-[#123C2D] hover:bg-[#D8F3DC] px-5 py-3 rounded-xl font-black text-xs transition-colors shrink-0"
-            >
-              <span>Explore All Offers</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+
+            {/* Right Side Visual Image */}
+            <div className="relative z-10 w-full md:w-auto shrink-0 flex justify-center md:justify-end">
+              <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:w-64 lg:w-72 h-36 sm:h-40 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 group">
+                <img
+                  src="/images/banner-farm-grocery.jpg"
+                  alt="Farm Fresh Grocery Basket"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[11px] font-bold">
+                  <span className="bg-[#21A366] px-2 py-0.5 rounded-md">Flat 10% Off</span>
+                  <span className="text-white/95">Code: ECO10</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
