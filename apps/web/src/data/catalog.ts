@@ -45,6 +45,7 @@ export interface CategoryDef {
 export interface StoreBranch {
   id: string;
   name: string;
+  nameBn?: string;
   area: string;
   deliveryTime: string;
   address: string;
@@ -53,44 +54,63 @@ export interface StoreBranch {
   hours: string;
   manager: string;
   features: string[];
+  image: string;
+  established: string;
+  coverage: string;
+  description?: string;
 }
 
 export const storeBranches: StoreBranch[] = [
   {
     id: 'b-dhn',
     name: 'Dhanmondi Flagship Store #01',
+    nameBn: 'ধানমন্ডি ফ্ল্যাগশিপ সুপারস্টোর #০১',
     area: 'Dhanmondi, Dhaka',
     deliveryTime: '25 Mins',
     address: 'House 42, Road 27 (Old 16), Dhanmondi, Dhaka-1209',
-    phone: '+880 1711-223344',
+    phone: '+880 9612-000001',
     email: 'dhanmondi@ecobazar.com.bd',
-    hours: '7:00 AM – 11:00 PM (Everyday)',
+    hours: '7:00 AM – 11:30 PM (Daily)',
     manager: 'Farhan Kabir',
-    features: ['Cold Storage Hub', 'Express 30-Min Delivery', 'Organic Fresh Bar', 'Live Fish Tank'],
+    features: ['4,500 Sq Ft Dual-Level Store', 'Cold Storage Hub', 'Express 25-Min Delivery', 'Organic Fresh Bar', 'Live Ghani Mustard Oil'],
+    image: '/images/branch-dhanmondi.jpg',
+    established: 'October 2021',
+    coverage: 'Dhanmondi, Lalmatia, Kalabagan, Shukrabad, Mohammadpur',
+    description: 'ইকো বাজারের প্রধান ও আদি ফ্ল্যাগশিপ স্টোর। দ্বিতল সুপরিসর ভবনে তাজা সবজি, ফল, লাইভ বেকারি ও কোল্ড-স্টোরেজ ডেইরি সেকশন।',
   },
   {
     id: 'b-gls',
     name: 'Gulshan-2 Superstore #02',
+    nameBn: 'গুলশান-২ প্রিমিয়াম সুপারস্টোর #০২',
     area: 'Gulshan-2, Dhaka',
     deliveryTime: '20 Mins',
     address: 'Plot 18, Road 113, Avenue Circle-2, Gulshan, Dhaka-1212',
-    phone: '+880 1722-334455',
+    phone: '+880 9612-000002',
     email: 'gulshan@ecobazar.com.bd',
-    hours: '7:00 AM – 11:30 PM (Everyday)',
+    hours: '7:00 AM – 11:30 PM (Daily)',
     manager: 'Tariqul Islam',
-    features: ['Imported Gourmet Section', 'Artisan Bakery', 'FEFO Controlled Dairy', 'Curbside Pickup'],
+    features: ['Imported Gourmet Section', 'Artisan Bakery', 'FEFO Controlled Dairy', 'Curbside Pickup', '256-Bit Cold Lab'],
+    image: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=1000&auto=format&fit=crop&q=80',
+    established: 'March 2023',
+    coverage: 'Gulshan 1 & 2, Banani, Baridhara, Niketan, Bashundhara R/A',
+    description: 'কূটনৈতিক ও অভিজাত এলাকার ক্রেতাদের চাহিদায় এক্সক্লুসিভ অর্গানিক শাকসবজি, প্রিমিয়াম ফ্রুটস ও কোল্ড-চেইন মাংস-মাছের কেন্দ্র।',
   },
   {
     id: 'b-utr',
-    name: 'Uttara Sector 11 Express #03',
+    name: 'Uttara Express Mega Hub #03',
+    nameBn: 'উত্তরা এক্সপ্রেস মেগা হাব #০৩',
     area: 'Uttara, Dhaka',
     deliveryTime: '30 Mins',
-    address: 'Plot 14, Gareeb-e-Newaz Avenue, Sector 11, Uttara, Dhaka-1230',
-    phone: '+880 1733-445566',
+    address: 'Sector 7, Road 14, Uttara, Dhaka-1230',
+    phone: '+880 9612-000003',
     email: 'uttara@ecobazar.com.bd',
-    hours: '7:30 AM – 10:30 PM (Everyday)',
+    hours: '7:00 AM – 11:30 PM (Daily)',
     manager: 'Nazmul Haque',
-    features: ['Daily Farm Harvest Hub', 'Wholesale Staples', 'Home Delivery Fleet'],
+    features: ['Highway Direct Farm Intake', '40+ Electric Bike Fleet', 'Wholesale Staples', 'Rapid Doorstep Delivery'],
+    image: 'https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=1000&auto=format&fit=crop&q=80',
+    established: 'January 2024',
+    coverage: 'Uttara Sectors 1–14, Airport, Dakshinkhan, Mirpur DOHS',
+    description: 'উত্তরবঙ্গ (বগুড়া, রাজশাহী, রংপুর) থেকে ভোরে আসা ফসলের কাফেলা সরাসরি রিসিভ করে উত্তর ঢাকায় এক্সপ্রেস সরবরাহ করা মেগা হাব।',
   },
 ];
 
