@@ -64,6 +64,15 @@ import {
   Eye,
   Check,
   DollarSign,
+  Activity,
+  Radio,
+  Zap,
+  Cpu,
+  Server,
+  Thermometer,
+  Globe,
+  Smartphone,
+  Laptop,
 } from 'lucide-react';
 import {
   Button,
@@ -445,6 +454,32 @@ function AdminDashboardShell() {
   // Operational Checklist states
   const [taskVerificationStatus, setTaskVerificationStatus] = React.useState<'pending' | 'verified'>('pending');
   const [taskReceivingStatus, setTaskReceivingStatus] = React.useState<'pending' | 'received'>('pending');
+  const [taskAuditStatus, setTaskAuditStatus] = React.useState<'pending' | 'completed'>('pending');
+  const [taskSensorStatus, setTaskSensorStatus] = React.useState<'pending' | 'verified'>('pending');
+
+  // Futuristic Dashboard States
+  const [salesChartPeriod, setSalesChartPeriod] = React.useState<'today' | '7d' | '30d' | 'q4'>('7d');
+  const [isAiOptimizing, setIsAiOptimizing] = React.useState(false);
+  const [aiPlanExecuted, setAiPlanExecuted] = React.useState(false);
+  const [liveDhakaClock, setLiveDhakaClock] = React.useState('');
+
+  React.useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      setLiveDhakaClock(
+        now.toLocaleTimeString('en-US', {
+          timeZone: 'Asia/Dhaka',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        })
+      );
+    };
+    updateClock();
+    const timer = setInterval(updateClock, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Telemetry refresh loading state
   const [isRefreshing, setIsRefreshing] = React.useState(false);
@@ -911,24 +946,24 @@ function AdminDashboardShell() {
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 className="flex items-center gap-2 p-1 pl-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
               >
-                <div className="h-8 w-8 rounded-full bg-forest-900 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                  MK
+                <div className="h-8 w-8 rounded-full bg-[#123C2D] text-[#2EBD70] border border-[#2EBD70]/30 flex items-center justify-center font-bold text-xs shadow-xs">
+                  RR
                 </div>
                 <div className="hidden md:flex flex-col text-left leading-none">
-                  <span className="text-xs font-bold text-neutral-900 dark:text-white">Mohammad Karim</span>
-                  <span className="text-[10px] text-neutral-400 mt-0.5">Super Admin</span>
+                  <span className="text-xs font-bold text-neutral-900 dark:text-white">Raihan Hasan Rana</span>
+                  <span className="text-[10px] text-[#21A366] font-semibold mt-0.5">Founder & Super Admin</span>
                 </div>
                 <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
               </button>
 
               {isUserMenuOpen && (
-                <div className={`absolute right-0 mt-2 w-52 rounded-2xl shadow-2xl border py-1.5 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${
+                <div className={`absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl border py-1.5 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${
                   isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
                 }`}>
                   <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-neutral-800 text-left">
-                    <p className="text-xs font-bold text-neutral-900 dark:text-white">Mohammad Karim</p>
-                    <p className="text-[10px] text-neutral-400">admin@ecobazar.com.bd</p>
-                    <Badge variant="forest" size="sm" className="mt-1 text-[9px]">Organization Owner</Badge>
+                    <p className="text-xs font-bold text-neutral-900 dark:text-white">Raihan Hasan Rana</p>
+                    <p className="text-[10px] text-neutral-400">raihan@ecobazar.com.bd</p>
+                    <Badge variant="forest" size="sm" className="mt-1 text-[9px]">Founder & CEO</Badge>
                   </div>
                   <div className="py-1 text-left text-xs font-semibold">
                     <button
@@ -1291,272 +1326,721 @@ function AdminDashboardShell() {
           {/* VIEW: EXECUTIVE DASHBOARD & OVERVIEW */}
           {/* ========================================== */}
           {(activeRouteId === 'dashboard' || activeRouteId === 'analytics') && (
-            <>
-              {/* Section Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-left">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
-                    Executive Overview
-                  </h1>
-                  <p className="text-xs sm:text-sm text-neutral-500 font-medium">
-                    Live multi-branch operating system metrics • Currently scoped to: <strong className="text-forest-900 dark:text-emerald-400">{selectedBranch.name}</strong> • Updated {lastRefreshedText}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    leftIcon={<RefreshCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />}
-                    onClick={handleRefreshTelemetry}
-                  >
-                    Refresh
-                  </Button>
-                  <Button
-                    variant="forest"
-                    size="sm"
-                    leftIcon={<Download className="h-3.5 w-3.5" />}
-                    onClick={handleExportCSV}
-                  >
-                    Export Report
-                  </Button>
+            <div className="space-y-6 text-left">
+              {/* ========================================================= */}
+              {/* 1. MISSION-CONTROL TELEMETRY HUD BAR */}
+              {/* ========================================================= */}
+              <div className="rounded-2xl p-4 sm:p-5 bg-gradient-to-r from-emerald-950 via-neutral-900 to-[#071F15] text-white shadow-xl border border-emerald-500/30 relative overflow-hidden">
+                {/* Background futuristic tech glow accents */}
+                <div className="absolute -right-20 -top-20 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -left-20 -bottom-20 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                  {/* Left: Live Node & Status */}
+                  <div className="space-y-1.5">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[11px] font-black text-emerald-300">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                        </span>
+                        LIVE TELEMETRY ACTIVE
+                      </div>
+                      <span className="text-xs text-neutral-400 font-medium hidden sm:inline">•</span>
+                      <div className="inline-flex items-center gap-1.5 text-xs text-emerald-200/90 font-mono">
+                        <Server className="h-3.5 w-3.5 text-emerald-400" />
+                        <span>CLOUD RUN DHAKA CLUSTER-01</span>
+                      </div>
+                      <span className="text-xs text-neutral-400 font-medium hidden sm:inline">•</span>
+                      <div className="inline-flex items-center gap-1.5 text-xs text-cyan-300 font-mono">
+                        <Zap className="h-3.5 w-3.5 text-cyan-400" />
+                        <span>14ms BDIX</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-2">
+                      <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
+                        Executive Mission Control
+                      </h1>
+                      <span className="text-xs sm:text-sm text-neutral-300 font-medium">
+                        Active Scope: <strong className="text-emerald-400 font-bold">{selectedBranch.name}</strong>
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-neutral-400 flex items-center gap-2">
+                      <Clock className="h-3.5 w-3.5 text-emerald-400" />
+                      <span>Dhaka BST Clock: <strong className="text-white font-mono">{liveDhakaClock || '10:48:30 AM'}</strong></span>
+                      <span>•</span>
+                      <span>Health: <strong className="text-emerald-300">99.98% SLA Normal</strong></span>
+                      <span>•</span>
+                      <span>Updated {lastRefreshedText}</span>
+                    </p>
+                  </div>
+
+                  {/* Right: Quick Launch Operational Actions */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Button
+                      variant="forest"
+                      size="sm"
+                      leftIcon={<Store className="h-3.5 w-3.5 text-emerald-300" />}
+                      onClick={() => {
+                        setActiveRouteId('pos');
+                        toast.info('POS Terminal Activated', 'Switched to Rapid Checkout Console');
+                      }}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-900/40 border border-emerald-400/40 text-xs"
+                    >
+                      Quick POS (F2)
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      leftIcon={<Plus className="h-3.5 w-3.5 text-white" />}
+                      onClick={() => setIsAddProductModalOpen(true)}
+                      className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-bold"
+                    >
+                      Inward Stock
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      leftIcon={<Download className="h-3.5 w-3.5 text-white" />}
+                      onClick={handleExportCSV}
+                      className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-bold"
+                    >
+                      Audit CSV
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      leftIcon={<RefreshCw className={`h-3.5 w-3.5 text-emerald-300 ${isRefreshing ? 'animate-spin' : ''}`} />}
+                      onClick={handleRefreshTelemetry}
+                      className="bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-200 border-emerald-500/40 text-xs font-bold"
+                    >
+                      Live Sync
+                    </Button>
+                  </div>
                 </div>
               </div>
 
               {/* ========================================================= */}
-              {/* 4 KEY KPI STAT CARDS (Matches Reference Screenshot) */}
+              {/* 2. 4 HOLOGRAPHIC CYBERNETIC KPI CARDS */}
               {/* ========================================================= */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
-                {/* 1. Total Revenue */}
-                <Card className="p-4 flex flex-col justify-between hover:shadow-md transition">
+                {/* 1. Total Gross Revenue */}
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md hover:shadow-xl hover:border-emerald-400/60 transition-all duration-300 group">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+                  
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-neutral-500">Total Revenue</span>
-                    <span className="h-8 w-8 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-primary-green flex items-center justify-center font-bold">
+                    <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
+                      Daily Gross Revenue
+                    </span>
+                    <span className="h-8 w-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-base shadow-xs">
                       ৳
                     </span>
                   </div>
+
                   <div className="mt-3">
-                    <div className="text-2xl font-black text-neutral-900 dark:text-white tracking-tight">
-                      <PriceDisplay amount={metrics.revenue} size="xl" className="font-black text-forest-900 dark:text-emerald-400" />
+                    <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
+                      <PriceDisplay amount={metrics.revenue} size="xl" className="font-black text-forest-900 dark:text-emerald-300" />
                     </div>
-                    <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 font-bold">
-                      <TrendingUp className="h-3 w-3" />
+
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
+                      <TrendingUp className="h-3.5 w-3.5" />
                       <span>{metrics.revenueChange}</span>
                     </div>
-                  </div>
-                </Card>
 
-                {/* 2. Total Orders */}
-                <Card className="p-4 flex flex-col justify-between hover:shadow-md transition">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-neutral-500">Total Orders</span>
-                    <ShoppingCart className="h-4 w-4 text-blue-500" />
-                  </div>
-                  <div className="mt-3">
-                    <div className="text-2xl font-black text-neutral-900 dark:text-white tracking-tight">
-                      {metrics.orders.toLocaleString()}
+                    {/* Channel Breakdown pills */}
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 flex items-center justify-between text-[11px]">
+                      <span className="text-neutral-500 dark:text-neutral-400">POS Walk-in:</span>
+                      <strong className="text-neutral-900 dark:text-neutral-200 font-bold">৳{Math.round(metrics.revenue * 0.805).toLocaleString()} (80%)</strong>
                     </div>
-                    <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 font-bold">
-                      <TrendingUp className="h-3 w-3" />
-                      <span>+8.5% vs yesterday</span>
+                    <div className="flex items-center justify-between text-[11px] mt-0.5">
+                      <span className="text-neutral-500 dark:text-neutral-400">Online Express:</span>
+                      <strong className="text-cyan-600 dark:text-cyan-400 font-bold">৳{Math.round(metrics.revenue * 0.195).toLocaleString()} (20%)</strong>
                     </div>
-                  </div>
-                </Card>
 
-                {/* 3. Active SKUs */}
-                <Card className="p-4 flex flex-col justify-between hover:shadow-md transition">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-neutral-500">Active SKUs</span>
-                    <Package className="h-4 w-4 text-amber-500" />
-                  </div>
-                  <div className="mt-3">
-                    <div className="text-2xl font-black text-neutral-900 dark:text-white tracking-tight">
-                      {metrics.activeProducts.toLocaleString()}
-                    </div>
-                    <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 font-bold">
-                      <TrendingUp className="h-3 w-3" />
-                      <span>+12.1% in stock</span>
+                    {/* Pacing bar */}
+                    <div className="mt-2.5">
+                      <div className="flex items-center justify-between text-[10px] text-neutral-400 font-semibold mb-1">
+                        <span>Pacing: 74% of ৳250k Quota</span>
+                        <span>৳250,000 Target</span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style={{ width: '74%' }} />
+                      </div>
                     </div>
                   </div>
                 </Card>
 
-                {/* 4. Low Stock Alerts */}
-                <Card className="p-4 flex flex-col justify-between hover:shadow-md transition border-amber-200 dark:border-amber-900/50 bg-amber-50/20">
+                {/* 2. Total Order Throughput */}
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md hover:shadow-xl hover:border-blue-400/60 transition-all duration-300 group">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+                  
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-amber-700 dark:text-amber-400">Low Stock Alerts</span>
-                    <AlertTriangle className="h-4 w-4 text-amber-500" />
+                    <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
+                      Order Throughput
+                    </span>
+                    <span className="h-8 w-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-base shadow-xs">
+                      <ShoppingCart className="h-4 w-4" />
+                    </span>
                   </div>
+
                   <div className="mt-3">
-                    <div className="text-2xl font-black text-amber-950 dark:text-amber-200 tracking-tight">
-                      {metrics.lowStockCount}
+                    <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
+                      {metrics.orders.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">Orders</span>
                     </div>
-                    <p className="text-[11px] text-amber-700 dark:text-amber-400 mt-1 font-medium">
-                      Requires attention
-                    </p>
+
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
+                      <Activity className="h-3.5 w-3.5" />
+                      <span>Avg Dispatch: 6.2 mins</span>
+                    </div>
+
+                    {/* Breakdown sub-grid */}
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 grid grid-cols-3 gap-1 text-center">
+                      <div className="bg-neutral-50 dark:bg-neutral-800/60 rounded-lg p-1.5">
+                        <span className="text-[10px] text-neutral-400 block font-semibold">Done</span>
+                        <strong className="text-xs font-black text-emerald-600 dark:text-emerald-400">312</strong>
+                      </div>
+                      <div className="bg-neutral-50 dark:bg-neutral-800/60 rounded-lg p-1.5">
+                        <span className="text-[10px] text-neutral-400 block font-semibold">In Transit</span>
+                        <strong className="text-xs font-black text-cyan-600 dark:text-cyan-400">24</strong>
+                      </div>
+                      <div className="bg-neutral-50 dark:bg-neutral-800/60 rounded-lg p-1.5">
+                        <span className="text-[10px] text-neutral-400 block font-semibold">Packing</span>
+                        <strong className="text-xs font-black text-amber-600 dark:text-amber-400">6</strong>
+                      </div>
+                    </div>
+
+                    <div className="mt-2.5 flex items-center justify-between text-[10px] text-neutral-400 font-medium">
+                      <span>Express Courier Fleet:</span>
+                      <span className="text-emerald-500 font-bold">26 E-Bikes Active</span>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 3. Active SKUs & Inventory Asset */}
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md hover:shadow-xl hover:border-amber-400/60 transition-all duration-300 group">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 dark:bg-amber-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
+                      Active Inventory SKUs
+                    </span>
+                    <span className="h-8 w-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-base shadow-xs">
+                      <Package className="h-4 w-4" />
+                    </span>
+                  </div>
+
+                  <div className="mt-3">
+                    <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
+                      {metrics.activeProducts.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">SKUs</span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
+                      <TrendingUp className="h-3.5 w-3.5" />
+                      <span>98.4% Shelf Availability</span>
+                    </div>
+
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 space-y-1 text-[11px]">
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-500 dark:text-neutral-400">Asset Valuation:</span>
+                        <strong className="text-neutral-900 dark:text-neutral-200 font-bold">৳4.82M Total</strong>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-500 dark:text-neutral-400">Cold Chain Chillers:</span>
+                        <span className="inline-flex items-center gap-1 text-emerald-500 font-bold">
+                          <Thermometer className="h-3 w-3" />
+                          <span>Sub-4°C OK</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-2.5">
+                      <div className="h-1.5 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                        <div className="h-full bg-amber-500 rounded-full" style={{ width: '92%' }} />
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 4. Telemetry & Risk Matrix */}
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-rose-200/80 dark:border-rose-900/50 backdrop-blur-md hover:shadow-xl hover:border-rose-400/60 transition-all duration-300 group">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 dark:bg-rose-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold tracking-wider text-rose-600 dark:text-rose-400 uppercase">
+                      Risk & Expiry Matrix
+                    </span>
+                    <span className="h-8 w-8 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-base shadow-xs">
+                      <AlertTriangle className="h-4 w-4" />
+                    </span>
+                  </div>
+
+                  <div className="mt-3">
+                    <div className="text-2xl sm:text-3xl font-black text-rose-900 dark:text-rose-300 tracking-tight">
+                      {metrics.expiryAlertsCount} <span className="text-sm font-semibold text-rose-500">FEFO Alerts</span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-amber-600 dark:text-amber-400 font-bold">
+                      <Radio className="h-3.5 w-3.5 animate-pulse" />
+                      <span>{metrics.lowStockCount} Low Stock Triggered</span>
+                    </div>
+
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 space-y-1 text-[11px]">
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-500 dark:text-neutral-400">Power & Backup:</span>
+                        <strong className="text-emerald-500 font-bold">Grid + Generator OK</strong>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-500 dark:text-neutral-400">POS Lane Integrity:</span>
+                        <strong className="text-neutral-900 dark:text-neutral-200 font-bold">14/14 Syncing</strong>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveRouteId('expiry');
+                        toast.info('Expiry Console', 'Navigated to FEFO Batch Clearance');
+                      }}
+                      className="mt-2 text-[11px] font-black text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1"
+                    >
+                      Resolve Expiry Batches →
+                    </button>
                   </div>
                 </Card>
               </div>
 
               {/* ========================================================= */}
-              {/* SALES PERFORMANCE CHART & BRANCH PERFORMANCE */}
+              {/* 3. FUTURISTIC DUAL-CURVE SPLINE SALES CHART & LIVE MATRIX */}
               {/* ========================================================= */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
-                {/* Left 8 Cols: Sales Chart */}
-                <Card className="lg:col-span-8 p-5 relative overflow-hidden">
+                {/* Left 8 Cols: High-Tech Spline Chart */}
+                <Card className="lg:col-span-8 p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                     <div>
-                      <h3 className="text-base font-bold text-neutral-900 dark:text-white">
-                        Sales Performance
-                      </h3>
-                      <p className="text-xs text-neutral-400">Omnichannel revenue trajectory</p>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-base sm:text-lg font-black text-neutral-900 dark:text-white tracking-tight">
+                          Omnichannel Revenue Trajectory
+                        </h3>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black border border-emerald-500/20">
+                          DUAL STREAM
+                        </span>
+                      </div>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                        In-Store POS counter velocity vs. Online Express delivery streams
+                      </p>
+                    </div>
+
+                    {/* Period Switcher Pills */}
+                    <div className="inline-flex items-center p-1 rounded-xl bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700">
+                      {(['today', '7d', '30d', 'q4'] as const).map((period) => (
+                        <button
+                          key={period}
+                          type="button"
+                          onClick={() => {
+                            setSalesChartPeriod(period);
+                            toast.info('Time Window Updated', `Sales graph adjusted to ${period.toUpperCase()}`);
+                          }}
+                          className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                            salesChartPeriod === period
+                              ? 'bg-emerald-600 text-white shadow-xs'
+                              : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                          }`}
+                        >
+                          {period === 'today' ? 'Today' : period === '7d' ? '7 Days' : period === '30d' ? '30 Days' : 'Q4 2026'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* High-Tech Chart Legend */}
+                  <div className="flex flex-wrap items-center gap-4 text-xs font-bold mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50" />
+                      <span className="text-neutral-700 dark:text-neutral-200">POS Walk-In (80.5%)</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <select className="text-xs font-bold bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl px-2.5 py-1 outline-hidden">
-                        <option>Last 30 Days</option>
-                        <option>Last 7 Days</option>
-                        <option>This Month</option>
-                      </select>
+                      <span className="h-3 w-3 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400/50" />
+                      <span className="text-neutral-700 dark:text-neutral-200">Online Express App/Web (19.5%)</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-neutral-400">
+                      <span className="h-0.5 w-4 border-t-2 border-dashed border-neutral-400" />
+                      <span>Breakeven Threshold</span>
                     </div>
                   </div>
 
-                  {/* Floating tooltip on curve (from screenshot) */}
-                  <div className="absolute top-16 right-20 bg-white dark:bg-neutral-800 border border-emerald-300 dark:border-emerald-700 shadow-md px-3 py-1.5 rounded-xl text-center z-10">
-                    <span className="text-xs font-black text-neutral-900 dark:text-white">৳120,500</span>
-                    <span className="text-[10px] text-primary-green font-bold block">+12.5% ↗</span>
+                  {/* Floating Holographic Jummah Peak Tooltip */}
+                  <div className="hidden sm:block absolute top-20 right-16 bg-white/95 dark:bg-neutral-900/95 border border-emerald-400/60 dark:border-emerald-500/40 shadow-xl px-3.5 py-2 rounded-2xl text-left z-10 backdrop-blur-md">
+                    <div className="flex items-center gap-1.5 text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Peak Rush Window
+                    </div>
+                    <div className="text-sm font-black text-neutral-900 dark:text-white">
+                      ৳38,200 / hr
+                    </div>
+                    <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-medium block">
+                      Friday 4:30 PM (Post-Jummah Surge)
+                    </span>
                   </div>
 
-                  {/* Smooth Curved Spline Line Chart (SVG) */}
-                  <div className="h-64 w-full pt-4 relative">
-                    <svg viewBox="0 0 500 200" className="w-full h-full overflow-visible">
+                  {/* Smooth Curved Spline Dual-Curve SVG */}
+                  <div className="h-64 sm:h-72 w-full pt-2 relative">
+                    <svg viewBox="0 0 540 220" className="w-full h-full overflow-visible">
                       <defs>
-                        <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#21A366" stopOpacity="0.3" />
-                          <stop offset="100%" stopColor="#21A366" stopOpacity="0.0" />
+                        {/* POS Gradient */}
+                        <linearGradient id="posGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#10B981" stopOpacity="0.35" />
+                          <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
+                        </linearGradient>
+                        {/* Online Gradient */}
+                        <linearGradient id="onlineGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.25" />
+                          <stop offset="100%" stopColor="#06B6D4" stopOpacity="0.0" />
                         </linearGradient>
                       </defs>
 
                       {/* Horizontal Grid lines */}
-                      <line x1="30" y1="30" x2="480" y2="30" stroke="#E5ECE7" strokeDasharray="3 3" />
-                      <line x1="30" y1="80" x2="480" y2="80" stroke="#E5ECE7" strokeDasharray="3 3" />
-                      <line x1="30" y1="130" x2="480" y2="130" stroke="#E5ECE7" strokeDasharray="3 3" />
-                      <line x1="30" y1="180" x2="480" y2="180" stroke="#E5ECE7" strokeWidth="1" />
+                      <line x1="35" y1="30" x2="520" y2="30" stroke="currentColor" className="text-neutral-200 dark:text-neutral-800" strokeDasharray="3 3" />
+                      <line x1="35" y1="75" x2="520" y2="75" stroke="currentColor" className="text-neutral-200 dark:text-neutral-800" strokeDasharray="3 3" />
+                      <line x1="35" y1="120" x2="520" y2="120" stroke="currentColor" className="text-neutral-200 dark:text-neutral-800" strokeDasharray="3 3" />
+                      <line x1="35" y1="165" x2="520" y2="165" stroke="currentColor" className="text-neutral-200 dark:text-neutral-800" strokeDasharray="3 3" />
+                      <line x1="35" y1="195" x2="520" y2="195" stroke="currentColor" className="text-neutral-300 dark:text-neutral-700" strokeWidth="1" />
+
+                      {/* Breakeven Dotted Line */}
+                      <line x1="35" y1="140" x2="520" y2="140" stroke="#F59E0B" strokeDasharray="4 4" strokeWidth="1.2" opacity="0.6" />
 
                       {/* Y-Axis Labels */}
-                      <text x="5" y="35" fontSize="9" fill="#9CA3AF" fontFamily="sans-serif">150k</text>
-                      <text x="5" y="85" fontSize="9" fill="#9CA3AF" fontFamily="sans-serif">100k</text>
-                      <text x="5" y="135" fontSize="9" fill="#9CA3AF" fontFamily="sans-serif">50k</text>
-                      <text x="5" y="185" fontSize="9" fill="#9CA3AF" fontFamily="sans-serif">0k</text>
+                      <text x="10" y="34" fontSize="10" fill="#9CA3AF" fontFamily="monospace">200k</text>
+                      <text x="10" y="79" fontSize="10" fill="#9CA3AF" fontFamily="monospace">150k</text>
+                      <text x="10" y="124" fontSize="10" fill="#9CA3AF" fontFamily="monospace">100k</text>
+                      <text x="10" y="169" fontSize="10" fill="#9CA3AF" fontFamily="monospace">50k</text>
+                      <text x="10" y="198" fontSize="10" fill="#9CA3AF" fontFamily="monospace">0k</text>
 
-                      {/* Filled Area */}
+                      {/* POS Area & Curve (Green) */}
                       <path
-                        d="M 50 140 Q 100 110, 150 125 T 250 85 T 350 115 T 450 45 L 450 180 L 50 180 Z"
-                        fill="url(#areaGradient)"
+                        d="M 50 135 Q 120 120, 190 60 T 330 75 T 430 85 T 510 50 L 510 195 L 50 195 Z"
+                        fill="url(#posGradient)"
                       />
-
-                      {/* Smooth Green Curve */}
                       <path
-                        d="M 50 140 Q 100 110, 150 125 T 250 85 T 350 115 T 450 45"
+                        d="M 50 135 Q 120 120, 190 60 T 330 75 T 430 85 T 510 50"
                         fill="none"
-                        stroke="#21A366"
+                        stroke="#10B981"
                         strokeWidth="3.5"
                         strokeLinecap="round"
                       />
 
-                      {/* Key Data Point Markers */}
-                      <circle cx="50" cy="140" r="3.5" fill="#21A366" stroke="#FFFFFF" strokeWidth="2" />
-                      <circle cx="150" cy="125" r="3.5" fill="#21A366" stroke="#FFFFFF" strokeWidth="2" />
-                      <circle cx="250" cy="85" r="3.5" fill="#21A366" stroke="#FFFFFF" strokeWidth="2" />
-                      <circle cx="350" cy="115" r="3.5" fill="#21A366" stroke="#FFFFFF" strokeWidth="2" />
-                      <circle cx="450" cy="45" r="5" fill="#123C2D" stroke="#2EBD70" strokeWidth="3" />
+                      {/* Online Area & Curve (Cyan) */}
+                      <path
+                        d="M 50 170 Q 120 160, 190 140 T 330 130 T 430 150 T 510 135 L 510 195 L 50 195 Z"
+                        fill="url(#onlineGradient)"
+                      />
+                      <path
+                        d="M 50 170 Q 120 160, 190 140 T 330 130 T 430 150 T 510 135"
+                        fill="none"
+                        stroke="#06B6D4"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeDasharray="5 2"
+                      />
+
+                      {/* POS Nodes */}
+                      <circle cx="50" cy="135" r="4" fill="#10B981" stroke="#FFFFFF" strokeWidth="2" />
+                      <circle cx="190" cy="60" r="5" fill="#10B981" stroke="#FFFFFF" strokeWidth="2.5" />
+                      <circle cx="330" cy="75" r="4" fill="#10B981" stroke="#FFFFFF" strokeWidth="2" />
+                      <circle cx="430" cy="85" r="4" fill="#10B981" stroke="#FFFFFF" strokeWidth="2" />
+                      <circle cx="510" cy="50" r="6" fill="#047857" stroke="#34D399" strokeWidth="3" />
+
+                      {/* Online Nodes */}
+                      <circle cx="190" cy="140" r="3.5" fill="#06B6D4" stroke="#FFFFFF" strokeWidth="1.5" />
+                      <circle cx="510" cy="135" r="4.5" fill="#0891B2" stroke="#67E8F9" strokeWidth="2" />
 
                       {/* X-Axis Day Labels */}
-                      <text x="45" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Mon</text>
-                      <text x="110" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Tue</text>
-                      <text x="180" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Wed</text>
-                      <text x="250" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Thu</text>
-                      <text x="320" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Fri</text>
-                      <text x="390" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Sat</text>
-                      <text x="450" y="198" fontSize="10" fill="#6B7280" textAnchor="middle">Sun</text>
+                      <text x="50" y="212" fontSize="11" fill="#6B7280" textAnchor="middle" fontWeight="bold">Wed</text>
+                      <text x="120" y="212" fontSize="11" fill="#6B7280" textAnchor="middle" fontWeight="bold">Thu</text>
+                      <text x="190" y="212" fontSize="11" fill="#10B981" textAnchor="middle" fontWeight="900">Fri (Jummah)</text>
+                      <text x="260" y="212" fontSize="11" fill="#6B7280" textAnchor="middle" fontWeight="bold">Sat</text>
+                      <text x="330" y="212" fontSize="11" fill="#6B7280" textAnchor="middle" fontWeight="bold">Sun</text>
+                      <text x="430" y="212" fontSize="11" fill="#6B7280" textAnchor="middle" fontWeight="bold">Mon</text>
+                      <text x="510" y="212" fontSize="11" fill="#10B981" textAnchor="middle" fontWeight="900">Today</text>
                     </svg>
+                  </div>
+
+                  {/* Bottom Stats Ticker */}
+                  <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                    <div className="p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
+                      <span className="text-[10px] text-neutral-400 block font-semibold">Average Basket</span>
+                      <strong className="text-neutral-900 dark:text-white font-black">৳1,240</strong>
+                    </div>
+                    <div className="p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
+                      <span className="text-[10px] text-neutral-400 block font-semibold">Peak Sales Hour</span>
+                      <strong className="text-neutral-900 dark:text-white font-black">4:00 - 7:00 PM</strong>
+                    </div>
+                    <div className="p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
+                      <span className="text-[10px] text-neutral-400 block font-semibold">Checkout Lanes</span>
+                      <strong className="text-emerald-600 dark:text-emerald-400 font-black">14 POS Online</strong>
+                    </div>
+                    <div className="p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
+                      <span className="text-[10px] text-neutral-400 block font-semibold">Customer LTV</span>
+                      <strong className="text-neutral-900 dark:text-white font-black">৳18,500 / yr</strong>
+                    </div>
                   </div>
                 </Card>
 
-                {/* Right 4 Cols: Branch Performance */}
-                <Card className="lg:col-span-4 p-5 flex flex-col justify-between">
+                {/* Right 4 Cols: Multi-Hub Real-Time Operations Matrix */}
+                <Card className="lg:col-span-4 p-5 flex flex-col justify-between bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
                   <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-base font-bold text-neutral-900 dark:text-white">
-                        Branch Performance
-                      </h3>
-                      <button
-                        type="button"
-                        onClick={() => setActiveRouteId('branches')}
-                        className="text-xs font-bold text-primary-green hover:underline"
-                      >
-                        View All →
-                      </button>
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h3 className="text-base font-black text-neutral-900 dark:text-white tracking-tight">
+                          Multi-Hub Operations Matrix
+                        </h3>
+                        <p className="text-xs text-neutral-400">Live 3 Superstore Cluster Telemetry</p>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black">
+                        3 ONLINE
+                      </span>
                     </div>
 
-                    <div className="space-y-4">
-                      {/* Branch 1 */}
-                      <div className="space-y-1.5">
+                    <div className="space-y-4 mt-4">
+                      {/* Hub 1: Dhanmondi */}
+                      <div className="p-3 rounded-2xl bg-neutral-50/80 dark:bg-neutral-800/60 border border-neutral-200/60 dark:border-neutral-700/60 space-y-2 hover:border-emerald-400 transition">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="font-bold text-neutral-900 dark:text-white">Dhanmondi #01</span>
-                          <span className="font-black text-forest-900 dark:text-emerald-400">৳83,025</span>
+                          <div>
+                            <span className="font-black text-neutral-900 dark:text-white">Dhanmondi #01 Flagship</span>
+                            <span className="text-[10px] text-neutral-400 block">Road 7/A • Est. Oct 2021</span>
+                          </div>
+                          <div className="text-right">
+                            <span className="font-black text-forest-900 dark:text-emerald-400 text-sm">৳83,025</span>
+                            <span className="text-[10px] text-emerald-500 font-bold block">45% Volume</span>
+                          </div>
                         </div>
-                        <div className="h-2 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+
+                        <div className="h-2 w-full rounded-full bg-neutral-200 dark:bg-neutral-700 overflow-hidden">
                           <div className="h-full bg-primary-green rounded-full" style={{ width: '45%' }} />
                         </div>
-                        <span className="text-[10px] text-neutral-400 font-semibold block text-right">45%</span>
+
+                        <div className="flex items-center justify-between text-[10px] text-neutral-500 dark:text-neutral-400 pt-1">
+                          <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                            <MonitorCheck className="h-3 w-3" /> 6 POS Online
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Thermometer className="h-3 w-3 text-cyan-500" /> -1.5°C Normal
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Truck className="h-3 w-3 text-amber-500" /> 8 E-Bikes
+                          </span>
+                        </div>
                       </div>
 
-                      {/* Branch 2 */}
-                      <div className="space-y-1.5">
+                      {/* Hub 2: Gulshan */}
+                      <div className="p-3 rounded-2xl bg-neutral-50/80 dark:bg-neutral-800/60 border border-neutral-200/60 dark:border-neutral-700/60 space-y-2 hover:border-emerald-400 transition">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="font-bold text-neutral-900 dark:text-white">Gulshan #02</span>
-                          <span className="font-black text-forest-900 dark:text-emerald-400">৳64,575</span>
+                          <div>
+                            <span className="font-black text-neutral-900 dark:text-white">Gulshan-2 #02 Premium</span>
+                            <span className="text-[10px] text-neutral-400 block">Road 54 • Est. Mar 2023</span>
+                          </div>
+                          <div className="text-right">
+                            <span className="font-black text-forest-900 dark:text-emerald-400 text-sm">৳64,575</span>
+                            <span className="text-[10px] text-emerald-500 font-bold block">35% Volume</span>
+                          </div>
                         </div>
-                        <div className="h-2 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+
+                        <div className="h-2 w-full rounded-full bg-neutral-200 dark:bg-neutral-700 overflow-hidden">
                           <div className="h-full bg-primary-green rounded-full" style={{ width: '35%' }} />
                         </div>
-                        <span className="text-[10px] text-neutral-400 font-semibold block text-right">35%</span>
+
+                        <div className="flex items-center justify-between text-[10px] text-neutral-500 dark:text-neutral-400 pt-1">
+                          <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                            <MonitorCheck className="h-3 w-3" /> 5 POS Online
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Thermometer className="h-3 w-3 text-cyan-500" /> -2.0°C Normal
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Truck className="h-3 w-3 text-amber-500" /> 6 E-Bikes
+                          </span>
+                        </div>
                       </div>
 
-                      {/* Branch 3 */}
-                      <div className="space-y-1.5">
+                      {/* Hub 3: Uttara */}
+                      <div className="p-3 rounded-2xl bg-neutral-50/80 dark:bg-neutral-800/60 border border-neutral-200/60 dark:border-neutral-700/60 space-y-2 hover:border-emerald-400 transition">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="font-bold text-neutral-900 dark:text-white">Uttara #03</span>
-                          <span className="font-black text-forest-900 dark:text-emerald-400">৳36,900</span>
+                          <div>
+                            <span className="font-black text-neutral-900 dark:text-white">Uttara #03 Express Mega</span>
+                            <span className="text-[10px] text-neutral-400 block">Sector 11 • Est. Jan 2024</span>
+                          </div>
+                          <div className="text-right">
+                            <span className="font-black text-forest-900 dark:text-emerald-400 text-sm">৳36,900</span>
+                            <span className="text-[10px] text-emerald-500 font-bold block">20% Volume</span>
+                          </div>
                         </div>
-                        <div className="h-2 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+
+                        <div className="h-2 w-full rounded-full bg-neutral-200 dark:bg-neutral-700 overflow-hidden">
                           <div className="h-full bg-primary-green rounded-full" style={{ width: '20%' }} />
                         </div>
-                        <span className="text-[10px] text-neutral-400 font-semibold block text-right">20%</span>
+
+                        <div className="flex items-center justify-between text-[10px] text-neutral-500 dark:text-neutral-400 pt-1">
+                          <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                            <MonitorCheck className="h-3 w-3" /> 3 POS Online
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Thermometer className="h-3 w-3 text-cyan-500" /> -1.8°C Normal
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Truck className="h-3 w-3 text-amber-500" /> 12 E-Bikes
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-neutral-400">Dhaka Region Active</span>
-                    <Button variant="outline" size="sm" onClick={() => setActiveRouteId('branches')}>
-                      Manage Branches →
+                    <span className="text-xs font-semibold text-neutral-400">Dhaka Cluster: 3 Stores</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setActiveRouteId('branches')}
+                      className="text-xs font-bold"
+                    >
+                      Branch Details →
                     </Button>
                   </div>
                 </Card>
               </div>
 
               {/* ========================================================= */}
-              {/* BOTTOM 3-COLUMN ROW (Matches Reference Screenshot) */}
+              {/* 4. ECOBAZAR AI NEURAL HUB (PREDICTIVE INTELLIGENCE) */}
               {/* ========================================================= */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
-                {/* Column 1: Top Selling Products */}
-                <Card className="p-5">
+              <div className="rounded-2xl p-5 bg-gradient-to-br from-[#041E15] via-neutral-900 to-[#022C22] text-white border border-emerald-500/40 shadow-xl relative overflow-hidden">
+                <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div className="flex items-start gap-3.5">
+                    <div className="h-12 w-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0 shadow-lg text-emerald-300">
+                      <BrainCircuit className="h-6 w-6 animate-pulse" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
+                          ECOBAZAR AI Neural Hub
+                        </h3>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[10px] font-black text-emerald-300">
+                          AUTONOMOUS V2.4
+                        </span>
+                      </div>
+                      <p className="text-xs text-neutral-300 font-medium mt-0.5">
+                        Real-time algorithmic demand forecasting, FEFO markdown automation, and inter-hub load balancing.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Button
+                      variant="forest"
+                      size="sm"
+                      onClick={() => {
+                        setIsAiOptimizing(true);
+                        setTimeout(() => {
+                          setIsAiOptimizing(false);
+                          setAiPlanExecuted(true);
+                          toast.success(
+                            'AI Optimization Executed',
+                            'Automated FEFO markdown deployed to POS & inter-hub transfer scheduled for Uttara.'
+                          );
+                        }, 800);
+                      }}
+                      disabled={isAiOptimizing}
+                      className="bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-black shadow-lg shadow-emerald-500/25 border border-emerald-300 text-xs px-4 py-2"
+                    >
+                      {isAiOptimizing ? (
+                        <span className="flex items-center gap-2">
+                          <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                          Executing Optimization...
+                        </span>
+                      ) : aiPlanExecuted ? (
+                        <span className="flex items-center gap-1.5 text-emerald-950">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-900" />
+                          Plan Executed & Synchronized
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1.5">
+                          <Sparkles className="h-3.5 w-3.5" />
+                          Execute AI Optimization Plan
+                        </span>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* 3 AI Recommendations Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-5 pt-4 border-t border-emerald-500/20 text-xs">
+                  {/* Rec 1 */}
+                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/10 transition">
+                    <div className="flex items-center justify-between font-bold text-emerald-300">
+                      <span className="flex items-center gap-1.5">
+                        <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+                        Weather Rain Demand Surge
+                      </span>
+                      <span className="text-[10px] bg-emerald-500/20 px-1.5 py-0.5 rounded text-emerald-200">+35% Surge</span>
+                    </div>
+                    <p className="text-neutral-300 leading-relaxed text-[11px]">
+                      Evening showers expected in Gulshan & Uttara corridor. Demand for ginger tea, eggs, and khichuri staples predicted to peak.
+                    </p>
+                  </div>
+
+                  {/* Rec 2 */}
+                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/10 transition">
+                    <div className="flex items-center justify-between font-bold text-amber-300">
+                      <span className="flex items-center gap-1.5">
+                        <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
+                        FEFO Milk Markdown Trigger
+                      </span>
+                      <span className="text-[10px] bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-200">20% Flash</span>
+                    </div>
+                    <p className="text-neutral-300 leading-relaxed text-[11px]">
+                      14 packs of Whole Milk expiring within 48h at Dhanmondi. 20% price markdown queued on POS & web app to prevent write-off.
+                    </p>
+                  </div>
+
+                  {/* Rec 3 */}
+                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/10 transition">
+                    <div className="flex items-center justify-between font-bold text-cyan-300">
+                      <span className="flex items-center gap-1.5">
+                        <ArrowLeftRight className="h-3.5 w-3.5 text-cyan-400" />
+                        Inter-Hub Transit Rebalance
+                      </span>
+                      <span className="text-[10px] bg-cyan-500/20 px-1.5 py-0.5 rounded text-cyan-200">Auto Route</span>
+                    </div>
+                    <p className="text-neutral-300 leading-relaxed text-[11px]">
+                      Uttara rice inventory at 14 bags. Dhanmondi has 80 units buffer. Automated inter-hub stock transfer draft TR-2026-092 prepared.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* ========================================================= */}
+              {/* 5. LIVE OMNICHANNEL ORDER STREAM & TOP VELOCITY PRODUCTS */}
+              {/* ========================================================= */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
+                {/* Col 1 (5 Cols): Live Omnichannel Orders Stream */}
+                <Card className="lg:col-span-5 p-5 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-base font-bold text-neutral-900 dark:text-white">
-                      Top Selling Products
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-black text-neutral-900 dark:text-white tracking-tight">
+                        Live Omnichannel Stream
+                      </h3>
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                      </span>
+                    </div>
                     <button
                       type="button"
-                      onClick={() => setActiveRouteId('products')}
+                      onClick={() => setActiveRouteId('orders')}
                       className="text-xs font-bold text-primary-green hover:underline"
                     >
                       View All →
@@ -1564,155 +2048,130 @@ function AdminDashboardShell() {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg overflow-hidden bg-neutral-100 shrink-0">
-                          <img
-                            src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=160&auto=format&fit=crop&q=80"
-                            alt="Fresh Tomato"
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-neutral-900 dark:text-white">Fresh Tomato</p>
-                          <p className="text-[11px] text-neutral-500 font-black">৳ 80</p>
-                        </div>
-                      </div>
-                      <span className="text-xs font-black text-emerald-600">+24%</span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg overflow-hidden bg-neutral-100 shrink-0">
-                          <img
-                            src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=160&auto=format&fit=crop&q=80"
-                            alt="Banana"
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-neutral-900 dark:text-white">Banana</p>
-                          <p className="text-[11px] text-neutral-500 font-black">৳ 60</p>
-                        </div>
-                      </div>
-                      <span className="text-xs font-black text-emerald-600">+20%</span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg overflow-hidden bg-neutral-100 shrink-0">
-                          <img
-                            src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=160&auto=format&fit=crop&q=80"
-                            alt="Rice (Miniket)"
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-neutral-900 dark:text-white">Rice (Miniket)</p>
-                          <p className="text-[11px] text-neutral-500 font-black">৳ 280</p>
-                        </div>
-                      </div>
-                      <span className="text-xs font-black text-emerald-600">+18%</span>
-                    </div>
-                  </div>
-                </Card>
-
-                {/* Column 2: ECOBAZAR Intelligence */}
-                <Card className="p-5 flex flex-col justify-between border-emerald-200 dark:border-emerald-800">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">💡</span>
-                      <h3 className="text-base font-bold text-neutral-900 dark:text-white">
-                        ECOBAZAR Intelligence
-                      </h3>
-                    </div>
-
-                    <p className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 leading-relaxed">
-                      Sales are expected to increase by <strong>25%</strong> this week.
-                    </p>
-
-                    <Button
-                      variant="forest"
-                      size="sm"
-                      onClick={() => {
-                        setActiveRouteId('ai-assistant');
-                        toast.info('AI Intelligence', 'Opening demand forecast & FEFO recommendations');
-                      }}
-                      className="mt-2 font-black"
-                    >
-                      View Insights →
-                    </Button>
-                  </div>
-
-                  {/* Growth chart graphic */}
-                  <div className="mt-4 pt-3 flex items-end justify-center gap-2 h-20">
-                    <div className="w-5 bg-emerald-100 rounded-t h-8" />
-                    <div className="w-5 bg-emerald-200 rounded-t h-12" />
-                    <div className="w-5 bg-emerald-400 rounded-t h-16" />
-                    <div className="w-5 bg-primary-green rounded-t h-20" />
-                    <TrendingUp className="h-6 w-6 text-primary-green ml-2" />
-                  </div>
-                </Card>
-
-                {/* Column 3: Stacked Recent Orders & Pending Tasks */}
-                <div className="space-y-6">
-                  {/* Recent Orders */}
-                  <Card className="p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Recent Orders</h4>
-                      <button
-                        type="button"
-                        onClick={() => setActiveRouteId('orders')}
-                        className="text-xs font-bold text-primary-green hover:underline"
+                    {demoOrders.slice(0, 4).map((order) => (
+                      <div
+                        key={order.id}
+                        className="p-3 rounded-xl bg-neutral-50/80 dark:bg-neutral-800/60 border border-neutral-200/60 dark:border-neutral-700/60 hover:border-emerald-400/60 transition space-y-1.5"
                       >
-                        View All →
-                      </button>
+                        <div className="flex items-center justify-between text-xs">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono font-bold text-neutral-900 dark:text-white">
+                              {order.id}
+                            </span>
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-black ${
+                              order.channel === 'POS_STORE'
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                : 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
+                            }`}>
+                              {order.channel === 'POS_STORE' ? 'POS Store' : 'App Express'}
+                            </span>
+                          </div>
+                          <span className="font-black text-forest-900 dark:text-emerald-400">
+                            ৳{order.total.toLocaleString()}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[11px] text-neutral-500 dark:text-neutral-400">
+                          <span>{order.customer} • {order.itemsCount} items</span>
+                          <span className="font-mono font-semibold uppercase">{order.paymentMethod}</span>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-1 border-t border-neutral-200/40 dark:border-neutral-700/40 text-[10px]">
+                          <span className="text-neutral-400">{order.branch}</span>
+                          <span className={`font-bold ${
+                            order.status === 'COMPLETED'
+                              ? 'text-emerald-600 dark:text-emerald-400'
+                              : order.status === 'PROCESSING'
+                              ? 'text-amber-600 dark:text-amber-400'
+                              : 'text-cyan-600 dark:text-cyan-400'
+                          }`}>
+                            ● {order.status.replace('_', ' ')}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                {/* Col 2 (4 Cols): Top Velocity Fast-Moving SKUs */}
+                <Card className="lg:col-span-4 p-5 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-base font-black text-neutral-900 dark:text-white tracking-tight">
+                      Top Velocity SKUs
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setActiveRouteId('products')}
+                      className="text-xs font-bold text-primary-green hover:underline"
+                    >
+                      Catalog →
+                    </button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {demoCatalogProducts.slice(0, 4).map((prod) => (
+                      <div
+                        key={prod.id}
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800/60 transition border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="h-11 w-11 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200/60">
+                            <img
+                              src={prod.image}
+                              alt={prod.name}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-neutral-900 dark:text-white line-clamp-1">
+                              {prod.name}
+                            </p>
+                            <p className="text-[11px] text-neutral-500 font-bold">
+                              ৳{prod.price} <span className="font-normal text-neutral-400">• {prod.soldUnits} sold</span>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block">
+                            ৳{prod.revenue.toLocaleString()}
+                          </span>
+                          <span className="text-[10px] text-neutral-400 font-semibold">
+                            {prod.stock} in stock
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                {/* Col 3 (3 Cols): Mission Control Operational Checklist */}
+                <Card className="lg:col-span-3 p-5 flex flex-col justify-between bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="text-sm font-black text-neutral-900 dark:text-white tracking-tight">
+                        Shift Operational Tasks
+                      </h4>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500">
+                        Today
+                      </span>
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-mono font-bold text-neutral-900 dark:text-white">#ORD-2026116-992</span>
-                        <span className="font-black text-forest-900 dark:text-emerald-400">৳1,250</span>
-                        <Badge variant="warning" size="sm">Processing</Badge>
-                      </div>
-
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-mono font-bold text-neutral-900 dark:text-white">#ORD-2026116-991</span>
-                        <span className="font-black text-forest-900 dark:text-emerald-400">৳4,800</span>
-                        <Badge variant="info" size="sm">Shipped</Badge>
-                      </div>
-
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-mono font-bold text-neutral-900 dark:text-white">#ORD-2026116-990</span>
-                        <span className="font-black text-forest-900 dark:text-emerald-400">৳1,420</span>
-                        <Badge variant="success" size="sm">Delivered</Badge>
-                      </div>
-                    </div>
-                  </Card>
-
-                  {/* Pending Tasks with Interactive Checkmarks */}
-                  <Card className="p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Pending Tasks</h4>
-                      <span className="text-xs text-neutral-400 font-semibold">Today</span>
-                    </div>
-
-                    <div className="space-y-2 text-xs">
+                    <div className="space-y-2.5 text-xs">
                       {/* Task 1 */}
                       <div
                         onClick={() => {
                           setTaskVerificationStatus((prev) => (prev === 'verified' ? 'pending' : 'verified'));
-                          toast.success('Task Toggled', 'Milk restock task updated');
+                          toast.success('Checklist Updated', 'Chiller restocking status verified');
                         }}
-                        className="flex items-center gap-2.5 p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800 cursor-pointer hover:bg-neutral-100 transition"
+                        className="flex items-start gap-2.5 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition select-none"
                       >
-                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center ${
-                          taskVerificationStatus === 'verified' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300'
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${
+                          taskVerificationStatus === 'verified' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
                         }`}>
                           {taskVerificationStatus === 'verified' && <Check className="h-3 w-3" />}
                         </div>
                         <span className={taskVerificationStatus === 'verified' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
-                          Restock Milk Products
+                          Restock Dairy & Cold Storage Chiller
                         </span>
                       </div>
 
@@ -1720,37 +2179,66 @@ function AdminDashboardShell() {
                       <div
                         onClick={() => {
                           setTaskReceivingStatus((prev) => (prev === 'received' ? 'pending' : 'received'));
-                          toast.success('Task Toggled', 'Expiry alert checked');
+                          toast.success('Checklist Updated', 'FEFO expiry batch verified');
                         }}
-                        className="flex items-center gap-2.5 p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800 cursor-pointer hover:bg-neutral-100 transition"
+                        className="flex items-start gap-2.5 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition select-none"
                       >
-                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center ${
-                          taskReceivingStatus === 'received' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300'
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${
+                          taskReceivingStatus === 'received' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
                         }`}>
                           {taskReceivingStatus === 'received' && <Check className="h-3 w-3" />}
                         </div>
                         <span className={taskReceivingStatus === 'received' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
-                          Check Expiry Alert (2 items)
+                          Verify FEFO Milk Batch BTC-202611-09
                         </span>
                       </div>
 
                       {/* Task 3 */}
                       <div
                         onClick={() => {
-                          toast.info('Sales Report', 'Generating today\'s register audit report');
+                          setTaskAuditStatus((prev) => (prev === 'completed' ? 'pending' : 'completed'));
+                          toast.success('Checklist Updated', 'POS drawer cash reconciliation checked');
                         }}
-                        className="flex items-center gap-2.5 p-2 rounded-xl bg-neutral-50 dark:bg-neutral-800 cursor-pointer hover:bg-neutral-100 transition"
+                        className="flex items-start gap-2.5 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition select-none"
                       >
-                        <div className="h-4 w-4 rounded-md border border-neutral-300 flex items-center justify-center" />
-                        <span className="font-bold text-neutral-700 dark:text-neutral-200">
-                          Review Today's Sales Report
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${
+                          taskAuditStatus === 'completed' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
+                        }`}>
+                          {taskAuditStatus === 'completed' && <Check className="h-3 w-3" />}
+                        </div>
+                        <span className={taskAuditStatus === 'completed' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
+                          Reconcile POS Cash Register Drawers
+                        </span>
+                      </div>
+
+                      {/* Task 4 */}
+                      <div
+                        onClick={() => {
+                          setTaskSensorStatus((prev) => (prev === 'verified' ? 'pending' : 'verified'));
+                          toast.success('Checklist Updated', 'IoT cold chain temperature telemetry confirmed');
+                        }}
+                        className="flex items-start gap-2.5 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition select-none"
+                      >
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${
+                          taskSensorStatus === 'verified' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
+                        }`}>
+                          {taskSensorStatus === 'verified' && <Check className="h-3 w-3" />}
+                        </div>
+                        <span className={taskSensorStatus === 'verified' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
+                          Inspect Sub-4°C IoT Chillers
                         </span>
                       </div>
                     </div>
-                  </Card>
-                </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 text-center">
+                    <span className="text-[11px] text-neutral-400 font-medium">
+                      All checks logged into central audit trail
+                    </span>
+                  </div>
+                </Card>
               </div>
-            </>
+            </div>
           )}
 
           {/* ========================================== */}
