@@ -55,24 +55,35 @@ export default function DealsPage() {
 
       <main className="flex-1">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-r from-rose-950 via-[#123C2D] to-rose-900 text-white py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative bg-[#1A0A0F] text-white py-14 sm:py-16 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/images/banner-hot-deals.jpg"
+              alt="Today's Supermarket Deals"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#21080E]/95 via-[#123C2D]/90 sm:via-[#123C2D]/75 md:to-[#123C2D]/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1A0A0F] via-transparent to-black/40" />
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
-                <div className="inline-flex items-center gap-2 bg-rose-500/30 border border-rose-400/40 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold mb-3">
-                  <Flame className="w-4 h-4 text-rose-400 fill-rose-400" />
+                <div className="inline-flex items-center gap-2 bg-rose-500/40 border border-rose-400/50 backdrop-blur-md px-3.5 py-1.5 rounded-full text-white text-xs font-black mb-3 shadow-md">
+                  <Flame className="w-4 h-4 text-rose-300 fill-rose-300" />
                   <span>LIMITED TIME FLASH SAVINGS</span>
                 </div>
-                <h1 className="text-3xl sm:text-5xl font-black leading-tight">
+                <h1 className="text-3xl sm:text-5xl font-black leading-tight text-white drop-shadow-md">
                   Today&apos;s Best Supermarket Deals
                 </h1>
-                <p className="text-sm sm:text-base text-white/80 mt-2 max-w-xl font-medium">
+                <p className="text-sm sm:text-base text-rose-50/90 mt-2 max-w-xl font-medium drop-shadow-sm">
                   Save big on premium fresh fruits, seasonal vegetables, grass-fed dairy, and essential kitchen staples.
                 </p>
               </div>
 
               {/* Countdown Card */}
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 text-center shrink-0">
+              <div className="bg-[#123C2D]/80 backdrop-blur-md border border-white/25 rounded-2xl p-5 text-center shrink-0 shadow-xl">
                 <p className="text-xs uppercase font-extrabold text-rose-300 tracking-wider mb-2">
                   DEALS REFRESH IN:
                 </p>

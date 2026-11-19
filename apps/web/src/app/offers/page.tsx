@@ -25,6 +25,7 @@ export default function OffersPage() {
       expiry: 'Expires in 7 days',
       discount: '10% OFF',
       color: 'bg-emerald-600',
+      image: '/images/banner-organic-harvest.jpg',
     },
     {
       code: 'FREESHIP',
@@ -33,6 +34,7 @@ export default function OffersPage() {
       expiry: 'Limited to today',
       discount: 'FREE DELIVERY',
       color: 'bg-[#123C2D]',
+      image: '/images/hero-deliveryman.jpg',
     },
     {
       code: 'DHAKA25',
@@ -41,6 +43,7 @@ export default function OffersPage() {
       expiry: 'Active this month',
       discount: '৳100 CASHBACK',
       color: 'bg-rose-600',
+      image: '/images/banner-hot-deals.jpg',
     },
   ];
 
@@ -80,17 +83,28 @@ export default function OffersPage() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-r from-[#123C2D] via-[#1b4d3a] to-[#21A366] text-white py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative bg-[#071F15] text-white py-14 sm:py-16 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/images/banner-farm-grocery.jpg"
+              alt="Promotions & Coupons"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/70 to-[#0A261B]/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#071F15] via-transparent to-black/30" />
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold mb-3">
-                <Gift className="w-4 h-4 text-[#F4A340]" />
+              <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider mb-3 shadow-md">
+                <Gift className="w-4 h-4 text-[#071F15]" />
                 <span>ACTIVE VOUCHERS & VALUE BUNDLES</span>
               </div>
-              <h1 className="text-3xl sm:text-5xl font-black leading-tight">
+              <h1 className="text-3xl sm:text-5xl font-black leading-tight text-white drop-shadow-md">
                 Promotions & Coupon Vouchers
               </h1>
-              <p className="text-sm sm:text-base text-white/80 mt-2 font-medium">
+              <p className="text-sm sm:text-base text-emerald-50/90 mt-2 font-medium leading-relaxed drop-shadow-sm">
                 Apply one-click coupon codes to enjoy instant discounts, free delivery, and curated combo savings.
               </p>
             </div>
@@ -108,25 +122,36 @@ export default function OffersPage() {
             {coupons.map((coupon) => (
               <div
                 key={coupon.code}
-                className="bg-white rounded-3xl border border-[#E5ECE7] p-6 shadow-xs flex flex-col justify-between hover:shadow-md transition-all relative overflow-hidden group"
+                className="bg-white rounded-3xl border border-[#E5ECE7] p-5 shadow-xs flex flex-col justify-between hover:shadow-lg transition-all relative overflow-hidden group"
               >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-black uppercase tracking-wider text-[#21A366] bg-[#D8F3DC] px-2.5 py-0.5 rounded-full">
-                      {coupon.discount}
-                    </span>
-                    <span className="text-xs text-[#64736B]">{coupon.expiry}</span>
+                <div>
+                  {/* Coupon Header Banner Image */}
+                  <div className="relative h-32 w-full rounded-2xl overflow-hidden mb-4 shrink-0 bg-[#071F15]">
+                    <img
+                      src={coupon.image}
+                      alt={coupon.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+                    <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between">
+                      <span className="text-[11px] font-black uppercase tracking-wider text-[#071F15] bg-[#2EBD70] px-2.5 py-0.5 rounded-full shadow-sm">
+                        {coupon.discount}
+                      </span>
+                      <span className="text-xs text-white/95 font-semibold drop-shadow-sm">{coupon.expiry}</span>
+                    </div>
                   </div>
 
-                  <h3 className="font-extrabold text-base text-[#17251F] pt-1">
-                    {coupon.title}
-                  </h3>
-                  <p className="text-xs text-[#64736B] leading-relaxed">
-                    {coupon.desc}
-                  </p>
+                  <div className="space-y-1.5 px-1">
+                    <h3 className="font-extrabold text-base text-[#17251F]">
+                      {coupon.title}
+                    </h3>
+                    <p className="text-xs text-[#64736B] leading-relaxed">
+                      {coupon.desc}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#E5ECE7]/60 flex items-center justify-between gap-3">
+                <div className="mt-5 pt-4 border-t border-[#E5ECE7]/60 flex items-center justify-between gap-3">
                   <div className="bg-[#F7F9F5] border border-dashed border-[#21A366] rounded-xl px-3 py-1.5 font-mono font-black text-sm text-[#123C2D]">
                     {coupon.code}
                   </div>

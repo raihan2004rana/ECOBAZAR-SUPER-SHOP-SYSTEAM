@@ -27,17 +27,28 @@ export default function NewArrivalsPage() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-r from-[#123C2D] via-[#1a513d] to-[#21A366] text-white py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative bg-[#071F15] text-white py-14 sm:py-16 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/images/banner-organic-harvest.jpg"
+              alt="Daily Fresh Harvest"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/70 to-[#0A261B]/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#071F15] via-transparent to-black/30" />
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold mb-3">
-                <Sparkles className="w-4 h-4 text-[#F4A340]" />
+              <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-3 shadow-md">
+                <Sparkles className="w-4 h-4 text-[#071F15]" />
                 <span>FRESH HARVEST • ARRIVED THIS MORNING</span>
               </div>
-              <h1 className="text-3xl sm:text-5xl font-black leading-tight">
+              <h1 className="text-3xl sm:text-5xl font-black leading-tight text-white drop-shadow-md">
                 Daily Fresh Harvest & New Arrivals
               </h1>
-              <p className="text-sm sm:text-base text-white/80 mt-2 font-medium">
+              <p className="text-sm sm:text-base text-emerald-50/90 mt-3 font-medium leading-relaxed drop-shadow-sm">
                 Produce harvested before sunrise from our organic partner farms in Bogura, Rajshahi, and Sylhet. Inspected and delivered crisp to your home.
               </p>
             </div>

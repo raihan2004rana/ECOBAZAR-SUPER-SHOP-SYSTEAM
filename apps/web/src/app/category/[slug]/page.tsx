@@ -36,12 +36,28 @@ interface CategoryPageProps {
   };
 }
 
+const categoryBannerMap: Record<string, string> = {
+  'fresh-fruits-vegetables': '/images/banner-organic-harvest.jpg',
+  'groceries-staples': '/images/banner-farm-to-table.jpg',
+  'dairy-eggs': '/images/banner-bogura-doi.jpg',
+  'snacks-beverages': '/images/banner-hot-deals.jpg',
+  'meat-fish': '/images/banner-seafood.jpg',
+  'bakery-fresh-snacks': '/images/banner-farm-to-table.jpg',
+  'rice-pulses-grains': '/images/banner-farmers-coop.jpg',
+  'spices-oils': '/images/banner-mustard-oil.jpg',
+  'frozen-foods': '/images/banner-hot-deals.jpg',
+  'health-personal-care': '/images/banner-farm-grocery.jpg',
+  'baby-food-care': '/images/banner-farm-grocery.jpg',
+};
+
 export default function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const category = getCategoryBySlug(params.slug);
 
   if (!category) {
     notFound();
   }
+
+  const categoryBanner = categoryBannerMap[category.slug] || '/images/banner-farm-grocery.jpg';
 
   const allCategoryProducts = getProductsByCategorySlug(params.slug);
 
@@ -129,10 +145,21 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
 
       <main className="flex-1">
         {/* A. BREADCRUMBS & CATEGORY HERO BANNER */}
-        <section className="bg-gradient-to-b from-[#123C2D] to-[#174635] text-white pt-6 pb-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative bg-[#071F15] text-white pt-6 pb-12 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src={categoryBanner}
+              alt={category.name}
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/75 to-[#0A261B]/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#071F15] via-transparent to-black/30" />
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
+            <nav className="flex items-center gap-2 text-xs text-white/80 mb-6">
               <Link href="/" className="hover:text-white transition-colors">
                 Home
               </Link>
@@ -144,23 +171,23 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
 
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
-                <div className="inline-flex items-center gap-2 bg-[#21A366]/30 border border-[#2EBD70]/40 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold mb-3">
+                <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-3 shadow-md">
                   <span className="text-base">{category.icon}</span>
                   <span>{category.nameBn}</span>
-                  <span className="text-white/50">•</span>
+                  <span className="text-[#071F15]/50">•</span>
                   <span>{allCategoryProducts.length} Items Available</span>
                 </div>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight drop-shadow-md">
                   {category.name}
                 </h1>
-                <p className="text-sm sm:text-base text-white/80 mt-2 max-w-xl font-medium">
+                <p className="text-sm sm:text-base text-emerald-50/90 mt-2 max-w-xl font-medium leading-relaxed drop-shadow-sm">
                   {category.tagline}
                 </p>
               </div>
 
               {/* Delivery Promise Card */}
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-xs space-y-1.5 shrink-0">
-                <div className="flex items-center gap-2 text-[#2EBD70] font-bold">
+              <div className="bg-[#0A261B]/80 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-xs space-y-1.5 shrink-0 shadow-xl">
+                <div className="flex items-center gap-2 text-[#2EBD70] font-black">
                   <Sparkles className="w-4 h-4" />
                   <span>30-Min Fast Dispatch</span>
                 </div>
@@ -174,45 +201,58 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
         {/* B. CATEGORY PROMOTIONAL SLIDER */}
         {category.promoSlides.length > 0 && (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
-            <div className="relative rounded-2xl overflow-hidden shadow-lg border border-[#E5ECE7]">
+            <div className="relative rounded-3xl overflow-hidden shadow-xl border border-emerald-900/30 min-h-[160px] sm:min-h-[180px] bg-[#071F15]">
               {category.promoSlides.map((slide, idx) => (
                 <div
                   key={idx}
-                  className={`p-6 sm:p-8 bg-gradient-to-r ${slide.bgGradient} text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-opacity duration-500 ${
-                    promoSlideIndex === idx ? 'block' : 'hidden'
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    promoSlideIndex === idx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
                   }`}
                 >
-                  <div className="space-y-1 max-w-lg">
-                    <span className="text-xs font-black uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
-                      {slide.discountText}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-black">{slide.title}</h3>
-                    <p className="text-xs sm:text-sm text-white/90">{slide.subtitle}</p>
+                  {/* Background Image */}
+                  <img
+                    src={categoryBanner}
+                    alt={slide.title}
+                    className="w-full h-full object-cover object-right sm:object-center"
+                  />
+                  {/* Dark emerald gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/75 md:to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+
+                  {/* Content */}
+                  <div className="relative z-10 h-full p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="space-y-1.5 max-w-lg">
+                      <span className="text-xs font-black uppercase tracking-wider bg-[#2EBD70] text-[#071F15] px-3 py-1 rounded-full shadow-sm inline-block">
+                        {slide.discountText}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-black text-white drop-shadow-md">{slide.title}</h3>
+                      <p className="text-xs sm:text-sm text-emerald-50/90 font-medium drop-shadow-sm">{slide.subtitle}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedPriceRange('all');
+                        setSelectedSubcategory('all');
+                      }}
+                      className="inline-flex items-center gap-2 bg-white hover:bg-[#2EBD70] text-[#071F15] px-6 py-3 rounded-2xl font-black text-xs shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 shrink-0 self-start sm:self-auto"
+                    >
+                      <span>{slide.cta}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedPriceRange('all');
-                      setSelectedSubcategory('all');
-                    }}
-                    className="inline-flex items-center gap-2 bg-white text-[#123C2D] px-5 py-2.5 rounded-xl font-extrabold text-xs hover:bg-[#D8F3DC] transition-colors shrink-0 self-start sm:self-auto"
-                  >
-                    <span>{slide.cta}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
                 </div>
               ))}
 
               {/* Slider Dots */}
               {category.promoSlides.length > 1 && (
-                <div className="absolute bottom-2 right-4 flex gap-1.5">
+                <div className="absolute bottom-3 right-5 z-20 flex gap-1.5">
                   {category.promoSlides.map((_, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setPromoSlideIndex(idx)}
-                      className={`h-1.5 rounded-full transition-all ${
-                        promoSlideIndex === idx ? 'w-5 bg-white' : 'w-1.5 bg-white/50'
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        promoSlideIndex === idx ? 'w-6 bg-[#2EBD70]' : 'w-2 bg-white/50 hover:bg-white/80'
                       }`}
                     />
                   ))}
