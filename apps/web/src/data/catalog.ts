@@ -2385,3 +2385,39 @@ export function getHotDeals(): ProductItem[] {
 export function getNewArrivals(): ProductItem[] {
   return masterCatalogProducts.slice(0, 16);
 }
+
+export function getProductById(idOrSlug: string): ProductItem | undefined {
+  if (!idOrSlug) return undefined;
+  const decoded = decodeURIComponent(idOrSlug).toLowerCase().trim();
+
+  // 1. Exact ID match (case-insensitive)
+  const byId = masterCatalogProducts.find((p) => p.id.toLowerCase() === decoded);
+  if (byId) return byId;
+
+  // 2. Exact slug match
+  const bySlug = masterCatalogProducts.find((p) => {
+    const slug = p.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    return slug === decoded;
+  });
+  if (bySlug) return bySlug;
+
+  // 3. Partial slug / keyword match (e.g. 'sundarban-honey')
+  const byKeyword = masterCatalogProducts.find((p) => {
+    const slug = p.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    return slug.includes(decoded) || decoded.includes(slug);
+  });
+  if (byKeyword) return byKeyword;
+
+  // 4. Keyword tokens match
+  const tokens = decoded.split('-').filter(Boolean);
+  return masterCatalogProducts.find((p) => {
+    const nameLower = p.name.toLowerCase();
+    return tokens.length > 0 && tokens.every((token) => nameLower.includes(token));
+  });
+}

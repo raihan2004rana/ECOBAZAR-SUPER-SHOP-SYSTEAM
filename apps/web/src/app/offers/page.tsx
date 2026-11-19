@@ -87,7 +87,7 @@ export default function OffersPage() {
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <img
-              src="/images/banner-farm-grocery.jpg"
+              src="/images/offer-hero.png"
               alt="Promotions & Coupons"
               className="w-full h-full object-cover object-center"
             />

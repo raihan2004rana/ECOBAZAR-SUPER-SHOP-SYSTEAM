@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Search,
   ShoppingBag,
@@ -26,6 +26,7 @@ import { useCart } from '../context/cart-context';
 import { categoryDefinitions, masterCatalogProducts, ProductItem } from '../data/catalog';
 
 export const SiteHeader: React.FC = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const {
     totalCartCount,
@@ -187,7 +188,7 @@ export const SiteHeader: React.FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && searchResults.length > 0) {
-                    setSelectedProductForModal(searchResults[0]);
+                    router.push(`/products/${searchResults[0].id}`);
                     setIsSearchFocused(false);
                     setSearchQuery('');
                   }
@@ -200,7 +201,7 @@ export const SiteHeader: React.FC = () => {
                 type="button"
                 onClick={() => {
                   if (searchResults.length > 0) {
-                    setSelectedProductForModal(searchResults[0]);
+                    router.push(`/products/${searchResults[0].id}`);
                     setIsSearchFocused(false);
                     setSearchQuery('');
                   }
@@ -218,10 +219,10 @@ export const SiteHeader: React.FC = () => {
                   Found {searchResults.length} Products
                 </div>
                 {searchResults.map((product) => (
-                  <div
+                  <Link
                     key={product.id}
+                    href={`/products/${product.id}`}
                     onClick={() => {
-                      setSelectedProductForModal(product);
                       setIsSearchFocused(false);
                       setSearchQuery('');
                     }}
@@ -244,7 +245,7 @@ export const SiteHeader: React.FC = () => {
                         </span>
                       )}
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}
@@ -335,7 +336,7 @@ export const SiteHeader: React.FC = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && searchResults.length > 0) {
-                  setSelectedProductForModal(searchResults[0]);
+                  router.push(`/products/${searchResults[0].id}`);
                   setIsSearchFocused(false);
                   setSearchQuery('');
                 }

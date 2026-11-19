@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, Eye, Plus, Minus, Check, ShoppingBag, Star } from 'lucide-react';
 import { ProductItem } from '../data/catalog';
@@ -71,25 +72,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
           </button>
 
-          {/* Quick View Button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedProductForModal(product);
-            }}
-            aria-label="Quick view"
+          {/* Quick Details View Link */}
+          <Link
+            href={`/products/${product.id}`}
+            aria-label="View product details"
             className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm text-gray-500 hover:text-[#21A366] hover:bg-white flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200"
           >
             <Eye className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </div>
 
       {/* Product Image Area */}
-      <div
-        className="relative w-full pt-[75%] bg-[#F7F9F5] cursor-pointer overflow-hidden"
-        onClick={() => setSelectedProductForModal(product)}
+      <Link
+        href={`/products/${product.id}`}
+        className="relative block w-full pt-[75%] bg-[#F7F9F5] cursor-pointer overflow-hidden"
       >
         <img
           src={product.image}
@@ -105,7 +102,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             Only {product.stock} left!
           </span>
         )}
-      </div>
+      </Link>
 
       {/* Card Details */}
       <div className="p-4 flex-1 flex flex-col justify-between">
@@ -119,13 +116,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           {/* Product Title */}
-          <h3
-            onClick={() => setSelectedProductForModal(product)}
-            className="font-bold text-[#17251F] text-sm md:text-base leading-snug line-clamp-2 hover:text-[#21A366] cursor-pointer transition-colors"
-            title={product.name}
-          >
-            {product.name}
-          </h3>
+          <Link href={`/products/${product.id}`} className="block">
+            <h3
+              className="font-bold text-[#17251F] text-sm md:text-base leading-snug line-clamp-2 hover:text-[#21A366] cursor-pointer transition-colors"
+              title={product.name}
+            >
+              {product.name}
+            </h3>
+          </Link>
 
           {/* Rating (Only shown when explicitly enabled for a specific product) */}
           {product.showReviews && (
