@@ -56,8 +56,8 @@ export default function NewArrivalsPage() {
         </section>
 
         {/* Benefits Ribbon */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
-          <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
+          <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 sm:p-5 shadow-lg grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center font-bold">
                 <Calendar className="w-4 h-4" />

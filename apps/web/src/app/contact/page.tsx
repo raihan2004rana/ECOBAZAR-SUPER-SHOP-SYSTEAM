@@ -85,9 +85,9 @@ export default function ContactPage() {
         </section>
 
         {/* Quick Contact Cards */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div className="bg-white rounded-2xl border border-[#E5ECE7] p-5 shadow-xs flex items-center gap-4">
+            <div className="bg-white rounded-2xl border border-[#E5ECE7] p-5 shadow-lg flex items-center gap-4">
               <div className="w-12 h-12 rounded-2xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0">
                 <Phone className="w-6 h-6" />
               </div>

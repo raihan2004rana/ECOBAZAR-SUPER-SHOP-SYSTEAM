@@ -200,7 +200,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
 
         {/* B. CATEGORY PROMOTIONAL SLIDER */}
         {category.promoSlides.length > 0 && (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
             <div className="relative rounded-3xl overflow-hidden shadow-xl border border-emerald-900/30 min-h-[160px] sm:min-h-[180px] bg-[#071F15]">
               {category.promoSlides.map((slide, idx) => (
                 <div
