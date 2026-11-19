@@ -236,14 +236,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const wishlistProducts = masterCatalogProducts.filter((p) => wishlistMap[p.id]);
 
   const handlePlaceOrder = (): string => {
-    const orderNum = `ORD-202611-${Math.floor(1000 + Math.random() * 9000)}`;
+    const orderNum = `ECO-DH-${Math.floor(100000 + Math.random() * 900000)}`;
     clearCart();
-    setIsCheckoutModalOpen(false);
     setIsCartDrawerOpen(false);
-    toast.success(
-      'Order Placed Successfully!',
-      `Order #${orderNum} confirmed. Delivery in ~${selectedBranch.deliveryTime}.`
-    );
     return orderNum;
   };
 
