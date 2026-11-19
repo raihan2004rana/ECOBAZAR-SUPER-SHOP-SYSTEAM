@@ -18,6 +18,7 @@ import {
 import { SiteHeader } from '../components/site-header';
 import { SiteFooter } from '../components/site-footer';
 import { HeroSlider } from '../components/hero-slider';
+import { FarmToTableSlider } from '../components/farm-to-table-slider';
 import { ProductCard } from '../components/product-card';
 import { CartDrawer } from '../components/cart-drawer';
 import { WishlistDrawer } from '../components/wishlist-drawer';
@@ -294,30 +295,7 @@ export default function HomePage() {
                 </section>
               )}
 
-              {index === 6 && (
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-                  <div className="rounded-3xl bg-gradient-to-r from-emerald-800 via-[#123C2D] to-teal-800 p-6 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
-                    <div className="space-y-2">
-                      <span className="text-xs font-black uppercase tracking-wider bg-[#2EBD70] text-[#123C2D] px-3 py-1 rounded-full">
-                        ORGANIC FARMER CO-OP
-                      </span>
-                      <h3 className="text-2xl sm:text-3xl font-black">
-                        Direct From Farm to Your Dining Table
-                      </h3>
-                      <p className="text-xs sm:text-sm text-white/80 max-w-xl">
-                        We partner with 120+ certified organic farms across Bogura, Rajshahi, and Sylhet. No middlemen, no harmful chemicals.
-                      </p>
-                    </div>
-                    <Link
-                      href="/about-us"
-                      className="inline-flex items-center gap-2 bg-white text-[#123C2D] px-6 py-3 rounded-2xl font-extrabold text-sm hover:bg-[#D8F3DC] transition-colors shrink-0"
-                    >
-                      <span>Our Farm Story</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </section>
-              )}
+              {index === 6 && <FarmToTableSlider />}
             </React.Fragment>
           );
         })}
