@@ -22,6 +22,8 @@ import {
   RotateCcw,
   Sparkles,
   Share2,
+  Flame,
+  Tag,
 } from 'lucide-react';
 import { SiteHeader } from '../../../components/site-header';
 import { SiteFooter } from '../../../components/site-footer';
@@ -34,6 +36,8 @@ import { useToast } from '@ecobazar/ui';
 import {
   getProductById,
   getProductsByCategorySlug,
+  getHotDeals,
+  getNewArrivals,
   ProductItem,
 } from '../../../data/catalog';
 import { useCatalog } from '../../../context/catalog-context';
@@ -56,7 +60,7 @@ interface ReviewItem {
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const router = useRouter();
-  const { getProductById: dynamicGetProductById } = useCatalog();
+  const { getProductById: dynamicGetProductById, products: dynamicProducts } = useCatalog();
   const product = dynamicGetProductById(params.id) || getProductById(params.id);
 
   if (!product) {
@@ -147,12 +151,41 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const [uploadedFiles, setUploadedFiles] = React.useState<string[]>([]);
   const [isSubmittingReview, setIsSubmittingReview] = React.useState(false);
 
-  // Related products
+  // Top promotional slider in product details page
+  const [activePromoSlide, setActivePromoSlide] = React.useState(0);
+  const [isPromoPaused, setIsPromoPaused] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isPromoPaused) return;
+    const timer = setInterval(() => {
+      setActivePromoSlide((prev) => (prev === 0 ? 1 : 0));
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isPromoPaused]);
+
+  // Related products (from same category)
   const relatedProducts = React.useMemo(() => {
-    return getProductsByCategorySlug(product.categorySlug)
+    const list = dynamicProducts && dynamicProducts.length > 0 ? dynamicProducts : getProductsByCategorySlug(product.categorySlug);
+    return list
+      .filter((p) => p.categorySlug === product.categorySlug && p.id !== product.id)
+      .slice(0, 5);
+  }, [dynamicProducts, product.categorySlug, product.id]);
+
+  // Hot deals for cross-marketing
+  const hotDeals = React.useMemo(() => {
+    const list = dynamicProducts && dynamicProducts.length > 0 ? dynamicProducts : getHotDeals();
+    return list
+      .filter((p) => (p.isHotDeal || p.isOffer || (p.originalPrice && p.originalPrice > p.price)) && p.id !== product.id)
+      .slice(0, 5);
+  }, [dynamicProducts, product.id]);
+
+  // Daily new arrivals for cross-marketing
+  const newArrivals = React.useMemo(() => {
+    const list = dynamicProducts && dynamicProducts.length > 0 ? dynamicProducts : getNewArrivals();
+    return list
       .filter((p) => p.id !== product.id)
       .slice(0, 5);
-  }, [product.categorySlug, product.id]);
+  }, [dynamicProducts, product.id]);
 
   const handleIncrement = () => setQuantity((prev) => prev + 1);
   const handleDecrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
@@ -840,29 +873,283 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           </div>
         </section>
 
-        {/* 3. RELATED PRODUCTS */}
-        {relatedProducts.length > 0 && (
-          <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-12">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-black text-[#17251F]">Related Products</h2>
-                <p className="text-xs text-[#64736B] mt-0.5">
-                  Customers also viewed these items in {product.category}
-                </p>
-              </div>
-              <Link
-                href={`/category/${product.categorySlug}`}
-                className="text-xs font-bold text-[#21A366] hover:text-[#123C2D] transition-colors flex items-center gap-1"
-              >
-                <span>View More Products</span>
-                <ChevronRight className="w-4 h-4" />
-              </Link>
+        {/* ==================================================== */}
+        {/* 3. HIGH-IMPACT PROMOTIONAL BANNER SECTION           */}
+        {/* Top: 1 large 2-slide banner, Bottom: 2 side-by-side cards */}
+        {/* ==================================================== */}
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+          {/* Top Wide Card: 2-Slide Banner Slider */}
+          <div
+            className="group relative rounded-3xl overflow-hidden shadow-lg border border-[#E5ECE7] min-h-[230px] sm:min-h-[270px] md:min-h-[300px] flex items-center justify-between"
+            onMouseEnter={() => setIsPromoPaused(true)}
+            onMouseLeave={() => setIsPromoPaused(false)}
+          >
+            {/* Slide 1 */}
+            <div
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                activePromoSlide === 0 ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'
+              }`}
+            >
+              <img
+                src="/images/banner-farm-to-table.jpg"
+                alt="Direct Farm Harvest"
+                className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/80 via-transparent to-black/20" />
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {relatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
+            {/* Slide 2 */}
+            <div
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                activePromoSlide === 1 ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'
+              }`}
+            >
+              <img
+                src="/images/banner-mustard-oil.jpg"
+                alt="Cold Pressed Mustard Oil"
+                className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/80 via-transparent to-black/20" />
+            </div>
+
+            {/* Slide Content */}
+            <div className="relative z-10 p-6 sm:p-10 lg:p-12 max-w-2xl text-white space-y-3">
+              <span className="inline-block text-[10px] sm:text-xs font-black tracking-wider uppercase px-3.5 py-1 rounded-full bg-[#2EBD70] text-[#071F15] shadow-sm">
+                {activePromoSlide === 0
+                  ? 'ORGANIC FARMER CO-OP • 100% FORMALIN FREE'
+                  : 'TRADITIONAL COLD-PRESSED • PURE GHANI OILS'}
+              </span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight drop-shadow-md">
+                {activePromoSlide === 0
+                  ? 'সরাসরি কৃষকের ক্ষেত থেকে নিরাপদ টাটকা খাবার'
+                  : 'কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল ও খাঁটি মশলা'}
+              </h2>
+              <p className="text-xs sm:text-sm text-emerald-100/90 font-medium leading-relaxed max-w-lg">
+                {activePromoSlide === 0
+                  ? 'বগুড়া ও রাজশাহীর ১২০+ সার্টিফাইড অর্গানিক খামার থেকে ভোরে সংগৃহীত সতেজ ফসল সরাসরি আপনার ঘরে।'
+                  : 'কোনো কেমিক্যাল বা কৃত্রিম ঝাঁজ ছাড়া প্রাকৃতিক ঘ্রাণ ও পুষ্টিতে ভরপুর খাঁটি দেশি পণ্য।'}
+              </p>
+              <div className="pt-2">
+                <Link
+                  href={activePromoSlide === 0 ? '/category/fresh-fruits-vegetables' : '/category/spices-oils'}
+                  className="inline-flex items-center gap-2 bg-[#21A366] hover:bg-[#123C2D] text-white px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all active:scale-95"
+                >
+                  <span>{activePromoSlide === 0 ? 'Explore Fresh Harvest' : 'Shop Spices & Oils'}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Slider Navigation Controls */}
+            <div className="absolute inset-y-0 left-3 right-3 flex items-center justify-between pointer-events-none z-20">
+              <button
+                type="button"
+                onClick={() => setActivePromoSlide((prev) => (prev === 0 ? 1 : 0))}
+                className="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-lg backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                aria-label="Previous Slide"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setActivePromoSlide((prev) => (prev === 0 ? 1 : 0))}
+                className="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-lg backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                aria-label="Next Slide"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Pagination Dots */}
+            <div className="absolute bottom-4 right-6 z-20 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setActivePromoSlide(0)}
+                className={`transition-all duration-300 rounded-full ${
+                  activePromoSlide === 0 ? 'w-6 h-2 bg-[#2EBD70]' : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                }`}
+                aria-label="Slide 1"
+              />
+              <button
+                type="button"
+                onClick={() => setActivePromoSlide(1)}
+                className={`transition-all duration-300 rounded-full ${
+                  activePromoSlide === 1 ? 'w-6 h-2 bg-[#2EBD70]' : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                }`}
+                aria-label="Slide 2"
+              />
+            </div>
+          </div>
+
+          {/* Bottom 2 Cards Side-by-Side: Full Card Background as Banner Image */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            {/* Card 1: Tasty Seafood Daily Series */}
+            <Link
+              href="/category/meat-fish"
+              className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[210px] sm:min-h-[240px] flex flex-col justify-end p-6"
+            >
+              <div className="absolute inset-0 z-0">
+                <img
+                  src="/images/banner-seafood.jpg"
+                  alt="Tasty Seafood Daily Series"
+                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/95 via-[#0A261B]/50 to-transparent" />
+              </div>
+              <div className="relative z-10 text-white space-y-1.5">
+                <span className="inline-block text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#F4A340] text-[#17251F] shadow-xs">
+                  DAILY FRESH CATCH
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight group-hover:text-[#D8F3DC] transition-colors drop-shadow-sm">
+                  Tasty Seafood & River Fish Series
+                </h3>
+                <p className="text-xs text-white/90 font-medium line-clamp-1">
+                  Fresh Padma Hilsha, giant tiger prawns & river Katla on fresh ice.
+                </p>
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2EBD70] group-hover:text-white pt-1 transition-colors">
+                  <span>Explore Meat & Fish</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+
+            {/* Card 2: Traditional Bogura Doi & Dairy */}
+            <Link
+              href="/category/dairy-eggs"
+              className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[210px] sm:min-h-[240px] flex flex-col justify-end p-6"
+            >
+              <div className="absolute inset-0 z-0">
+                <img
+                  src="/images/banner-bogura-doi.jpg"
+                  alt="ঐতিহ্যবাহী বগুড়ার দই"
+                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/95 via-[#0A261B]/50 to-transparent" />
+              </div>
+              <div className="relative z-10 text-white space-y-1.5">
+                <span className="inline-block text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#21A366] text-white shadow-xs">
+                  AUTHENTIC SPECIALTY
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight group-hover:text-[#D8F3DC] transition-colors drop-shadow-sm">
+                  ঐতিহ্যবাহী বগুড়ার স্পেশাল সরার মিষ্টি দই
+                </h3>
+                <p className="text-xs text-white/90 font-medium line-clamp-1">
+                  Pure clay-pot curd, artisan butter, farm eggs and cow milk.
+                </p>
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F4A340] group-hover:text-white pt-1 transition-colors">
+                  <span>Order Fresh Dairy</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* ==================================================== */}
+        {/* 4. RELATED PRODUCTS SECTION                          */}
+        {/* ==================================================== */}
+        {relatedProducts.length > 0 && (
+          <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+            <div className="bg-white rounded-3xl border border-[#E5ECE7] p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E5ECE7]">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black text-[#17251F]">Related Products</h2>
+                  <p className="text-xs text-[#64736B] mt-0.5">
+                    Customers also viewed these items in {product.category}
+                  </p>
+                </div>
+                <Link
+                  href={`/category/${product.categorySlug}`}
+                  className="text-xs font-bold text-[#21A366] hover:text-[#123C2D] transition-colors flex items-center gap-1"
+                >
+                  <span>View All in {product.category.split(' ')[0]}</span>
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {relatedProducts.map((p) => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ==================================================== */}
+        {/* 5. SPECIAL DEALS & OFFERS SECTION (CROSS-MARKETING) */}
+        {/* ==================================================== */}
+        {hotDeals.length > 0 && (
+          <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+            <div className="bg-white rounded-3xl border border-[#E5ECE7] p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E5ECE7]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
+                    <Flame className="w-5 h-5 fill-rose-500" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-[#17251F]">
+                      Special Deals & Hot Offers
+                    </h2>
+                    <p className="text-xs text-[#64736B] mt-0.5">
+                      Limited time discounts on fresh produce, groceries & pantry essentials
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/deals"
+                  className="text-xs font-bold text-rose-600 hover:text-rose-800 transition-colors flex items-center gap-1"
+                >
+                  <span>Explore All Deals</span>
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {hotDeals.map((p) => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ==================================================== */}
+        {/* 6. DAILY FRESH HARVEST & NEW ARRIVALS (MARKETING)    */}
+        {/* ==================================================== */}
+        {newArrivals.length > 0 && (
+          <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+            <div className="bg-white rounded-3xl border border-[#E5ECE7] p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E5ECE7]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-[#17251F]">
+                      Daily Fresh Harvest & New Arrivals
+                    </h2>
+                    <p className="text-xs text-[#64736B] mt-0.5">
+                      Harvested at sunrise from partner organic cooperatives across Dhaka & North Bengal
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/new-arrivals"
+                  className="text-xs font-bold text-[#21A366] hover:text-[#123C2D] transition-colors flex items-center gap-1"
+                >
+                  <span>View All New Arrivals</span>
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {newArrivals.map((p) => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
             </div>
           </section>
         )}

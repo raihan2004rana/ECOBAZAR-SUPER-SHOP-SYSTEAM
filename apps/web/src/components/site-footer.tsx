@@ -14,6 +14,7 @@ import {
   RotateCcw,
   Sparkles,
   CreditCard,
+  Banknote,
 } from 'lucide-react';
 
 export const SiteFooter: React.FC = () => {
@@ -167,15 +168,50 @@ export const SiteFooter: React.FC = () => {
         </div>
 
         {/* Bottom Bar: Copyright & Payment methods */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/60">
+        <div className="pt-8 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-white/70">
           <p>© 2026 ECOBAZAR Supermarket Ltd. All rights reserved.</p>
-          <div className="flex items-center gap-3">
-            <span className="text-white/80 font-medium">Accepted Payments:</span>
-            <span className="px-2 py-1 bg-white/10 rounded font-semibold text-white">bKash</span>
-            <span className="px-2 py-1 bg-white/10 rounded font-semibold text-white">Nagad</span>
-            <span className="px-2 py-1 bg-white/10 rounded font-semibold text-white">Visa</span>
-            <span className="px-2 py-1 bg-white/10 rounded font-semibold text-white">Mastercard</span>
-            <span className="px-2 py-1 bg-white/10 rounded font-semibold text-white">Cash on Delivery</span>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="text-white/90 font-bold mr-1">Accepted Payments:</span>
+            
+            {/* bKash Logo Card */}
+            <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg shadow-sm">
+              <svg className="w-5 h-4" viewBox="0 0 100 80" fill="none">
+                <polygon points="10,40 50,10 65,35 40,40" fill="#E2136E" />
+                <polygon points="50,10 90,25 65,35" fill="#C70057" />
+                <polygon points="40,40 65,35 75,70 45,55" fill="#E2136E" />
+                <polygon points="65,35 90,25 85,55 75,70" fill="#C70057" />
+              </svg>
+              <span className="font-black text-[#E2136E] text-xs tracking-tight">bKash</span>
+            </div>
+
+            {/* Nagad Logo Card */}
+            <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg shadow-sm">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C8 6 6 10 7 14C8 18 11 21 14 21C17 21 20 18 20 13C20 8 16 4 12 2Z" fill="#F7941D" />
+                <path d="M11 7C8 10 8 13 9 16C10 18 12 19 14 19C15 19 17 18 17 15C17 12 14 9 11 7Z" fill="#E31A22" />
+              </svg>
+              <span className="font-black text-[#E31A22] text-xs tracking-tight">Nagad</span>
+            </div>
+
+            {/* Visa Logo Card */}
+            <div className="flex items-center bg-white px-2.5 py-1.5 rounded-lg shadow-sm">
+              <span className="font-black text-[#1A1F71] text-xs italic tracking-widest font-sans">VISA</span>
+            </div>
+
+            {/* Mastercard Logo Card */}
+            <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg shadow-sm">
+              <div className="flex -space-x-1.5 items-center">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#EB001B]" />
+                <span className="w-3.5 h-3.5 rounded-full bg-[#F79E1B] mix-blend-multiply opacity-90" />
+              </div>
+              <span className="font-extrabold text-[#17251F] text-[11px] tracking-tight">mastercard</span>
+            </div>
+
+            {/* Cash on Delivery Logo Card */}
+            <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg shadow-sm">
+              <Banknote className="w-4 h-4 text-[#21A366]" />
+              <span className="font-black text-[#123C2D] text-xs">Cash on Delivery</span>
+            </div>
           </div>
         </div>
       </div>
