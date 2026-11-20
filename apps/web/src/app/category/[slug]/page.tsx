@@ -639,25 +639,36 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
               <h3 className="text-lg font-black text-[#17251F] mb-4">
                 Customers Also Frequently Shop
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className={`grid grid-cols-1 ${relatedCategories.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-4 sm:gap-6`}>
                 {relatedCategories.map((rc) => (
                   <Link
                     key={rc.id}
                     href={`/category/${rc.slug}`}
-                    className="p-4 rounded-2xl border border-[#E5ECE7] hover:border-[#21A366] bg-[#F7F9F5] hover:bg-white transition-all flex items-center justify-between group"
+                    className="p-5 sm:p-6 rounded-2xl border border-[#E5ECE7] hover:border-[#21A366] bg-[#F7F9F5] hover:bg-white transition-all flex items-start justify-between gap-4 group shadow-xs hover:shadow-md"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="text-3xl group-hover:scale-110 transition-transform">
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                      {/* Icon Tile with Breathing Room */}
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white border border-[#E5ECE7] flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-xs group-hover:scale-105 group-hover:border-[#21A366]/40 transition-all">
                         {rc.icon}
-                      </span>
-                      <div>
-                        <h4 className="font-extrabold text-sm text-[#17251F] group-hover:text-[#21A366] transition-colors">
+                      </div>
+
+                      {/* Text with Generous Leading and Spacing */}
+                      <div className="flex-1 min-w-0 space-y-1.5 pt-0.5">
+                        <h4 className="font-black text-sm sm:text-base text-[#17251F] group-hover:text-[#21A366] transition-colors leading-snug">
                           {rc.name}
                         </h4>
-                        <p className="text-xs text-[#64736B]">{rc.tagline}</p>
+                        <p className="text-xs sm:text-[13px] text-[#64736B] leading-relaxed line-clamp-3 font-normal">
+                          {rc.tagline}
+                        </p>
                       </div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#21A366] group-hover:translate-x-1 transition-all" />
+
+                    {/* Arrow Icon Pill */}
+                    <div className="shrink-0 pt-1.5 pl-2">
+                      <div className="w-8 h-8 rounded-full bg-white border border-[#E5ECE7] flex items-center justify-center text-gray-400 group-hover:text-[#21A366] group-hover:border-[#21A366]/50 shadow-xs group-hover:translate-x-0.5 transition-all">
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </div>
                   </Link>
                 ))}
               </div>

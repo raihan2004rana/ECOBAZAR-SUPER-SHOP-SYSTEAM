@@ -199,12 +199,12 @@ export const SiteHeader: React.FC = () => {
             </Link>
           </div>
 
-          {/* Search Autocomplete Bar - IN THE HEADER on tablet (md:) and desktop */}
-          <div ref={searchContainerRef} className="relative flex-1 max-w-2xl mx-2 sm:mx-4 hidden md:block">
+          {/* Search Autocomplete Bar - IN THE HEADER on tablet (md:) and desktop with spacious width */}
+          <div ref={searchContainerRef} className="relative flex-1 max-w-3xl mx-2 sm:mx-5 hidden md:block">
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search for fresh fruits, vegetables, dairy, rice, spices..."
+                placeholder="Search fresh groceries, fruits, vegetables, dairy..."
                 value={searchQuery}
                 onFocus={() => setIsSearchFocused(true)}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -215,9 +215,9 @@ export const SiteHeader: React.FC = () => {
                     setSearchQuery('');
                   }
                 }}
-                className="w-full pl-11 pr-24 py-2.5 bg-[#F7F9F5] hover:bg-white focus:bg-white text-sm rounded-full border border-[#E5ECE7] focus:border-[#21A366] focus:ring-2 focus:ring-[#21A366]/20 transition-all text-[#17251F] placeholder:text-[#64736B]"
+                className="w-full pl-10 sm:pl-11 pr-20 sm:pr-24 py-2 sm:py-2.5 bg-[#F7F9F5] hover:bg-white focus:bg-white text-xs sm:text-sm rounded-full border border-[#E5ECE7] focus:border-[#21A366] focus:ring-2 focus:ring-[#21A366]/20 transition-all text-[#17251F] placeholder:text-[#64736B]"
               />
-              <Search className="w-4 h-4 text-[#64736B] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-4 h-4 text-[#64736B] absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
 
               <button
                 type="button"
@@ -228,7 +228,7 @@ export const SiteHeader: React.FC = () => {
                     setSearchQuery('');
                   }
                 }}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold rounded-full transition-colors"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 sm:px-4 py-1.5 bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold rounded-full transition-colors"
               >
                 Search
               </button>
@@ -292,11 +292,11 @@ export const SiteHeader: React.FC = () => {
               </div>
             </button>
 
-            {/* Account / Login - Hidden on mobile top header (available in mobile bottom nav & drawer) */}
+            {/* Account / Login - Hidden on mobile & tablet header (moved to hamburger menu for tablet per request) */}
             <button
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
-              className="hidden md:flex items-center gap-2 p-2 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F7F9F5] transition-colors"
+              className="hidden xl:flex items-center gap-2 p-2 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F7F9F5] transition-colors"
             >
               <div className="w-9 h-9 rounded-full bg-[#F7F9F5] border border-[#E5ECE7] flex items-center justify-center text-gray-700">
                 <User className="w-4 h-4" />
@@ -528,6 +528,29 @@ export const SiteHeader: React.FC = () => {
                   className="p-1.5 text-gray-500 hover:text-black"
                 >
                   <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Login / User Profile Info inside Hamburger Menu (Tablet & Mobile) */}
+              <div className="my-3.5 p-3.5 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] flex items-center justify-between gap-3 shadow-xs">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-full bg-white border border-[#E5ECE7] flex items-center justify-center text-[#21A366] shrink-0 shadow-xs">
+                    <User className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-black text-[#17251F] truncate">My Account</p>
+                    <p className="text-[10px] text-[#64736B] truncate">Sign in for exclusive perks</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsAuthModalOpen(true);
+                  }}
+                  className="bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors shadow-xs shrink-0"
+                >
+                  Sign In
                 </button>
               </div>
 
