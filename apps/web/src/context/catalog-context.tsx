@@ -82,6 +82,7 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
     (initialCatalogData.promoBanners as unknown as PromoBanner[]) || []
   );
   const [isLoading, setIsLoading] = React.useState(false);
+  const lastUpdatedRef = React.useRef<string>((initialCatalogData as any).lastUpdated || '');
 
   // Sync from /api/catalog
   const refreshCatalog = React.useCallback(async () => {
@@ -89,6 +90,12 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
       const res = await fetch('/api/catalog', { cache: 'no-store' });
       if (!res.ok) return;
       const data = await res.json();
+      if (data.lastUpdated && data.lastUpdated === lastUpdatedRef.current) {
+        return; // Skip re-setting state if catalog hasn't changed
+      }
+      if (data.lastUpdated) {
+        lastUpdatedRef.current = data.lastUpdated;
+      }
       if (data.products && Array.isArray(data.products)) {
         setProducts(data.products);
       }

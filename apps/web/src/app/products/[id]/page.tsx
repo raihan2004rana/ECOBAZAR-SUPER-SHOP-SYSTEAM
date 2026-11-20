@@ -72,26 +72,38 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const [activeTab, setActiveTab] = React.useState<'description' | 'reviews'>('description');
 
   // Multi-image gallery thumbnails (dynamic from product images, no dummy banners)
+  const imagesKey = React.useMemo(() => {
+    const rawImages = (product as any)?.images;
+    if (Array.isArray(rawImages)) {
+      return rawImages.filter(Boolean).join('|');
+    }
+    return product?.image || '';
+  }, [(product as any)?.images, product?.image]);
+
   const galleryImages = React.useMemo(() => {
     const list: string[] = [];
-    if (Array.isArray((product as any).images) && (product as any).images.length > 0) {
+    if (Array.isArray((product as any)?.images) && (product as any).images.length > 0) {
       list.push(...(product as any).images.filter(Boolean));
-    } else if (product.image) {
+    } else if (product?.image) {
       list.push(product.image);
     }
-    if (product.image && !list.includes(product.image)) {
+    if (product?.image && !list.includes(product.image)) {
       list.unshift(product.image);
     }
     return list.length > 0 ? list : ['/images/products/sundarban-honey.webp'];
-  }, [(product as any).images, product.image]);
+  }, [imagesKey, product?.image]);
 
-  const [selectedImage, setSelectedImage] = React.useState(galleryImages[0]);
+  const [selectedImage, setSelectedImage] = React.useState<string>(() => galleryImages[0]);
 
+  // Keep user's chosen image active; only fallback if current selection is invalid or product changes
   React.useEffect(() => {
-    if (galleryImages.length > 0) {
-      setSelectedImage(galleryImages[0]);
-    }
-  }, [galleryImages]);
+    setSelectedImage((current) => {
+      if (current && galleryImages.includes(current)) {
+        return current;
+      }
+      return galleryImages[0] || '';
+    });
+  }, [product?.id, galleryImages]);
 
   // Reviews state
   const [reviewsList, setReviewsList] = React.useState<ReviewItem[]>([
@@ -296,7 +308,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                         type="button"
                         onClick={() => {
                           const idx = galleryImages.indexOf(selectedImage);
-                          const prevIdx = (idx - 1 + galleryImages.length) % galleryImages.length;
+                          const cur = idx >= 0 ? idx : 0;
+                          const prevIdx = (cur - 1 + galleryImages.length) % galleryImages.length;
                           setSelectedImage(galleryImages[prevIdx]);
                         }}
                         aria-label="Previous image"
@@ -309,7 +322,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                         type="button"
                         onClick={() => {
                           const idx = galleryImages.indexOf(selectedImage);
-                          const nextIdx = (idx + 1) % galleryImages.length;
+                          const cur = idx >= 0 ? idx : 0;
+                          const nextIdx = (cur + 1) % galleryImages.length;
                           setSelectedImage(galleryImages[nextIdx]);
                         }}
                         aria-label="Next image"
