@@ -20,6 +20,8 @@ import {
   ArrowRight,
   Flame,
   Tag,
+  Home,
+  LayoutGrid,
 } from 'lucide-react';
 import { Logo } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
@@ -119,8 +121,8 @@ export const SiteHeader: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 bg-white shadow-xs">
-      {/* 1. TOP ANNOUNCEMENT BAR — Solid Forest Green with High-Contrast Text */}
-      <div className="bg-[#123C2D] text-white text-xs border-b border-[#21A366]/30">
+      {/* 1. TOP ANNOUNCEMENT BAR — Hidden on Mobile for Clean Header, Shown on Desktop */}
+      <div className="hidden md:block bg-[#123C2D] text-white text-xs border-b border-[#21A366]/30">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
           {/* Left helpline & banner */}
           <div className="flex items-center gap-4 text-white/90">
@@ -181,12 +183,12 @@ export const SiteHeader: React.FC = () => {
       {/* 2. MAIN HEADER BAR */}
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
         <div className="flex items-center justify-between gap-4 md:gap-8">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
+          {/* Logo & Mobile Menu Toggle */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 -ml-2 text-[#17251F] hover:text-[#21A366] lg:hidden"
+              className="p-1.5 -ml-1 text-[#17251F] hover:text-[#21A366] md:hidden"
               aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -290,11 +292,11 @@ export const SiteHeader: React.FC = () => {
               </div>
             </button>
 
-            {/* Account / Login */}
+            {/* Account / Login - Hidden on mobile top header (available in mobile bottom nav & drawer) */}
             <button
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
-              className="flex items-center gap-2 p-2 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F7F9F5] transition-colors"
+              className="hidden md:flex items-center gap-2 p-2 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F7F9F5] transition-colors"
             >
               <div className="w-9 h-9 rounded-full bg-[#F7F9F5] border border-[#E5ECE7] flex items-center justify-center text-gray-700">
                 <User className="w-4 h-4" />
@@ -305,11 +307,11 @@ export const SiteHeader: React.FC = () => {
               </div>
             </button>
 
-            {/* Wishlist */}
+            {/* Wishlist - Hidden on mobile top header */}
             <button
               type="button"
               onClick={() => setIsWishlistDrawerOpen(true)}
-              className="relative p-2 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F7F9F5] transition-colors"
+              className="hidden md:flex relative p-2 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F7F9F5] transition-colors"
               aria-label="Wishlist"
             >
               <div className="w-9 h-9 rounded-full bg-[#F7F9F5] border border-[#E5ECE7] flex items-center justify-center text-gray-700">
@@ -322,11 +324,11 @@ export const SiteHeader: React.FC = () => {
               )}
             </button>
 
-            {/* Cart Drawer Trigger */}
+            {/* Desktop Cart Drawer Trigger */}
             <button
               type="button"
               onClick={() => setIsCartDrawerOpen(true)}
-              className="flex items-center gap-2.5 bg-[#21A366] hover:bg-[#123C2D] text-white px-3.5 py-2 rounded-xl font-bold transition-all shadow-sm"
+              className="hidden md:flex items-center gap-2.5 bg-[#21A366] hover:bg-[#123C2D] text-white px-3.5 py-2 rounded-xl font-bold transition-all shadow-sm"
               aria-label="Shopping Cart"
             >
               <div className="relative">
@@ -342,6 +344,21 @@ export const SiteHeader: React.FC = () => {
                 <p className="font-extrabold text-white mt-0.5">৳{isHydrated ? cartGrandTotal : 0}</p>
               </div>
             </button>
+
+            {/* Mobile-Only Clean Cart Icon with Badge (like Ghorer Bazar Image 1) */}
+            <button
+              type="button"
+              onClick={() => setIsCartDrawerOpen(true)}
+              className="relative p-2 text-[#17251F] hover:text-[#21A366] md:hidden transition-colors"
+              aria-label="Shopping Cart"
+            >
+              <ShoppingBag className="w-6 h-6" />
+              {isHydrated && totalCartCount > 0 && (
+                <span className="absolute top-0.5 right-0.5 w-5 h-5 rounded-full bg-[#F4A340] text-[#17251F] text-[10px] font-black flex items-center justify-center shadow-xs">
+                  {totalCartCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
@@ -349,6 +366,7 @@ export const SiteHeader: React.FC = () => {
         <div className="mt-3 md:hidden relative">
           <div className="relative">
             <input
+              id="mobile-search-input"
               type="text"
               placeholder="Search produce, dairy, groceries..."
               value={searchQuery}
@@ -401,8 +419,8 @@ export const SiteHeader: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. SECONDARY NAVIGATION & DEPARTMENT BAR */}
-      <div className="border-t border-[#E5ECE7] bg-[#F7F9F5]">
+      {/* 3. SECONDARY NAVIGATION & DEPARTMENT BAR - Hidden on mobile for clean screen */}
+      <div className="hidden md:block border-t border-[#E5ECE7] bg-[#F7F9F5]">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12">
             {/* All Categories Dropdown Trigger - Shown on all pages, but on HomePage only when scrolled past Hero */}
@@ -562,6 +580,73 @@ export const SiteHeader: React.FC = () => {
           <div className="flex-1" onClick={() => setIsMobileMenuOpen(false)} />
         </div>
       )}
+
+      {/* 5. MOBILE BOTTOM NAVIGATION BAR (Clean App-Like Experience like Ghorer Bazar) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E5ECE7] py-2 px-3 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+        <div className="grid grid-cols-5 items-center text-center">
+          {/* 1. Home */}
+          <Link
+            href="/"
+            className={`flex flex-col items-center justify-center gap-1 py-1 transition-colors ${
+              pathname === '/' ? 'text-[#21A366]' : 'text-[#64736B] hover:text-[#17251F]'
+            }`}
+          >
+            <Home className="w-5 h-5" />
+            <span className="text-[10px] font-black tracking-tight">HOME</span>
+          </Link>
+
+          {/* 2. Menu */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="flex flex-col items-center justify-center gap-1 py-1 text-[#64736B] hover:text-[#17251F] transition-colors"
+          >
+            <LayoutGrid className="w-5 h-5" />
+            <span className="text-[10px] font-black tracking-tight">MENU</span>
+          </button>
+
+          {/* 3. Cart with badge */}
+          <button
+            type="button"
+            onClick={() => setIsCartDrawerOpen(true)}
+            className="flex flex-col items-center justify-center gap-1 py-1 text-[#64736B] hover:text-[#17251F] transition-colors relative"
+          >
+            <div className="relative">
+              <ShoppingBag className="w-5 h-5 text-[#21A366]" />
+              {isHydrated && totalCartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2.5 w-4 h-4 rounded-full bg-[#F4A340] text-[#17251F] text-[9px] font-black flex items-center justify-center shadow-xs">
+                  {totalCartCount}
+                </span>
+              )}
+            </div>
+            <span className="text-[10px] font-black tracking-tight text-[#21A366]">CART</span>
+          </button>
+
+          {/* 4. Search */}
+          <button
+            type="button"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              const searchInput = document.getElementById('mobile-search-input');
+              if (searchInput) searchInput.focus();
+            }}
+            className="flex flex-col items-center justify-center gap-1 py-1 text-[#64736B] hover:text-[#17251F] transition-colors"
+          >
+            <Search className="w-5 h-5" />
+            <span className="text-[10px] font-black tracking-tight">SEARCH</span>
+          </button>
+
+          {/* 5. Account */}
+          <button
+            type="button"
+            onClick={() => setIsAuthModalOpen(true)}
+            className="flex flex-col items-center justify-center gap-1 py-1 text-[#64736B] hover:text-[#17251F] transition-colors"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-[10px] font-black tracking-tight">ACCOUNT</span>
+          </button>
+        </div>
+      </nav>
     </header>
   );
 };

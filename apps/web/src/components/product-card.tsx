@@ -137,74 +137,80 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
 
-        {/* Pricing & Add to Cart */}
-        <div className="mt-2.5 sm:mt-4 pt-2.5 sm:pt-3 border-t border-[#E5ECE7]/60 flex items-center justify-between gap-1.5 sm:gap-2">
-          <div>
-            <div className="flex items-baseline gap-1 sm:gap-1.5">
-              <span className="text-base sm:text-lg font-black text-[#123C2D]">৳{product.price}</span>
-              {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-[11px] sm:text-xs text-gray-400 line-through">
-                  ৳{product.originalPrice}
-                </span>
-              )}
-            </div>
-            <span className="text-[10px] text-[#64736B] block">Fresh stock</span>
-          </div>
-
-          {/* Action / Stepper */}
-          <div>
-            {cartQuantity > 0 ? (
-              <div className="flex items-center bg-[#D8F3DC] border border-[#21A366]/30 rounded-xl overflow-hidden shadow-sm">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    updateQuantity(product.id, -1);
-                  }}
-                  className="w-6 sm:w-7 h-7 sm:h-8 flex items-center justify-center text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
-                </button>
-                <span className="w-6 sm:w-7 text-center text-xs font-bold text-[#123C2D]">
-                  {cartQuantity}
-                </span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    updateQuantity(product.id, 1);
-                  }}
-                  className="w-6 sm:w-7 h-7 sm:h-8 flex items-center justify-center text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={(e) => addToCart(product, e)}
-                className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all duration-200 shadow-sm ${
-                  isJustAdded
-                    ? 'bg-[#2EBD70] text-white scale-95'
-                    : 'bg-[#21A366] text-white hover:bg-[#123C2D] active:scale-95'
-                }`}
-              >
-                {isJustAdded ? (
-                  <>
-                    <Check className="w-3.5 h-3.5" />
-                    <span>Added</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-3.5 h-3.5" />
-                    <span className="hidden xs:inline">Add</span>
-                  </>
-                )}
-              </button>
+        {/* Pricing & Save Badge */}
+        <div className="mt-2.5">
+          <div className="flex items-baseline gap-1.5 flex-wrap">
+            <span className="text-base sm:text-lg font-black text-[#123C2D]">৳{product.price}</span>
+            {product.originalPrice && product.originalPrice > product.price && (
+              <span className="text-xs text-gray-400 line-through">
+                ৳{product.originalPrice}
+              </span>
             )}
           </div>
+          {product.originalPrice && product.originalPrice > product.price ? (
+            <div className="mt-1">
+              <span className="inline-block bg-[#EBF7F0] text-[#21A366] text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded-md">
+                Save ৳{product.originalPrice - product.price}
+              </span>
+            </div>
+          ) : (
+            <span className="text-[10px] text-[#64736B] block mt-1">Fresh harvest</span>
+          )}
+        </div>
+
+        {/* Clean Full-Width Add To Cart Button at Bottom */}
+        <div className="mt-3 pt-2.5 border-t border-[#E5ECE7]/60">
+          {cartQuantity > 0 ? (
+            <div className="flex items-center justify-between bg-[#EBF7F0] border border-[#21A366]/40 rounded-xl p-1 shadow-xs">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateQuantity(product.id, -1);
+                }}
+                className="w-7 sm:w-8 h-7 sm:h-8 rounded-lg flex items-center justify-center bg-white text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors shadow-xs"
+                aria-label="Decrease quantity"
+              >
+                <Minus className="w-3.5 h-3.5" />
+              </button>
+              <span className="text-xs sm:text-sm font-extrabold text-[#123C2D]">
+                {cartQuantity} in Cart
+              </span>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateQuantity(product.id, 1);
+                }}
+                className="w-7 sm:w-8 h-7 sm:h-8 rounded-lg flex items-center justify-center bg-[#21A366] text-white hover:bg-[#123C2D] transition-colors shadow-xs"
+                aria-label="Increase quantity"
+              >
+                <Plus className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => addToCart(product, e)}
+              className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold border transition-all duration-200 shadow-xs ${
+                isJustAdded
+                  ? 'bg-[#2EBD70] border-[#2EBD70] text-white scale-[0.98]'
+                  : 'bg-white border-[#21A366] text-[#21A366] hover:bg-[#21A366] hover:text-white active:scale-[0.98]'
+              }`}
+            >
+              {isJustAdded ? (
+                <>
+                  <Check className="w-4 h-4" />
+                  <span>Added</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>Add To Cart</span>
+                </>
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>
