@@ -296,15 +296,15 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
         {/* 1. TOP PRODUCT OVERVIEW & PROMOTIONAL BANNERS ROW (1600px High-Impact Layout) */}
         <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             {/* Left 8 Columns: Main Product Card (Gallery + Buy Box) */}
-            <div className="lg:col-span-8 bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-7 lg:p-8 shadow-xs">
+            <div className="lg:col-span-8 bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-7 lg:p-8 shadow-xs flex flex-col justify-between">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start">
                 {/* Product Gallery (Thumbnails + Main Image) */}
-                <div className="md:col-span-6 flex flex-col-reverse sm:flex-row gap-3.5 items-start">
+                <div className="md:col-span-6 min-w-0 flex flex-col-reverse sm:flex-row gap-3.5 items-start">
                   {/* Thumbnails strip - ONLY show if there are 2 or more images */}
                   {galleryImages.length > 1 && (
-                    <div className="flex sm:flex-col gap-2.5 overflow-x-auto sm:overflow-visible w-full sm:w-18 shrink-0 pb-2 sm:pb-0">
+                    <div className="flex sm:flex-col gap-2.5 overflow-x-auto sm:overflow-visible w-full sm:w-20 shrink-0 pb-2 sm:pb-0">
                       {galleryImages.map((imgSrc, index) => (
                         <button
                           key={index}
@@ -319,6 +319,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                           <img
                             src={imgSrc}
                             alt={`Thumbnail ${index + 1}`}
+                            onError={(e) => {
+                              e.currentTarget.src = product.image || '/images/products/sundarban-honey.webp';
+                            }}
                             className="w-full h-full object-cover rounded-lg"
                           />
                         </button>
@@ -327,7 +330,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   )}
 
                   {/* Main Large Image Display */}
-                  <div className="flex-1 relative w-full rounded-2xl bg-[#F7F9F5] border border-[#E5ECE7] p-4 sm:p-6 flex items-center justify-center overflow-hidden min-h-[300px] sm:min-h-[380px] group">
+                  <div className="flex-1 min-w-0 relative w-full rounded-2xl bg-[#F7F9F5] border border-[#E5ECE7] p-4 sm:p-6 flex items-center justify-center overflow-hidden min-h-[320px] sm:min-h-[380px] group">
                     {/* Badge */}
                     {product.badge && (
                       <span className="absolute top-3 left-3 z-10 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#21A366] text-white shadow-md">
@@ -351,8 +354,17 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
                     {/* Main Product Image with subtle hover zoom */}
                     <img
+                      key={selectedImage}
                       src={selectedImage}
                       alt={product.name}
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (product.image && target.src !== product.image) {
+                          target.src = product.image;
+                        } else {
+                          target.src = '/images/products/sundarban-honey.webp';
+                        }
+                      }}
                       className="w-full h-auto max-h-[320px] sm:max-h-[360px] object-contain transition-transform duration-500 group-hover:scale-105"
                     />
 
@@ -392,7 +404,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </div>
 
                 {/* Right Sub-Column: Title, Price & Action Buttons */}
-                <div className="md:col-span-6 space-y-4">
+                <div className="md:col-span-6 min-w-0 space-y-4">
                   <div>
                     <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#17251F] leading-tight">
                       {product.name}
@@ -554,10 +566,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
             </div>
 
             {/* Right 4 Columns: High-Impact Promotional Banners */}
-            <div className="lg:col-span-4 flex flex-col gap-4">
-              {/* Top Card: 2-Slide Banner Slider */}
+            <div className="lg:col-span-4 flex flex-col gap-4 h-full">
+              {/* Top Card: 2-Slide Banner Slider (Expands to fill top portion) */}
               <div
-                className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] min-h-[230px] sm:min-h-[250px] flex items-center justify-between"
+                className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] flex-1 min-h-[260px] flex flex-col justify-between"
                 onMouseEnter={() => setIsPromoPaused(true)}
                 onMouseLeave={() => setIsPromoPaused(false)}
               >
@@ -660,12 +672,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              {/* Bottom 2 Cards Side-by-Side: Full Card Background as Banner Image */}
-              <div className="grid grid-cols-2 gap-3">
+              {/* Bottom 2 Cards Side-by-Side: Full Card Background as Banner Image (Expands to fill remaining bottom portion) */}
+              <div className="flex-1 min-h-[220px] grid grid-cols-2 gap-3.5">
                 {/* Card 1: Tasty Seafood Daily Series */}
                 <Link
                   href="/category/meat-fish"
-                  className="group relative rounded-2xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[190px] sm:min-h-[210px] flex flex-col justify-end p-4"
+                  className="group relative rounded-2xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full flex flex-col justify-end p-4"
                 >
                   <div className="absolute inset-0 z-0">
                     <img
@@ -695,7 +707,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 {/* Card 2: Traditional Bogura Doi & Dairy */}
                 <Link
                   href="/category/dairy-eggs"
-                  className="group relative rounded-2xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[190px] sm:min-h-[210px] flex flex-col justify-end p-4"
+                  className="group relative rounded-2xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full flex flex-col justify-end p-4"
                 >
                   <div className="absolute inset-0 z-0">
                     <img
