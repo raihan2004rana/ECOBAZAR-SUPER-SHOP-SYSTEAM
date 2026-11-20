@@ -24,6 +24,7 @@ import {
 import { Logo } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
 import { categoryDefinitions, masterCatalogProducts, ProductItem } from '../data/catalog';
+import { useCatalog } from '../context/catalog-context';
 
 export const SiteHeader: React.FC = () => {
   const router = useRouter();
@@ -41,6 +42,9 @@ export const SiteHeader: React.FC = () => {
     setSelectedProductForModal,
     selectedBranch,
   } = useCart();
+  const { products: dynamicProducts, categories: dynamicCategories, topBanner } = useCatalog();
+  const allProducts = dynamicProducts && dynamicProducts.length > 0 ? dynamicProducts : masterCatalogProducts;
+  const categories = dynamicCategories && dynamicCategories.length > 0 ? dynamicCategories : categoryDefinitions;
 
   // Search state
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -61,7 +65,7 @@ export const SiteHeader: React.FC = () => {
       return;
     }
     const q = searchQuery.toLowerCase();
-    const matches = masterCatalogProducts
+    const matches = allProducts
       .filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
@@ -71,7 +75,7 @@ export const SiteHeader: React.FC = () => {
       )
       .slice(0, 6);
     setSearchResults(matches);
-  }, [searchQuery]);
+  }, [searchQuery, allProducts]);
 
   // Click outside search
   React.useEffect(() => {
@@ -377,7 +381,7 @@ export const SiteHeader: React.FC = () => {
                   <div className="px-4 py-2 text-[11px] font-bold text-[#64736B] uppercase tracking-wider border-b border-[#E5ECE7]/60">
                     Explore 11 Departments
                   </div>
-                  {categoryDefinitions.map((cat) => (
+                  {categories.map((cat) => (
                     <Link
                       key={cat.id}
                       href={`/category/${cat.slug}`}
@@ -479,7 +483,7 @@ export const SiteHeader: React.FC = () => {
                 <p className="text-[10px] font-bold text-[#64736B] uppercase tracking-wider mb-2">
                   11 Categories
                 </p>
-                {categoryDefinitions.map((cat) => (
+                {categories.map((cat) => (
                   <Link
                     key={cat.id}
                     href={`/category/${cat.slug}`}

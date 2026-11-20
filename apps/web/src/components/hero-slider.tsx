@@ -11,6 +11,7 @@ import {
   Truck,
   Flame,
 } from 'lucide-react';
+import { useCatalog } from '../context/catalog-context';
 
 interface Slide {
   id: string;
@@ -64,6 +65,8 @@ const slides: Slide[] = [
 ];
 
 export const HeroSlider: React.FC = () => {
+  const { heroSlides } = useCatalog();
+  const activeSlides = (heroSlides && heroSlides.length > 0 ? heroSlides : slides);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [isPaused, setIsPaused] = React.useState(false);
   const touchStartXRef = React.useRef<number | null>(null);
@@ -72,17 +75,17 @@ export const HeroSlider: React.FC = () => {
   React.useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % activeSlides.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, activeSlides.length]);
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrentSlide((prev) => (prev - 1 + activeSlides.length) % activeSlides.length);
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setCurrentSlide((prev) => (prev + 1) % activeSlides.length);
   };
 
   // Touch Handlers for mobile swipe
@@ -101,7 +104,7 @@ export const HeroSlider: React.FC = () => {
     touchStartXRef.current = null;
   };
 
-  const slide = slides[currentSlide];
+  const slide = activeSlides[currentSlide] || activeSlides[0];
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
@@ -197,7 +200,7 @@ export const HeroSlider: React.FC = () => {
 
           {/* Pagination Dots */}
           <div className="relative z-20 pb-5 flex items-center justify-center gap-2">
-            {slides.map((s, index) => (
+            {activeSlides.map((s, index) => (
               <button
                 key={s.id}
                 type="button"

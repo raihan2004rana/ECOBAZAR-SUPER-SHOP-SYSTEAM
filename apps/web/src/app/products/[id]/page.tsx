@@ -36,6 +36,7 @@ import {
   getProductsByCategorySlug,
   ProductItem,
 } from '../../../data/catalog';
+import { useCatalog } from '../../../context/catalog-context';
 
 interface ProductPageProps {
   params: {
@@ -55,7 +56,8 @@ interface ReviewItem {
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const router = useRouter();
-  const product = getProductById(params.id);
+  const { getProductById: dynamicGetProductById } = useCatalog();
+  const product = dynamicGetProductById(params.id) || getProductById(params.id);
 
   if (!product) {
     notFound();

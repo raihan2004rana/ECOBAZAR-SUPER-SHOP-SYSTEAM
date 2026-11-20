@@ -29,6 +29,7 @@ import {
   categoryDefinitions,
   ProductItem,
 } from '../../../data/catalog';
+import { useCatalog } from '../../../context/catalog-context';
 
 interface CategoryPageProps {
   params: {
@@ -268,7 +269,8 @@ const defaultRibbonPoints: RibbonPoint[] = [
 ];
 
 export default function CategoryPage({ params, searchParams }: CategoryPageProps) {
-  const category = getCategoryBySlug(params.slug);
+  const { getProductsByCategory, categories } = useCatalog();
+  const category = (categories && categories.find((c) => c.slug === params.slug)) || getCategoryBySlug(params.slug);
 
   if (!category) {
     notFound();
@@ -277,7 +279,10 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
   const categoryBanner = categoryBannerMap[category.slug] || '/images/banner-farm-grocery.jpg';
   const ribbonPoints = categoryRibbonMap[category.slug] || defaultRibbonPoints;
 
-  const allCategoryProducts = getProductsByCategorySlug(params.slug);
+  const dynamicCategoryProducts = getProductsByCategory(params.slug);
+  const allCategoryProducts = dynamicCategoryProducts && dynamicCategoryProducts.length > 0
+    ? dynamicCategoryProducts
+    : getProductsByCategorySlug(params.slug);
 
   // Filter states
   const initialSubcategory = searchParams?.sub || 'all';

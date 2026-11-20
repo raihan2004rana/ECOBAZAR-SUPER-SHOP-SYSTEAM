@@ -29,6 +29,7 @@ import {
   getHotDeals,
   masterCatalogProducts,
 } from '../data/catalog';
+import { useCatalog } from '../context/catalog-context';
 
 export default function HomePage() {
   // Deals countdown timer state
@@ -50,7 +51,9 @@ export default function HomePage() {
     return () => clearInterval(timer);
   }, []);
 
-  const hotDeals = getHotDeals().slice(0, 6);
+  const { hotDeals: dynamicHotDeals, categories: dynamicCategories, getProductsByCategory, topBanner } = useCatalog();
+  const hotDeals = (dynamicHotDeals && dynamicHotDeals.length > 0 ? dynamicHotDeals : getHotDeals()).slice(0, 6);
+  const categories = (dynamicCategories && dynamicCategories.length > 0 ? dynamicCategories : categoryDefinitions);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F9F5]">
@@ -122,7 +125,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-11 gap-2.5">
-            {categoryDefinitions.map((cat) => (
+            {categories.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/category/${cat.slug}`}
@@ -191,8 +194,10 @@ export default function HomePage() {
         {/* ========================================================= */}
         {/* 5. ALL 11 INDIVIDUAL CATEGORY PRODUCT SECTIONS            */}
         {/* ========================================================= */}
-        {categoryDefinitions.map((cat, index) => {
-          const categoryProducts = getProductsByCategorySlug(cat.slug).slice(0, 8);
+        {categories.map((cat, index) => {
+          const categoryProducts = (getProductsByCategory(cat.slug).length > 0
+            ? getProductsByCategory(cat.slug)
+            : getProductsByCategorySlug(cat.slug)).slice(0, 8);
 
           return (
             <React.Fragment key={cat.id}>

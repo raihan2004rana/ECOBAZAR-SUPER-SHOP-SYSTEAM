@@ -10,16 +10,20 @@ import { CartDrawer } from '../../components/cart-drawer';
 import { WishlistDrawer } from '../../components/wishlist-drawer';
 import { Modals } from '../../components/modals';
 import { masterCatalogProducts } from '../../data/catalog';
+import { useCatalog } from '../../context/catalog-context';
 
 export default function NewArrivalsPage() {
+  const { products } = useCatalog();
+  const allProducts = products && products.length > 0 ? products : masterCatalogProducts;
+
   // Grab fresh harvest & new arrivals
-  const newArrivals = masterCatalogProducts.filter(
+  const newArrivals = allProducts.filter(
     (p) =>
       p.isNewArrival ||
       p.badge?.includes('HARVEST') ||
       p.badge?.includes('FRESH') ||
       p.badge?.includes('ORGANIC')
-  ).slice(0, 20);
+  ).slice(0, 24);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F9F5]">

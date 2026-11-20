@@ -19,9 +19,12 @@ import { CartDrawer } from '../../components/cart-drawer';
 import { WishlistDrawer } from '../../components/wishlist-drawer';
 import { Modals } from '../../components/modals';
 import { getHotDeals, categoryDefinitions } from '../../data/catalog';
+import { useCatalog } from '../../context/catalog-context';
 
 export default function DealsPage() {
-  const allDeals = getHotDeals();
+  const { hotDeals, categories: dynamicCategories } = useCatalog();
+  const allDeals = hotDeals && hotDeals.length > 0 ? hotDeals : getHotDeals();
+  const categories = dynamicCategories && dynamicCategories.length > 0 ? dynamicCategories : categoryDefinitions;
   const [selectedCat, setSelectedCat] = React.useState('all');
   const [minDiscount, setMinDiscount] = React.useState(0);
 

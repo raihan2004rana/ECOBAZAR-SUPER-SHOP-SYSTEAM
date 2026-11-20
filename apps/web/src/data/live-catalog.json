@@ -1,0 +1,4321 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2026-11-20T04:09:41.667Z",
+  "topBanner": {
+    "enabled": true,
+    "badgeText": "VOUCHER SAVINGS",
+    "title": "Save 10% on your entire basket with code ECO10",
+    "subtitle": "Applies on all fresh produce, groceries, and staples. Free delivery included for orders above ৳1,000.",
+    "promoCode": "ECO10",
+    "discountPercent": 10,
+    "buttonText": "Explore All Offers",
+    "buttonLink": "/offers"
+  },
+  "heroSlides": [
+    {
+      "id": "slide-1",
+      "badge": "100% Organic & Chemical-Free",
+      "title": "Fast Fresh Groceries Delivered Daily",
+      "subtitle": "Handpicked crisp fruits, daily greens, and garden produce dispatched within 30 minutes in Dhaka under unbroken cold storage.",
+      "ctaText": "Shop Fresh Produce",
+      "ctaLink": "/category/fresh-fruits-vegetables",
+      "image": "/images/hero-fruits-veggies.jpg",
+      "bgGradient": "from-[#123C2D] via-[#123C2D]/95 to-[#1a4a38]",
+      "tag": "30-Min Instant Delivery Across Dhaka",
+      "active": true
+    },
+    {
+      "id": "slide-2",
+      "badge": "Up to 25% Off Daily Essentials",
+      "title": "Wholesale Kitchen Staples & Pantry Care",
+      "subtitle": "Unpolished Miniket rice, premium lentils, and pantry essentials sourced directly from rural farming cooperatives at fair prices.",
+      "ctaText": "Explore Groceries",
+      "ctaLink": "/category/groceries-staples",
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&auto=format&fit=crop&q=80",
+      "bgGradient": "from-[#17382B] via-[#123C2D] to-[#21A366]/40",
+      "tag": "100% Pure & Laboratory Tested Quality",
+      "active": true
+    },
+    {
+      "id": "slide-3",
+      "badge": "Chilled Under 4°C Cold Chain",
+      "title": "Natural Farm Milk & Free-Range Dairy",
+      "subtitle": "Pasteurized pure cow milk, country brown eggs, and pure artisanal butter delivered refrigerated to your doorstep.",
+      "ctaText": "Shop Dairy & Eggs",
+      "ctaLink": "/category/dairy-eggs",
+      "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1200&auto=format&fit=crop&q=80",
+      "bgGradient": "from-[#0B3B24] via-[#123C2D] to-[#0A4D2E]",
+      "tag": "Chilled Delivery Under 30 Mins",
+      "active": true
+    }
+  ],
+  "promoBanners": [
+    {
+      "id": "promo-1",
+      "title": "Daily Fresh Harvest Arrived This Morning",
+      "subtitle": "Harvested before sunrise from Bogura, Rajshahi and Sylhet. Inspected and delivered crisp.",
+      "tag": "FRESH HARVEST • ARRIVED THIS MORNING",
+      "image": "/images/products/fresh-veggies-hero.jpg",
+      "link": "/category/fresh-fruits-vegetables",
+      "active": true
+    },
+    {
+      "id": "promo-2",
+      "title": "Sundarban Raw Wild Honey & Organic Essentials",
+      "subtitle": "Ethically harvested from mangrove forests. 100% Raw & Unprocessed.",
+      "tag": "LIMITED HARVEST BATCH",
+      "image": "/images/products/sundarban-honey.jpg",
+      "link": "/category/groceries-staples",
+      "active": true
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-veg",
+      "slug": "fresh-fruits-vegetables",
+      "name": "Fresh Fruits & Vegetables",
+      "nameBn": "তাজা ফল ও শাকসবজি",
+      "icon": "🥬",
+      "tagline": "Farm-fresh organic vegetables and sweet seasonal fruits handpicked daily from Bogura, Rajshahi and Savar.",
+      "bannerImage": "/images/hero-fruits-veggies.jpg",
+      "subcategories": [
+        "Fresh Vegetables",
+        "Seasonal Fruits",
+        "Leafy Greens",
+        "Root Vegetables",
+        "Imported Fruits"
+      ],
+      "promoSlides": [
+        {
+          "title": "Morning Harvest Special",
+          "subtitle": "Plucked within 12 hours from chemical-free organic farms.",
+          "cta": "Shop Morning Harvest",
+          "discountText": "Flat 20% OFF Today",
+          "bgGradient": "from-emerald-900 via-emerald-800 to-green-900"
+        },
+        {
+          "title": "Sweet Seasonal Fruit Baskets",
+          "subtitle": "Naturally tree-ripened apples, bananas, pomegranates & citrus.",
+          "cta": "Explore Fruit Baskets",
+          "discountText": "Family Saver Packs",
+          "bgGradient": "from-amber-900 via-orange-800 to-amber-950"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "spices-oils",
+        "groceries-staples",
+        "dairy-eggs"
+      ]
+    },
+    {
+      "id": "cat-staples",
+      "slug": "groceries-staples",
+      "name": "Groceries & Staples",
+      "nameBn": "মুদি ও নিত্যপ্রয়োজনীয় পণ্য",
+      "icon": "🌾",
+      "tagline": "Flour, salt, sugar, lentils and daily household cooking essentials guaranteed 100% adulteration-free.",
+      "bannerImage": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&auto=format&fit=crop&q=80",
+      "subcategories": [
+        "Atta & Flour",
+        "Lentils & Daal",
+        "Salt & Sugar",
+        "Baking Essentials",
+        "Puffed Rice & Chira"
+      ],
+      "promoSlides": [
+        {
+          "title": "Stone-Ground Chakki Atta",
+          "subtitle": "100% whole wheat bran with zero additives for soft rotis.",
+          "cta": "Buy Staples Now",
+          "discountText": "Save up to 15%",
+          "bgGradient": "from-amber-950 via-amber-900 to-yellow-950"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "rice-pulses-grains",
+        "spices-oils"
+      ]
+    },
+    {
+      "id": "cat-dairy",
+      "slug": "dairy-eggs",
+      "name": "Dairy & Eggs",
+      "nameBn": "দুধ, মাখন ও ডিম",
+      "icon": "🥛",
+      "tagline": "Lab-certified fresh liquid cow milk, farm eggs, artisan yogurt, butter and pure desi golden ghee.",
+      "bannerImage": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1200&auto=format&fit=crop&q=80",
+      "subcategories": [
+        "Fresh Milk",
+        "Farm Eggs",
+        "Ghee & Butter",
+        "Yogurt & Curd",
+        "Cheese & Paneer"
+      ],
+      "promoSlides": [
+        {
+          "title": "Cold-Chain Grass-Fed Dairy",
+          "subtitle": "Strict FEFO expiry control & continuous 4°C temperature monitoring.",
+          "cta": "Shop Pure Dairy",
+          "discountText": "Fresh Delivery by 8 AM",
+          "bgGradient": "from-blue-950 via-teal-900 to-emerald-950"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "bakery-fresh-snacks",
+        "fresh-fruits-vegetables"
+      ]
+    },
+    {
+      "id": "cat-snacks",
+      "slug": "snacks-beverages",
+      "name": "Snacks & Beverages",
+      "nameBn": "স্ন্যাকস ও পানীয়",
+      "icon": "🥤",
+      "tagline": "Cold-pressed natural juices, artisanal teas, coffee beans, healthy nuts and crispy snacks.",
+      "bannerImage": "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=1200&auto=format&fit=crop&q=80",
+      "subcategories": [
+        "Cold Pressed Juices",
+        "Tea & Coffee",
+        "Biscuits & Cookies",
+        "Chips & Savories",
+        "Dried Fruits & Nuts"
+      ],
+      "promoSlides": [
+        {
+          "title": "100% Pure Fruit Juices",
+          "subtitle": "Zero added sugar, water, or artificial food preservatives.",
+          "cta": "Order Cold Pressed",
+          "discountText": "Buy 2 Get 10% Off",
+          "bgGradient": "from-orange-950 via-amber-900 to-rose-950"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "bakery-fresh-snacks",
+        "dairy-eggs"
+      ]
+    },
+    {
+      "id": "cat-meat",
+      "slug": "meat-fish",
+      "name": "Meat & Fish",
+      "nameBn": "তাজা মাছ ও মাংস",
+      "icon": "🥩",
+      "tagline": "Hygienically dressed 100% Halal beef, mutton, country chicken, and daily river catch from the Padma & Meghna.",
+      "bannerImage": "/images/banner-seafood.jpg",
+      "subcategories": [
+        "Fresh River Fish",
+        "Halal Beef",
+        "Country Chicken",
+        "Marine Prawns",
+        "Mutton"
+      ],
+      "promoSlides": [
+        {
+          "title": "Tasty Seafood & Daily Catch",
+          "subtitle": "Padma Ilish, live Ruhit, Katla, and giant tiger prawns delivered on fresh ice.",
+          "cta": "Explore Catch of the Day",
+          "discountText": "Fresh Morning Dock Delivery",
+          "bgGradient": "from-blue-950 via-cyan-900 to-sky-950"
+        },
+        {
+          "title": "100% Halal Premium Meat",
+          "subtitle": "Grass-fed beef & tender country chicken cut in chilled sterile rooms.",
+          "cta": "Order Halal Meat",
+          "discountText": "Vacuum Sealed Pack",
+          "bgGradient": "from-red-950 via-rose-900 to-stone-900"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "spices-oils",
+        "groceries-staples"
+      ]
+    },
+    {
+      "id": "cat-bakery",
+      "slug": "bakery-fresh-snacks",
+      "name": "Bakery & Fresh Snacks",
+      "nameBn": "বেকারি ও তাজা নাস্তা",
+      "icon": "🥐",
+      "tagline": "Artisan sourdough breads, morning croissants, whole grain loaves, tea cakes and savory rolls baked fresh every dawn.",
+      "bannerImage": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&auto=format&fit=crop&q=80",
+      "subcategories": [
+        "Artisan Breads",
+        "Croissants & Buns",
+        "Cakes & Pastries",
+        "Cookies & Toasts",
+        "Puffs & Patties"
+      ],
+      "promoSlides": [
+        {
+          "title": "Oven-Fresh Morning Breads",
+          "subtitle": "Baked at 5:00 AM daily with unbleached flour and organic seeds.",
+          "cta": "Shop Bakery",
+          "discountText": "Delivered Warm",
+          "bgGradient": "from-amber-950 via-yellow-900 to-stone-900"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "dairy-eggs",
+        "snacks-beverages"
+      ]
+    },
+    {
+      "id": "cat-rice",
+      "slug": "rice-pulses-grains",
+      "name": "Rice, Pulses & Grains",
+      "nameBn": "চাল, ডাল ও খাদ্যশস্য",
+      "icon": "🍚",
+      "tagline": "Aged aromatic Chinigura, slender Miniket, Nazirshail, red lentils, and whole grains triple-sorted for zero stones.",
+      "bannerImage": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1200&auto=format&fit=crop&q=80",
+      "subcategories": [
+        "Aromatic Rice",
+        "Daily Rice",
+        "Lentils & Pulses",
+        "Organic Quinoa & Oats",
+        "Specialty Grains"
+      ],
+      "promoSlides": [
+        {
+          "title": "Dinajpur Reserve Chinigura",
+          "subtitle": "Fragrant small-grain aromatic rice aged 12 months for royal biryanis.",
+          "cta": "Order Rice Bags",
+          "discountText": "Special 5kg & 10kg Bags",
+          "bgGradient": "from-emerald-950 via-green-900 to-teal-950"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "spices-oils",
+        "groceries-staples"
+      ]
+    },
+    {
+      "id": "cat-spices",
+      "slug": "spices-oils",
+      "name": "Spices & Oils",
+      "nameBn": "মসলা ও রান্নার তেল",
+      "icon": "🫒",
+      "tagline": "Traditional wood-cold-pressed mustard oil, pure sunflower oil, whole spices, turmeric and chili powders.",
+      "bannerImage": "/images/banner-mustard-oil.jpg",
+      "subcategories": [
+        "Mustard Oil",
+        "Whole Spices",
+        "Ground Spice Powders",
+        "Sunflower & Rice Bran Oil",
+        "Pickles & Sauces"
+      ],
+      "promoSlides": [
+        {
+          "title": "কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল",
+          "subtitle": "100% pure cold-pressed unadulterated mustard oil directly from Natore & Rajshahi.",
+          "cta": "Buy Mustard Oil",
+          "discountText": "Guaranteed 100% Pure",
+          "bgGradient": "from-yellow-950 via-amber-900 to-orange-950"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "meat-fish",
+        "rice-pulses-grains"
+      ]
+    },
+    {
+      "id": "cat-frozen",
+      "slug": "frozen-foods",
+      "name": "Frozen Foods",
+      "nameBn": "হিমায়িত খাবার",
+      "icon": "❄️",
+      "tagline": "IQF frozen green peas, parathas, samosas, nuggets, and frozen vegetables ready for quick wholesome meals.",
+      "bannerImage": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=1200&auto=format&fit=crop&q=80",
+      "subcategories": [
+        "Frozen Vegetables",
+        "Ready-to-Fry Snacks",
+        "Parathas & Roti",
+        "Frozen Seafood",
+        "Ice Creams"
+      ],
+      "promoSlides": [
+        {
+          "title": "Quick & Healthy Frozen Meals",
+          "subtitle": "Shock-frozen at -18°C within hours of farm harvesting.",
+          "cta": "Browse Frozen",
+          "discountText": "Save Time & Flavor",
+          "bgGradient": "from-cyan-950 via-blue-900 to-slate-900"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "snacks-beverages",
+        "meat-fish"
+      ]
+    },
+    {
+      "id": "cat-health",
+      "slug": "health-personal-care",
+      "name": "Health & Personal Care",
+      "nameBn": "স্বাস্থ্য ও রূপচর্চা",
+      "icon": "🧴",
+      "tagline": "Pure raw Sundarban honey, organic herbal soaps, natural shampoo, sanitizers, and wellness supplements.",
+      "bannerImage": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&auto=format&fit=crop&q=80",
+      "subcategories": [
+        "Raw Honey",
+        "Organic Soaps",
+        "Hair & Skin Care",
+        "Oral Hygiene",
+        "Herbal Wellness"
+      ],
+      "promoSlides": [
+        {
+          "title": "Wild Sundarban Mangrove Honey",
+          "subtitle": "Ethically collected by traditional Mouwals, raw and unpasteurized.",
+          "cta": "Shop Raw Honey",
+          "discountText": "Natural Immune Shield",
+          "bgGradient": "from-amber-950 via-orange-950 to-stone-900"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "baby-food-care",
+        "groceries-staples"
+      ]
+    },
+    {
+      "id": "cat-baby",
+      "slug": "baby-food-care",
+      "name": "Baby Food & Care",
+      "nameBn": "শিশুখাদ্য ও যত্ন",
+      "icon": "🍼",
+      "tagline": "Organic certified infant fruit purees, baby formula, diapers, gentle wipes, and hypoallergenic baby lotions.",
+      "bannerImage": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=1200&auto=format&fit=crop&q=80",
+      "subcategories": [
+        "Baby Purees & Cereals",
+        "Infant Formula",
+        "Diapers & Wipes",
+        "Baby Bath & Shampoo",
+        "Feeding Bottles"
+      ],
+      "promoSlides": [
+        {
+          "title": "Gentle Care for Your Little One",
+          "subtitle": "Pediatric tested, zero artificial dyes, and 100% BPA-free packaging.",
+          "cta": "Shop Baby Care",
+          "discountText": "Extra 10% on Diaper Bundles",
+          "bgGradient": "from-rose-950 via-pink-900 to-indigo-950"
+        }
+      ],
+      "relatedCategorySlugs": [
+        "health-personal-care",
+        "dairy-eggs"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "fv-1",
+      "name": "Fresh Organic Red Vine Tomatoes",
+      "nameBn": "তাজা পাকা লাল টমেটো",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Fresh Vegetables",
+      "brand": "Bogura Organic Farms",
+      "origin": "Bogura, Bangladesh",
+      "price": 80,
+      "originalPrice": 100,
+      "unit": "1 kg pack",
+      "rating": 4.9,
+      "reviews": 182,
+      "stock": 65,
+      "isHotDeal": true,
+      "badge": "20% OFF",
+      "badgeColor": "red",
+      "image": "/images/products/red-tomato.jpg",
+      "description": "Farm-fresh, vine-ripened organic red tomatoes. Rich in lycopene and vitamin C, plucked this morning.",
+      "specifications": {
+        "Harvest": "Morning Fresh",
+        "Farming": "100% Certified Organic",
+        "Storage": "Store in cool dry place"
+      },
+      "isOffer": true,
+      "isAdvertisement": true,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bogura, Bangladesh"
+    },
+    {
+      "id": "fv-2",
+      "name": "Naturally Ripened Champa Banana",
+      "nameBn": "তাজা চাম্পা কলা",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Seasonal Fruits",
+      "brand": "Narsingdi Orchard",
+      "origin": "Narsingdi, Bangladesh",
+      "price": 60,
+      "originalPrice": 70,
+      "unit": "1 kg (8-10 pcs)",
+      "rating": 4.8,
+      "reviews": 145,
+      "stock": 90,
+      "isHotDeal": true,
+      "badge": "15% OFF",
+      "badgeColor": "red",
+      "image": "/images/products/banena.jpg",
+      "description": "Sweet and aromatic natural tree-ripened Champa bananas. Free from chemical carbide ripening agents.",
+      "specifications": {
+        "Weight": "1 kg pack",
+        "Type": "Carbide-Free Ripened",
+        "Origin": "Narsingdi"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Narsingdi, Bangladesh"
+    },
+    {
+      "id": "fv-3",
+      "name": "Crisp Red Gala Apples",
+      "nameBn": "আমদানিকৃত লাল গালা আপেল",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Imported Fruits",
+      "brand": "Kashmir Premium Grade",
+      "origin": "Imported Grade A",
+      "price": 90,
+      "originalPrice": 120,
+      "unit": "1 kg pack",
+      "rating": 4.9,
+      "reviews": 210,
+      "stock": 45,
+      "isHotDeal": true,
+      "badge": "25% OFF",
+      "badgeColor": "red",
+      "image": "/images/products/red-apple.webp",
+      "description": "Crisp, juicy red Gala apples with sweet floral aroma. Wax-free and individually hand-inspected.",
+      "specifications": {
+        "Grade": "Grade A Export",
+        "Crispness": "Juicy Tart",
+        "Wax-Free": "Yes"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Grade A"
+    },
+    {
+      "id": "fv-4",
+      "name": "Organic Diamond Potato (Medium-Large)",
+      "nameBn": "দেশি ডায়মন্ড আলু",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Root Vegetables",
+      "brand": "Munshiganj Harvest",
+      "origin": "Munshiganj, Bangladesh",
+      "price": 40,
+      "originalPrice": 50,
+      "unit": "1 kg pack",
+      "rating": 4.7,
+      "reviews": 95,
+      "stock": 200,
+      "isHotDeal": true,
+      "badge": "20% OFF",
+      "badgeColor": "red",
+      "image": "/images/products/diamond-alu.jpg",
+      "description": "Firm, smooth-skin Munshiganj Diamond potatoes. Perfect for fries, everyday curries, and comforting mashed bhorta.",
+      "specifications": {
+        "Size": "Medium Uniform",
+        "Washed": "Dry cleaned",
+        "Origin": "Munshiganj"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Munshiganj, Bangladesh"
+    },
+    {
+      "id": "fv-5",
+      "name": "Crisp Green Cabbage (Head)",
+      "nameBn": "তাজা দেশি সবুজ বাঁধাকপি",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Fresh Vegetables",
+      "brand": "Bogura Agro Farms",
+      "origin": "Bogura, Bangladesh",
+      "price": 45,
+      "originalPrice": 55,
+      "unit": "per piece (~1.2kg)",
+      "rating": 4.7,
+      "reviews": 82,
+      "stock": 70,
+      "badge": "FRESH HARVEST",
+      "badgeColor": "green",
+      "image": "/images/products/ful-kopy.webp",
+      "description": "Crisp, sweet green cabbage head loaded with dietary fiber and vitamin K. Directly delivered from winter agro fields.",
+      "specifications": {
+        "Weight": "Approx 1.2 kg",
+        "Type": "Field Crisp",
+        "Pesticide Safe": "Yes"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bogura, Bangladesh"
+    },
+    {
+      "id": "fv-6",
+      "name": "Fresh Ruby Pomegranate (Imported)",
+      "nameBn": "মিষ্টি রসালো লাল ডালিম",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Seasonal Fruits",
+      "brand": "Kandahar Reserve",
+      "origin": "Imported",
+      "price": 340,
+      "originalPrice": 380,
+      "unit": "1 kg pack",
+      "rating": 4.8,
+      "reviews": 110,
+      "stock": 35,
+      "badge": "IMPORT GRADE",
+      "badgeColor": "orange",
+      "image": "/images/products/fresh-ruby.webp",
+      "description": "Sweet, deep-ruby pomegranate seeds loaded with heart-healthy antioxidants. Hand-inspected for thin rinds and abundant juice.",
+      "specifications": {
+        "Quality": "Grade A Export",
+        "Arils": "Deep Ruby Sweet",
+        "Origin": "Imported"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported"
+    },
+    {
+      "id": "fv-7",
+      "name": "Fresh Palong Shak / Leafy Spinach",
+      "nameBn": "তাজা দেশি পালং শাক",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Leafy Greens",
+      "brand": "Savar Riverside Agro",
+      "origin": "Savar, Dhaka",
+      "price": 30,
+      "originalPrice": 40,
+      "unit": "per bundle (~400g)",
+      "rating": 4.9,
+      "reviews": 165,
+      "stock": 120,
+      "badge": "MORNING CUT",
+      "badgeColor": "green",
+      "image": "/images/products/green-palonshak.jpg",
+      "description": "Tender baby spinach cut at dawn. Washed in clean water, free of grit, high in dietary iron and folate.",
+      "specifications": {
+        "Cut Time": "5:00 AM Today",
+        "Weight": "~400g bundle",
+        "Purity": "Pesticide residue free"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Savar, Dhaka"
+    },
+    {
+      "id": "fv-8",
+      "name": "Fresh Strawberries Punnet (250g)",
+      "nameBn": "তাজা লাল স্ট্রবেরি",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Seasonal Fruits",
+      "brand": "Rajshahi Greenhouse",
+      "origin": "Rajshahi, Bangladesh",
+      "price": 380,
+      "originalPrice": 440,
+      "unit": "250g punnet",
+      "rating": 4.9,
+      "reviews": 88,
+      "stock": 25,
+      "badge": "ORCHARD FRESH",
+      "badgeColor": "red",
+      "image": "/images/products/crispy-strawberry.jpg",
+      "description": "Sweet, fragrant red strawberries picked this morning. Perfect for fruit salads, healthy smoothies, and desserts.",
+      "specifications": {
+        "Pack": "Shock-absorbing punnet",
+        "Shelf Life": "4 days chilled",
+        "Origin": "Rajshahi"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Rajshahi, Bangladesh"
+    },
+    {
+      "id": "fv-9",
+      "name": "Green Crunchy Capsicum / Bell Pepper",
+      "nameBn": "তাজা সবুজ ক্যাপসিকাম",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Fresh Vegetables",
+      "brand": "Bogura Greenhouse",
+      "origin": "Bogura, Bangladesh",
+      "price": 180,
+      "originalPrice": 220,
+      "unit": "500g pack",
+      "rating": 4.8,
+      "reviews": 74,
+      "stock": 40,
+      "badge": "GREENHOUSE",
+      "badgeColor": "green",
+      "image": "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=600&auto=format&fit=crop&q=80",
+      "description": "Thick-walled, vibrant green bell peppers with a crisp crunch. Ideal for stir-fries, salads, and pastas.",
+      "specifications": {
+        "Grade": "A Grade Greenhouse",
+        "Weight": "500g Net",
+        "Crunch": "Guaranteed"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bogura, Bangladesh"
+    },
+    {
+      "id": "gs-1",
+      "name": "Premium Chakki Fresh Whole Wheat Atta 2kg",
+      "nameBn": "চাক্কি ফ্রেশ লাল গমের আটা (২ কেজি)",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Atta & Flour",
+      "brand": "ECOBAZAR Pure Staples",
+      "origin": "Bangladesh",
+      "price": 135,
+      "originalPrice": 155,
+      "unit": "2 kg sealed bag",
+      "rating": 4.9,
+      "reviews": 178,
+      "stock": 95,
+      "isHotDeal": true,
+      "badge": "100% WHOLE",
+      "badgeColor": "green",
+      "image": "/images/products/chakki-ata.webp",
+      "description": "Slow-ground whole wheat atta with 100% dietary bran. Makes exceptionally soft, fluffy rotis with rich natural nutrients.",
+      "specifications": {
+        "Grain": "Select Hard Wheat",
+        "Additives": "Zero (0%)",
+        "Bran": "High Dietary Fiber"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh"
+    },
+    {
+      "id": "gs-2",
+      "name": "Organic Red Lentils / Deshi Masoor Daal (1kg)",
+      "nameBn": "দেশি মসুর ডাল (১ কেজি)",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Lentils & Daal",
+      "brand": "Rajshahi Agro Reserve",
+      "origin": "Rajshahi, Bangladesh",
+      "price": 145,
+      "originalPrice": 170,
+      "unit": "1 kg pack",
+      "rating": 4.9,
+      "reviews": 215,
+      "stock": 120,
+      "badge": "UNPOLISHED",
+      "badgeColor": "green",
+      "image": "/images/products/moshur-dal.jpeg",
+      "description": "Naturally unpolished small-grain Deshi Masoor Daal. Cooks down quickly into a velvety, aromatic daal rich in plant protein.",
+      "specifications": {
+        "Polish": "100% Unpolished",
+        "Origin": "Rajshahi",
+        "Purity": "Double sorted"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Rajshahi, Bangladesh"
+    },
+    {
+      "id": "gs-3",
+      "name": "Pure Refined Cane Sugar (1kg)",
+      "nameBn": "পরিশোধিত দেশি সাদা চিনি",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Salt & Sugar",
+      "brand": "Deshi Agro Mill",
+      "origin": "Kushtia, Bangladesh",
+      "price": 130,
+      "originalPrice": 140,
+      "unit": "1 kg pack",
+      "rating": 4.8,
+      "reviews": 90,
+      "stock": 150,
+      "badge": "SULPHUR-FREE",
+      "badgeColor": "green",
+      "image": "/images/products/cane sugar.webp",
+      "description": "Sparkling white crystalline sugar extracted from fresh Kushtia sugarcane. Sulphur-free refining ensures pure sweetness.",
+      "specifications": {
+        "Extraction": "Pure Sugarcane",
+        "Moisture": "<0.05%",
+        "Packaging": "Airtight Poly"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Kushtia, Bangladesh"
+    },
+    {
+      "id": "gs-4",
+      "name": "Vacuum Evaporated Pure Iodized Salt (1kg)",
+      "nameBn": "আয়োডিনযুক্ত খাঁটি লবণ",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Salt & Sugar",
+      "brand": "ECOBAZAR Essentials",
+      "origin": "Chittagong Coastal Works",
+      "price": 42,
+      "originalPrice": 48,
+      "unit": "1 kg pack",
+      "rating": 5,
+      "reviews": 140,
+      "stock": 250,
+      "badge": "BSTI IODIZED",
+      "badgeColor": "green",
+      "image": "/images/products/pure-salt.webp",
+      "description": "Free-flowing, vacuum-evaporated table salt fortified with essential potassium iodate as per national health standards.",
+      "specifications": {
+        "Iodine": "30-50 ppm guaranteed",
+        "Flow": "Free-Flowing",
+        "BSTI": "Certified"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Chittagong Coastal Works"
+    },
+    {
+      "id": "gs-5",
+      "name": "Fine White All-Purpose Maida (1kg)",
+      "nameBn": "স্পেশাল সাদা ময়দা",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Atta & Flour",
+      "brand": "BakeCraft Mills",
+      "origin": "Bangladesh",
+      "price": 75,
+      "originalPrice": 85,
+      "unit": "1 kg pack",
+      "rating": 4.7,
+      "reviews": 65,
+      "stock": 80,
+      "badge": "FINE MILLED",
+      "badgeColor": "green",
+      "image": "/images/products/white-moida.avif",
+      "description": "Ultra-fine milled wheat flour ideal for luchi, parathas, samosa dough, cakes, and light pastries.",
+      "specifications": {
+        "Extraction": "Fine Milled",
+        "Bleach": "100% Unbleached",
+        "Texture": "Silky"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh"
+    },
+    {
+      "id": "gs-6",
+      "name": "Premium Yellow Mung Daal (1kg)",
+      "nameBn": "ভাজা সোনালী মুগ ডাল",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Lentils & Daal",
+      "brand": "Barishal Agro Hub",
+      "origin": "Barishal, Bangladesh",
+      "price": 175,
+      "originalPrice": 195,
+      "unit": "1 kg pack",
+      "rating": 4.9,
+      "reviews": 104,
+      "stock": 60,
+      "badge": "ROASTED AROMA",
+      "badgeColor": "orange",
+      "image": "/images/products/mugg-dal.webp",
+      "description": "Golden lightly roasted Mung Daal. Imparts rich fragrance when cooked with fish head (Muri Ghonto) or traditional khichuri.",
+      "specifications": {
+        "Roast": "Light Roasted",
+        "Grain": "Small Golden",
+        "Stone-Free": "Guaranteed"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Barishal, Bangladesh"
+    },
+    {
+      "id": "gs-7",
+      "name": "Fresh Roasted Puffed Rice / Muri (500g)",
+      "nameBn": "ঘি ভাজা তাজা মুড়ি",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Puffed Rice & Chira",
+      "brand": "Jashore Village Harvest",
+      "origin": "Jashore, Bangladesh",
+      "price": 55,
+      "originalPrice": 65,
+      "unit": "500g airtight pack",
+      "rating": 4.8,
+      "reviews": 112,
+      "stock": 90,
+      "badge": "UREA-FREE",
+      "badgeColor": "green",
+      "image": "/images/products/puffed-muri.jpg",
+      "description": "Naturally sand-roasted traditional Muri without chemical urea or bleaching powders. Super crisp and light.",
+      "specifications": {
+        "Roast": "Traditional Sand Roast",
+        "Urea": "0% Guaranteed",
+        "Crispness": "Airtight Sealed"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Jashore, Bangladesh"
+    },
+    {
+      "id": "gs-8",
+      "name": "Deshi Flat Rice / Red Chira (500g)",
+      "nameBn": "লাল ধানের চিঁড়া",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Puffed Rice & Chira",
+      "brand": "Dinajpur Special",
+      "origin": "Dinajpur, Bangladesh",
+      "price": 65,
+      "originalPrice": 75,
+      "unit": "500g pack",
+      "rating": 4.9,
+      "reviews": 80,
+      "stock": 75,
+      "badge": "RED PADDY",
+      "badgeColor": "green",
+      "image": "/images/products/deshired-chira.jpg",
+      "description": "Unpolished red paddy flattened rice. Rich in complex carbs, dietary iron, and prebiotic bran fiber.",
+      "specifications": {
+        "Grain": "Unpolished Red Paddy",
+        "Clean": "Stone & Dust Free",
+        "Weight": "500g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dinajpur, Bangladesh"
+    },
+    {
+      "id": "gs-9",
+      "name": "White Chickpeas / Kabuli Chola (1kg)",
+      "nameBn": "কাবুলি ছোলা (১ কেজি)",
+      "category": "Groceries & Staples",
+      "categorySlug": "groceries-staples",
+      "subcategory": "Lentils & Daal",
+      "brand": "ECOBAZAR Import Select",
+      "origin": "Imported Quality",
+      "price": 210,
+      "originalPrice": 240,
+      "unit": "1 kg pack",
+      "rating": 4.8,
+      "reviews": 95,
+      "stock": 50,
+      "badge": "LARGE BOLD",
+      "badgeColor": "orange",
+      "image": "/images/products/kabuli-chola.jpg",
+      "description": "Large bold white chickpeas that boil into a creamy, melt-in-the-mouth texture for Mediterranean hummus and chole bhature.",
+      "specifications": {
+        "Size": "12mm Bold",
+        "Cooking": "Quick Tender Boil",
+        "Weight": "1 kg"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Quality"
+    },
+    {
+      "id": "de-1",
+      "name": "Fresh Pasteurized Whole Cow Milk",
+      "nameBn": "খাঁটি তরল গরুর দুধ (১ লিটার)",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Fresh Milk",
+      "brand": "Pabna Pastures Dairy",
+      "origin": "Pabna, Bangladesh",
+      "price": 110,
+      "originalPrice": 125,
+      "unit": "1 Ltr bottle",
+      "rating": 4.9,
+      "reviews": 240,
+      "stock": 80,
+      "isHotDeal": true,
+      "badge": "12% OFF",
+      "badgeColor": "green",
+      "image": "/images/products/fresh-milk.jpg",
+      "description": "Pasteurized whole cow milk with natural 4.2% butterfat. Sourced from grass-grazed dairy herds and transported under cold-chain.",
+      "specifications": {
+        "Volume": "1 Litre",
+        "Fat Content": "4.2% Natural",
+        "Shelf Life": "3 days chilled"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Pabna, Bangladesh"
+    },
+    {
+      "id": "de-2",
+      "name": "Farm Fresh Organic Brown Eggs (Dozen)",
+      "nameBn": "ফার্মের তাজা লাল ডিম (১২টি)",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Farm Eggs",
+      "brand": "Gazipur Layer Farm",
+      "origin": "Gazipur, Dhaka",
+      "price": 145,
+      "originalPrice": 165,
+      "unit": "12 pcs carton",
+      "rating": 4.8,
+      "reviews": 215,
+      "stock": 110,
+      "isHotDeal": true,
+      "badge": "BEST SELLER",
+      "badgeColor": "orange",
+      "image": "/images/products/dozen-egg.webp",
+      "description": "High-protein farm-fresh brown eggs graded and UV-sterilized for complete food safety. Sourced daily from antibiotic-free layer hens.",
+      "specifications": {
+        "Grade": "Grade A Large",
+        "Shelf Life": "21 days",
+        "Packaging": "Shock-proof eco carton"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Gazipur, Dhaka"
+    },
+    {
+      "id": "de-3",
+      "name": "Handmade Deshi Cow Milk Ghee (500g)",
+      "nameBn": "খাঁটি গাওয়া ঘি (৫০০ গ্রাম)",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Ghee & Butter",
+      "brand": "Sirajganj Traditional Creamery",
+      "origin": "Sirajganj, Bangladesh",
+      "price": 680,
+      "originalPrice": 750,
+      "unit": "500g glass jar",
+      "rating": 5,
+      "reviews": 190,
+      "stock": 45,
+      "badge": "DANEDAR GHEE",
+      "badgeColor": "orange",
+      "image": "/images/products/deshi-ghee.webp",
+      "description": "Slow-simmered golden granulated ghee made from fresh cultured cream. Rich, nostalgic aroma that elevates khichuri, polao and sweets.",
+      "specifications": {
+        "Aroma": "Danedar Golden",
+        "Purity": "100% Grass-Fed Cow Milk",
+        "Jar": "Hermetic Glass"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sirajganj, Bangladesh"
+    },
+    {
+      "id": "de-4",
+      "name": "Bogura Sweet Royal Curd / Mishti Doi (500g)",
+      "nameBn": "বগুড়ার ঐতিহ্যবাহী স্পেশাল মিষ্টি দই",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Yogurt & Curd",
+      "brand": "Bogura Royal Dairy",
+      "origin": "Bogura, Bangladesh",
+      "price": 180,
+      "originalPrice": 200,
+      "unit": "500g clay pot",
+      "rating": 5,
+      "reviews": 310,
+      "stock": 50,
+      "badge": "TRADITIONAL",
+      "badgeColor": "red",
+      "image": "/images/products/bogura-doi.jpg",
+      "description": "Authentic Bogura Mishti Doi slowly baked in porous earthen pots. Caramelized rich cream top with velvety texture beneath.",
+      "specifications": {
+        "Container": "Traditional Clay Pot",
+        "Milk": "Caramelized Cow Milk",
+        "Chill": "Keep Refrigerated"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bogura, Bangladesh"
+    },
+    {
+      "id": "de-5",
+      "name": "Fresh Unsalted Table Butter (200g)",
+      "nameBn": "খাঁটি মাখন (২০০ গ্রাম)",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Ghee & Butter",
+      "brand": "Pabna Creamery",
+      "origin": "Pabna, Bangladesh",
+      "price": 190,
+      "originalPrice": 220,
+      "unit": "200g block",
+      "rating": 4.8,
+      "reviews": 85,
+      "stock": 60,
+      "badge": "COLD CHURN",
+      "badgeColor": "green",
+      "image": "/images/products/butter.jpg",
+      "description": "Freshly churned sweet cream butter with 82% butterfat. Melts smoothly over hot breakfast toasts and baking batches.",
+      "specifications": {
+        "Butterfat": "82% Minimum",
+        "Salt": "0% Unsalted",
+        "Cold Chain": "Preserved"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Pabna, Bangladesh"
+    },
+    {
+      "id": "de-6",
+      "name": "Fresh Dairy Paneer Cubes (300g)",
+      "nameBn": "তাজা ছানা পনির (৩০০ গ্রাম)",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Cheese & Paneer",
+      "brand": "Sirajganj Dairy",
+      "origin": "Sirajganj, Bangladesh",
+      "price": 240,
+      "originalPrice": 275,
+      "unit": "300g vacuum pack",
+      "rating": 4.9,
+      "reviews": 70,
+      "stock": 40,
+      "badge": "HIGH PROTEIN",
+      "badgeColor": "green",
+      "image": "/images/products/paneer.webp",
+      "description": "Soft, creamy paneer cubes crafted from whole milk curdling. Holds shape during curries and absorbs gravies delightfully.",
+      "specifications": {
+        "Protein": "18g per 100g",
+        "Preservatives": "None",
+        "Vacuum Pack": "Yes"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sirajganj, Bangladesh"
+    },
+    {
+      "id": "de-7",
+      "name": "Sour Curd / Probiotic Tok Doi (500g)",
+      "nameBn": "ন্যাচারাল প্রোবায়োটিক টক দই",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Yogurt & Curd",
+      "brand": "Sirajganj Dairy",
+      "origin": "Sirajganj, Bangladesh",
+      "price": 95,
+      "originalPrice": 110,
+      "unit": "500g tub",
+      "rating": 4.8,
+      "reviews": 120,
+      "stock": 75,
+      "badge": "LIVE PROBIOTICS",
+      "badgeColor": "green",
+      "image": "/images/products/tok-doi.webp",
+      "description": "Thick unflavored sour yogurt rich in active Lactobacillus cultures. Essential for marinades, borhani, raita, and digestive wellness.",
+      "specifications": {
+        "Sugar": "0% Added Sugar",
+        "Cultures": "Live Probiotic",
+        "Texture": "Thick Set"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sirajganj, Bangladesh"
+    },
+    {
+      "id": "de-8",
+      "name": "Country Duck Eggs / Haash er Dim (6 pcs)",
+      "nameBn": "দেশি হাঁসের ডিম (৬টি)",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Farm Eggs",
+      "brand": "Sunamganj Wetland Farms",
+      "origin": "Sunamganj Haor, Bangladesh",
+      "price": 115,
+      "originalPrice": 130,
+      "unit": "6 pcs carton",
+      "rating": 4.9,
+      "reviews": 95,
+      "stock": 50,
+      "badge": "HAOR SPECIAL",
+      "badgeColor": "orange",
+      "image": "/images/products/duck-egg.jpg",
+      "description": "Free-range wetland duck eggs with large, deep orange yolks. Rich in healthy omega fatty acids and essential protein.",
+      "specifications": {
+        "Yolk": "Deep Orange",
+        "Rearing": "Wetland Foraged",
+        "Count": "6 Large"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sunamganj Haor, Bangladesh"
+    },
+    {
+      "id": "de-9",
+      "name": "Whipped Dairy Cream (250ml)",
+      "nameBn": "হুইপড ফ্রেশ ক্রিম",
+      "category": "Dairy & Eggs",
+      "categorySlug": "dairy-eggs",
+      "subcategory": "Fresh Milk",
+      "brand": "Pabna Pastures",
+      "origin": "Pabna, Bangladesh",
+      "price": 160,
+      "originalPrice": 180,
+      "unit": "250ml pack",
+      "rating": 4.7,
+      "reviews": 48,
+      "stock": 35,
+      "badge": "35% FAT",
+      "badgeColor": "green",
+      "image": "/images/products/dairy-cream.png",
+      "description": "Heavy dairy whipping cream with 35% natural fat. Whips into stiff, luxurious peaks for cake frostings and coffee toppings.",
+      "specifications": {
+        "Fat": "35% Rich Cream",
+        "Pasteurized": "Yes",
+        "Shelf": "5 days chilled"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Pabna, Bangladesh"
+    },
+    {
+      "id": "mf-1",
+      "name": "Padma River Hilsa / Ilish (1 kg - 1.2 kg)",
+      "nameBn": "পদ্মার তাজা রূপালী ইলিশ",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Fresh River Fish",
+      "brand": "Padma River Fishery",
+      "origin": "Chandpur Padma Estuary, Bangladesh",
+      "price": 1450,
+      "originalPrice": 1650,
+      "unit": "per piece (~1.1 kg)",
+      "rating": 5,
+      "reviews": 280,
+      "stock": 25,
+      "isHotDeal": true,
+      "badge": "PADMA SILVER",
+      "badgeColor": "red",
+      "image": "/images/products/hilsha-ilish.webp",
+      "description": "Famous silver Hilsa caught at Chandpur confluence. Highly prized for melt-in-the-mouth oily richness and distinct aroma.",
+      "specifications": {
+        "Catch": "Chandpur Estuary",
+        "Chilling": "Salt & Crushed Ice",
+        "Net Weight": "1.0 - 1.2 kg"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Chandpur Padma Estuary, Bangladesh"
+    },
+    {
+      "id": "mf-2",
+      "name": "Premium Boneless Beef Cubes (1kg)",
+      "nameBn": "তাজা সলিড গরুর মাংস (১ কেজি)",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Halal Beef",
+      "brand": "ECOBAZAR Halal Meats",
+      "origin": "Pabna, Bangladesh",
+      "price": 780,
+      "originalPrice": 850,
+      "unit": "1 kg vacuum pack",
+      "rating": 4.9,
+      "reviews": 140,
+      "stock": 35,
+      "isHotDeal": true,
+      "badge": "100% HALAL",
+      "badgeColor": "green",
+      "image": "/images/products/beef-cube.webp",
+      "description": "Tender grass-fed boneless beef cut and trimmed in hygienic cold rooms. 100% Halal slaughtered and vacuum packed.",
+      "specifications": {
+        "Cut": "Boneless Cubes",
+        "Slaughter": "Strictly Halal Certified",
+        "Storage": "0°C to 4°C"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Pabna, Bangladesh"
+    },
+    {
+      "id": "mf-3",
+      "name": "Jumbo Marine Tiger Prawns / Bagda Chingri (500g)",
+      "nameBn": "সুন্দরবনের বাঘদা চিংড়ি (৫০০ গ্রাম)",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Marine Prawns",
+      "brand": "Bay Harvest Seafood",
+      "origin": "Cox's Bazar Coastal, Bangladesh",
+      "price": 680,
+      "originalPrice": 760,
+      "unit": "500g pack (8-10 pcs)",
+      "rating": 4.9,
+      "reviews": 95,
+      "stock": 30,
+      "badge": "JUMBO SIZE",
+      "badgeColor": "orange",
+      "image": "/images/products/chingri-fish.webp",
+      "description": "Firm, sweet sea tiger prawns flash-chilled immediately after offshore catch. Head-on shell-on for rich prawn malai curry.",
+      "specifications": {
+        "Grade": "Jumbo 16/20",
+        "Ice Glaze": "<5%",
+        "Shell": "Shell-on Clean"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Cox's Bazar Coastal, Bangladesh"
+    },
+    {
+      "id": "mf-4",
+      "name": "Fresh Live River Rui Fish (1kg)",
+      "nameBn": "তাজা নদীর রুই মাছ কাটা পিস",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Fresh River Fish",
+      "brand": "Meghna Agro Fishery",
+      "origin": "Meghna Basin, Bangladesh",
+      "price": 420,
+      "originalPrice": 480,
+      "unit": "1 kg clean cut",
+      "rating": 4.8,
+      "reviews": 160,
+      "stock": 45,
+      "badge": "DESHI RIVER",
+      "badgeColor": "green",
+      "image": "/images/products/rui-fish.webp",
+      "description": "Cleaned, descaled and steak-cut fresh River Rui fish. Sweet natural river flavor without muddy odor.",
+      "specifications": {
+        "Preparation": "Clean Steak Cut",
+        "Scales": "100% Removed",
+        "Delivery": "Chilled Ice Pack"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Meghna Basin, Bangladesh"
+    },
+    {
+      "id": "mf-5",
+      "name": "Deshi Free-Range Country Chicken / Deshi Murgi",
+      "nameBn": "গ্রামের তাজা দেশি মুরগি",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Country Chicken",
+      "brand": "Village Organic Co-op",
+      "origin": "Manikganj, Bangladesh",
+      "price": 460,
+      "originalPrice": 510,
+      "unit": "per piece (~850g dressed)",
+      "rating": 4.9,
+      "reviews": 175,
+      "stock": 40,
+      "badge": "FREE-RANGE",
+      "badgeColor": "green",
+      "image": "/images/products/deshi-murgi.jpg",
+      "description": "Authentic village-foraged country chicken. Lean, muscular meat packed with authentic rustic taste and broth richness.",
+      "specifications": {
+        "Feed": "Naturally Foraged",
+        "Dressed Weight": "800-900g",
+        "Skin": "Clean Dressed"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Manikganj, Bangladesh"
+    },
+    {
+      "id": "mf-6",
+      "name": "Fresh Mutton Bone-in Curry Cut (1kg)",
+      "nameBn": "তাজা খাসির মাংস কারি কাট (১ কেজি)",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Mutton",
+      "brand": "ECOBAZAR Halal Meats",
+      "origin": "Chuadanga, Bangladesh",
+      "price": 1100,
+      "originalPrice": 1200,
+      "unit": "1 kg vacuum pack",
+      "rating": 4.8,
+      "reviews": 90,
+      "stock": 20,
+      "badge": "KHALSI MUTTON",
+      "badgeColor": "red",
+      "image": "/images/products/mutton-cut.jpg",
+      "description": "Young male goat meat with optimal meat-to-bone balance. Tender, lean and naturally flavorful for aromatic rezala and kacchi.",
+      "specifications": {
+        "Source": "Black Bengal Goat",
+        "Slaughter": "Halal Certified",
+        "Cut": "Curry Pieces"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Chuadanga, Bangladesh"
+    },
+    {
+      "id": "mf-7",
+      "name": "Fresh River Katla Fish Head & Steaks (1kg)",
+      "nameBn": "তাজা কাতলা মাছ (১ কেজি)",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Fresh River Fish",
+      "brand": "Padma Fishery",
+      "origin": "Padma River, Bangladesh",
+      "price": 450,
+      "originalPrice": 500,
+      "unit": "1 kg pack",
+      "rating": 4.8,
+      "reviews": 80,
+      "stock": 30,
+      "badge": "RIVER FRESH",
+      "badgeColor": "green",
+      "image": "/images/products/katla-fish.avif",
+      "description": "Firm, fleshy Katla steaks cut from 3kg+ wild river fish. Ideal for rich Bengali mustard and tomato shorshe jhol.",
+      "specifications": {
+        "Fish Weight": "From 3kg+ size",
+        "Dressed": "Cleaned and cut",
+        "Chilled": "0°C to 2°C"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Padma River, Bangladesh"
+    },
+    {
+      "id": "mf-8",
+      "name": "Fresh Freshwater Pabda Fish (500g)",
+      "nameBn": "দেশি তাজা পাবদা মাছ (৫০০ গ্রাম)",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Fresh River Fish",
+      "brand": "Haor Fisheries",
+      "origin": "Sylhet Haor, Bangladesh",
+      "price": 390,
+      "originalPrice": 440,
+      "unit": "500g pack (10-12 pcs)",
+      "rating": 4.9,
+      "reviews": 65,
+      "stock": 25,
+      "badge": "SWEET DELICACY",
+      "badgeColor": "orange",
+      "image": "/images/products/pabda-fish.jpg",
+      "description": "Delicate, sweet Pabda fish cleaned and prepared. A classic Bengali favorite for light mustard chili curry (shorshe pabda).",
+      "specifications": {
+        "Preparation": "Cleaned whole",
+        "Pieces": "10-12 medium pcs",
+        "Ice": "Food-grade crushed ice"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sylhet Haor, Bangladesh"
+    },
+    {
+      "id": "mf-9",
+      "name": "Fresh Sea Red Snapper / Coral Fish (1kg)",
+      "nameBn": "তাজা সামুদ্রিক কোরাল মাছ",
+      "category": "Meat & Fish",
+      "categorySlug": "meat-fish",
+      "subcategory": "Marine Prawns",
+      "brand": "Bay Harvest",
+      "origin": "Bay of Bengal, Bangladesh",
+      "price": 650,
+      "originalPrice": 720,
+      "unit": "1 kg cleaned cut",
+      "rating": 4.7,
+      "reviews": 55,
+      "stock": 20,
+      "badge": "DEEP SEA",
+      "badgeColor": "green",
+      "image": "/images/products/red-coral.webp",
+      "description": "White-fleshed, mild deep sea Red Snapper. Thick boneless fillets perfect for grilling, frying and curries.",
+      "specifications": {
+        "Catch": "Offshore Trawler",
+        "Fillet": "Thick Steak Cut",
+        "Freshness": "Dayboat catch"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bay of Bengal, Bangladesh"
+    },
+    {
+      "id": "so-1",
+      "name": "Pure mustard oil (1Litre wooden press)",
+      "nameBn": "ঘানি ভাঙা ১০০% খাঁটি সরিষার তেল",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Mustard Oil",
+      "brand": "ECOBAZAR Pure Heritage",
+      "origin": "Natore, Bangladesh",
+      "price": 285,
+      "originalPrice": 340,
+      "unit": "1 Litre Bottle",
+      "rating": 5,
+      "reviews": 310,
+      "stock": 60,
+      "isHotDeal": true,
+      "badge": "100% PURE",
+      "badgeColor": "green",
+      "image": "/images/banner-mustard-oil.jpg",
+      "description": "Traditional wood-cold-pressed raw mustard oil retaining intense natural pungent aroma and natural antioxidants. Zero chemicals.",
+      "specifications": {
+        "Extraction": "Traditional Wood Ghani",
+        "Purity": "100% Unadulterated",
+        "Packaging": "Food-grade PET Bottle"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Natore, Bangladesh"
+    },
+    {
+      "id": "so-2",
+      "name": "Pure Cold-Pressed Mustard Oil (5 Litre Family Jar)",
+      "nameBn": "ঘানি ভাঙা সরিষার তেল (৫ লিটার)",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Mustard Oil",
+      "brand": "ECOBAZAR Pure Heritage",
+      "origin": "Natore, Bangladesh",
+      "price": 1350,
+      "originalPrice": 1550,
+      "unit": "5 Litre Canister",
+      "rating": 5,
+      "reviews": 140,
+      "stock": 40,
+      "badge": "FAMILY SAVER",
+      "badgeColor": "green",
+      "image": "/images/products/sorisharteel-500.webp",
+      "description": "Economy family size canister of raw wood-churned mustard oil. Pure pungency guaranteed for authentic Bengali kitchens.",
+      "specifications": {
+        "Volume": "5 Litre",
+        "Process": "Wood Pressed Cold Churn",
+        "Pungency": "High Natural"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Natore, Bangladesh"
+    },
+    {
+      "id": "so-3",
+      "name": "Organic Turmeric Powder / Haldi Gura (200g)",
+      "nameBn": "খাঁটি হলুদ গুঁড়া (২০০ গ্রাম)",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Ground Spice Powders",
+      "brand": "Pabna Organic Spices",
+      "origin": "Pabna, Bangladesh",
+      "price": 95,
+      "originalPrice": 110,
+      "unit": "200g zipper pack",
+      "rating": 4.9,
+      "reviews": 180,
+      "stock": 85,
+      "badge": "HIGH CURCUMIN",
+      "badgeColor": "orange",
+      "image": "/images/products/holud-gura.avif",
+      "description": "Pure sun-dried organic turmeric roots stone-ground to preserve 5%+ natural curcumin. Zero lead chromate or artificial coloring.",
+      "specifications": {
+        "Curcumin": "5.2% Certified",
+        "Coloring": "0% Artificial",
+        "Weight": "200g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Pabna, Bangladesh"
+    },
+    {
+      "id": "so-4",
+      "name": "Sun-Dried Red Chili Powder / Morich Gura (200g)",
+      "nameBn": "খাঁটি লাল মরিচ গুঁড়া",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Ground Spice Powders",
+      "brand": "Bogura Red Spice",
+      "origin": "Bogura, Bangladesh",
+      "price": 110,
+      "originalPrice": 130,
+      "unit": "200g zipper pack",
+      "rating": 4.8,
+      "reviews": 160,
+      "stock": 90,
+      "badge": "HOT & VIBRANT",
+      "badgeColor": "red",
+      "image": "/images/products/moricher-gura.jpeg",
+      "description": "Hand-sorted fiery red chilies from Bogura sun-dried and ground. Imparts vivid natural red hue and bold spicy heat to curries.",
+      "specifications": {
+        "Origin": "Bogura Fields",
+        "Additives": "None",
+        "Heat": "Medium-High"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bogura, Bangladesh"
+    },
+    {
+      "id": "so-5",
+      "name": "Aromatic Whole Cardamom / Green Elachi (50g)",
+      "nameBn": "আমদানিকৃত সুগন্ধি সবুজ এলাচ",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Whole Spices",
+      "brand": "Guatemala Grade A",
+      "origin": "Imported",
+      "price": 320,
+      "originalPrice": 380,
+      "unit": "50g glass jar",
+      "rating": 5,
+      "reviews": 125,
+      "stock": 70,
+      "badge": "BOLD 8MM",
+      "badgeColor": "green",
+      "image": "/images/products/green-elach.jpg",
+      "description": "Jumbo 8mm plump green cardamom pods packed with aromatic black seeds. Essential for rich biryanis, firni, and special teas.",
+      "specifications": {
+        "Size": "8mm Bold Pods",
+        "Aroma": "Intense Natural Oils",
+        "Jar": "Airtight Glass"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported"
+    },
+    {
+      "id": "so-6",
+      "name": "Aromatic Ceylon Cinnamon Sticks / Dalchini (100g)",
+      "nameBn": "খাঁটি দারুচিনি স্টিক",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Whole Spices",
+      "brand": "Ceylon True Reserve",
+      "origin": "Sri Lanka (Ceylon)",
+      "price": 180,
+      "originalPrice": 210,
+      "unit": "100g pack",
+      "rating": 4.9,
+      "reviews": 90,
+      "stock": 65,
+      "badge": "TRUE CEYLON",
+      "badgeColor": "orange",
+      "image": "/images/products/dal-chini.jpg",
+      "description": "Delicate multi-layered sweet Ceylon cinnamon quills with low coumarin. Far superior in fragrance to harsh cassia bark.",
+      "specifications": {
+        "Type": "True Ceylon (Cinnamomum verum)",
+        "Coumarin": "Safe low levels",
+        "Weight": "100g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sri Lanka (Ceylon)"
+    },
+    {
+      "id": "so-7",
+      "name": "Cold-Pressed Pure Sunflower Cooking Oil (1L)",
+      "nameBn": "খাঁটি সূর্যমুখী তেল (১ লিটার)",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Mustard Oil",
+      "brand": "ECOBAZAR Heart Care",
+      "origin": "Imported Sunflower Seeds",
+      "price": 240,
+      "originalPrice": 270,
+      "unit": "1 Litre bottle",
+      "rating": 4.8,
+      "reviews": 130,
+      "stock": 80,
+      "badge": "HEART FRIENDLY",
+      "badgeColor": "green",
+      "image": "/images/products/sunflower-oil.webp",
+      "description": "Light, golden sunflower oil rich in natural Vitamin E and heart-healthy polyunsaturated fats. Neutral aroma and high smoke point.",
+      "specifications": {
+        "Smoke Point": "232°C",
+        "Vitamin E": "High natural content",
+        "Cholesterol": "0%"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Sunflower Seeds"
+    },
+    {
+      "id": "so-8",
+      "name": "Whole Black Cumin Seeds / Kalo Jeera (100g)",
+      "nameBn": "খাঁটি কালোজিরা (১০০ গ্রাম)",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Whole Spices",
+      "brand": "Jashore Organic Farms",
+      "origin": "Jashore, Bangladesh",
+      "price": 85,
+      "originalPrice": 100,
+      "unit": "100g pack",
+      "rating": 5,
+      "reviews": 145,
+      "stock": 95,
+      "badge": "HEALTH HERB",
+      "badgeColor": "green",
+      "image": "/images/products/kalo-jira.jpg",
+      "description": "Aromatic jet-black Nigella sativa seeds known for immune-boosting therapeutic properties. Stone and dust free.",
+      "specifications": {
+        "Purity": "100% Sorted",
+        "Oil Content": "Rich natural nigellone",
+        "Weight": "100g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Jashore, Bangladesh"
+    },
+    {
+      "id": "so-9",
+      "name": "Artisanal Mango Pickle in Mustard Oil (400g)",
+      "nameBn": "সরিষার তেলে খাঁটি আমের আচার",
+      "category": "Spices & Oils",
+      "categorySlug": "spices-oils",
+      "subcategory": "Pickles & Sauces",
+      "brand": "Grandma Heritage Pickles",
+      "origin": "Rajshahi, Bangladesh",
+      "price": 220,
+      "originalPrice": 260,
+      "unit": "400g glass jar",
+      "rating": 4.9,
+      "reviews": 110,
+      "stock": 55,
+      "badge": "HANDCRAFTED",
+      "badgeColor": "orange",
+      "image": "/images/products/mustard-oil.webp",
+      "description": "Sun-cured raw green Rajshahi mangoes steeped in pure wood-churned mustard oil, fenugreek, and wild fennel seeds.",
+      "specifications": {
+        "Oil": "100% Cold Pressed Mustard Oil",
+        "Preservatives": "Traditional Salt & Oil Cured",
+        "Jar": "Glass"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Rajshahi, Bangladesh"
+    },
+    {
+      "id": "rp-1",
+      "name": "Rice (Miniket Premium Aged 5kg)",
+      "nameBn": "প্রিমিয়াম মিনিকেট চাল (৫ কেজি)",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Daily Rice",
+      "brand": "Dinajpur Special Reserve",
+      "origin": "Dinajpur, Bangladesh",
+      "price": 280,
+      "originalPrice": 320,
+      "unit": "5 kg bag",
+      "rating": 5,
+      "reviews": 320,
+      "stock": 120,
+      "isHotDeal": true,
+      "badge": "TOP STAPLE",
+      "badgeColor": "green",
+      "image": "/images/products/miniket-chal.jpg",
+      "description": "100% stone-free, silky, slender Miniket rice. Triple-sorted by optical sorting machines for clean, fluffy everyday cooking.",
+      "specifications": {
+        "Net Weight": "5 kg",
+        "Aging": "Aged 9 months",
+        "Stone-Free": "100% Guaranteed"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dinajpur, Bangladesh"
+    },
+    {
+      "id": "rp-2",
+      "name": "Aromatic Chinigura Polao Rice (2kg)",
+      "nameBn": "সুগন্ধি চিনিগুঁড়া পোলাও চাল (২ কেজি)",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Aromatic Rice",
+      "brand": "Dinajpur Heritage",
+      "origin": "Dinajpur, Bangladesh",
+      "price": 290,
+      "originalPrice": 350,
+      "unit": "2 kg sealed bag",
+      "rating": 5,
+      "reviews": 184,
+      "stock": 75,
+      "isHotDeal": true,
+      "badge": "AROMATIC ROYAL",
+      "badgeColor": "orange",
+      "image": "/images/products/polao-chal.jpg",
+      "description": "Aged small-grain aromatic Chinigura rice renowned for delicate floral fragrance and light texture. Ideal for biryanis, polao, and firni.",
+      "specifications": {
+        "Aging": "12 Months Cellar Aged",
+        "Purity": "100% Authentic Dinajpur",
+        "Broken Grains": "<1%"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dinajpur, Bangladesh"
+    },
+    {
+      "id": "rp-3",
+      "name": "Aromatic Kalijira Rice / Baby Basmati (1kg)",
+      "nameBn": "স্পেশাল সুগন্ধি কালিজিরা চাল",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Aromatic Rice",
+      "brand": "Sherpur Heritage Rice",
+      "origin": "Sherpur, Bangladesh",
+      "price": 155,
+      "originalPrice": 180,
+      "unit": "1 kg sealed bag",
+      "rating": 4.9,
+      "reviews": 130,
+      "stock": 60,
+      "badge": "SHERPUR PRIDE",
+      "badgeColor": "green",
+      "image": "/images/products/kalijira-rice.webp",
+      "description": "Tiny grain, high fragrance Kalijira rice. Turns desserts into festive delights with sweet perfume.",
+      "specifications": {
+        "Weight": "1 kg",
+        "Aroma": "High Natural Esters",
+        "Cleanliness": "Machine Sorted"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sherpur, Bangladesh"
+    },
+    {
+      "id": "rp-4",
+      "name": "Nazirshail Rice Premium Slender Grain (5kg)",
+      "nameBn": "প্রিমিয়াম নাজিরশাইল চাল (৫ কেজি)",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Daily Rice",
+      "brand": "Barishal Granary",
+      "origin": "Barishal, Bangladesh",
+      "price": 360,
+      "originalPrice": 410,
+      "unit": "5 kg bag",
+      "rating": 4.8,
+      "reviews": 140,
+      "stock": 80,
+      "badge": "HEALTHY CARB",
+      "badgeColor": "green",
+      "image": "/images/products/najir-chal.webp",
+      "description": "Non-sticky, firm, slender Nazirshail rice. Digested slowly, making it a favorite for health-conscious families.",
+      "specifications": {
+        "Grain": "Pointed Slender",
+        "Glycemic Index": "Lower than Miniket",
+        "Stone Free": "Yes"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Barishal, Bangladesh"
+    },
+    {
+      "id": "rp-5",
+      "name": "Organic Rolled Oats Whole Grain (500g)",
+      "nameBn": "অর্গানিক হোল গ্রেইন রোল্ড ওটস",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Organic Quinoa & Oats",
+      "brand": "ECOBAZAR Organics",
+      "origin": "Imported Certified",
+      "price": 240,
+      "originalPrice": 280,
+      "unit": "500g zip pack",
+      "rating": 4.9,
+      "reviews": 88,
+      "stock": 65,
+      "badge": "BETA-GLUCAN",
+      "badgeColor": "green",
+      "image": "/images/products/roll-oats.jpg",
+      "description": "Heart-healthy thick rolled whole oats rich in soluble beta-glucan fiber. Ideal for overnight oats, porridge, and baking.",
+      "specifications": {
+        "Fiber": "11g per 100g",
+        "Gluten Tested": "Yes",
+        "Packaging": "Moisture-proof"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Certified"
+    },
+    {
+      "id": "rp-6",
+      "name": "Organic White Quinoa Grain (500g)",
+      "nameBn": "অর্গানিক হোয়াইট কিনোয়া (৫০০ গ্রাম)",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Organic Quinoa & Oats",
+      "brand": "Andean Gold",
+      "origin": "Imported Organic",
+      "price": 490,
+      "originalPrice": 560,
+      "unit": "500g pack",
+      "rating": 4.8,
+      "reviews": 45,
+      "stock": 35,
+      "badge": "SUPERFOOD",
+      "badgeColor": "orange",
+      "image": "/images/products/quino-500.jpg",
+      "description": "Complete plant protein with all 9 essential amino acids. Pre-washed for zero bitter saponin, cooks in 15 minutes.",
+      "specifications": {
+        "Protein": "Complete Amino Acid Profile",
+        "Pre-washed": "Yes (Saponin-Free)",
+        "Weight": "500g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Organic"
+    },
+    {
+      "id": "rp-7",
+      "name": "Deshi Brown Rice / Dheki-Chhata Chaal (2kg)",
+      "nameBn": "ঢেঁকি ছাঁটা লাল চাল (২ কেজি)",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Specialty Grains",
+      "brand": "Village Organic Co-op",
+      "origin": "Mymensingh, Bangladesh",
+      "price": 190,
+      "originalPrice": 220,
+      "unit": "2 kg pack",
+      "rating": 4.9,
+      "reviews": 105,
+      "stock": 50,
+      "badge": "UNPOLISHED BRAN",
+      "badgeColor": "green",
+      "image": "/images/products/red-rice.jpg",
+      "description": "Unpolished traditional Dheki-pounded red rice retaining full germ and outer bran coat. Natural source of B vitamins and magnesium.",
+      "specifications": {
+        "Processing": "Dheki Pounded",
+        "Bran Layer": "100% Intact",
+        "Weight": "2 kg"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Mymensingh, Bangladesh"
+    },
+    {
+      "id": "rp-8",
+      "name": "Green Whole Moong Beans (1kg)",
+      "nameBn": "আস্ত সবুজ মুগ ডাল",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Lentils & Pulses",
+      "brand": "Kushtia Agro",
+      "origin": "Kushtia, Bangladesh",
+      "price": 160,
+      "originalPrice": 185,
+      "unit": "1 kg pack",
+      "rating": 4.8,
+      "reviews": 70,
+      "stock": 60,
+      "badge": "SPROUTABLE",
+      "badgeColor": "green",
+      "image": "/images/products/moong-beans.jpg",
+      "description": "Whole green mung beans with high germination rate for fresh home sprouting, dal makhani, and nutritious soups.",
+      "specifications": {
+        "Germination": "95%+ for Sprouting",
+        "Purity": "Double Sorted",
+        "Weight": "1 kg"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Kushtia, Bangladesh"
+    },
+    {
+      "id": "rp-9",
+      "name": "Barley Grain / Jab er Chaal (500g)",
+      "nameBn": "খাঁটি যবের চাল (৫০০ গ্রাম)",
+      "category": "Rice, Pulses & Grains",
+      "categorySlug": "rice-pulses-grains",
+      "subcategory": "Specialty Grains",
+      "brand": "Sun Grain Reserve",
+      "origin": "Bangladesh",
+      "price": 110,
+      "originalPrice": 130,
+      "unit": "500g pack",
+      "rating": 4.7,
+      "reviews": 40,
+      "stock": 45,
+      "badge": "LOW GLYCEMIC",
+      "badgeColor": "green",
+      "image": "/images/products/jober-chal.webp",
+      "description": "Traditional pearl barley grain renowned for kidney cleansing and healthy cooling porridge drinks (Talbina).",
+      "specifications": {
+        "Type": "Pearl Barley Grain",
+        "Fiber": "High Soluble Fiber",
+        "Weight": "500g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh"
+    },
+    {
+      "id": "bk-1",
+      "name": "Artisan Multi-Grain Sourdough Loaf (400g)",
+      "nameBn": "মাল্টি-গ্রেইন সোরডো পাউরুটি",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Artisan Breads",
+      "brand": "Artisan Bakehouse",
+      "origin": "Dhaka Bakery Hub",
+      "price": 160,
+      "originalPrice": 185,
+      "unit": "400g loaf",
+      "rating": 4.8,
+      "reviews": 88,
+      "stock": 40,
+      "badge": "FRESH BAKE",
+      "badgeColor": "orange",
+      "image": "/images/products/artisan-baker.jpg",
+      "description": "Slow-fermented artisan sourdough baked daily with sunflower seeds, flaxseeds, and toasted oats. Naturally low glycemic index.",
+      "specifications": {
+        "Fermentation": "24-hour slow proof",
+        "Baked": "This Morning",
+        "Preservatives": "0%"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka Bakery Hub"
+    },
+    {
+      "id": "bk-2",
+      "name": "Butter Brioche Burger Buns (4 pcs)",
+      "nameBn": "বাটার ব্রায়োশ বার্গার বান",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Croissants & Buns",
+      "brand": "Artisan Bakehouse",
+      "origin": "Dhaka",
+      "price": 120,
+      "originalPrice": 140,
+      "unit": "4 pcs pack",
+      "rating": 4.9,
+      "reviews": 65,
+      "stock": 50,
+      "badge": "GOLDEN BUTTER",
+      "badgeColor": "orange",
+      "image": "/images/products/burger-bun.jpg",
+      "description": "Golden, pillowy-soft French-style brioche burger buns brushed with whole milk and sprinkled with toasted sesame.",
+      "specifications": {
+        "Texture": "Pillowy Soft",
+        "Count": "4 Buns",
+        "Glaze": "Egg-free Milk Glaze"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bk-3",
+      "name": "French Butter Croissant (Pack of 2)",
+      "nameBn": "বাটার ক্রসাঁ (২টি)",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Croissants & Buns",
+      "brand": "Parisian Oven",
+      "origin": "Dhaka",
+      "price": 180,
+      "originalPrice": 210,
+      "unit": "2 pcs pack",
+      "rating": 4.9,
+      "reviews": 115,
+      "stock": 35,
+      "badge": "FLAKY LAYERS",
+      "badgeColor": "orange",
+      "image": "/images/products/butter-cross.webp",
+      "description": "Laminated with pure cultured dairy butter for dozens of paper-thin, crispy, honeycomb layers. Heavenly with morning coffee.",
+      "specifications": {
+        "Butter": "Pure Dairy Butter",
+        "Layers": "Laminated Flaky",
+        "Baked": "Daily"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bk-4",
+      "name": "Whole Wheat Sandwich Bread (450g)",
+      "nameBn": "লাল গমের স্যান্ডউইচ পাউরুটি",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Artisan Breads",
+      "brand": "Fresh Crust Bakeries",
+      "origin": "Dhaka",
+      "price": 85,
+      "originalPrice": 95,
+      "unit": "450g sliced",
+      "rating": 4.7,
+      "reviews": 140,
+      "stock": 70,
+      "badge": "HEALTH FIBER",
+      "badgeColor": "green",
+      "image": "/images/products/sandwitch-bread.jpg",
+      "description": "Nutritious whole wheat sliced sandwich loaf. Hearty crumb, perfect toastability, and high dietary bran content.",
+      "specifications": {
+        "Slices": "14 uniform slices",
+        "Fiber": "High whole wheat",
+        "Weight": "450g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bk-5",
+      "name": "Crispy Chicken Puff Pastry (2 pcs)",
+      "nameBn": "ক্রিস্পি চিকেন প্যাটিস (২টি)",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Puffs & Patties",
+      "brand": "Artisan Bakehouse",
+      "origin": "Dhaka",
+      "price": 130,
+      "originalPrice": 150,
+      "unit": "2 pcs pack",
+      "rating": 4.8,
+      "reviews": 90,
+      "stock": 45,
+      "badge": "SAVORY BAKE",
+      "badgeColor": "orange",
+      "image": "/images/products/puff-pastry.jpg",
+      "description": "Flaky golden puff pastry stuffed with spiced shredded chicken breast, caramelized onions, and cracked black pepper.",
+      "specifications": {
+        "Filling": "100% Halal Chicken",
+        "Pastry": "Multi-layered puff",
+        "Reheating": "1 min in toaster oven"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bk-6",
+      "name": "Almond Biscotti Twice-Baked Cookies (200g)",
+      "nameBn": "আমন্ড বিস্কটি কুকিজ",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Cookies & Toasts",
+      "brand": "Artisan Bakehouse",
+      "origin": "Dhaka",
+      "price": 240,
+      "originalPrice": 280,
+      "unit": "200g box",
+      "rating": 4.9,
+      "reviews": 62,
+      "stock": 35,
+      "badge": "ROASTED NUTS",
+      "badgeColor": "green",
+      "image": "/images/products/biscott-bake.webp",
+      "description": "Crunchy Italian-style twice-baked biscuits studded with roasted California almonds. Ideal for dipping into hot tea or cappuccino.",
+      "specifications": {
+        "Almonds": "25% Roasted Nuts",
+        "Shelf": "30 days airtight",
+        "Weight": "200g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bk-7",
+      "name": "Rich Dark Chocolate Brownie Square",
+      "nameBn": "ডার্ক চকলেট ব্রাউনি",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Cakes & Pastries",
+      "brand": "ChocoArtisan",
+      "origin": "Dhaka",
+      "price": 150,
+      "originalPrice": 175,
+      "unit": "120g piece",
+      "rating": 5,
+      "reviews": 145,
+      "stock": 40,
+      "badge": "BELGIAN COCOA",
+      "badgeColor": "red",
+      "image": "/images/products/dark-cake.jpg",
+      "description": "Fudgy, dense chocolate brownie baked with 70% dark Belgian cocoa and chocolate chunks. Chewy edges and gooey center.",
+      "specifications": {
+        "Cocoa": "70% Belgian Dark",
+        "Texture": "Fudge & Gooey",
+        "Weight": "120g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bk-8",
+      "name": "Cardamom Infused Rusk Toast (300g)",
+      "nameBn": "স্পেশাল এলাচ টোস্ট বিস্কুট",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Cookies & Toasts",
+      "brand": "BakeCraft",
+      "origin": "Dhaka",
+      "price": 90,
+      "originalPrice": 105,
+      "unit": "300g pack",
+      "rating": 4.7,
+      "reviews": 80,
+      "stock": 85,
+      "badge": "CRUNCHY TEA",
+      "badgeColor": "orange",
+      "image": "/images/products/cha-toast.webp",
+      "description": "Golden, crunchy twice-baked bread toasts infused with aromatic green cardamom. The quintessential Bengali afternoon cha companion.",
+      "specifications": {
+        "Cardamom": "Real ground spice",
+        "Crispness": "Double baked",
+        "Weight": "300g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bk-9",
+      "name": "Fresh English Tea Cake Loaf (350g)",
+      "nameBn": "ফ্রুট টি কেক",
+      "category": "Bakery & Fresh Snacks",
+      "categorySlug": "bakery-fresh-snacks",
+      "subcategory": "Cakes & Pastries",
+      "brand": "Fresh Crust Bakeries",
+      "origin": "Dhaka",
+      "price": 160,
+      "originalPrice": 180,
+      "unit": "350g loaf",
+      "rating": 4.8,
+      "reviews": 95,
+      "stock": 45,
+      "badge": "SOFT SPONGE",
+      "badgeColor": "green",
+      "image": "/images/products/tea-cake.webp",
+      "description": "Moist golden sponge cake speckled with candied papaya tutti-frutti and golden raisins. Light, buttery, and comforting.",
+      "specifications": {
+        "Flavor": "Vanilla & Fruit",
+        "Weight": "350g",
+        "Shelf": "7 days"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "sb-1",
+      "name": "Cold-Pressed Valencia Orange Juice (500ml)",
+      "nameBn": "তাজা কমলার রস (৫০০ মিলি)",
+      "category": "Snacks & Beverages",
+      "categorySlug": "snacks-beverages",
+      "subcategory": "Cold Pressed Juices",
+      "brand": "Citrus Grove",
+      "origin": "Dhaka, Bangladesh",
+      "price": 180,
+      "originalPrice": 210,
+      "unit": "500ml bottle",
+      "rating": 4.8,
+      "reviews": 74,
+      "stock": 30,
+      "isHotDeal": true,
+      "badge": "100% RAW",
+      "badgeColor": "green",
+      "image": "/images/products/orange-juice.avif",
+      "description": "100% pure cold-pressed Valencia orange juice. No added sugar, water, or chemical preservatives. Chilled fresh daily.",
+      "specifications": {
+        "Sugar": "0% Added Sugar",
+        "Shelf": "48 hours chilled",
+        "Packaging": "BPA-free"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka, Bangladesh"
+    },
+    {
+      "id": "sb-2",
+      "name": "Premium Sreemangal Black Tea Leaves (400g)",
+      "nameBn": "শ্রীমঙ্গলের প্রিমিয়াম ব্ল্যাক টি",
+      "category": "Snacks & Beverages",
+      "categorySlug": "snacks-beverages",
+      "subcategory": "Tea & Coffee",
+      "brand": "Sreemangal Valley Estate",
+      "origin": "Sylhet, Bangladesh",
+      "price": 240,
+      "originalPrice": 280,
+      "unit": "400g tin can",
+      "rating": 5,
+      "reviews": 190,
+      "stock": 75,
+      "badge": "VALLEY FIRST FLUSH",
+      "badgeColor": "green",
+      "image": "/images/products/tea-leaves.jpg",
+      "description": "Single-estate BOP (Broken Orange Pekoe) tea from historic rain-drenched Sreemangal tea hills. Brews a deep ruby liquor with malt notes.",
+      "specifications": {
+        "Grade": "BOP First Flush",
+        "Color": "Bright Copper Ruby",
+        "Origin": "Sreemangal"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sylhet, Bangladesh"
+    },
+    {
+      "id": "sb-3",
+      "name": "Roasted Cashew Nuts Salted / Kaju Badam (250g)",
+      "nameBn": "রোস্টেড কাজু বাদাম (২৫০ গ্রাম)",
+      "category": "Snacks & Beverages",
+      "categorySlug": "snacks-beverages",
+      "subcategory": "Dried Fruits & Nuts",
+      "brand": "ECOBAZAR Nut Harvest",
+      "origin": "Hill Tracts, Bangladesh",
+      "price": 360,
+      "originalPrice": 420,
+      "unit": "250g zipper pouch",
+      "rating": 4.9,
+      "reviews": 110,
+      "stock": 60,
+      "badge": "W240 JUMBO",
+      "badgeColor": "orange",
+      "image": "/images/products/kaju-badam.jpg",
+      "description": "Slow-roasted jumbo whole cashews sprinkled with Himalayan pink salt. Ultra-crunchy protein-rich snacking.",
+      "specifications": {
+        "Grade": "W240 Jumbo",
+        "Salt": "Himalayan Pink",
+        "Pack": "Air-sealed"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Hill Tracts, Bangladesh"
+    },
+    {
+      "id": "sb-4",
+      "name": "Cold-Pressed Green Apple & Celery Detox (500ml)",
+      "nameBn": "ডিটক্স গ্রিন জুস",
+      "category": "Snacks & Beverages",
+      "categorySlug": "snacks-beverages",
+      "subcategory": "Cold Pressed Juices",
+      "brand": "Citrus Grove",
+      "origin": "Dhaka",
+      "price": 210,
+      "originalPrice": 245,
+      "unit": "500ml bottle",
+      "rating": 4.9,
+      "reviews": 55,
+      "stock": 25,
+      "badge": "CLEANSE",
+      "badgeColor": "green",
+      "image": "/images/products/green-applejuice.jpg",
+      "description": "Crisp green Granny Smith apples, cucumber, ginger and celery juice. Alkaline hydration with zero added sweeteners.",
+      "specifications": {
+        "Juiced": "Cold Hydraulic Press",
+        "Nutrients": "Live Enzymes",
+        "Shelf": "48h chilled"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "sb-5",
+      "name": "Artisan Dark Roast Ground Coffee (200g)",
+      "nameBn": "প্রিমিয়াম ডার্ক রোস্ট কফি",
+      "category": "Snacks & Beverages",
+      "categorySlug": "snacks-beverages",
+      "subcategory": "Tea & Coffee",
+      "brand": "Hillside Roasters",
+      "origin": "Bandarban Hills, Bangladesh",
+      "price": 390,
+      "originalPrice": 450,
+      "unit": "200g tin",
+      "rating": 4.9,
+      "reviews": 80,
+      "stock": 45,
+      "badge": "ARABICA SHADE",
+      "badgeColor": "orange",
+      "image": "/images/products/dark-coffee.webp",
+      "description": "Shade-grown Arabica beans from Bandarban highland tribal farms. Dark roasted with dark cocoa and smoky hazelnut notes.",
+      "specifications": {
+        "Bean": "100% Arabica",
+        "Roast": "Dark French",
+        "Grind": "Moka & French Press"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bandarban Hills, Bangladesh"
+    },
+    {
+      "id": "sb-6",
+      "name": "Spicy Chanachur Mix Bombay Style (300g)",
+      "nameBn": "স্পাইসি বোম্বে চানাচুর (৩০০ গ্রাম)",
+      "category": "Snacks & Beverages",
+      "categorySlug": "snacks-beverages",
+      "subcategory": "Chips & Savories",
+      "brand": "Old Dhaka Heritage Snacks",
+      "origin": "Dhaka, Bangladesh",
+      "price": 110,
+      "originalPrice": 125,
+      "unit": "300g pack",
+      "rating": 4.8,
+      "reviews": 130,
+      "stock": 90,
+      "badge": "CRISPY SPICE",
+      "badgeColor": "red",
+      "image": "/images/products/spicy-chanachur.webp",
+      "description": "Crisp gram flour noodles, fried green peas, roasted peanuts, and tart spices fried in pure mustard oil.",
+      "specifications": {
+        "Oil": "Fried in Mustard Oil",
+        "Spice": "Traditional Tangy",
+        "Weight": "300g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka, Bangladesh"
+    },
+    {
+      "id": "sb-7",
+      "name": "California Almonds Whole Raw (250g)",
+      "nameBn": "আমেরিকান কাঠবাদাম (২৫০ গ্রাম)",
+      "category": "Snacks & Beverages",
+      "categorySlug": "snacks-beverages",
+      "subcategory": "Dried Fruits & Nuts",
+      "brand": "ECOBAZAR Select",
+      "origin": "Imported USA",
+      "price": 380,
+      "originalPrice": 440,
+      "unit": "250g pouch",
+      "rating": 4.9,
+      "reviews": 95,
+      "stock": 65,
+      "badge": "SUPREME GRADE",
+      "badgeColor": "green",
+      "image": "/images/products/almond-badam.jpg",
+      "description": "Jumbo nonpareil raw almonds loaded with vitamin E, protein and magnesium. Sweet nutty crunch in every bite.",
+      "specifications": {
+        "Origin": "California USA",
+        "Grade": "Nonpareil Supreme",
+        "Weight": "250g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported USA"
+    },
+    {
+      "id": "sb-8",
+      "name": "Salted Banana Chips Style (200g)",
+      "nameBn": "ক্রিস্পি ব্যানানা চিপস",
+      "category": "Snacks & Beverages",
+      "categorySlug": "snacks-beverages",
+      "subcategory": "Chips & Savories",
+      "brand": "Village Crunch",
+      "origin": "Bangladesh",
+      "price": 95,
+      "originalPrice": 115,
+      "unit": "200g pack",
+      "rating": 4.7,
+      "reviews": 65,
+      "stock": 70,
+      "badge": "COCONUT FRIED",
+      "badgeColor": "orange",
+      "image": "/images/products/banana-chips.jpg",
+      "description": "Thinly sliced raw green bananas fried crispy in pure cold-pressed oil with sea salt and turmeric.",
+      "specifications": {
+        "Salt": "Fine Sea Salt",
+        "Crunch": "Extra Crispy",
+        "Weight": "200g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh"
+    },
+    {
+      "id": "ff-1",
+      "name": "Frozen Sweet Green Peas IQF (500g)",
+      "nameBn": "হিমায়িত তাজা মিষ্টি মটরশুঁটি",
+      "category": "Frozen Foods",
+      "categorySlug": "frozen-foods",
+      "subcategory": "Frozen Vegetables",
+      "brand": "ECOBAZAR Fresh Freeze",
+      "origin": "North Bengal, Bangladesh",
+      "price": 140,
+      "originalPrice": 165,
+      "unit": "500g zip-lock bag",
+      "rating": 4.7,
+      "reviews": 65,
+      "stock": 70,
+      "isHotDeal": true,
+      "badge": "IQF FROZEN",
+      "badgeColor": "green",
+      "image": "/images/products/green-peas.webp",
+      "description": "Individually Quick Frozen (IQF) sweet green peas harvested at peak tenderness. Retains natural green snap and vitamins.",
+      "specifications": {
+        "Technology": "IQF -18°C",
+        "Prep": "Ready to cook",
+        "Weight": "500g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "North Bengal, Bangladesh"
+    },
+    {
+      "id": "ff-2",
+      "name": "Homestyle Flaky Layered Paratha (10 pcs)",
+      "nameBn": "হোমস্টাইল লেয়ার্ড পরোটা (১০টি)",
+      "category": "Frozen Foods",
+      "categorySlug": "frozen-foods",
+      "subcategory": "Parathas & Roti",
+      "brand": "QuickKitchen Frozen",
+      "origin": "Dhaka",
+      "price": 180,
+      "originalPrice": 210,
+      "unit": "10 pcs pack (800g)",
+      "rating": 4.9,
+      "reviews": 140,
+      "stock": 85,
+      "badge": "READY IN 3 MIN",
+      "badgeColor": "orange",
+      "image": "/images/products/paratha-home.jpg",
+      "description": "Authentic multi-layered dough parathas. Heat directly on a dry tawa for 3 minutes until golden crispy and puffy.",
+      "specifications": {
+        "Pieces": "10 Large",
+        "Cooking": "No added oil needed",
+        "Shelf": "6 months frozen"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "ff-3",
+      "name": "Spicy Chicken Samosa (Pack of 12)",
+      "nameBn": "স্পাইসি চিকেন সমুচা (১২টি)",
+      "category": "Frozen Foods",
+      "categorySlug": "frozen-foods",
+      "subcategory": "Ready-to-Fry Snacks",
+      "brand": "QuickKitchen Frozen",
+      "origin": "Dhaka",
+      "price": 220,
+      "originalPrice": 260,
+      "unit": "12 pcs pack",
+      "rating": 4.8,
+      "reviews": 95,
+      "stock": 60,
+      "badge": "PARTY FAVORITE",
+      "badgeColor": "red",
+      "image": "/images/products/chicken-samosa.webp",
+      "description": "Ultra-thin crispy pastry envelopes filled with zesty seasoned minced chicken, green chilies, and fresh coriander.",
+      "specifications": {
+        "Filling": "100% Halal Minced Chicken",
+        "Fry": "Deep fry or Air fry",
+        "Count": "12 pcs"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "ff-4",
+      "name": "Breaded Chicken Breast Nuggets (500g)",
+      "nameBn": "চিকেন নাগেটস (৫০০ গ্রাম)",
+      "category": "Frozen Foods",
+      "categorySlug": "frozen-foods",
+      "subcategory": "Ready-to-Fry Snacks",
+      "brand": "QuickKitchen Frozen",
+      "origin": "Dhaka",
+      "price": 290,
+      "originalPrice": 340,
+      "unit": "500g pack (~20 pcs)",
+      "rating": 4.8,
+      "reviews": 110,
+      "stock": 55,
+      "badge": "100% BREAST MEAT",
+      "badgeColor": "green",
+      "image": "/images/products/chicken-nugs.jpg",
+      "description": "Juicy whole chicken breast nuggets coated in golden crispy breadcrumbs. Kid favorite, air-fry ready in 8 minutes.",
+      "specifications": {
+        "Meat": "Pure Breast Meat",
+        "Trans-Fat": "0%",
+        "Weight": "500g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "ff-5",
+      "name": "Frozen Sweet Kernel Corn (500g)",
+      "nameBn": "হিমায়িত মিষ্টি ভুট্টা (৫০০ গ্রাম)",
+      "category": "Frozen Foods",
+      "categorySlug": "frozen-foods",
+      "subcategory": "Frozen Vegetables",
+      "brand": "ECOBAZAR Fresh Freeze",
+      "origin": "Bangladesh",
+      "price": 155,
+      "originalPrice": 180,
+      "unit": "500g zip-lock bag",
+      "rating": 4.7,
+      "reviews": 50,
+      "stock": 65,
+      "badge": "SWEET CORN",
+      "badgeColor": "green",
+      "image": "/images/products/kernel-corn.webp",
+      "description": "Plump golden sweet corn kernels harvested and shock-frozen within 4 hours. Perfect for soups, butter corn, and salads.",
+      "specifications": {
+        "Taste": "Naturally Sweet",
+        "Additives": "None",
+        "Storage": "-18°C"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh"
+    },
+    {
+      "id": "ff-6",
+      "name": "Crispy French Fries Shoestring",
+      "nameBn": "ফ্রোজেন ফ্রেঞ্চ ফ্রাইস (১ কেজি)",
+      "category": "Frozen Foods",
+      "categorySlug": "frozen-foods",
+      "subcategory": "Ready-to-Fry Snacks",
+      "brand": "Golden Crisp",
+      "origin": "Imported Grade",
+      "price": 280,
+      "originalPrice": 330,
+      "unit": "1 kg pack",
+      "rating": 4.8,
+      "reviews": 130,
+      "stock": 75,
+      "badge": "RESTAURANT GRADE",
+      "badgeColor": "orange",
+      "image": "/images/products/french-fry.jpg",
+      "description": "Thin shoestring cut potatoes lightly blanched and par-fried. Fry into restaurant-grade golden crispy fries.",
+      "specifications": {
+        "Cut": "7mm Shoestring",
+        "Oil": "Vegetable oil par-fried",
+        "Weight": "1 kg"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Grade"
+    },
+    {
+      "id": "ff-7",
+      "name": "Premium Vanilla Bean Ice Cream",
+      "nameBn": "প্রিমিয়াম ভ্যানিলা আইসক্রিম",
+      "category": "Frozen Foods",
+      "categorySlug": "frozen-foods",
+      "subcategory": "Ice Creams",
+      "brand": "CreamHouse Artisan",
+      "origin": "Dhaka",
+      "price": 360,
+      "originalPrice": 420,
+      "unit": "1 Litre tub",
+      "rating": 4.9,
+      "reviews": 160,
+      "stock": 45,
+      "badge": "REAL DAIRY CREAM",
+      "badgeColor": "green",
+      "image": "/images/products/ice-cream.webp",
+      "description": "Velvety rich ice cream crafted with fresh dairy cream and crushed Madagascar vanilla beans. Decadent and smooth.",
+      "specifications": {
+        "Cream": "100% Real Dairy",
+        "Vanilla": "Madagascar Bean Speckled",
+        "Volume": "1 Litre"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "ff-8",
+      "name": "Vegetable Spring Rolls (10 pcs)",
+      "nameBn": "ভেজিটেবল স্প্রিং রোল (১০টি)",
+      "category": "Frozen Foods",
+      "categorySlug": "frozen-foods",
+      "subcategory": "Ready-to-Fry Snacks",
+      "brand": "QuickKitchen Frozen",
+      "origin": "Dhaka",
+      "price": 190,
+      "originalPrice": 225,
+      "unit": "10 pcs pack",
+      "rating": 4.7,
+      "reviews": 70,
+      "stock": 50,
+      "badge": "VEG DELIGHT",
+      "badgeColor": "green",
+      "image": "/images/products/vegetable-roll.webp",
+      "description": "Crispy wafer-thin pastry rolls packed with julienned cabbage, carrots, bell peppers, and mild oriental spices.",
+      "specifications": {
+        "Diet": "100% Vegetarian",
+        "Count": "10 Rolls",
+        "Prep": "Air fry or deep fry"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "hp-1",
+      "name": "Pure Sundarban Wild Flower Honey (500g)",
+      "nameBn": "সুন্দরবনের প্রাকৃতিক খাঁটি মধু",
+      "category": "Health & Personal Care",
+      "categorySlug": "health-personal-care",
+      "subcategory": "Raw Honey",
+      "brand": "Forest Reserve Khalsi",
+      "origin": "Sundarbans, Bangladesh",
+      "price": 490,
+      "originalPrice": 580,
+      "unit": "500g glass jar",
+      "rating": 5,
+      "reviews": 160,
+      "stock": 55,
+      "isHotDeal": true,
+      "badge": "100% RAW",
+      "badgeColor": "green",
+      "image": "/images/products/sundarban-honey.webp",
+      "description": "Unprocessed, wild flower honey ethically harvested by traditional Mouwals of the Sundarbans. Natural immune booster.",
+      "specifications": {
+        "Processing": "Raw & Unpasteurized",
+        "Sugar Added": "Zero (0%)",
+        "Jar": "Hermetic Glass"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Sundarbans, Bangladesh"
+    },
+    {
+      "id": "hp-2",
+      "name": "Cold-Pressed Extra Virgin Coconut Oil (250ml)",
+      "nameBn": "খাঁটি এক্সট্রা ভার্জিন নারিকেল তেল",
+      "category": "Health & Personal Care",
+      "categorySlug": "health-personal-care",
+      "subcategory": "Hair & Skin Care",
+      "brand": "Coastal Pure Organic",
+      "origin": "Bagerhat, Bangladesh",
+      "price": 290,
+      "originalPrice": 340,
+      "unit": "250ml glass bottle",
+      "rating": 4.9,
+      "reviews": 110,
+      "stock": 65,
+      "badge": "EXTRA VIRGIN",
+      "badgeColor": "green",
+      "image": "/images/products/coconut-oil.webp",
+      "description": "Centrifuged cold-pressed pure raw coconut oil from fresh coastal coconuts. Excellent for glowing skin and healthy hair roots.",
+      "specifications": {
+        "Extraction": "Cold Centrifuge",
+        "Aroma": "Fresh Coconut",
+        "Edible": "Yes (Food Grade)"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bagerhat, Bangladesh"
+    },
+    {
+      "id": "hp-3",
+      "name": "Handcrafted Organic Neem & Turmeric Soap (125g)",
+      "nameBn": "নিম ও হলুদ প্রাকৃতিক সাবান",
+      "category": "Health & Personal Care",
+      "categorySlug": "health-personal-care",
+      "subcategory": "Organic Soaps",
+      "brand": "Botanica Herbal",
+      "origin": "Bangladesh",
+      "price": 120,
+      "originalPrice": 140,
+      "unit": "125g bar",
+      "rating": 4.8,
+      "reviews": 95,
+      "stock": 90,
+      "badge": "SULPHATE FREE",
+      "badgeColor": "green",
+      "image": "/images/products/neem-soap.jpg",
+      "description": "Cold-process handcrafted herbal soap with real crushed neem leaves, pure turmeric and virgin coconut oil. Antibacterial protection.",
+      "specifications": {
+        "Chemicals": "Paraben & SLS Free",
+        "Base": "Plant Oils",
+        "Weight": "125g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh"
+    },
+    {
+      "id": "hp-4",
+      "name": "Raw Unfiltered Apple Cider Vinegar with Mother (500ml)",
+      "nameBn": "অ্যাপল সিডার ভিনেগার (উইথ মাদার)",
+      "category": "Health & Personal Care",
+      "categorySlug": "health-personal-care",
+      "subcategory": "Herbal Wellness",
+      "brand": "Organic Orchard ACV",
+      "origin": "Imported Organic",
+      "price": 450,
+      "originalPrice": 520,
+      "unit": "500ml glass bottle",
+      "rating": 4.9,
+      "reviews": 140,
+      "stock": 45,
+      "badge": "WITH MOTHER",
+      "badgeColor": "orange",
+      "image": "/images/products/apple-vinegar.jpg",
+      "description": "Naturally fermented from fresh organic apple juice. Contains living probiotic \"mother\" strands for metabolism and gut health.",
+      "specifications": {
+        "Mother": "Living Probiotic Strands",
+        "Unfiltered": "Yes",
+        "Acidity": "5% Natural"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Organic"
+    },
+    {
+      "id": "hp-5",
+      "name": "Herbal Clove & Mint Natural Toothpaste (150g)",
+      "nameBn": "লবঙ্গ ও পুদিনা হারবাল টুথপেস্ট",
+      "category": "Health & Personal Care",
+      "categorySlug": "health-personal-care",
+      "subcategory": "Oral Hygiene",
+      "brand": "DentaHerbal",
+      "origin": "Bangladesh",
+      "price": 135,
+      "originalPrice": 155,
+      "unit": "150g tube",
+      "rating": 4.7,
+      "reviews": 80,
+      "stock": 85,
+      "badge": "FLUORIDE FREE",
+      "badgeColor": "green",
+      "image": "/images/products/tooth-paste.webp",
+      "description": "Natural herbal oral care formulated with pure clove oil, babool extract and spearmint. Relieves sensitivity and freshens breath.",
+      "specifications": {
+        "Active": "Pure Clove Oil",
+        "SLS": "Zero SLS",
+        "Weight": "150g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh"
+    },
+    {
+      "id": "hp-6",
+      "name": "Aloe Vera & Vitamin E Soothing Gel (250ml)",
+      "nameBn": "অ্যালোভেরা ও ভিটামিন ই জেল",
+      "category": "Health & Personal Care",
+      "categorySlug": "health-personal-care",
+      "subcategory": "Hair & Skin Care",
+      "brand": "Botanica Herbal",
+      "origin": "Bangladesh",
+      "price": 220,
+      "originalPrice": 260,
+      "unit": "250ml tub",
+      "rating": 4.8,
+      "reviews": 120,
+      "stock": 70,
+      "badge": "99% PURE ALOE",
+      "badgeColor": "green",
+      "image": "/images/products/snoothing-gel.jpg",
+      "description": "99% pure organic aloe vera leaf gel enriched with antioxidant Vitamin E. Soothes sunburn, hydrates dry skin, and styles hair.",
+      "specifications": {
+        "Aloe": "99% Cold Stabilized",
+        "Sticky": "Non-greasy quick absorb",
+        "Volume": "250ml"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh"
+    },
+    {
+      "id": "hp-7",
+      "name": "Antibacterial Hand Sanitizer Gel 500ml Pump",
+      "nameBn": "অ্যান্টিব্যাকটেরিয়াল হ্যান্ড স্যানিটাইজার",
+      "category": "Health & Personal Care",
+      "categorySlug": "health-personal-care",
+      "subcategory": "Organic Soaps",
+      "brand": "SafeClean Health",
+      "origin": "Dhaka",
+      "price": 180,
+      "originalPrice": 220,
+      "unit": "500ml pump bottle",
+      "rating": 4.8,
+      "reviews": 190,
+      "stock": 120,
+      "badge": "75% ETHANOL",
+      "badgeColor": "green",
+      "image": "/images/products/sani-taijer.avif",
+      "description": "Hospital-grade 75% ethanol sanitizer with moisturizing glycerin and aloe vera. Kills 99.9% germs without drying hands.",
+      "specifications": {
+        "Alcohol": "75% Medical Grade Ethanol",
+        "Moisturizer": "Aloe & Glycerin",
+        "Volume": "500ml"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "hp-8",
+      "name": "Organic Chia Seeds Superfood (250g)",
+      "nameBn": "অর্গানিক চিয়া সিড (২৫০ গ্রাম)",
+      "category": "Health & Personal Care",
+      "categorySlug": "health-personal-care",
+      "subcategory": "Herbal Wellness",
+      "brand": "ECOBAZAR Organics",
+      "origin": "Imported Quality",
+      "price": 260,
+      "originalPrice": 310,
+      "unit": "250g zip pouch",
+      "rating": 4.9,
+      "reviews": 145,
+      "stock": 80,
+      "badge": "OMEGA-3 RICH",
+      "badgeColor": "green",
+      "image": "/images/products/chia-seeds.jpg",
+      "description": "Rich in dietary fiber, plant-based Omega-3, and antioxidants. Swells naturally into puddings, smoothies, and water infusions.",
+      "specifications": {
+        "Purity": "99.9% Double Cleaned",
+        "Diet": "Keto & Vegan Friendly",
+        "Weight": "250g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Quality"
+    },
+    {
+      "id": "bb-1",
+      "name": "Organic Apple & Tender Carrot Baby Puree (120g)",
+      "nameBn": "অর্গানিক আপেল ও গাজর বেবি পিউরি",
+      "category": "Baby Food & Care",
+      "categorySlug": "baby-food-care",
+      "subcategory": "Baby Purees & Cereals",
+      "brand": "Little Sprouts Organic",
+      "origin": "Certified Organic",
+      "price": 220,
+      "originalPrice": 250,
+      "unit": "120g pouch",
+      "rating": 4.9,
+      "reviews": 92,
+      "stock": 50,
+      "isHotDeal": true,
+      "badge": "6+ MONTHS",
+      "badgeColor": "green",
+      "image": "/images/products/apple-carrot.avif",
+      "description": "Smooth, naturally sweet organic apple and tender carrot puree for infants 6+ months. Smooth texture, zero sodium, and zero artificial flavors.",
+      "specifications": {
+        "Age": "6+ Months",
+        "Certification": "100% USDA Organic",
+        "Preservatives": "None"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Certified Organic"
+    },
+    {
+      "id": "bb-2",
+      "name": "Organic Mixed Berry & Banana Baby Cereal (200g)",
+      "nameBn": "অর্গানিক মিক্সড বেরি ও ব্যানানা সিরিয়াল",
+      "category": "Baby Food & Care",
+      "categorySlug": "baby-food-care",
+      "subcategory": "Baby Purees & Cereals",
+      "brand": "Little Sprouts Organic",
+      "origin": "Certified Organic",
+      "price": 340,
+      "originalPrice": 390,
+      "unit": "200g tin",
+      "rating": 4.9,
+      "reviews": 75,
+      "stock": 45,
+      "badge": "IRON FORTIFIED",
+      "badgeColor": "green",
+      "image": "/images/products/baby-cereal.png",
+      "description": "Fine grain iron-fortified oat and rice cereal with freeze-dried strawberry and banana powder. Easy to digest first solid food.",
+      "specifications": {
+        "Age": "8+ Months",
+        "Fortification": "Iron & Zinc",
+        "Weight": "200g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Certified Organic"
+    },
+    {
+      "id": "bb-3",
+      "name": "Gentle Pure Water Baby Wipes (80 Sheets)",
+      "nameBn": "পিওর ওয়াটার বেবি ওয়াইপস (৮০ শিট)",
+      "category": "Baby Food & Care",
+      "categorySlug": "baby-food-care",
+      "subcategory": "Diapers & Wipes",
+      "brand": "TinyCare Pure",
+      "origin": "Dhaka",
+      "price": 190,
+      "originalPrice": 230,
+      "unit": "80 wipes pack",
+      "rating": 4.9,
+      "reviews": 180,
+      "stock": 120,
+      "badge": "99% WATER",
+      "badgeColor": "green",
+      "image": "/images/products/baby-wipes.avif",
+      "description": "Fragrance-free, hypoallergenic wipes saturated with 99% purified EDI water and soothing organic chamomile extract.",
+      "specifications": {
+        "Alcohol": "0% Alcohol Free",
+        "Parabens": "None",
+        "Texture": "Embossed Soft Cotton"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bb-4",
+      "name": "Ultra-Dry Baby Diaper Pants Medium (M - 44 pcs)",
+      "nameBn": "বেবি ডায়াপার প্যান্টস মিডিয়াম",
+      "category": "Baby Food & Care",
+      "categorySlug": "baby-food-care",
+      "subcategory": "Diapers & Wipes",
+      "brand": "ComfyBum Japanese Tech",
+      "origin": "Imported Tech",
+      "price": 1050,
+      "originalPrice": 1250,
+      "unit": "Pack of 44 pants",
+      "rating": 4.8,
+      "reviews": 210,
+      "stock": 65,
+      "badge": "12H LEAK LOCK",
+      "badgeColor": "orange",
+      "image": "/images/products/baby-diaper.jpg",
+      "description": "Breathable Japanese SAP core diaper pants with 360-degree soft stretch waistband. 12-hour overnight leakage protection.",
+      "specifications": {
+        "Size": "Medium (6-11 kg)",
+        "Core": "Ultra-absorbent SAP",
+        "Count": "44 Pants"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Tech"
+    },
+    {
+      "id": "bb-5",
+      "name": "Baby Calming Lavender Wash & Shampoo (300ml)",
+      "nameBn": "বেবি ওয়াশ ও শ্যাম্পু (৩০০ মিলি)",
+      "category": "Baby Food & Care",
+      "categorySlug": "baby-food-care",
+      "subcategory": "Baby Bath & Shampoo",
+      "brand": "TinyCare Pure",
+      "origin": "Dhaka",
+      "price": 320,
+      "originalPrice": 380,
+      "unit": "300ml pump bottle",
+      "rating": 4.9,
+      "reviews": 85,
+      "stock": 50,
+      "badge": "TEAR-FREE",
+      "badgeColor": "green",
+      "image": "/images/products/baby-wash.jpg",
+      "description": "Tear-free 2-in-1 head-to-toe cleansing gel with natural calming lavender and oatmeal. Protects delicate infant skin barrier.",
+      "specifications": {
+        "Tear-Free": "Clinically Tested",
+        "pH": "5.5 Skin Balanced",
+        "Volume": "300ml"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bb-6",
+      "name": "Organic Shea Butter Baby Moisture Lotion (200ml)",
+      "nameBn": "বেবি ময়েশ্চারাইজার লোশন",
+      "category": "Baby Food & Care",
+      "categorySlug": "baby-food-care",
+      "subcategory": "Baby Bath & Shampoo",
+      "brand": "TinyCare Pure",
+      "origin": "Dhaka",
+      "price": 280,
+      "originalPrice": 330,
+      "unit": "200ml bottle",
+      "rating": 4.8,
+      "reviews": 65,
+      "stock": 45,
+      "badge": "24H HYDRATION",
+      "badgeColor": "green",
+      "image": "/images/products/baby-lotion.webp",
+      "description": "Enriched with cold-pressed shea butter, organic jojoba oil, and Vitamin B5. Shields baby skin against winter dryness.",
+      "specifications": {
+        "Ingredients": "Organic Shea & Jojoba",
+        "Fragrance": "Mild Natural",
+        "Volume": "200ml"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Dhaka"
+    },
+    {
+      "id": "bb-7",
+      "name": "BPA-Free Anti-Colic Feeding Bottle (260ml)",
+      "nameBn": "অ্যান্টি-কোলিক ফিডিং বোতল (২৬০ মিলি)",
+      "category": "Baby Food & Care",
+      "categorySlug": "baby-food-care",
+      "subcategory": "Feeding Bottles",
+      "brand": "NurtureComfort",
+      "origin": "Imported Quality",
+      "price": 480,
+      "originalPrice": 550,
+      "unit": "260ml bottle with teat",
+      "rating": 4.9,
+      "reviews": 70,
+      "stock": 35,
+      "badge": "ANTI-COLIC VALVE",
+      "badgeColor": "green",
+      "image": "/images/products/feed-battle.jpg",
+      "description": "Advanced dual-valve anti-colic silicone teat reduces air swallowing and discomfort during feeding. 100% BPA and BPS free.",
+      "specifications": {
+        "Material": "Food Grade Polypropylene",
+        "BPA Free": "100% Certified",
+        "Volume": "260ml"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Imported Quality"
+    },
+    {
+      "id": "bb-8",
+      "name": "Organic Pear & Prune Digestive Puree (120g)",
+      "nameBn": "অর্গানিক পিয়ার ও প্রুন পিউরি",
+      "category": "Baby Food & Care",
+      "categorySlug": "baby-food-care",
+      "subcategory": "Baby Purees & Cereals",
+      "brand": "Little Sprouts Organic",
+      "origin": "Certified Organic",
+      "price": 230,
+      "originalPrice": 260,
+      "unit": "120g pouch",
+      "rating": 4.9,
+      "reviews": 58,
+      "stock": 40,
+      "badge": "GENTLE DIGESTION",
+      "badgeColor": "green",
+      "image": "/images/products/baby-pear.jpg",
+      "description": "Natural organic pear and sun-ripened prune puree known to gently ease infant constipation and support tummy comfort.",
+      "specifications": {
+        "Age": "6+ Months",
+        "Sugar": "0% Added Sugar",
+        "Weight": "120g"
+      },
+      "isOffer": true,
+      "isAdvertisement": false,
+      "keyFeatures": [
+        "100% Natural, chemical-free and laboratory screened",
+        "Directly sourced from verified Bangladeshi farm cooperatives",
+        "Unbroken cold-chain handling to lock in freshness",
+        "Hygienically sorted and eco-friendly packaging"
+      ],
+      "healthBenefits": [
+        "Rich in vital micronutrients, minerals, and natural antioxidants",
+        "Promotes digestive wellness and daily vitality",
+        "Safe for infants, elders, and health-conscious families"
+      ],
+      "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Certified Organic"
+    }
+  ]
+}

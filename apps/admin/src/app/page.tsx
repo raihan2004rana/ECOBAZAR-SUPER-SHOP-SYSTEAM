@@ -73,6 +73,11 @@ import {
   Globe,
   Smartphone,
   Laptop,
+  Flame,
+  UploadCloud,
+  Pencil,
+  Image as ImageIcon,
+  Layers,
 } from 'lucide-react';
 import {
   Button,
@@ -510,12 +515,363 @@ function AdminDashboardShell() {
     timestamp: string;
   } | null>(null);
 
-  // Product Catalog Modal
-  const [isAddProductModalOpen, setIsAddProductModalOpen] = React.useState(false);
-  const [newProductName, setNewProductName] = React.useState('');
-  const [newProductCategory, setNewProductCategory] = React.useState('Fresh Vegetables');
-  const [newProductPrice, setNewProductPrice] = React.useState('120');
-  const [newProductStock, setNewProductStock] = React.useState('50');
+  // ==========================================
+  // FULL STORE & CATALOG MANAGEMENT STATE
+  // ==========================================
+  const [products, setProducts] = React.useState<any[]>([]);
+  const [categories, setCategories] = React.useState<any[]>([]);
+  const [heroSlides, setHeroSlides] = React.useState<any[]>([]);
+  const [topBanner, setTopBanner] = React.useState<any>({
+    enabled: true,
+    badgeText: 'VOUCHER SAVINGS',
+    title: 'Save 10% on your entire basket with code ECO10',
+    subtitle: 'Applies on all fresh produce, groceries, and staples. Free delivery included for orders above ৳1,000.',
+    promoCode: 'ECO10',
+    discountPercent: 10,
+    buttonText: 'Explore All Offers',
+    buttonLink: '/offers',
+  });
+  const [promoBanners, setPromoBanners] = React.useState<any[]>([]);
+  const [isCatalogLoading, setIsCatalogLoading] = React.useState(true);
+
+  // Filter & Search states
+  const [productSearchQuery, setProductSearchQuery] = React.useState('');
+  const [selectedProductCategory, setSelectedProductCategory] = React.useState('all');
+  const [selectedProductFlag, setSelectedProductFlag] = React.useState<
+    'all' | 'hot-deal' | 'new-arrival' | 'offer' | 'ad' | 'low-stock'
+  >('all');
+
+  // Product Add / Edit Modal State
+  const [isProductModalOpen, setIsProductModalOpen] = React.useState(false);
+  const [editingProduct, setEditingProduct] = React.useState<any | null>(null);
+  const [productModalTab, setProductModalTab] = React.useState<
+    'general' | 'pricing' | 'placements' | 'media' | 'details'
+  >('general');
+  const [isSavingProduct, setIsSavingProduct] = React.useState(false);
+  const [isUploadingImage, setIsUploadingImage] = React.useState(false);
+
+  // Default product form
+  interface ProductFormData {
+    id: string;
+    name: string;
+    nameBn: string;
+    category: string;
+    categorySlug: string;
+    subcategory: string;
+    brand: string;
+    origin: string;
+    price: number | string;
+    originalPrice: number | string;
+    unit: string;
+    stock: number | string;
+    badge: string;
+    badgeColor: 'red' | 'green' | 'orange';
+    image: string;
+    isHotDeal: boolean;
+    isNewArrival: boolean;
+    isOffer: boolean;
+    isAdvertisement: boolean;
+    description: string;
+    keyFeaturesText: string;
+    healthBenefitsText: string;
+    howToUse: string;
+    storageInstructions: string;
+    countryOfOrigin: string;
+  }
+
+  const defaultProductForm: ProductFormData = {
+    id: '',
+    name: '',
+    nameBn: '',
+    category: 'Fresh Fruits & Vegetables',
+    categorySlug: 'fresh-fruits-vegetables',
+    subcategory: 'Fresh Vegetables',
+    brand: 'ECOBAZAR Organic',
+    origin: 'Bogura, Bangladesh',
+    price: 100,
+    originalPrice: 120,
+    unit: '1 kg pack',
+    stock: 50,
+    badge: '15% OFF',
+    badgeColor: 'red',
+    image: '/images/products/red-tomato.jpg',
+    isHotDeal: false,
+    isNewArrival: true,
+    isOffer: false,
+    isAdvertisement: false,
+    description: '100% organic, farm-fresh produce sourced directly from Bangladeshi farmer cooperatives under unbroken cold-chain logistics.',
+    keyFeaturesText: '100% Natural, chemical-free and laboratory screened\nDirectly sourced from verified Bangladeshi farm cooperatives\nUnbroken cold-chain handling to lock in freshness\nHygienically sorted and eco-friendly packaging',
+    healthBenefitsText: 'Rich in vital micronutrients, minerals, and natural antioxidants\nPromotes digestive wellness and daily vitality\nSafe for infants, elders, and health-conscious families',
+    howToUse: 'Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.',
+    storageInstructions: 'Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.',
+    countryOfOrigin: 'Bangladesh',
+  };
+  const [productForm, setProductForm] = React.useState<ProductFormData>(defaultProductForm);
+
+  // Category Edit Modal State
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = React.useState(false);
+  const [editingCategory, setEditingCategory] = React.useState<any | null>(null);
+  const [categoryForm, setCategoryForm] = React.useState({
+    id: '',
+    slug: '',
+    name: '',
+    nameBn: '',
+    tagline: '',
+    icon: '🥦',
+    bannerImage: '/images/banner-farm-grocery.jpg',
+    subcategoriesText: '',
+  });
+
+  // Hero Slide Modal State
+  const [isSlideModalOpen, setIsSlideModalOpen] = React.useState(false);
+  const [editingSlide, setEditingSlide] = React.useState<any | null>(null);
+  const [slideForm, setSlideForm] = React.useState({
+    id: '',
+    badge: '',
+    title: '',
+    subtitle: '',
+    ctaText: '',
+    ctaLink: '',
+    image: '',
+    bgGradient: 'from-[#123C2D] via-[#123C2D]/95 to-[#1a4a38]',
+    tag: '',
+  });
+
+  // Fetch Catalog from /api/catalog
+  const fetchCatalog = React.useCallback(async () => {
+    try {
+      const res = await fetch('/api/catalog');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.products && Array.isArray(data.products)) setProducts(data.products);
+      if (data.categories && Array.isArray(data.categories)) setCategories(data.categories);
+      if (data.heroSlides && Array.isArray(data.heroSlides)) setHeroSlides(data.heroSlides);
+      if (data.topBanner) setTopBanner(data.topBanner);
+      if (data.promoBanners && Array.isArray(data.promoBanners)) setPromoBanners(data.promoBanners);
+    } catch (e) {
+      console.error('Catalog fetch error:', e);
+    } finally {
+      setIsCatalogLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    fetchCatalog();
+  }, [fetchCatalog]);
+
+  // Open Add Product Modal
+  const handleOpenAddProduct = () => {
+    setEditingProduct(null);
+    setProductForm(defaultProductForm);
+    setProductModalTab('general');
+    setIsProductModalOpen(true);
+  };
+
+  // Open Edit Product Modal
+  const handleOpenEditProduct = (prod: any) => {
+    setEditingProduct(prod);
+    setProductForm({
+      id: prod.id,
+      name: prod.name || '',
+      nameBn: prod.nameBn || '',
+      category: prod.category || 'Fresh Fruits & Vegetables',
+      categorySlug: prod.categorySlug || 'fresh-fruits-vegetables',
+      subcategory: prod.subcategory || '',
+      brand: prod.brand || 'ECOBAZAR Organic',
+      origin: prod.origin || 'Bangladesh',
+      price: prod.price || 0,
+      originalPrice: prod.originalPrice || '',
+      unit: prod.unit || '1 kg',
+      stock: prod.stock || 0,
+      badge: prod.badge || '',
+      badgeColor: prod.badgeColor || 'red',
+      image: prod.image || '/images/products/red-tomato.jpg',
+      isHotDeal: !!prod.isHotDeal,
+      isNewArrival: !!prod.isNewArrival,
+      isOffer: !!prod.isOffer,
+      isAdvertisement: !!prod.isAdvertisement,
+      description: prod.description || '',
+      keyFeaturesText: Array.isArray(prod.keyFeatures) ? prod.keyFeatures.join('\n') : (prod.keyFeatures || ''),
+      healthBenefitsText: Array.isArray(prod.healthBenefits) ? prod.healthBenefits.join('\n') : (prod.healthBenefits || ''),
+      howToUse: prod.howToUse || '',
+      storageInstructions: prod.storageInstructions || '',
+      countryOfOrigin: prod.countryOfOrigin || prod.origin || 'Bangladesh',
+    });
+    setProductModalTab('general');
+    setIsProductModalOpen(true);
+  };
+
+  // Save Product (Add or Edit)
+  const handleSaveProduct = async () => {
+    if (!productForm.name.trim()) {
+      toast.error('Required', 'Please enter a product name in English.');
+      return;
+    }
+    setIsSavingProduct(true);
+
+    const payload = {
+      ...productForm,
+      price: Number(productForm.price) || 0,
+      originalPrice: productForm.originalPrice ? Number(productForm.originalPrice) : undefined,
+      stock: Number(productForm.stock) || 0,
+      keyFeatures: productForm.keyFeaturesText
+        .split('\n')
+        .map((s) => s.trim())
+        .filter(Boolean),
+      healthBenefits: productForm.healthBenefitsText
+        .split('\n')
+        .map((s) => s.trim())
+        .filter(Boolean),
+    };
+
+    try {
+      if (editingProduct) {
+        const res = await fetch('/api/catalog', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'update-product', product: payload }),
+        });
+        if (!res.ok) throw new Error('Failed to update product');
+        setProducts((prev) => prev.map((p) => (p.id === payload.id ? { ...p, ...payload } : p)));
+        toast.success('Product Updated', `"${payload.name}" updated successfully.`);
+      } else {
+        const res = await fetch('/api/catalog', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'add-product', product: payload }),
+        });
+        if (!res.ok) throw new Error('Failed to create product');
+        const data = await res.json();
+        setProducts((prev) => [data.product, ...prev]);
+        toast.success('Product Created', `"${payload.name}" added to catalog & live store.`);
+      }
+      setIsProductModalOpen(false);
+      setEditingProduct(null);
+    } catch (e: any) {
+      toast.error('Error', e.message || 'Operation failed');
+    } finally {
+      setIsSavingProduct(false);
+    }
+  };
+
+  // Toggle Single Flag on Product
+  const handleToggleProductFlag = async (id: string, field: string, currentValue: boolean) => {
+    const nextValue = !currentValue;
+    setProducts((prev) => prev.map((p) => (p.id === id ? { ...p, [field]: nextValue } : p)));
+
+    try {
+      const res = await fetch('/api/catalog', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'toggle-flag', id, field, value: nextValue }),
+      });
+      if (!res.ok) throw new Error('Toggle failed');
+
+      const label =
+        field === 'isHotDeal'
+          ? 'Best Deal'
+          : field === 'isNewArrival'
+          ? 'New Arrival'
+          : field === 'isOffer'
+          ? 'Special Offer'
+          : 'Advertisement';
+      toast.success(`${label} Updated`, `Marked as ${nextValue ? 'ACTIVE' : 'INACTIVE'} for store.`);
+    } catch {
+      toast.error('Sync Error', 'Failed to update flag');
+      fetchCatalog();
+    }
+  };
+
+  // Delete Product
+  const handleDeleteProduct = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete "${name}" from the store catalog?`)) return;
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+
+    try {
+      const res = await fetch(`/api/catalog?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Delete failed');
+      toast.success('Product Deleted', `"${name}" removed from catalog & store.`);
+    } catch {
+      toast.error('Delete Failed', 'Could not delete product');
+      fetchCatalog();
+    }
+  };
+
+  // Upload Image from PC
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!res.ok) throw new Error('Image upload failed');
+      const data = await res.json();
+      setProductForm((prev) => ({ ...prev, image: data.url }));
+      toast.success('Image Uploaded', 'Product image uploaded & ready for store.');
+    } catch (e: any) {
+      toast.error('Upload Error', e.message || 'Failed to upload image');
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  // Save Banners & Announcements
+  const handleSaveTopBanner = async () => {
+    try {
+      const res = await fetch('/api/catalog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update-banner',
+          topBanner,
+          heroSlides,
+          promoBanners,
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to save announcement bar');
+      toast.success('Announcement Bar Saved', 'Top promo voucher updated on store.');
+    } catch {
+      toast.error('Error', 'Failed to save announcement bar.');
+    }
+  };
+
+  // Save Category Edit
+  const handleSaveCategory = async () => {
+    try {
+      const subcategories = categoryForm.subcategoriesText
+        .split('\n')
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      const payload = {
+        ...editingCategory,
+        name: categoryForm.name,
+        nameBn: categoryForm.nameBn,
+        tagline: categoryForm.tagline,
+        icon: categoryForm.icon,
+        bannerImage: categoryForm.bannerImage,
+        subcategories: subcategories.length > 0 ? subcategories : editingCategory.subcategories,
+      };
+
+      const res = await fetch('/api/catalog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'update-category', category: payload }),
+      });
+      if (!res.ok) throw new Error('Failed to update category');
+      setCategories((prev) => prev.map((c) => (c.id === payload.id ? payload : c)));
+      setIsCategoryModalOpen(false);
+      toast.success('Category Updated', `${payload.name} updated on live store.`);
+    } catch {
+      toast.error('Error', 'Failed to save category.');
+    }
+  };
 
   // Toggle Theme Function
   const toggleTheme = () => {
@@ -1172,65 +1528,791 @@ function AdminDashboardShell() {
           )}
 
           {/* ========================================== */}
-          {/* VIEW: PRODUCTS CATALOG */}
+          {/* VIEW: PRODUCTS MASTER CATALOG & STORE MANAGER */}
           {/* ========================================== */}
           {activeRouteId === 'products' && (
             <div className="space-y-6 text-left">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
-                    Product Master Catalog
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
+                    <span>Product Master & Store Manager</span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-black border border-emerald-500/20">
+                      LIVE SYNC
+                    </span>
                   </h1>
-                  <p className="text-xs sm:text-sm text-neutral-500 font-medium">
-                    1,420 registered SKUs across 8 departments • Managed under ECOBAZAR Master Taxonomy
+                  <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                    {products.length} registered SKUs across {categories.length} departments • Real-time 2-way synchronization active with Customer Web Store
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="forest" size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsAddProductModalOpen(true)}>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<RefreshCw className={`h-3.5 w-3.5 ${isCatalogLoading ? 'animate-spin' : ''}`} />}
+                    onClick={fetchCatalog}
+                  >
+                    Sync Live Store
+                  </Button>
+                  <Button
+                    variant="forest"
+                    size="sm"
+                    leftIcon={<Plus className="h-4 w-4" />}
+                    onClick={handleOpenAddProduct}
+                    className="font-bold shadow-md shadow-emerald-900/20"
+                  >
                     Add New Product
                   </Button>
                 </div>
               </div>
 
-              <Card className="p-0 overflow-hidden">
+              {/* Summary Metrics Bar */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div className="p-3.5 rounded-2xl bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 shadow-xs">
+                  <span className="text-[11px] font-semibold text-neutral-400 block">Total Catalog</span>
+                  <strong className="text-xl font-black text-neutral-900 dark:text-white">{products.length} Items</strong>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 shadow-xs">
+                  <span className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 block flex items-center gap-1">
+                    <Flame className="h-3 w-3 fill-rose-500 text-rose-500" /> Best Deals
+                  </span>
+                  <strong className="text-xl font-black text-rose-950 dark:text-rose-200">
+                    {products.filter((p) => p.isHotDeal).length} Active
+                  </strong>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-cyan-50/60 dark:bg-cyan-950/20 border border-cyan-200 dark:border-cyan-900/40 shadow-xs">
+                  <span className="text-[11px] font-semibold text-cyan-600 dark:text-cyan-400 block flex items-center gap-1">
+                    <Sparkles className="h-3 w-3 text-cyan-500" /> New Arrivals
+                  </span>
+                  <strong className="text-xl font-black text-cyan-950 dark:text-cyan-200">
+                    {products.filter((p) => p.isNewArrival).length} Active
+                  </strong>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 shadow-xs">
+                  <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 block flex items-center gap-1">
+                    <Percent className="h-3 w-3 text-amber-500" /> Special Offers
+                  </span>
+                  <strong className="text-xl font-black text-amber-950 dark:text-amber-200">
+                    {products.filter((p) => p.isOffer || (p.badge && p.badge.includes('OFF'))).length} Active
+                  </strong>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900/40 shadow-xs">
+                  <span className="text-[11px] font-semibold text-purple-600 dark:text-purple-400 block flex items-center gap-1">
+                    <Megaphone className="h-3 w-3 text-purple-500" /> Frontpage Ads
+                  </span>
+                  <strong className="text-xl font-black text-purple-950 dark:text-purple-200">
+                    {products.filter((p) => p.isAdvertisement || p.isFeatured).length} Active
+                  </strong>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 shadow-xs">
+                  <span className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 block">Low Stock (&lt;20)</span>
+                  <strong className="text-xl font-black text-amber-600 dark:text-amber-400">
+                    {products.filter((p) => p.stock < 20).length} SKUs
+                  </strong>
+                </div>
+              </div>
+
+              {/* Toolbar: Search, Category Filter, and Flag Pills */}
+              <Card className="p-4 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 space-y-3">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                  {/* Search Input */}
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+                    <input
+                      type="text"
+                      placeholder="Search products by English or Bangla name, SKU, or brand..."
+                      value={productSearchQuery}
+                      onChange={(e) => setProductSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/80 text-neutral-900 dark:text-white outline-hidden focus:border-emerald-500 transition"
+                    />
+                    {productSearchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setProductSearchQuery('')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-neutral-600"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Category Dropdown Filter */}
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={selectedProductCategory}
+                      onChange={(e) => setSelectedProductCategory(e.target.value)}
+                      className="text-xs font-bold rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/80 px-3 py-2.5 outline-hidden text-neutral-900 dark:text-white"
+                    >
+                      <option value="all">All Departments ({products.length})</option>
+                      {categories.map((c) => (
+                        <option key={c.id} value={c.slug}>
+                          {c.name} ({products.filter((p) => p.categorySlug === c.slug).length})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Flag Pills */}
+                <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-neutral-100 dark:border-neutral-800 text-xs">
+                  <span className="text-[11px] font-bold text-neutral-400">Filter By Status:</span>
+                  {[
+                    { id: 'all', label: `All (${products.length})` },
+                    { id: 'hot-deal', label: `🔥 Best Deals (${products.filter((p) => p.isHotDeal).length})` },
+                    { id: 'new-arrival', label: `✨ New Arrivals (${products.filter((p) => p.isNewArrival).length})` },
+                    {
+                      id: 'offer',
+                      label: `🏷️ Offers & Discounts (${products.filter((p) => p.isOffer || (p.badge && p.badge.includes('OFF'))).length})`,
+                    },
+                    {
+                      id: 'ad',
+                      label: `📢 Advertisements (${products.filter((p) => p.isAdvertisement || p.isFeatured).length})`,
+                    },
+                    { id: 'low-stock', label: `⚠️ Low Stock (${products.filter((p) => p.stock < 20).length})` },
+                  ].map((flag) => (
+                    <button
+                      key={flag.id}
+                      type="button"
+                      onClick={() => setSelectedProductFlag(flag.id as any)}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition ${
+                        selectedProductFlag === flag.id
+                          ? 'bg-emerald-600 text-white shadow-xs'
+                          : 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200'
+                      }`}
+                    >
+                      {flag.label}
+                    </button>
+                  ))}
+                </div>
+              </Card>
+
+              {/* Master Products Table */}
+              <Card className="p-0 overflow-hidden bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20">
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left border-collapse">
-                    <thead className="bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 uppercase font-bold border-b border-neutral-200 dark:border-neutral-800">
+                    <thead className="bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 dark:text-neutral-400 uppercase font-bold border-b border-neutral-200 dark:border-neutral-800">
                       <tr>
-                        <th className="py-3 px-4">Item</th>
-                        <th className="py-3 px-4">SKU</th>
-                        <th className="py-3 px-4">Department</th>
-                        <th className="py-3 px-4 text-right">Retail Price</th>
-                        <th className="py-3 px-4 text-center">Stock Level</th>
-                        <th className="py-3 px-4 text-center">Status</th>
-                        <th className="py-3 px-4 text-right">Actions</th>
+                        <th className="py-3.5 px-4">Item & Details</th>
+                        <th className="py-3.5 px-3">Department</th>
+                        <th className="py-3.5 px-3 text-right">Price (৳)</th>
+                        <th className="py-3.5 px-3 text-center">Stock</th>
+                        <th className="py-3.5 px-4 text-center">
+                          Frontpage Placements & Toggles (1-Click)
+                        </th>
+                        <th className="py-3.5 px-4 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
-                      {demoCatalogProducts.map((p) => (
-                        <tr key={p.id} className="hover:bg-neutral-50/80 dark:hover:bg-neutral-800/40 transition">
-                          <td className="py-3.5 px-4 flex items-center gap-3">
-                            <img src={p.image} alt={p.name} className="h-9 w-9 rounded-lg object-cover" />
-                            <span className="font-bold text-neutral-900 dark:text-white">{p.name}</span>
-                          </td>
-                          <td className="py-3.5 px-4 font-mono text-neutral-500">{p.sku}</td>
-                          <td className="py-3.5 px-4 text-neutral-600 dark:text-neutral-300">{p.category}</td>
-                          <td className="py-3.5 px-4 text-right font-black text-forest-900 dark:text-emerald-400">৳{p.price}</td>
-                          <td className="py-3.5 px-4 text-center font-mono font-bold">{p.stock} units</td>
-                          <td className="py-3.5 px-4 text-center">
-                            <Badge variant="success" size="sm">Active</Badge>
-                          </td>
-                          <td className="py-3.5 px-4 text-right">
-                            <Button variant="ghost" size="sm" onClick={() => toast.info('Edit Product', `Editing SKU: ${p.sku}`)}>
-                              Edit
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
+                      {products
+                        .filter((p) => {
+                          if (productSearchQuery.trim()) {
+                            const q = productSearchQuery.toLowerCase();
+                            const matchName = p.name && p.name.toLowerCase().includes(q);
+                            const matchNameBn = p.nameBn && p.nameBn.includes(q);
+                            const matchSku = p.sku && p.sku.toLowerCase().includes(q);
+                            const matchCat = p.category && p.category.toLowerCase().includes(q);
+                            if (!matchName && !matchNameBn && !matchSku && !matchCat) return false;
+                          }
+                          if (selectedProductCategory !== 'all' && p.categorySlug !== selectedProductCategory) {
+                            return false;
+                          }
+                          if (selectedProductFlag === 'hot-deal' && !p.isHotDeal) return false;
+                          if (selectedProductFlag === 'new-arrival' && !p.isNewArrival) return false;
+                          if (selectedProductFlag === 'offer' && !p.isOffer && !(p.badge && p.badge.includes('OFF')))
+                            return false;
+                          if (selectedProductFlag === 'ad' && !p.isAdvertisement && !p.isFeatured) return false;
+                          if (selectedProductFlag === 'low-stock' && p.stock >= 20) return false;
+                          return true;
+                        })
+                        .map((p) => {
+                          const hasDiscount = p.originalPrice && p.originalPrice > p.price;
+                          const discountPct = hasDiscount
+                            ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
+                            : 0;
+
+                          return (
+                            <tr
+                              key={p.id}
+                              className="hover:bg-neutral-50/80 dark:hover:bg-neutral-800/40 transition group"
+                            >
+                              {/* Product Image & Name */}
+                              <td className="py-3 px-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="h-12 w-12 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200/80 dark:border-neutral-700">
+                                    <img
+                                      src={p.image}
+                                      alt={p.name}
+                                      className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                                      onError={(e) => {
+                                        (e.target as any).src = '/images/products/red-tomato.jpg';
+                                      }}
+                                    />
+                                  </div>
+                                  <div>
+                                    <p className="font-bold text-neutral-900 dark:text-white line-clamp-1">
+                                      {p.name}
+                                    </p>
+                                    <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                                      {p.nameBn || '—'}
+                                    </p>
+                                    <div className="flex items-center gap-2 mt-0.5 text-[10px] text-neutral-400 font-mono">
+                                      <span>ID: {p.id}</span>
+                                      <span>•</span>
+                                      <span>Unit: {p.unit || '1 pack'}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+
+                              {/* Department */}
+                              <td className="py-3 px-3">
+                                <span className="inline-block px-2 py-0.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-[11px] font-bold text-neutral-700 dark:text-neutral-200">
+                                  {p.category}
+                                </span>
+                                {p.subcategory && (
+                                  <span className="block text-[10px] text-neutral-400 mt-0.5 font-medium">
+                                    {p.subcategory}
+                                  </span>
+                                )}
+                              </td>
+
+                              {/* Price & Discounts */}
+                              <td className="py-3 px-3 text-right">
+                                <div className="font-black text-forest-900 dark:text-emerald-400 text-sm">
+                                  ৳{p.price}
+                                </div>
+                                {hasDiscount && (
+                                  <div className="flex items-center justify-end gap-1 text-[10px]">
+                                    <span className="line-through text-neutral-400">৳{p.originalPrice}</span>
+                                    <span className="text-rose-600 font-bold bg-rose-50 dark:bg-rose-950 px-1 rounded">
+                                      -{discountPct}%
+                                    </span>
+                                  </div>
+                                )}
+                                {p.badge && (
+                                  <span className="inline-block text-[9px] font-black uppercase text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-1.5 py-0.2 rounded mt-0.5">
+                                    {p.badge}
+                                  </span>
+                                )}
+                              </td>
+
+                              {/* Stock */}
+                              <td className="py-3 px-3 text-center">
+                                <span
+                                  className={`inline-block px-2.5 py-1 rounded-full font-mono font-bold text-xs ${
+                                    p.stock <= 0
+                                      ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                                      : p.stock < 20
+                                      ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                                      : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                  }`}
+                                >
+                                  {p.stock} units
+                                </span>
+                              </td>
+
+                              {/* 1-Click Interactive Frontpage Placements */}
+                              <td className="py-3 px-4">
+                                <div className="flex flex-wrap items-center justify-center gap-1.5">
+                                  {/* Hot Deal / Best Deal Toggle */}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleProductFlag(p.id, 'isHotDeal', !!p.isHotDeal)}
+                                    title="Click to toggle Best Deal (Home & Deals page)"
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${
+                                      p.isHotDeal
+                                        ? 'bg-rose-600 text-white shadow-xs'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
+                                    }`}
+                                  >
+                                    <Flame className={`h-3 w-3 ${p.isHotDeal ? 'fill-white' : ''}`} />
+                                    <span>Best Deal</span>
+                                  </button>
+
+                                  {/* New Arrival Toggle */}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleProductFlag(p.id, 'isNewArrival', !!p.isNewArrival)}
+                                    title="Click to toggle New Arrival (Home & New Arrivals page)"
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${
+                                      p.isNewArrival
+                                        ? 'bg-cyan-600 text-white shadow-xs'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
+                                    }`}
+                                  >
+                                    <Sparkles className="h-3 w-3" />
+                                    <span>New</span>
+                                  </button>
+
+                                  {/* Offer / Discount Toggle */}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleProductFlag(p.id, 'isOffer', !!p.isOffer)}
+                                    title="Click to toggle Special Offer (Offers page)"
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${
+                                      p.isOffer || (p.badge && p.badge.includes('OFF'))
+                                        ? 'bg-amber-500 text-white shadow-xs'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
+                                    }`}
+                                  >
+                                    <Percent className="h-3 w-3" />
+                                    <span>Offer</span>
+                                  </button>
+
+                                  {/* Advertisement Banner Toggle */}
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleToggleProductFlag(p.id, 'isAdvertisement', !!p.isAdvertisement)
+                                    }
+                                    title="Click to toggle Frontpage Advertisement Banner"
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${
+                                      p.isAdvertisement || p.isFeatured
+                                        ? 'bg-purple-600 text-white shadow-xs'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
+                                    }`}
+                                  >
+                                    <Megaphone className="h-3 w-3" />
+                                    <span>Ad</span>
+                                  </button>
+                                </div>
+                              </td>
+
+                              {/* Actions */}
+                              <td className="py-3 px-4 text-right">
+                                <div className="flex items-center justify-end gap-1.5">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleOpenEditProduct(p)}
+                                    className="h-8 px-2.5 text-xs font-bold"
+                                    leftIcon={<Pencil className="h-3 w-3 text-neutral-500" />}
+                                  >
+                                    Edit
+                                  </Button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteProduct(p.id, p.name)}
+                                    title="Delete product"
+                                    className="p-1.5 rounded-lg text-neutral-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </div>
               </Card>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: ADVERTISEMENTS & FRONT-PAGE BANNERS MANAGER */}
+          {/* ========================================== */}
+          {activeRouteId === 'ads' && (
+            <div className="space-y-6 text-left">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
+                    <Megaphone className="h-7 w-7 text-primary-green" />
+                    <span>Frontpage Advertisements & Banners</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                    Configure the top voucher announcement bar, hero slider carousels, and promotional banner cards live on the store.
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    variant="forest"
+                    size="sm"
+                    leftIcon={<Check className="h-4 w-4" />}
+                    onClick={handleSaveTopBanner}
+                    className="font-bold shadow-md shadow-emerald-900/20"
+                  >
+                    Save & Publish to Store
+                  </Button>
+                </div>
+              </div>
+
+              {/* 1. TOP ANNOUNCEMENT & VOUCHER BAR CONTROLLER */}
+              <Card className="p-5 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 space-y-4">
+                <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
+                  <div>
+                    <h3 className="text-base font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                      <span>Top Announcement & Voucher Banner Bar</span>
+                      <span className="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
+                        Header Sticky
+                      </span>
+                    </h3>
+                    <p className="text-xs text-neutral-400">
+                      Displays above the main navigation bar across every page on the store.
+                    </p>
+                  </div>
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={topBanner.enabled}
+                      onChange={(e) => setTopBanner((prev: any) => ({ ...prev, enabled: e.target.checked }))}
+                      className="rounded text-primary-green focus:ring-emerald-500 h-4 w-4"
+                    />
+                    <span className="text-xs font-bold text-neutral-700 dark:text-neutral-200">
+                      {topBanner.enabled ? 'Active on Store' : 'Hidden'}
+                    </span>
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Badge Text
+                    </label>
+                    <input
+                      type="text"
+                      value={topBanner.badgeText || ''}
+                      onChange={(e) => setTopBanner((prev: any) => ({ ...prev, badgeText: e.target.value }))}
+                      placeholder="e.g. VOUCHER SAVINGS"
+                      className="w-full px-3 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white outline-hidden"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Promo Code
+                    </label>
+                    <input
+                      type="text"
+                      value={topBanner.promoCode || ''}
+                      onChange={(e) => setTopBanner((prev: any) => ({ ...prev, promoCode: e.target.value }))}
+                      placeholder="e.g. ECO10"
+                      className="w-full px-3 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono font-bold uppercase outline-hidden"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Discount Percentage (%)
+                    </label>
+                    <input
+                      type="number"
+                      value={topBanner.discountPercent || 10}
+                      onChange={(e) =>
+                        setTopBanner((prev: any) => ({ ...prev, discountPercent: Number(e.target.value) || 0 }))
+                      }
+                      className="w-full px-3 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono outline-hidden"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Headline Title
+                    </label>
+                    <input
+                      type="text"
+                      value={topBanner.title || ''}
+                      onChange={(e) => setTopBanner((prev: any) => ({ ...prev, title: e.target.value }))}
+                      placeholder="Save 10% on your entire basket with code ECO10"
+                      className="w-full px-3 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white outline-hidden font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Action Button Text & Link
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={topBanner.buttonText || ''}
+                        onChange={(e) => setTopBanner((prev: any) => ({ ...prev, buttonText: e.target.value }))}
+                        placeholder="Explore All Offers"
+                        className="w-1/2 px-3 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white outline-hidden"
+                      />
+                      <input
+                        type="text"
+                        value={topBanner.buttonLink || ''}
+                        onChange={(e) => setTopBanner((prev: any) => ({ ...prev, buttonLink: e.target.value }))}
+                        placeholder="/offers"
+                        className="w-1/2 px-3 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white outline-hidden"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* 2. HERO CAROUSEL SLIDES MANAGER */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-base font-black text-neutral-900 dark:text-white">
+                      Hero Carousel Slider Banners ({heroSlides.length} Slides)
+                    </h3>
+                    <p className="text-xs text-neutral-400">
+                      The flagship high-impact slides at the top of the customer homepage.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {heroSlides.map((slide, idx) => (
+                    <Card
+                      key={slide.id || idx}
+                      className="p-4 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 space-y-3 flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="h-32 w-full rounded-xl overflow-hidden bg-neutral-100 relative mb-3 border border-neutral-200 dark:border-neutral-700">
+                          <img
+                            src={slide.image}
+                            alt={slide.title}
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              (e.target as any).src = '/images/hero-fruits-veggies.jpg';
+                            }}
+                          />
+                          <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">
+                            Slide #{idx + 1}
+                          </span>
+                          <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-full bg-emerald-600/90 text-white text-[10px] font-black">
+                            {slide.badge}
+                          </span>
+                        </div>
+
+                        <h4 className="font-black text-sm text-neutral-900 dark:text-white line-clamp-1">
+                          {slide.title}
+                        </h4>
+                        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 line-clamp-2">
+                          {slide.subtitle}
+                        </p>
+                      </div>
+
+                      <div className="pt-2 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between text-xs">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                          CTA: {slide.ctaText}
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setEditingSlide(slide);
+                            setSlideForm({
+                              id: slide.id,
+                              badge: slide.badge,
+                              title: slide.title,
+                              subtitle: slide.subtitle,
+                              ctaText: slide.ctaText,
+                              ctaLink: slide.ctaLink,
+                              image: slide.image,
+                              bgGradient: slide.bgGradient || 'from-[#123C2D] via-[#123C2D]/95 to-[#1a4a38]',
+                              tag: slide.tag || '',
+                            });
+                            setIsSlideModalOpen(true);
+                          }}
+                        >
+                          Edit Slide
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. FRONTPAGE PROMOTIONAL BANNER CARDS */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-base font-black text-neutral-900 dark:text-white">
+                      Mid-Page & Promotional Cards
+                    </h3>
+                    <p className="text-xs text-neutral-400">
+                      Promotional banners featured between departments on the store.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {promoBanners.map((promo, idx) => (
+                    <Card
+                      key={promo.id || idx}
+                      className="p-4 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 flex flex-col sm:flex-row gap-4 items-center"
+                    >
+                      <div className="h-28 w-28 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200 dark:border-neutral-700">
+                        <img
+                          src={promo.image}
+                          alt={promo.title}
+                          className="h-full w-full object-cover"
+                          onError={(e) => {
+                            (e.target as any).src = '/images/products/sundarban-honey.jpg';
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-1.5 flex-1 text-left">
+                        <span className="text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
+                          {promo.tag}
+                        </span>
+                        <h4 className="font-black text-sm text-neutral-900 dark:text-white">{promo.title}</h4>
+                        <p className="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-2">
+                          {promo.subtitle}
+                        </p>
+                        <span className="text-[11px] text-neutral-400 block font-mono">Link: {promo.link}</span>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: CATEGORIES & DEPARTMENTS MASTER */}
+          {/* ========================================== */}
+          {activeRouteId === 'categories' && (
+            <div className="space-y-6 text-left">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
+                    <FolderTree className="h-7 w-7 text-primary-green" />
+                    <span>Categories & Department Master</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                    Manage all {categories.length} superstore departments, icons, banner images, and subcategories live on the store.
+                  </p>
+                </div>
+              </div>
+
+              {/* Categories Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {categories.map((cat) => {
+                  const prodCount = products.filter((p) => p.categorySlug === cat.slug).length;
+
+                  return (
+                    <Card
+                      key={cat.id}
+                      className="p-5 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 space-y-3 flex flex-col justify-between hover:shadow-md transition"
+                    >
+                      <div>
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="h-12 w-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-2xl shadow-xs shrink-0">
+                            {cat.icon}
+                          </div>
+                          <span className="px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-xs font-black text-neutral-700 dark:text-neutral-200">
+                            {prodCount} Products
+                          </span>
+                        </div>
+
+                        <div className="mt-3">
+                          <h3 className="font-black text-base text-neutral-900 dark:text-white">{cat.name}</h3>
+                          <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                            {cat.nameBn}
+                          </p>
+                          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 line-clamp-2">
+                            {cat.tagline}
+                          </p>
+                        </div>
+
+                        <div className="mt-3 flex flex-wrap gap-1">
+                          {(cat.subcategories || []).slice(0, 4).map((sub: string) => (
+                            <span
+                              key={sub}
+                              className="px-2 py-0.5 rounded-md bg-neutral-50 dark:bg-neutral-800 text-[10px] text-neutral-500 font-medium border border-neutral-200/60 dark:border-neutral-700"
+                            >
+                              {sub}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
+                        <span className="text-[11px] font-mono text-neutral-400">/{cat.slug}</span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setEditingCategory(cat);
+                            setCategoryForm({
+                              id: cat.id,
+                              slug: cat.slug,
+                              name: cat.name,
+                              nameBn: cat.nameBn,
+                              tagline: cat.tagline,
+                              icon: cat.icon,
+                              bannerImage: cat.bannerImage || '/images/banner-farm-grocery.jpg',
+                              subcategoriesText: (cat.subcategories || []).join('\n'),
+                            });
+                            setIsCategoryModalOpen(true);
+                          }}
+                          leftIcon={<Pencil className="h-3 w-3" />}
+                        >
+                          Edit Department
+                        </Button>
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: PROMOTIONS & VOUCHERS MANAGER */}
+          {/* ========================================== */}
+          {(activeRouteId === 'promotions' || activeRouteId === 'coupons') && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
+                    <Percent className="h-7 w-7 text-primary-green" />
+                    <span>Promotions, Vouchers & Coupon Codes</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                    Manage active customer checkout vouchers, cart discounts, and bKash cashback campaigns.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  {
+                    code: 'ECO10',
+                    discount: '10% Discount',
+                    criteria: 'Valid on fresh fruits, groceries & staples > ৳1,000',
+                    badge: 'ACTIVE ON STORE',
+                    color: 'border-emerald-500/30 bg-emerald-50/20',
+                  },
+                  {
+                    code: 'FREESHIP',
+                    discount: 'Free Delivery (৳50 Off)',
+                    criteria: 'Waives 30-min express cold-chain delivery charge',
+                    badge: 'ACTIVE TODAY',
+                    color: 'border-blue-500/30 bg-blue-50/20',
+                  },
+                  {
+                    code: 'DHAKA25',
+                    discount: '৳100 Cashback',
+                    criteria: 'Valid when paying with bKash merchant gateway',
+                    badge: 'PROMO PARTNER',
+                    color: 'border-rose-500/30 bg-rose-50/20',
+                  },
+                ].map((c) => (
+                  <Card key={c.code} className={`p-5 ${c.color} border space-y-3`}>
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono font-black text-lg text-neutral-900 dark:text-white">{c.code}</span>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black">
+                        {c.badge}
+                      </span>
+                    </div>
+                    <div className="text-sm font-black text-forest-900 dark:text-emerald-400">{c.discount}</div>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400">{c.criteria}</p>
+                    <div className="pt-2 border-t border-neutral-200/60 dark:border-neutral-700/60 flex items-center justify-between text-xs font-bold text-emerald-600">
+                      <span>Live on Checkout Drawer</span>
+                      <span>✓ Ready</span>
+                    </div>
+                  </Card>
+                ))}
+              </div>
             </div>
           )}
 
@@ -1396,7 +2478,7 @@ function AdminDashboardShell() {
                       variant="outline"
                       size="sm"
                       leftIcon={<Plus className="h-3.5 w-3.5 text-white" />}
-                      onClick={() => setIsAddProductModalOpen(true)}
+                      onClick={handleOpenAddProduct}
                       className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-bold"
                     >
                       Inward Stock
@@ -2440,89 +3522,759 @@ function AdminDashboardShell() {
       )}
 
       {/* ========================================================= */}
-      {/* ADD PRODUCT MODAL */}
+      {/* COMPREHENSIVE PRODUCT ADD & EDIT MODAL */}
       {/* ========================================================= */}
-      <Dialog open={isAddProductModalOpen} onOpenChange={setIsAddProductModalOpen} size="md">
+      <Dialog open={isProductModalOpen} onOpenChange={setIsProductModalOpen} size="lg">
         <DialogHeader>
-          <DialogTitle>Add New Product to Catalog</DialogTitle>
-          <DialogDescription>Create a master SKU with tax category and initial warehouse stock.</DialogDescription>
-        </DialogHeader>
-        <DialogBody>
-          <div className="space-y-3 text-left">
+          <div className="flex items-center justify-between pr-6">
             <div>
-              <label className="text-xs font-bold text-neutral-700 block mb-1">Product Name</label>
-              <input
-                type="text"
-                placeholder="e.g. Fresh Red Onions 1kg"
-                value={newProductName}
-                onChange={(e) => setNewProductName(e.target.value)}
-                className="w-full px-3 py-2 text-xs border rounded-xl outline-hidden"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-bold text-neutral-700 block mb-1">Category</label>
-                <select
-                  value={newProductCategory}
-                  onChange={(e) => setNewProductCategory(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border rounded-xl outline-hidden bg-white"
-                >
-                  <option>Fresh Vegetables</option>
-                  <option>Dairy & Eggs</option>
-                  <option>Rice & Staples</option>
-                  <option>Spices & Oils</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-xs font-bold text-neutral-700 block mb-1">Retail Price (৳)</label>
-                <input
-                  type="number"
-                  value={newProductPrice}
-                  onChange={(e) => setNewProductPrice(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border rounded-xl outline-hidden font-mono"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="text-xs font-bold text-neutral-700 block mb-1">Initial Opening Stock (Units)</label>
-              <input
-                type="number"
-                value={newProductStock}
-                onChange={(e) => setNewProductStock(e.target.value)}
-                className="w-full px-3 py-2 text-xs border rounded-xl outline-hidden font-mono"
-              />
+              <DialogTitle className="text-lg font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                <Package className="h-5 w-5 text-primary-green" />
+                <span>{editingProduct ? `Edit Product: ${editingProduct.name}` : 'Add New Product to Store'}</span>
+              </DialogTitle>
+              <DialogDescription className="text-xs text-neutral-500">
+                {editingProduct
+                  ? `Editing SKU ${editingProduct.id} • Changes will immediately reflect across live store`
+                  : 'Configure product details, images, prices, and frontpage placement flags.'}
+              </DialogDescription>
             </div>
           </div>
+        </DialogHeader>
+
+        <DialogBody>
+          <div className="space-y-4 text-left">
+            {/* Modal Tabs Header */}
+            <div className="flex items-center gap-1 border-b border-neutral-200 dark:border-neutral-800 pb-2 overflow-x-auto text-xs">
+              {[
+                { id: 'general', label: '1. General Info' },
+                { id: 'pricing', label: '2. Pricing & Badges' },
+                { id: 'media', label: '3. Image & Media' },
+                { id: 'placements', label: '4. Store Placements' },
+                { id: 'details', label: '5. Details & Specs' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setProductModalTab(tab.id as any)}
+                  className={`px-3 py-1.5 rounded-lg font-bold transition shrink-0 ${
+                    productModalTab === tab.id
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* TAB 1: GENERAL INFO */}
+            {productModalTab === 'general' && (
+              <div className="space-y-3.5 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Product Name (English) *
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Sundarban Pure Raw Honey 1kg"
+                      value={productForm.name}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, name: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Product Name (বাংলা / Bangla)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. সুন্দরবন খাঁটি প্রাকৃতিক মধু ১ কেজি"
+                      value={productForm.nameBn}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, nameBn: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Department / Category *
+                    </label>
+                    <select
+                      value={productForm.categorySlug}
+                      onChange={(e) => {
+                        const slug = e.target.value;
+                        const cat = categories.find((c) => c.slug === slug);
+                        setProductForm((prev) => ({
+                          ...prev,
+                          categorySlug: slug,
+                          category: cat ? cat.name : prev.category,
+                        }));
+                      }}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
+                    >
+                      {categories.map((c) => (
+                        <option key={c.id} value={c.slug}>
+                          {c.name} ({c.nameBn})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Subcategory
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Honey & Natural Spreads, Fresh Vegetables"
+                      value={productForm.subcategory}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, subcategory: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Brand / Producer
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. ECOBAZAR Organic, Bogura Farms"
+                      value={productForm.brand}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, brand: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Region / Origin
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Sundarbans, Bogura, Sylhet"
+                      value={productForm.origin}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, origin: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Packaging Unit
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 1 kg pack, 500 gm, 12 pcs, 1 L"
+                      value={productForm.unit}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, unit: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                    Opening Stock Quantity (Units)
+                  </label>
+                  <input
+                    type="number"
+                    value={productForm.stock}
+                    onChange={(e) => setProductForm((prev) => ({ ...prev, stock: e.target.value }))}
+                    className="w-full sm:w-1/2 px-3 py-2 border rounded-xl outline-hidden font-mono font-bold border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: PRICING & BADGES */}
+            {productModalTab === 'pricing' && (
+              <div className="space-y-3.5 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Selling Price (৳ BDT) *
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 280"
+                      value={productForm.price}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, price: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden font-mono font-black text-sm border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-forest-900 dark:text-emerald-400"
+                    />
+                    <span className="text-[10px] text-neutral-400 mt-0.5 block">
+                      The active price charged at checkout.
+                    </span>
+                  </div>
+
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Regular / Original Price (৳ BDT)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 350 (leave blank if no discount)"
+                      value={productForm.originalPrice}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, originalPrice: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden font-mono text-sm border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    />
+                    <span className="text-[10px] text-neutral-400 mt-0.5 block">
+                      Crossed out on product card to show customer savings.
+                    </span>
+                  </div>
+                </div>
+
+                {Number(productForm.originalPrice) > Number(productForm.price) && (
+                  <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between">
+                    <span className="font-bold text-emerald-800 dark:text-emerald-300">
+                      Calculated Customer Savings:
+                    </span>
+                    <strong className="font-black text-emerald-600 dark:text-emerald-400 font-mono">
+                      Save ৳{Number(productForm.originalPrice) - Number(productForm.price)} (
+                      {Math.round(
+                        ((Number(productForm.originalPrice) - Number(productForm.price)) /
+                          Number(productForm.originalPrice)) *
+                          100
+                      )}
+                      % OFF)
+                    </strong>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Promo Badge Text (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 20% OFF, SAVE ৳50, BEST VALUE"
+                      value={productForm.badge}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, badge: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Badge Color
+                    </label>
+                    <select
+                      value={productForm.badgeColor}
+                      onChange={(e) => setProductForm((prev: any) => ({ ...prev, badgeColor: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    >
+                      <option value="red">Red (Discount / Flash Sale)</option>
+                      <option value="green">Green (Organic / Fresh)</option>
+                      <option value="orange">Orange (Special Offer)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: IMAGE & MEDIA */}
+            {productModalTab === 'media' && (
+              <div className="space-y-4 text-xs">
+                {/* 1. Upload Local File */}
+                <div className="p-4 rounded-2xl border-2 border-dashed border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/20 text-center space-y-2">
+                  <UploadCloud className="h-8 w-8 text-primary-green mx-auto" />
+                  <div>
+                    <p className="font-bold text-neutral-900 dark:text-white">
+                      Upload Image File from Your Computer
+                    </p>
+                    <p className="text-[11px] text-neutral-500">
+                      Supports JPG, PNG, WEBP, AVIF up to 10MB
+                    </p>
+                  </div>
+                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary-green text-white font-bold cursor-pointer hover:bg-forest-900 transition shadow-xs">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      disabled={isUploadingImage}
+                    />
+                    {isUploadingImage ? 'Uploading Image...' : 'Browse Computer Files'}
+                  </label>
+                </div>
+
+                {/* 2. Direct Image URL */}
+                <div>
+                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                    Or Enter Image URL / Path
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. /images/products/sundarban-honey.jpg or https://images.unsplash.com/..."
+                    value={productForm.image}
+                    onChange={(e) => setProductForm((prev) => ({ ...prev, image: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-xl outline-hidden font-mono text-xs border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                  />
+                </div>
+
+                {/* 3. Preset Organic Produce Gallery */}
+                <div>
+                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1.5">
+                    Or Quick Select from Authentic Supermarket Gallery:
+                  </label>
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                    {[
+                      { label: 'Red Tomato', url: '/images/products/red-tomato.jpg' },
+                      { label: 'Sagor Banana', url: '/images/products/banena.jpg' },
+                      { label: 'Sundarban Honey', url: '/images/products/sundarban-honey.webp' },
+                      { label: 'Mustard Oil', url: '/images/products/mustard-oil.webp' },
+                      { label: 'Deshi Ghee', url: '/images/products/deshi-ghee.webp' },
+                      { label: 'Bogura Doi', url: '/images/products/bogura-doi.jpg' },
+                      { label: 'Brown Eggs', url: '/images/products/dozen-egg.webp' },
+                      { label: 'Miniket Rice', url: '/images/products/miniket-chal.jpg' },
+                      { label: 'Polao Chal', url: '/images/products/polao-chal.jpg' },
+                      { label: 'Moshur Daal', url: '/images/products/moshur-dal.jpeg' },
+                      { label: 'Rui Fish', url: '/images/products/rui-fish.webp' },
+                      { label: 'Deshi Murgi', url: '/images/products/deshi-murgi.jpg' },
+                    ].map((preset) => (
+                      <button
+                        key={preset.url}
+                        type="button"
+                        onClick={() => setProductForm((prev) => ({ ...prev, image: preset.url }))}
+                        className={`p-1 rounded-xl border text-center transition ${
+                          productForm.image === preset.url
+                            ? 'border-emerald-500 ring-2 ring-emerald-500/30 bg-emerald-50/50'
+                            : 'border-neutral-200 dark:border-neutral-700 hover:border-emerald-400'
+                        }`}
+                      >
+                        <div className="h-12 w-full rounded-lg overflow-hidden bg-neutral-100 mb-1">
+                          <img src={preset.url} alt={preset.label} className="h-full w-full object-cover" />
+                        </div>
+                        <span className="text-[10px] font-bold text-neutral-700 dark:text-neutral-200 line-clamp-1">
+                          {preset.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Live Preview */}
+                {productForm.image && (
+                  <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 flex items-center gap-4">
+                    <div className="h-16 w-16 rounded-xl overflow-hidden bg-neutral-200 shrink-0 border border-neutral-300 dark:border-neutral-600">
+                      <img src={productForm.image} alt="Preview" className="h-full w-full object-cover" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-black text-neutral-900 dark:text-white block">
+                        Live Image Preview
+                      </span>
+                      <span className="text-[11px] text-neutral-400 font-mono block break-all">
+                        {productForm.image}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 4: STORE PLACEMENTS */}
+            {productModalTab === 'placements' && (
+              <div className="space-y-4 text-xs">
+                <p className="text-neutral-500 dark:text-neutral-400 font-medium">
+                  Select which sections of the Customer Store front page this product will be featured in:
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* Hot Deal */}
+                  <label className="p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 flex items-start gap-3 cursor-pointer hover:border-rose-400 transition">
+                    <input
+                      type="checkbox"
+                      checked={productForm.isHotDeal}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, isHotDeal: e.target.checked }))}
+                      className="rounded text-rose-600 focus:ring-rose-500 h-4 w-4 mt-0.5"
+                    />
+                    <div>
+                      <span className="font-black text-rose-600 flex items-center gap-1.5">
+                        <Flame className="h-4 w-4 fill-rose-500" />
+                        Feature in Today&apos;s Best Deals 🔥
+                      </span>
+                      <p className="text-[11px] text-neutral-500 mt-0.5">
+                        Displays in the homepage countdown deals carousel and at <strong>/deals</strong>.
+                      </p>
+                    </div>
+                  </label>
+
+                  {/* New Arrival */}
+                  <label className="p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 flex items-start gap-3 cursor-pointer hover:border-cyan-400 transition">
+                    <input
+                      type="checkbox"
+                      checked={productForm.isNewArrival}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, isNewArrival: e.target.checked }))}
+                      className="rounded text-cyan-600 focus:ring-cyan-500 h-4 w-4 mt-0.5"
+                    />
+                    <div>
+                      <span className="font-black text-cyan-600 flex items-center gap-1.5">
+                        <Sparkles className="h-4 w-4" />
+                        Feature in New Arrivals ✨
+                      </span>
+                      <p className="text-[11px] text-neutral-500 mt-0.5">
+                        Displays in fresh restock highlights and at <strong>/new-arrivals</strong>.
+                      </p>
+                    </div>
+                  </label>
+
+                  {/* Special Offer */}
+                  <label className="p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 flex items-start gap-3 cursor-pointer hover:border-amber-400 transition">
+                    <input
+                      type="checkbox"
+                      checked={productForm.isOffer}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, isOffer: e.target.checked }))}
+                      className="rounded text-amber-600 focus:ring-amber-500 h-4 w-4 mt-0.5"
+                    />
+                    <div>
+                      <span className="font-black text-amber-600 flex items-center gap-1.5">
+                        <Percent className="h-4 w-4" />
+                        Feature in Special Offers 🏷️
+                      </span>
+                      <p className="text-[11px] text-neutral-500 mt-0.5">
+                        Displays in the discounts section and at <strong>/offers</strong>.
+                      </p>
+                    </div>
+                  </label>
+
+                  {/* Frontpage Ad */}
+                  <label className="p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 flex items-start gap-3 cursor-pointer hover:border-purple-400 transition">
+                    <input
+                      type="checkbox"
+                      checked={productForm.isAdvertisement}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, isAdvertisement: e.target.checked }))}
+                      className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mt-0.5"
+                    />
+                    <div>
+                      <span className="font-black text-purple-600 flex items-center gap-1.5">
+                        <Megaphone className="h-4 w-4" />
+                        Feature as Promotional Advertisement 📢
+                      </span>
+                      <p className="text-[11px] text-neutral-500 mt-0.5">
+                        Featured on hero promo cards, category highlight banners, and search priorities.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: DETAILS & SPECS */}
+            {productModalTab === 'details' && (
+              <div className="space-y-3.5 text-xs">
+                <div>
+                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                    Product Narrative Description
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder="Detailed paragraph describing the product origin, freshness, and quality assurance..."
+                    value={productForm.description}
+                    onChange={(e) => setProductForm((prev) => ({ ...prev, description: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Key Features (1 per line)
+                    </label>
+                    <textarea
+                      rows={4}
+                      placeholder="100% Raw & Natural&#10;Cold-chain handled&#10;Zero chemical additives"
+                      value={productForm.keyFeaturesText}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, keyFeaturesText: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Health Benefits (1 per line)
+                    </label>
+                    <textarea
+                      rows={4}
+                      placeholder="High natural antioxidants&#10;Soothes digestive tract&#10;Boosts daily vitality"
+                      value={productForm.healthBenefitsText}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, healthBenefitsText: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      How to Use / Recommended Usage
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Mix 1-2 teaspoons in warm water with lemon every morning."
+                      value={productForm.howToUse}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, howToUse: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Storage Instructions
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Store at room temperature in a sealed container."
+                      value={productForm.storageInstructions}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({ ...prev, storageInstructions: e.target.value }))
+                      }
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </DialogBody>
-        <DialogFooter>
-          <Button variant="outline" size="sm" onClick={() => setIsAddProductModalOpen(false)}>
+
+        <DialogFooter className="flex items-center justify-between">
+          <Button variant="outline" size="sm" onClick={() => setIsProductModalOpen(false)}>
             Cancel
           </Button>
           <Button
             variant="forest"
             size="sm"
-            onClick={() => {
-              if (!newProductName.trim()) {
-                toast.error('Required', 'Please enter a product name.');
-                return;
-              }
-              demoCatalogProducts.push({
-                id: `tp-${Date.now()}`,
-                sku: `ECO-NEW-${Math.floor(1000 + Math.random() * 9000)}`,
-                name: newProductName,
-                category: newProductCategory,
-                soldUnits: 0,
-                revenue: 0,
-                stock: Number(newProductStock) || 50,
-                price: Number(newProductPrice) || 100,
-                image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=160&auto=format&fit=crop&q=80',
-              });
-              setIsAddProductModalOpen(false);
-              setNewProductName('');
-              toast.success('Product Created', `${newProductName} added to catalog.`);
-            }}
+            onClick={handleSaveProduct}
+            disabled={isSavingProduct}
+            className="font-black px-5"
           >
-            Save Product
+            {isSavingProduct ? (
+              <span className="flex items-center gap-1.5">
+                <RefreshCw className="h-3.5 w-3.5 animate-spin" /> Saving to Live Store...
+              </span>
+            ) : editingProduct ? (
+              'Save & Update Live Product'
+            ) : (
+              'Create & Publish to Store'
+            )}
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+      {/* ========================================================= */}
+      {/* CATEGORY EDIT MODAL */}
+      {/* ========================================================= */}
+      <Dialog open={isCategoryModalOpen} onOpenChange={setIsCategoryModalOpen} size="md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <FolderTree className="h-5 w-5 text-primary-green" />
+            <span>Edit Category: {editingCategory?.name}</span>
+          </DialogTitle>
+          <DialogDescription>
+            Update department name, Bangla translation, tagline, and banner image.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogBody>
+          <div className="space-y-3.5 text-xs text-left">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                  Category Name (English)
+                </label>
+                <input
+                  type="text"
+                  value={categoryForm.name}
+                  onChange={(e) => setCategoryForm((prev) => ({ ...prev, name: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
+                />
+              </div>
+              <div>
+                <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                  Category Name (বাংলা / Bangla)
+                </label>
+                <input
+                  type="text"
+                  value={categoryForm.nameBn}
+                  onChange={(e) => setCategoryForm((prev) => ({ ...prev, nameBn: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                Tagline / Subtitle
+              </label>
+              <input
+                type="text"
+                value={categoryForm.tagline}
+                onChange={(e) => setCategoryForm((prev) => ({ ...prev, tagline: e.target.value }))}
+                className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+              />
+            </div>
+
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                  Icon Emoji
+                </label>
+                <input
+                  type="text"
+                  value={categoryForm.icon}
+                  onChange={(e) => setCategoryForm((prev) => ({ ...prev, icon: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white text-center text-lg"
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                  Banner Image URL / Path
+                </label>
+                <input
+                  type="text"
+                  value={categoryForm.bannerImage}
+                  onChange={(e) => setCategoryForm((prev) => ({ ...prev, bannerImage: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                Subcategories (1 per line)
+              </label>
+              <textarea
+                rows={3}
+                value={categoryForm.subcategoriesText}
+                onChange={(e) => setCategoryForm((prev) => ({ ...prev, subcategoriesText: e.target.value }))}
+                className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
+              />
+            </div>
+          </div>
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="outline" size="sm" onClick={() => setIsCategoryModalOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="forest" size="sm" onClick={handleSaveCategory} className="font-bold">
+            Save Category
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+      {/* ========================================================= */}
+      {/* HERO SLIDE EDIT MODAL */}
+      {/* ========================================================= */}
+      <Dialog open={isSlideModalOpen} onOpenChange={setIsSlideModalOpen} size="md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Megaphone className="h-5 w-5 text-primary-green" />
+            <span>Edit Hero Slide Banner</span>
+          </DialogTitle>
+          <DialogDescription>
+            Update slide title, promotion badge, CTA button, and banner image.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogBody>
+          <div className="space-y-3.5 text-xs text-left">
+            <div>
+              <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                Promotion Badge
+              </label>
+              <input
+                type="text"
+                value={slideForm.badge}
+                onChange={(e) => setSlideForm((prev) => ({ ...prev, badge: e.target.value }))}
+                placeholder="e.g. 100% Organic & Chemical-Free"
+                className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                Headline Title
+              </label>
+              <input
+                type="text"
+                value={slideForm.title}
+                onChange={(e) => setSlideForm((prev) => ({ ...prev, title: e.target.value }))}
+                placeholder="e.g. Fast Fresh Groceries Delivered Daily"
+                className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-black"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                Subtitle Description
+              </label>
+              <textarea
+                rows={2}
+                value={slideForm.subtitle}
+                onChange={(e) => setSlideForm((prev) => ({ ...prev, subtitle: e.target.value }))}
+                className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                Banner Image URL
+              </label>
+              <input
+                type="text"
+                value={slideForm.image}
+                onChange={(e) => setSlideForm((prev) => ({ ...prev, image: e.target.value }))}
+                className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                  Button Text
+                </label>
+                <input
+                  type="text"
+                  value={slideForm.ctaText}
+                  onChange={(e) => setSlideForm((prev) => ({ ...prev, ctaText: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                  Target Link
+                </label>
+                <input
+                  type="text"
+                  value={slideForm.ctaLink}
+                  onChange={(e) => setSlideForm((prev) => ({ ...prev, ctaLink: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                />
+              </div>
+            </div>
+          </div>
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="outline" size="sm" onClick={() => setIsSlideModalOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="forest"
+            size="sm"
+            onClick={async () => {
+              const updated = heroSlides.map((s) => (s.id === slideForm.id ? { ...s, ...slideForm } : s));
+              setHeroSlides(updated);
+              setIsSlideModalOpen(false);
+              try {
+                const res = await fetch('/api/catalog', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ action: 'update-banner', heroSlides: updated }),
+                });
+                if (!res.ok) throw new Error('Failed to update banner');
+                toast.success('Slide Saved', 'Hero banner updated on customer store.');
+              } catch {
+                toast.error('Error', 'Failed to save hero slide.');
+              }
+            }}
+            className="font-bold"
+          >
+            Save Slide
           </Button>
         </DialogFooter>
       </Dialog>
