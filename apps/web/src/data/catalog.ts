@@ -13,13 +13,21 @@ export interface ProductItem {
   rating: number;
   reviews: number;
   image: string;
+  images?: string[];
   badge?: string;
-  badgeColor?: 'red' | 'green' | 'orange';
+  badgeColor?: 'red' | 'green' | 'orange' | 'purple';
   stock: number;
   isHotDeal?: boolean;
   isNewArrival?: boolean;
+  isOffer?: boolean;
+  isAdvertisement?: boolean;
   showReviews?: boolean;
   description: string;
+  keyFeatures?: string[];
+  healthBenefits?: string[];
+  howToUse?: string;
+  storageInstructions?: string;
+  countryOfOrigin?: string;
   specifications: Record<string, string>;
 }
 

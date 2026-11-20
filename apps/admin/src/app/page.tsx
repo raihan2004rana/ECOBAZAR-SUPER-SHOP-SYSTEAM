@@ -556,7 +556,7 @@ function AdminDashboardShell() {
   const [livePreviewTab, setLivePreviewTab] = React.useState<'card' | 'details'>('card');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Default product form
+  // Product Form Model & Types
   interface ProductFormData {
     id: string;
     name: string;
@@ -573,10 +573,17 @@ function AdminDashboardShell() {
     badge: string;
     badgeColor: 'red' | 'green' | 'orange' | 'purple';
     image: string;
+    images: string[];
     isHotDeal: boolean;
     isNewArrival: boolean;
     isOffer: boolean;
     isAdvertisement: boolean;
+    // Section toggles: controls which sections are shown on the details page
+    includeDescription: boolean;
+    includeFeatures: boolean;
+    includeBenefits: boolean;
+    includeHowToUse: boolean;
+    includeStorage: boolean;
     description: string;
     keyFeaturesText: string;
     healthBenefitsText: string;
@@ -584,6 +591,40 @@ function AdminDashboardShell() {
     storageInstructions: string;
     countryOfOrigin: string;
   }
+
+  const blankProductForm: ProductFormData = {
+    id: '',
+    name: '',
+    nameBn: '',
+    category: 'Fresh Fruits & Vegetables',
+    categorySlug: 'fresh-fruits-vegetables',
+    subcategory: '',
+    brand: 'ECOBAZAR Organic',
+    origin: 'Bangladesh',
+    price: '',
+    originalPrice: '',
+    unit: '1 kg pack',
+    stock: 50,
+    badge: '',
+    badgeColor: 'green',
+    image: '',
+    images: [],
+    isHotDeal: false,
+    isNewArrival: true,
+    isOffer: false,
+    isAdvertisement: false,
+    includeDescription: true,
+    includeFeatures: true,
+    includeBenefits: true,
+    includeHowToUse: false, // Default false for produce/fruits/veggies
+    includeStorage: true,
+    description: '',
+    keyFeaturesText: '',
+    healthBenefitsText: '',
+    howToUse: '',
+    storageInstructions: '',
+    countryOfOrigin: 'Bangladesh',
+  };
 
   const quickPresets: (Omit<ProductFormData, 'id'> & { label: string })[] = [
     {
@@ -602,10 +643,16 @@ function AdminDashboardShell() {
       badge: '17% OFF',
       badgeColor: 'red',
       image: '/images/products/sundarban-honey.webp',
+      images: ['/images/products/sundarban-honey.webp'],
       isHotDeal: true,
       isNewArrival: true,
       isOffer: false,
       isAdvertisement: true,
+      includeDescription: true,
+      includeFeatures: true,
+      includeBenefits: true,
+      includeHowToUse: true,
+      includeStorage: true,
       description: 'Ethically hand-harvested from deep mangrove forests of the Sundarbans. 100% raw, unfiltered honey rich in natural active enzymes, pollen, and antimicrobial flavonoids.',
       keyFeaturesText: '100% Pure, raw, unfiltered and unpasteurized\nDirectly harvested by traditional Mouwals in the Sundarbans\nZero added sugar, corn syrup, or preservative chemicals\nLab tested for diastase activity and moisture purity',
       healthBenefitsText: 'Natural cough suppressor and throat soothing agent\nPowerful antioxidant and immune system booster\nHealthy alternative to refined sugar for tea and desserts',
@@ -629,10 +676,16 @@ function AdminDashboardShell() {
       badge: 'BEST VALUE',
       badgeColor: 'green',
       image: '/images/products/miniket-chal.jpg',
+      images: ['/images/products/miniket-chal.jpg'],
       isHotDeal: true,
       isNewArrival: false,
       isOffer: true,
       isAdvertisement: false,
+      includeDescription: true,
+      includeFeatures: true,
+      includeBenefits: true,
+      includeHowToUse: true,
+      includeStorage: true,
       description: 'Slender, fragrant, triple-sorted Miniket rice milled from fresh paddy. Fluffs up non-sticky with exceptional culinary texture.',
       keyFeaturesText: '100% stone-free, triple automated optical sorting\nCooks extra-long, non-sticky and fragrant grains\nMilled from single-origin Kushtia farm paddy\nFood-grade breathable woven packaging',
       healthBenefitsText: 'Easily digestible carbohydrates for sustained daily energy\nLow fat and zero cholesterol staple grain\nIdeal for everyday family lunch and dinner',
@@ -656,14 +709,20 @@ function AdminDashboardShell() {
       badge: 'FRESH PICK',
       badgeColor: 'green',
       image: '/images/products/red-tomato.jpg',
+      images: ['/images/products/red-tomato.jpg'],
       isHotDeal: true,
       isNewArrival: true,
       isOffer: false,
       isAdvertisement: false,
+      includeDescription: true,
+      includeFeatures: true,
+      includeBenefits: true,
+      includeHowToUse: false,
+      includeStorage: true,
       description: 'Crisp, juicy vine-ripened tomatoes harvested at peak sweetness from Bogura soils. Unbroken cold transport locks in garden flavor.',
       keyFeaturesText: 'Vine-ripened without harmful calcium carbide or ripening agents\nHand-graded for uniform firmness and skin luster\nDirect farm dispatch within 12 hours of harvest',
       healthBenefitsText: 'Packed with Lycopene, a potent antioxidant for heart and skin health\nRich in Vitamin C, Vitamin K, and Potassium\nNaturally low-calorie and hydrating for daily salads',
-      howToUse: 'Perfect for fresh salads, bhorta, rich curries, soups, and slow-simmered sauces.',
+      howToUse: '',
       storageInstructions: 'Keep at room temperature until ripe, then store in the vegetable crisper drawer.',
       countryOfOrigin: 'Bangladesh',
     },
@@ -683,10 +742,16 @@ function AdminDashboardShell() {
       badge: 'PREMIUM',
       badgeColor: 'orange',
       image: '/images/products/deshi-ghee.webp',
+      images: ['/images/products/deshi-ghee.webp'],
       isHotDeal: false,
       isNewArrival: true,
       isOffer: true,
       isAdvertisement: true,
+      includeDescription: true,
+      includeFeatures: true,
+      includeBenefits: true,
+      includeHowToUse: true,
+      includeStorage: true,
       description: 'Traditional bilona churned aromatic ghee made from pure grass-fed Deshi cow milk cultured curd. Golden granulated texture with unforgettable nutty fragrance.',
       keyFeaturesText: 'Traditional Vedic Bilona slow-simmer method from cultured curd\n100% grass-fed Deshi cow whole milk\nNo artificial coloring, essence, or palm oil adulteration\nGlass jar packaging preserves authentic grain texture',
       healthBenefitsText: 'Contains Butyric acid supporting intestinal gut lining\nRich in fat-soluble vitamins A, D, E, and K\nEnhances digestion and nutrient assimilation',
@@ -710,47 +775,26 @@ function AdminDashboardShell() {
       badge: 'DAILY ESSENTIAL',
       badgeColor: 'green',
       image: '/images/products/dozen-egg.webp',
+      images: ['/images/products/dozen-egg.webp'],
       isHotDeal: true,
       isNewArrival: false,
       isOffer: true,
       isAdvertisement: false,
+      includeDescription: true,
+      includeFeatures: true,
+      includeBenefits: true,
+      includeHowToUse: false,
+      includeStorage: true,
       description: 'Farm-fresh graded brown eggs laid by healthy, grain-fed hens. Packed with clean thick egg whites and golden nutrient-rich yolks.',
       keyFeaturesText: 'UV-sanitized and graded for size and weight\nDelivered within 24 hours of farm collection\nShock-absorbent molded paper pulp egg carton',
       healthBenefitsText: 'Complete high-biological-value protein for muscle development\nRich in choline for brain and cognitive health\nEssential vitamins B12, riboflavin, and selenium',
-      howToUse: 'Boil, poach, fry, scramble, or use in baking and savory batters.',
+      howToUse: '',
       storageInstructions: 'Refrigerate pointed end down for maximum shelf freshness.',
       countryOfOrigin: 'Bangladesh',
     },
   ];
 
-  const defaultProductForm: ProductFormData = {
-    id: '',
-    name: '',
-    nameBn: '',
-    category: 'Fresh Fruits & Vegetables',
-    categorySlug: 'fresh-fruits-vegetables',
-    subcategory: 'Fresh Vegetables',
-    brand: 'ECOBAZAR Organic',
-    origin: 'Bogura, Bangladesh',
-    price: 100,
-    originalPrice: 120,
-    unit: '1 kg pack',
-    stock: 50,
-    badge: '15% OFF',
-    badgeColor: 'red',
-    image: '/images/products/red-tomato.jpg',
-    isHotDeal: false,
-    isNewArrival: true,
-    isOffer: false,
-    isAdvertisement: false,
-    description: '100% organic, farm-fresh produce sourced directly from Bangladeshi farmer cooperatives under unbroken cold-chain logistics.',
-    keyFeaturesText: '100% Natural, chemical-free and laboratory screened\nDirectly sourced from verified Bangladeshi farm cooperatives\nUnbroken cold-chain handling to lock in freshness\nHygienically sorted and eco-friendly packaging',
-    healthBenefitsText: 'Rich in vital micronutrients, minerals, and natural antioxidants\nPromotes digestive wellness and daily vitality\nSafe for infants, elders, and health-conscious families',
-    howToUse: 'Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.',
-    storageInstructions: 'Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.',
-    countryOfOrigin: 'Bangladesh',
-  };
-  const [productForm, setProductForm] = React.useState<ProductFormData>(defaultProductForm);
+  const [productForm, setProductForm] = React.useState<ProductFormData>(blankProductForm);
 
   // Category Edit Modal State
   const [isCategoryModalOpen, setIsCategoryModalOpen] = React.useState(false);
@@ -803,10 +847,13 @@ function AdminDashboardShell() {
     fetchCatalog();
   }, [fetchCatalog]);
 
-  // Open Add Product Modal
+  const [manualImageUrl, setManualImageUrl] = React.useState('');
+
+  // Open Add Product Modal (clean blank start, no canned honey text)
   const handleOpenAddProduct = () => {
     setEditingProduct(null);
-    setProductForm(defaultProductForm);
+    setProductForm(blankProductForm);
+    setManualImageUrl('');
     setProductModalTab('general');
     setIsProductModalOpen(true);
   };
@@ -814,6 +861,10 @@ function AdminDashboardShell() {
   // Open Edit Product Modal
   const handleOpenEditProduct = (prod: any) => {
     setEditingProduct(prod);
+    const existingImages: string[] = Array.isArray(prod.images) && prod.images.length > 0
+      ? prod.images.filter(Boolean)
+      : (prod.image ? [prod.image] : []);
+
     setProductForm({
       id: prod.id,
       name: prod.name || '',
@@ -823,17 +874,23 @@ function AdminDashboardShell() {
       subcategory: prod.subcategory || '',
       brand: prod.brand || 'ECOBAZAR Organic',
       origin: prod.origin || 'Bangladesh',
-      price: prod.price || 0,
-      originalPrice: prod.originalPrice || '',
-      unit: prod.unit || '1 kg',
-      stock: prod.stock || 0,
+      price: prod.price !== undefined ? prod.price : '',
+      originalPrice: prod.originalPrice !== undefined ? prod.originalPrice : '',
+      unit: prod.unit || '1 kg pack',
+      stock: prod.stock !== undefined ? prod.stock : 50,
       badge: prod.badge || '',
-      badgeColor: prod.badgeColor || 'red',
-      image: prod.image || '/images/products/red-tomato.jpg',
+      badgeColor: prod.badgeColor || 'green',
+      image: existingImages[0] || prod.image || '',
+      images: existingImages,
       isHotDeal: !!prod.isHotDeal,
       isNewArrival: !!prod.isNewArrival,
       isOffer: !!prod.isOffer,
       isAdvertisement: !!prod.isAdvertisement,
+      includeDescription: !!(prod.description && prod.description.trim()),
+      includeFeatures: !!(Array.isArray(prod.keyFeatures) && prod.keyFeatures.length > 0),
+      includeBenefits: !!(Array.isArray(prod.healthBenefits) && prod.healthBenefits.length > 0),
+      includeHowToUse: !!(prod.howToUse && prod.howToUse.trim()),
+      includeStorage: !!(prod.storageInstructions && prod.storageInstructions.trim()),
       description: prod.description || '',
       keyFeaturesText: Array.isArray(prod.keyFeatures) ? prod.keyFeatures.join('\n') : (prod.keyFeatures || ''),
       healthBenefitsText: Array.isArray(prod.healthBenefits) ? prod.healthBenefits.join('\n') : (prod.healthBenefits || ''),
@@ -841,6 +898,7 @@ function AdminDashboardShell() {
       storageInstructions: prod.storageInstructions || '',
       countryOfOrigin: prod.countryOfOrigin || prod.origin || 'Bangladesh',
     });
+    setManualImageUrl('');
     setProductModalTab('general');
     setIsProductModalOpen(true);
   };
@@ -853,19 +911,31 @@ function AdminDashboardShell() {
     }
     setIsSavingProduct(true);
 
+    const validImages = productForm.images.filter(Boolean);
+    const primaryImage = validImages[0] || productForm.image || '/images/products/sundarban-honey.webp';
+
     const payload = {
       ...productForm,
+      image: primaryImage,
+      images: validImages.length > 0 ? validImages : [primaryImage],
       price: Number(productForm.price) || 0,
       originalPrice: productForm.originalPrice ? Number(productForm.originalPrice) : undefined,
       stock: Number(productForm.stock) || 0,
-      keyFeatures: productForm.keyFeaturesText
-        .split('\n')
-        .map((s) => s.trim())
-        .filter(Boolean),
-      healthBenefits: productForm.healthBenefitsText
-        .split('\n')
-        .map((s) => s.trim())
-        .filter(Boolean),
+      description: productForm.includeDescription ? productForm.description.trim() : '',
+      keyFeatures: productForm.includeFeatures && productForm.keyFeaturesText.trim()
+        ? productForm.keyFeaturesText
+            .split('\n')
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [],
+      healthBenefits: productForm.includeBenefits && productForm.healthBenefitsText.trim()
+        ? productForm.healthBenefitsText
+            .split('\n')
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [],
+      howToUse: productForm.includeHowToUse ? productForm.howToUse.trim() : '',
+      storageInstructions: productForm.includeStorage ? productForm.storageInstructions.trim() : '',
     };
 
     try {
@@ -941,31 +1011,42 @@ function AdminDashboardShell() {
     }
   };
 
-  // Unified Rock-Solid Image Upload Engine (Base64 + Local 0ms Preview + Server Persistence)
-  const processSelectedFile = (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      toast.error('Invalid Format', 'Please choose an image file (JPG, PNG, WEBP, AVIF).');
-      return;
-    }
-    if (file.size > 15 * 1024 * 1024) {
-      toast.error('File Too Large', 'Maximum image size is 15MB.');
+  // Unified Rock-Solid Multi-Image Upload Engine (Supports Multiple Files at Once!)
+  const processSelectedFiles = async (files: FileList | File[]) => {
+    const fileArray = Array.from(files).filter((f) => f.type.startsWith('image/'));
+    if (fileArray.length === 0) {
+      toast.error('Invalid Format', 'Please choose valid image files (JPG, PNG, WEBP, AVIF).');
       return;
     }
 
-    // 1. Instant 0ms visual preview on client via FileReader
-    const localReader = new FileReader();
-    localReader.onload = (e) => {
-      const dataUrl = e.target?.result as string;
-      setProductForm((prev) => ({ ...prev, image: dataUrl }));
-    };
-    localReader.readAsDataURL(file);
-
-    // 2. Persist to server via /api/upload
     setIsUploadingImage(true);
-    const serverReader = new FileReader();
-    serverReader.onload = async (e) => {
+    let uploadedSuccessCount = 0;
+
+    for (const file of fileArray) {
+      if (file.size > 15 * 1024 * 1024) {
+        toast.error('File Too Large', `"${file.name}" exceeds 15MB limit.`);
+        continue;
+      }
+
       try {
-        const base64Data = e.target?.result as string;
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          const r = new FileReader();
+          r.onload = () => resolve(r.result as string);
+          r.onerror = reject;
+          r.readAsDataURL(file);
+        });
+
+        // 1. Instant 0ms visual preview on client
+        setProductForm((prev) => {
+          const nextImages = [...prev.images, base64Data];
+          return {
+            ...prev,
+            images: nextImages,
+            image: prev.image || nextImages[0],
+          };
+        });
+
+        // 2. Persist to server via /api/upload
         const res = await fetch('/api/upload', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -975,29 +1056,83 @@ function AdminDashboardShell() {
           }),
         });
         const data = await res.json();
-        if (!res.ok || !data.url) throw new Error(data.error || 'Upload failed');
-        setProductForm((prev) => ({ ...prev, image: data.url }));
-        toast.success('Image Uploaded Successfully', `"${file.name}" saved and synced to store.`);
+        if (data.url) {
+          uploadedSuccessCount++;
+          setProductForm((prev) => {
+            const replaced = prev.images.map((img) => (img === base64Data ? data.url : img));
+            return {
+              ...prev,
+              images: replaced,
+              image: replaced[0] || data.url,
+            };
+          });
+        }
       } catch (err: any) {
-        toast.error('Upload Failed', err.message || 'Could not save image to server');
-      } finally {
-        setIsUploadingImage(false);
-        if (fileInputRef.current) fileInputRef.current.value = '';
+        console.error('File upload error for', file.name, err);
       }
-    };
-    serverReader.readAsDataURL(file);
+    }
+
+    setIsUploadingImage(false);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (uploadedSuccessCount > 0) {
+      toast.success(
+        'Gallery Updated',
+        `${uploadedSuccessCount} photo${uploadedSuccessCount > 1 ? 's' : ''} added to product gallery.`
+      );
+    }
   };
 
   const handleImageFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) processSelectedFile(file);
+    if (e.target.files && e.target.files.length > 0) {
+      processSelectedFiles(e.target.files);
+    }
   };
 
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDraggingFile(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file) processSelectedFile(file);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processSelectedFiles(e.dataTransfer.files);
+    }
+  };
+
+  const handleSetCoverImage = (imgUrl: string) => {
+    setProductForm((prev) => {
+      const rest = prev.images.filter((img) => img !== imgUrl);
+      const updated = [imgUrl, ...rest];
+      return {
+        ...prev,
+        images: updated,
+        image: imgUrl,
+      };
+    });
+    toast.success('Cover Image Set', 'Selected photo moved to primary cover position.');
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    setProductForm((prev) => {
+      const updated = prev.images.filter((_, idx) => idx !== indexToRemove);
+      return {
+        ...prev,
+        images: updated,
+        image: updated[0] || '',
+      };
+    });
+  };
+
+  const handleAddManualImageUrl = () => {
+    const url = manualImageUrl.trim();
+    if (!url) return;
+    setProductForm((prev) => {
+      const updated = [...prev.images, url];
+      return {
+        ...prev,
+        images: updated,
+        image: prev.image || updated[0],
+      };
+    });
+    setManualImageUrl('');
+    toast.success('Image Added', 'URL added to product gallery.');
   };
 
   const handleApplyPreset = (preset: (typeof quickPresets)[0]) => {
@@ -1017,10 +1152,16 @@ function AdminDashboardShell() {
       badge: preset.badge,
       badgeColor: preset.badgeColor,
       image: preset.image,
+      images: preset.images || [preset.image],
       isHotDeal: preset.isHotDeal,
       isNewArrival: preset.isNewArrival,
       isOffer: preset.isOffer,
       isAdvertisement: preset.isAdvertisement,
+      includeDescription: preset.includeDescription ?? true,
+      includeFeatures: preset.includeFeatures ?? true,
+      includeBenefits: preset.includeBenefits ?? true,
+      includeHowToUse: preset.includeHowToUse ?? false,
+      includeStorage: preset.includeStorage ?? true,
       description: preset.description,
       keyFeaturesText: preset.keyFeaturesText,
       healthBenefitsText: preset.healthBenefitsText,
@@ -4126,10 +4267,10 @@ function AdminDashboardShell() {
               </div>
             )}
 
-            {/* TAB 3: MEDIA CENTER (ROCK-SOLID COMPUTER UPLOAD & GALLERY) */}
+            {/* TAB 3: MEDIA CENTER (MULTI-IMAGE GALLERY & PC UPLOAD) */}
             {productModalTab === 'media' && (
               <div className="space-y-4">
-                {/* 1. Super Drag-and-Drop and File Uploader */}
+                {/* 1. Multi-File Drag-and-Drop Uploader */}
                 <div
                   onDragOver={(e) => {
                     e.preventDefault();
@@ -4143,11 +4284,12 @@ function AdminDashboardShell() {
                       : 'border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/20 hover:border-emerald-500'
                   }`}
                 >
-                  {/* Hidden Native File Input */}
+                  {/* Hidden Native File Input supporting multiple files */}
                   <input
                     ref={fileInputRef}
                     type="file"
                     accept="image/*"
+                    multiple
                     onChange={handleImageFileInputChange}
                     className="hidden"
                     disabled={isUploadingImage}
@@ -4163,10 +4305,10 @@ function AdminDashboardShell() {
 
                   <div>
                     <h4 className="font-black text-sm text-neutral-900 dark:text-white">
-                      Drag & Drop Product Photo Here
+                      Drag & Drop Product Images Here (Multiple Files Supported)
                     </h4>
                     <p className="text-[11px] text-neutral-500 mt-0.5">
-                      Or click the button below to browse files from your computer (JPG, PNG, WEBP, AVIF up to 15MB)
+                      Upload multiple angles or packaging photos at once (JPG, PNG, WEBP, AVIF up to 15MB each).
                     </p>
                   </div>
 
@@ -4178,36 +4320,95 @@ function AdminDashboardShell() {
                       className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs transition shadow-md shadow-emerald-600/25 flex items-center gap-2 cursor-pointer disabled:opacity-50"
                     >
                       <ImageIcon className="h-4 w-4" />
-                      <span>{isUploadingImage ? 'Uploading Image...' : 'Browse Computer Files'}</span>
+                      <span>{isUploadingImage ? 'Uploading Photos...' : 'Browse Computer Images (Multi-select)'}</span>
                     </button>
                   </div>
-
-                  {productForm.image && (
-                    <div className="pt-2 text-[11px] text-emerald-700 dark:text-emerald-400 font-bold flex items-center justify-center gap-1.5">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                      <span>Image loaded & ready for live store sync!</span>
-                    </div>
-                  )}
                 </div>
 
-                {/* 2. Direct Image URL Input */}
+                {/* 2. Uploaded Product Gallery Cards */}
+                {productForm.images.length > 0 && (
+                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-black text-xs text-neutral-900 dark:text-white flex items-center gap-2">
+                        <ImageIcon className="h-4 w-4 text-emerald-600" />
+                        <span>Product Image Gallery ({productForm.images.length} Photos)</span>
+                      </span>
+                      <span className="text-[11px] text-neutral-400">
+                        First image is the Primary Cover photo.
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {productForm.images.map((imgUrl, index) => (
+                        <div
+                          key={index}
+                          className={`relative rounded-2xl border p-2 bg-neutral-50 dark:bg-neutral-800/60 overflow-hidden group transition ${
+                            index === 0
+                              ? 'border-emerald-500 ring-2 ring-emerald-500/20'
+                              : 'border-neutral-200 dark:border-neutral-700 hover:border-emerald-300'
+                          }`}
+                        >
+                          <div className="h-28 w-full rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center mb-2">
+                            <img src={imgUrl} alt={`Gallery ${index + 1}`} className="h-full w-full object-contain" />
+                          </div>
+
+                          {/* Index 0 Cover Badge */}
+                          {index === 0 ? (
+                            <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-600 text-white">
+                              ⭐ Primary Cover
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleSetCoverImage(imgUrl)}
+                              className="text-[10px] font-bold text-neutral-600 dark:text-neutral-300 hover:text-emerald-600 transition"
+                            >
+                              Set as Cover
+                            </button>
+                          )}
+
+                          {/* Delete Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(index)}
+                            className="absolute top-3 right-3 h-6 w-6 rounded-full bg-rose-500 hover:bg-rose-600 text-white flex items-center justify-center shadow-sm opacity-90 hover:opacity-100 transition"
+                            title="Remove image"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. Add Image via Direct URL */}
                 <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
                   <label className="font-bold text-neutral-700 dark:text-neutral-200 block">
-                    Or Enter Direct Image URL / Public Path
+                    Or Add Image via URL / Public Path
                   </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. /images/products/sundarban-honey.webp or https://..."
-                    value={productForm.image}
-                    onChange={(e) => setProductForm((prev) => ({ ...prev, image: e.target.value }))}
-                    className="w-full px-3.5 py-2 border rounded-xl outline-hidden font-mono text-xs border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
-                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="e.g. /images/products/sundarban-honey.webp or https://..."
+                      value={manualImageUrl}
+                      onChange={(e) => setManualImageUrl(e.target.value)}
+                      className="flex-1 px-3.5 py-2 border rounded-xl outline-hidden font-mono text-xs border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddManualImageUrl}
+                      className="px-4 py-2 rounded-xl bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 font-bold text-xs hover:bg-emerald-600 dark:hover:bg-emerald-500 transition shrink-0"
+                    >
+                      + Add to Gallery
+                    </button>
+                  </div>
                 </div>
 
-                {/* 3. Preset Authentic Produce Gallery */}
+                {/* 4. Preset Produce Gallery (Click adds to images list) */}
                 <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2.5">
                   <label className="font-bold text-neutral-700 dark:text-neutral-200 block">
-                    Quick Pick from Authentic Supermarket Library (1-Click):
+                    Or Pick from Authentic Supermarket Library:
                   </label>
                   <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
                     {[
@@ -4227,18 +4428,21 @@ function AdminDashboardShell() {
                       <button
                         key={preset.url}
                         type="button"
-                        onClick={() => setProductForm((prev) => ({ ...prev, image: preset.url }))}
-                        className={`p-1.5 rounded-xl border text-center transition ${
-                          productForm.image === preset.url
-                            ? 'border-emerald-500 ring-2 ring-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/60'
-                            : 'border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:border-emerald-400'
-                        }`}
+                        onClick={() => {
+                          setProductForm((prev) => {
+                            if (prev.images.includes(preset.url)) return prev;
+                            const next = [...prev.images, preset.url];
+                            return { ...prev, images: next, image: prev.image || next[0] };
+                          });
+                          toast.success('Photo Added', `${preset.label} added to gallery.`);
+                        }}
+                        className="p-1.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:border-emerald-400 text-center transition"
                       >
                         <div className="h-11 w-full rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-700 mb-1">
                           <img src={preset.url} alt={preset.label} className="h-full w-full object-cover" />
                         </div>
                         <span className="text-[9px] font-bold text-neutral-700 dark:text-neutral-300 line-clamp-1">
-                          {preset.label}
+                          + {preset.label}
                         </span>
                       </button>
                     ))}
@@ -4350,78 +4554,169 @@ function AdminDashboardShell() {
               </div>
             )}
 
-            {/* TAB 5: STORY & SPECS */}
+            {/* TAB 5: STORY & SPECS (SELECTIVE DETAILS - CHOOSE WHAT TO SHOW) */}
             {productModalTab === 'details' && (
               <div className="space-y-4">
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
-                  <label className="font-black text-neutral-900 dark:text-white block">
-                    Product Narrative Description
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="Rich paragraph describing the origin, organic verification, and unbroken cold-chain transport..."
-                    value={productForm.description}
-                    onChange={(e) => setProductForm((prev) => ({ ...prev, description: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
-                  />
+                <div className="p-3.5 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 font-medium">
+                  💡 <strong>Custom Details Controls:</strong> Choose exactly which sections you want for this product. Unchecked or blank sections will be completely omitted from the customer-facing details page.
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
-                    <label className="font-black text-neutral-900 dark:text-white block">
-                      Key Features (1 per line)
+                {/* 1. Description Section */}
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                      <Layers className="h-4 w-4 text-emerald-600" />
+                      <span>1. Product Narrative Description</span>
                     </label>
+                    <label className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={productForm.includeDescription}
+                        onChange={(e) => setProductForm((p) => ({ ...p, includeDescription: e.target.checked }))}
+                        className="rounded text-emerald-600"
+                      />
+                      <span>Show on Page</span>
+                    </label>
+                  </div>
+                  {productForm.includeDescription && (
+                    <textarea
+                      rows={3}
+                      placeholder="Rich paragraph describing the origin, quality, and freshness..."
+                      value={productForm.description}
+                      onChange={(e) => setProductForm((prev) => ({ ...prev, description: e.target.value }))}
+                      className="w-full px-3.5 py-2.5 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    />
+                  )}
+                </div>
+
+                {/* 2. Key Features Section */}
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                        <span>2. Key Features (Bulleted List)</span>
+                      </label>
+                      <p className="text-[10px] text-neutral-400">Enter 1 feature per line. Rendered with green checkmarks.</p>
+                    </div>
+                    <label className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={productForm.includeFeatures}
+                        onChange={(e) => setProductForm((p) => ({ ...p, includeFeatures: e.target.checked }))}
+                        className="rounded text-emerald-600"
+                      />
+                      <span>Show on Page</span>
+                    </label>
+                  </div>
+                  {productForm.includeFeatures && (
                     <textarea
                       rows={4}
-                      placeholder="100% Raw & Natural&#10;Cold-chain handled&#10;Zero chemical additives"
+                      placeholder="100% Organic & Chemical-free&#10;Harvested under fair trade standards&#10;Cold-chain packaging"
                       value={productForm.keyFeaturesText}
                       onChange={(e) => setProductForm((prev) => ({ ...prev, keyFeaturesText: e.target.value }))}
                       className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
                     />
-                  </div>
+                  )}
+                </div>
 
-                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
-                    <label className="font-black text-neutral-900 dark:text-white block">
-                      Health Benefits (1 per line)
+                {/* 3. Health Benefits Section */}
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                        <Sparkles className="h-4 w-4 text-emerald-600" />
+                        <span>3. Health & Nutritional Benefits</span>
+                      </label>
+                      <p className="text-[10px] text-neutral-400">Enter 1 benefit per line (vitamins, immunity, energy, etc.).</p>
+                    </div>
+                    <label className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={productForm.includeBenefits}
+                        onChange={(e) => setProductForm((p) => ({ ...p, includeBenefits: e.target.checked }))}
+                        className="rounded text-emerald-600"
+                      />
+                      <span>Show on Page</span>
                     </label>
+                  </div>
+                  {productForm.includeBenefits && (
                     <textarea
                       rows={4}
-                      placeholder="High natural antioxidants&#10;Soothes digestive tract&#10;Boosts daily vitality"
+                      placeholder="Rich in natural Vitamin C and Lycopene&#10;Promotes digestive wellbeing&#10;Low glycemic and heart-healthy"
                       value={productForm.healthBenefitsText}
                       onChange={(e) => setProductForm((prev) => ({ ...prev, healthBenefitsText: e.target.value }))}
                       className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
                     />
-                  </div>
+                  )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
-                    <label className="font-black text-neutral-900 dark:text-white block">
-                      How to Use / Recommended Usage
+                {/* 4. How to Use Section (OPTIONAL - Turn OFF for Fruits/Vegetables!) */}
+                <div className={`p-4 rounded-2xl border transition ${
+                  productForm.includeHowToUse
+                    ? 'border-emerald-500/50 bg-emerald-50/30 dark:bg-emerald-950/20'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50'
+                } space-y-3`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                        <span>🥣 4. How to Use / Usage Guide</span>
+                        <span className="text-[9px] uppercase px-1.5 py-0.5 rounded-sm bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 font-bold">
+                          Optional
+                        </span>
+                      </label>
+                      <p className="text-[10px] text-neutral-400">
+                        Turn ON for honey, oil, powders. Leave <strong>OFF for fruits & vegetables</strong>.
+                      </p>
+                    </div>
+                    <label className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={productForm.includeHowToUse}
+                        onChange={(e) => setProductForm((p) => ({ ...p, includeHowToUse: e.target.checked }))}
+                        className="rounded text-emerald-600"
+                      />
+                      <span>{productForm.includeHowToUse ? 'Enabled (Showing)' : 'Disabled (Hidden)'}</span>
                     </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Mix 1-2 teaspoons in warm water with lemon every morning."
+                  </div>
+                  {productForm.includeHowToUse && (
+                    <textarea
+                      rows={3}
+                      placeholder="e.g. Mix 1-2 teaspoons in warm water with lemon every morning on an empty stomach."
                       value={productForm.howToUse}
                       onChange={(e) => setProductForm((prev) => ({ ...prev, howToUse: e.target.value }))}
                       className="w-full px-3.5 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                     />
-                  </div>
+                  )}
+                </div>
 
-                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
-                    <label className="font-black text-neutral-900 dark:text-white block">
-                      Storage Instructions
+                {/* 5. Storage Instructions Section */}
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                      <span>📦 5. Storage Instructions</span>
                     </label>
+                    <label className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={productForm.includeStorage}
+                        onChange={(e) => setProductForm((p) => ({ ...p, includeStorage: e.target.checked }))}
+                        className="rounded text-emerald-600"
+                      />
+                      <span>Show on Page</span>
+                    </label>
+                  </div>
+                  {productForm.includeStorage && (
                     <input
                       type="text"
-                      placeholder="e.g. Store at room temperature in a dry place. Do not refrigerate."
+                      placeholder="e.g. Store at room temperature in a dry place. Keep away from direct sunlight."
                       value={productForm.storageInstructions}
                       onChange={(e) =>
                         setProductForm((prev) => ({ ...prev, storageInstructions: e.target.value }))
                       }
                       className="w-full px-3.5 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                     />
-                  </div>
+                  )}
                 </div>
               </div>
             )}
@@ -4439,7 +4734,7 @@ function AdminDashboardShell() {
                   </span>
                 </div>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
-                  0ms Sync
+                  {productForm.images.length > 0 ? `${productForm.images.length} Photos` : 'Single Cover'}
                 </span>
               </div>
 
@@ -4477,11 +4772,11 @@ function AdminDashboardShell() {
                   <Heart className="h-4 w-4" />
                 </button>
 
-                {/* Image Container */}
-                <div className="h-48 w-full rounded-2xl bg-neutral-100 dark:bg-neutral-800/80 overflow-hidden flex items-center justify-center p-3 mb-3 border border-neutral-100 dark:border-neutral-700/50">
-                  {productForm.image ? (
+                {/* Primary Cover Image Container */}
+                <div className="h-48 w-full rounded-2xl bg-neutral-100 dark:bg-neutral-800/80 overflow-hidden flex items-center justify-center p-3 mb-2 border border-neutral-100 dark:border-neutral-700/50">
+                  {productForm.image || productForm.images[0] ? (
                     <img
-                      src={productForm.image}
+                      src={productForm.image || productForm.images[0]}
                       alt={productForm.name || 'Preview'}
                       className="h-full w-full object-contain transition-transform hover:scale-105 duration-300"
                     />
@@ -4492,6 +4787,24 @@ function AdminDashboardShell() {
                     </div>
                   )}
                 </div>
+
+                {/* Multi-Image Thumbnails Preview on Storefront */}
+                {productForm.images.length > 1 && (
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2">
+                    {productForm.images.map((thumb, idx) => (
+                      <div
+                        key={idx}
+                        className={`h-10 w-10 rounded-lg overflow-hidden border shrink-0 bg-neutral-100 dark:bg-neutral-800 p-0.5 ${
+                          (productForm.image || productForm.images[0]) === thumb
+                            ? 'border-emerald-600 ring-1 ring-emerald-500'
+                            : 'border-neutral-200 dark:border-neutral-700 opacity-60'
+                        }`}
+                      >
+                        <img src={thumb} alt={`Thumb ${idx + 1}`} className="h-full w-full object-cover rounded-md" />
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* Category & Department */}
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
@@ -4555,40 +4868,30 @@ function AdminDashboardShell() {
                 </div>
               </div>
 
-              {/* Active Placement Checklist */}
-              <div className="mt-5 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 space-y-2">
+              {/* Active Placement Checklist & Enabled Details */}
+              <div className="mt-4 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 space-y-2">
                 <span className="text-[10px] uppercase font-black tracking-wider text-neutral-400 block">
-                  Storefront Distribution
+                  Storefront Details Visibility
                 </span>
-                <div className="space-y-1.5 text-[11px] font-bold">
-                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                    <Check className="h-3.5 w-3.5" />
-                    <span>Catalog Grid ({productForm.category})</span>
-                  </div>
-                  {productForm.isHotDeal && (
-                    <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400">
-                      <Flame className="h-3.5 w-3.5" />
-                      <span>Best Deals Countdown Carousel (/deals)</span>
-                    </div>
-                  )}
-                  {productForm.isNewArrival && (
-                    <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
-                      <Sparkles className="h-3.5 w-3.5" />
-                      <span>New Arrivals Restock Showcase (/new-arrivals)</span>
-                    </div>
-                  )}
-                  {productForm.isOffer && (
-                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
-                      <Percent className="h-3.5 w-3.5" />
-                      <span>Special Promotional Offers (/offers)</span>
-                    </div>
-                  )}
-                  {productForm.isAdvertisement && (
-                    <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
-                      <Megaphone className="h-3.5 w-3.5" />
-                      <span>Homepage Hero Featured Advertisement</span>
-                    </div>
-                  )}
+                <div className="grid grid-cols-2 gap-2 text-[10px] font-bold">
+                  <span className={productForm.includeDescription ? 'text-emerald-600' : 'text-neutral-400 line-through'}>
+                    ✓ Description
+                  </span>
+                  <span className={productForm.includeFeatures ? 'text-emerald-600' : 'text-neutral-400 line-through'}>
+                    ✓ Features List
+                  </span>
+                  <span className={productForm.includeBenefits ? 'text-emerald-600' : 'text-neutral-400 line-through'}>
+                    ✓ Health Benefits
+                  </span>
+                  <span className={productForm.includeHowToUse ? 'text-emerald-600' : 'text-neutral-400 line-through'}>
+                    {productForm.includeHowToUse ? '✓ How to Use' : '✗ How to Use (Off)'}
+                  </span>
+                  <span className={productForm.includeStorage ? 'text-emerald-600' : 'text-neutral-400 line-through'}>
+                    ✓ Storage Advice
+                  </span>
+                  <span className="text-emerald-600">
+                    📸 {productForm.images.length || 1} Photo(s)
+                  </span>
                 </div>
               </div>
             </div>

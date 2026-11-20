@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-20T04:09:41.667Z",
+  "lastUpdated": "2026-11-20T04:45:28.405Z",
   "topBanner": {
     "enabled": true,
     "badgeText": "VOUCHER SAVINGS",
@@ -406,6 +406,47 @@
     }
   ],
   "products": [
+    {
+      "id": "fre-mwohx1p0",
+      "name": "Fresh Guava 1kg",
+      "nameBn": "তাজা পেয়ারা ১ কেজি",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Fresh Vegetables",
+      "brand": "ECOBAZAR Organic",
+      "origin": "Barishal, Bangladesh",
+      "price": 90,
+      "originalPrice": 100,
+      "unit": "1 kg pack",
+      "stock": 50,
+      "badge": "15% OFF",
+      "badgeColor": "green",
+      "image": "/uploads/fresh-guava-mwohtea2.jpg",
+      "images": [
+        "/uploads/fresh-guava-mwohtea2.jpg"
+      ],
+      "isHotDeal": false,
+      "isNewArrival": true,
+      "isOffer": false,
+      "isAdvertisement": false,
+      "description": "Fresh guava is a crunchy or soft tropical fruit rich in vitamin C, dietary fiber, and antioxidants, commonly sold in white-fleshed varieties like Thai guava and sweeter pink-fleshed varieties.",
+      "keyFeaturesText": "• Key nutrients: A 100g serving of raw guava provides about 68 calories, plenty of dietary fiber, potassium, folate, and well over 100% of the daily value for vitamin C.\n\n• Prep and eating: Wash thoroughly before eating; the skin and seeds are edible, so you can slice it like an apple, bite into it whole, or scoop out the center.\n\n• Local options in Dhaka: You can order fresh guava online in Dhaka through grocery platforms like Chaldal, Farmers Best BD, or Giftallbd, or pick it up at local neighborhood produce markets",
+      "healthBenefitsText": "• Boosts immunity: Guava is packed with vitamin C—often providing more per serving than oranges—which helps support immune defenses and collagen production. Its vitamin C also aids non-heme iron absorption.\n\n• Aids digestion: Dietary fiber in the fruit and its edible seeds helps promote regular bowel movements and prevent constipation.\n\n• Supports heart health: Potassium, soluble fiber, and antioxidants (such as lycopene and polyphenols) help manage blood pressure, support healthy cholesterol levels, and reduce oxidative stress",
+      "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
+      "countryOfOrigin": "Bangladesh",
+      "keyFeatures": [
+        "• Key nutrients: A 100g serving of raw guava provides about 68 calories, plenty of dietary fiber, potassium, folate, and well over 100% of the daily value for vitamin C.",
+        "• Prep and eating: Wash thoroughly before eating; the skin and seeds are edible, so you can slice it like an apple, bite into it whole, or scoop out the center.",
+        "• Local options in Dhaka: You can order fresh guava online in Dhaka through grocery platforms like Chaldal, Farmers Best BD, or Giftallbd, or pick it up at local neighborhood produce markets"
+      ],
+      "healthBenefits": [
+        "• Boosts immunity: Guava is packed with vitamin C—often providing more per serving than oranges—which helps support immune defenses and collagen production. Its vitamin C also aids non-heme iron absorption.",
+        "• Aids digestion: Dietary fiber in the fruit and its edible seeds helps promote regular bowel movements and prevent constipation.",
+        "• Supports heart health: Potassium, soluble fiber, and antioxidants (such as lycopene and polyphenols) help manage blood pressure, support healthy cholesterol levels, and reduce oxidative stress"
+      ],
+      "rating": 5,
+      "reviews": 1
+    },
     {
       "id": "fv-1",
       "name": "Fresh Organic Red Vine Tomatoes",

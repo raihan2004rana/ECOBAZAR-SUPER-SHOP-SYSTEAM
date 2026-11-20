@@ -71,20 +71,26 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const [quantity, setQuantity] = React.useState(1);
   const [activeTab, setActiveTab] = React.useState<'description' | 'reviews'>('description');
 
-  // Multi-image gallery thumbnails
+  // Multi-image gallery thumbnails (dynamic from product images, no dummy banners)
   const galleryImages = React.useMemo(() => {
-    return [
-      product.image,
-      '/images/banner-farm-grocery.jpg',
-      '/images/banner-organic-harvest.jpg',
-      '/images/banner-farm-to-table.jpg',
-    ];
-  }, [product.image]);
+    const list: string[] = [];
+    if (Array.isArray((product as any).images) && (product as any).images.length > 0) {
+      list.push(...(product as any).images.filter(Boolean));
+    } else if (product.image) {
+      list.push(product.image);
+    }
+    if (product.image && !list.includes(product.image)) {
+      list.unshift(product.image);
+    }
+    return list.length > 0 ? list : ['/images/products/sundarban-honey.webp'];
+  }, [(product as any).images, product.image]);
 
   const [selectedImage, setSelectedImage] = React.useState(galleryImages[0]);
 
   React.useEffect(() => {
-    setSelectedImage(galleryImages[0]);
+    if (galleryImages.length > 0) {
+      setSelectedImage(galleryImages[0]);
+    }
   }, [galleryImages]);
 
   // Reviews state
@@ -229,27 +235,29 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               {/* Left Column: Gallery (Thumbnails + Main Image) */}
               <div className="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4 items-start">
-                {/* Thumbnails strip */}
-                <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible w-full sm:w-20 shrink-0 pb-2 sm:pb-0">
-                  {galleryImages.map((imgSrc, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => setSelectedImage(imgSrc)}
-                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-[#F7F9F5] shrink-0 ${
-                        selectedImage === imgSrc
-                          ? 'border-[#21A366] shadow-md ring-2 ring-[#21A366]/20'
-                          : 'border-[#E5ECE7] hover:border-gray-300 opacity-75 hover:opacity-100'
-                      }`}
-                    >
-                      <img
-                        src={imgSrc}
-                        alt={`Thumbnail ${index + 1}`}
-                        className="w-full h-full object-cover rounded-xl"
-                      />
-                    </button>
-                  ))}
-                </div>
+                {/* Thumbnails strip - ONLY show if there are 2 or more images */}
+                {galleryImages.length > 1 && (
+                  <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible w-full sm:w-20 shrink-0 pb-2 sm:pb-0">
+                    {galleryImages.map((imgSrc, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => setSelectedImage(imgSrc)}
+                        className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-[#F7F9F5] shrink-0 ${
+                          selectedImage === imgSrc
+                            ? 'border-[#21A366] shadow-md ring-2 ring-[#21A366]/20'
+                            : 'border-[#E5ECE7] hover:border-gray-300 opacity-75 hover:opacity-100'
+                        }`}
+                      >
+                        <img
+                          src={imgSrc}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
 
                 {/* Main Large Image Display */}
                 <div className="flex-1 relative w-full rounded-2xl sm:rounded-3xl bg-[#F7F9F5] border border-[#E5ECE7] p-6 sm:p-10 flex items-center justify-center overflow-hidden min-h-[340px] sm:min-h-[460px] group">
@@ -281,32 +289,36 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     className="w-full h-auto max-h-[380px] sm:max-h-[420px] object-contain transition-transform duration-500 group-hover:scale-105"
                   />
 
-                  {/* Prev/Next Image Navigation Arrows */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const idx = galleryImages.indexOf(selectedImage);
-                      const prevIdx = (idx - 1 + galleryImages.length) % galleryImages.length;
-                      setSelectedImage(galleryImages[prevIdx]);
-                    }}
-                    aria-label="Previous image"
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
+                  {/* Prev/Next Image Navigation Arrows (only if multi-image) */}
+                  {galleryImages.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const idx = galleryImages.indexOf(selectedImage);
+                          const prevIdx = (idx - 1 + galleryImages.length) % galleryImages.length;
+                          setSelectedImage(galleryImages[prevIdx]);
+                        }}
+                        aria-label="Previous image"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const idx = galleryImages.indexOf(selectedImage);
-                      const nextIdx = (idx + 1) % galleryImages.length;
-                      setSelectedImage(galleryImages[nextIdx]);
-                    }}
-                    aria-label="Next image"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const idx = galleryImages.indexOf(selectedImage);
+                          const nextIdx = (idx + 1) % galleryImages.length;
+                          setSelectedImage(galleryImages[nextIdx]);
+                        }}
+                        aria-label="Next image"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -510,155 +522,102 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   <h2 className="text-xl sm:text-2xl font-black text-[#17251F] pb-2 border-b-2 border-[#21A366] inline-block">
                     Product Details
                   </h2>
-                  <p className="mt-4 text-[#64736B] leading-relaxed">
-                    Experience the untouched purity of nature with{' '}
-                    <strong className="text-[#17251F]">{product.name}</strong> — ethically
-                    sourced directly from certified organic partners in {product.origin}. Completely
-                    unprocessed, unheated, and strictly free from chemical preservatives, added
-                    sugars, or artificial essences.
-                  </p>
-                  <p className="mt-2 text-[#64736B] leading-relaxed">
-                    {product.description}
-                  </p>
-                </div>
-
-                {/* Key Features */}
-                <div>
-                  <h3 className="text-base sm:text-lg font-black text-[#17251F] mb-3">
-                    Key Features:
-                  </h3>
-                  <ul className="space-y-2 text-[#64736B]">
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-[#21A366] shrink-0 mt-0.5" />
-                      <span>
-                        <strong className="text-[#17251F]">100% Natural & Raw:</strong>{' '}
-                        Unpasteurized and free from added sugars, syrups, formalin, or chemical
-                        bleach.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-[#21A366] shrink-0 mt-0.5" />
-                      <span>
-                        <strong className="text-[#17251F]">Direct Cooperative Sourcing:</strong>{' '}
-                        Harvested by experienced rural cooperatives under fair trade practices.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-[#21A366] shrink-0 mt-0.5" />
-                      <span>
-                        <strong className="text-[#17251F]">Rich Natural Aroma:</strong> Distinctive
-                        authentic flavor profile packed with raw vitamins, active enzymes, and
-                        minerals.
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Health Benefits */}
-                <div>
-                  <h3 className="text-base sm:text-lg font-black text-[#17251F] mb-3">
-                    Health Benefits:
-                  </h3>
-                  <ul className="space-y-2 text-[#64736B]">
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#21A366] shrink-0 mt-2" />
-                      <span>
-                        <strong className="text-[#17251F]">Immunity Booster:</strong> High
-                        concentration of natural antioxidants and micronutrients that strengthen
-                        the body&apos;s natural defenses.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#21A366] shrink-0 mt-2" />
-                      <span>
-                        <strong className="text-[#17251F]">Natural Vitality & Energy:</strong> Pure
-                        unprocessed nourishment that provides clean sustained stamina without sugar
-                        crashes.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#21A366] shrink-0 mt-2" />
-                      <span>
-                        <strong className="text-[#17251F]">Digestive Wellness:</strong> Contains
-                        live organic enzymes that soothe digestion and support healthy gut flora.
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* How to Use Table (Matching Ghorerbazar layout) */}
-                <div>
-                  <h3 className="text-base sm:text-lg font-black text-[#17251F] mb-3">
-                    How to Use:
-                  </h3>
-                  <div className="overflow-x-auto rounded-xl border border-[#E5ECE7]">
-                    <table className="w-full text-left text-xs sm:text-sm">
-                      <thead className="bg-[#F7F9F5] border-b border-[#E5ECE7] text-[#17251F] font-black uppercase text-[11px] tracking-wider">
-                        <tr>
-                          <th className="py-3 px-4 w-1/3">Purpose</th>
-                          <th className="py-3 px-4">Recommended Usage</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-[#E5ECE7]/60 text-[#64736B]">
-                        <tr>
-                          <td className="py-3 px-4 font-bold text-[#17251F]">
-                            Daily Wellness Kickstart
-                          </td>
-                          <td className="py-3 px-4">
-                            Mix 1-2 teaspoons in warm water with fresh lemon juice every morning on
-                            an empty stomach.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-3 px-4 font-bold text-[#17251F]">
-                            Natural Sweetener & Cooking
-                          </td>
-                          <td className="py-3 px-4">
-                            Drizzle over oatmeal, greek yogurt, fresh fruit bowls, green tea, or
-                            homemade dressings.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-3 px-4 font-bold text-[#17251F]">
-                            Pre-Workout Stamina
-                          </td>
-                          <td className="py-3 px-4">
-                            Take 1 tablespoon 20 minutes before exercise for fast, sustained
-                            natural energy.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-3 px-4 font-bold text-[#17251F]">Family Nutrition</td>
-                          <td className="py-3 px-4">
-                            Safe and healthy everyday nourishment for children and adults alike.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Storage Instructions & Origin */}
-                <div className="p-4 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] space-y-2 text-xs">
-                  <p>
-                    <strong className="text-[#17251F]">Storage Instructions:</strong> Store at room
-                    temperature (20°C - 25°C). Keep tightly closed in airtight jar. Store away from
-                    direct sunlight and moisture. Do not refrigerate.
-                  </p>
-                  <p>
-                    <strong className="text-[#17251F]">Country of Origin:</strong> Bangladesh (
-                    {product.origin})
-                  </p>
-                  {product.specifications && Object.keys(product.specifications).length > 0 && (
-                    <div className="pt-2 border-t border-[#E5ECE7] flex flex-wrap gap-4 text-[#17251F]">
-                      {Object.entries(product.specifications).map(([k, v]) => (
-                        <span key={k}>
-                          <strong>{k}:</strong> {v}
-                        </span>
-                      ))}
-                    </div>
+                  {product.description ? (
+                    <p className="mt-4 text-[#64736B] leading-relaxed whitespace-pre-line text-sm sm:text-base">
+                      {product.description}
+                    </p>
+                  ) : (
+                    <p className="mt-4 text-[#64736B] leading-relaxed">
+                      Fresh and 100% authentic {product.name} sourced under unbroken quality assurance.
+                    </p>
                   )}
                 </div>
+
+                {/* Key Features - ONLY if provided */}
+                {Array.isArray(product.keyFeatures) && product.keyFeatures.length > 0 && (
+                  <div>
+                    <h3 className="text-base sm:text-lg font-black text-[#17251F] mb-3">
+                      Key Features:
+                    </h3>
+                    <ul className="space-y-2.5 text-[#64736B]">
+                      {product.keyFeatures.map((feat, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <Check className="w-4 h-4 text-[#21A366] shrink-0 mt-0.5" />
+                          <span className="leading-relaxed font-medium text-xs sm:text-sm">
+                            {feat.replace(/^[•\-\*]\s*/, '')}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Health Benefits - ONLY if provided */}
+                {Array.isArray(product.healthBenefits) && product.healthBenefits.length > 0 && (
+                  <div>
+                    <h3 className="text-base sm:text-lg font-black text-[#17251F] mb-3">
+                      Health Benefits:
+                    </h3>
+                    <ul className="space-y-2.5 text-[#64736B]">
+                      {product.healthBenefits.map((benefit, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <span className="w-2 h-2 rounded-full bg-[#21A366] shrink-0 mt-1.5" />
+                          <span className="leading-relaxed font-medium text-xs sm:text-sm">
+                            {benefit.replace(/^[•\-\*]\s*/, '')}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* How to Use / Recommended Usage - ONLY if provided */}
+                {product.howToUse && product.howToUse.trim() ? (
+                  <div>
+                    <h3 className="text-base sm:text-lg font-black text-[#17251F] mb-3">
+                      How to Use / Recommended Usage:
+                    </h3>
+                    <div className="p-4 sm:p-5 rounded-2xl bg-[#F7F9F5] border border-[#E5ECE7] space-y-2.5">
+                      {product.howToUse
+                        .split('\n')
+                        .map((line) => line.trim())
+                        .filter(Boolean)
+                        .map((line, idx) => (
+                          <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#64736B]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#21A366] shrink-0 mt-2" />
+                            <p className="leading-relaxed">{line.replace(/^[•\-\*]\s*/, '')}</p>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {/* Storage Instructions & Origin - ONLY if provided */}
+                {(product.storageInstructions || product.origin || product.countryOfOrigin) && (
+                  <div className="p-4 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] space-y-2 text-xs">
+                    {product.storageInstructions && (
+                      <p>
+                        <strong className="text-[#17251F]">Storage Instructions:</strong>{' '}
+                        {product.storageInstructions}
+                      </p>
+                    )}
+                    {(product.countryOfOrigin || product.origin) && (
+                      <p>
+                        <strong className="text-[#17251F]">Country of Origin:</strong>{' '}
+                        {product.countryOfOrigin || 'Bangladesh'} {product.origin ? `(${product.origin})` : ''}
+                      </p>
+                    )}
+                    {product.specifications && Object.keys(product.specifications).length > 0 && (
+                      <div className="pt-2 border-t border-[#E5ECE7] flex flex-wrap gap-4 text-[#17251F]">
+                        {Object.entries(product.specifications).map(([k, v]) => (
+                          <span key={k}>
+                            <strong>{k}:</strong> {v}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
