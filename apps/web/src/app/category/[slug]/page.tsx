@@ -446,7 +446,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-4">
                 {hotDealsInCategory.map((product) => (
                   <ProductCard key={product.id} product={product} compact />
                 ))}
@@ -500,7 +500,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
               {/* Price Tier & Sort By */}
               <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-[#E5ECE7]/60">
                 {/* Price range pills */}
-                <div className="flex items-center gap-2 text-xs">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
                   <span className="font-bold text-[#64736B]">Price:</span>
                   {[
                     { id: 'all', label: 'All Prices' },
@@ -584,7 +584,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-4">
                   {displayedProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}

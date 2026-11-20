@@ -175,48 +175,48 @@ export const FeaturedCategoriesSlider: React.FC = () => {
     <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <div className="bg-[#FAFBF9] rounded-3xl border border-[#E8ECE7] p-5 sm:p-7 shadow-xs">
         {/* Header with Title and Circular Navigation Controls */}
-        <div className="flex items-center justify-between pb-5 border-b border-[#E5ECE7]/80">
+        <div className="flex items-center justify-between gap-3 pb-4 sm:pb-5 border-b border-[#E5ECE7]/80">
           <div>
             <div className="flex items-center gap-2">
               <span className="p-1.5 rounded-lg bg-[#EBF7F0] text-[#21A366]">
                 <Sparkles className="w-4 h-4" />
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-[#17251F] tracking-tight">
+              <h2 className="text-lg sm:text-2xl font-black text-[#17251F] tracking-tight">
                 Featured Categories
               </h2>
             </div>
-            <p className="text-xs text-[#64736B] mt-0.5">
+            <p className="text-[11px] sm:text-xs text-[#64736B] mt-0.5 line-clamp-1">
               Explore 100% natural, lab-tested pantry staples and fresh organic harvest
             </p>
           </div>
 
           {/* Circular Orange Arrow Buttons matching reference design */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               type="button"
               onClick={() => scroll('left')}
               disabled={!canScrollLeft}
-              className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${
                 canScrollLeft
                   ? 'bg-[#F2722B] hover:bg-[#E05E17] text-white hover:scale-105 active:scale-95 cursor-pointer shadow-orange-500/20'
                   : 'bg-neutral-200 text-neutral-400 cursor-not-allowed opacity-50'
               }`}
               aria-label="Previous Categories"
             >
-              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
             </button>
             <button
               type="button"
               onClick={() => scroll('right')}
               disabled={!canScrollRight}
-              className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${
                 canScrollRight
                   ? 'bg-[#F2722B] hover:bg-[#E05E17] text-white hover:scale-105 active:scale-95 cursor-pointer shadow-orange-500/20'
                   : 'bg-neutral-200 text-neutral-400 cursor-not-allowed opacity-50'
               }`}
               aria-label="Next Categories"
             >
-              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
             </button>
           </div>
         </div>

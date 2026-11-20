@@ -105,7 +105,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       </Link>
 
       {/* Card Details */}
-      <div className="p-4 flex-1 flex flex-col justify-between">
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
         <div>
           {/* Category & Origin */}
           <div className="flex items-center justify-between text-xs text-[#64736B] mb-1">
@@ -118,7 +118,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Product Title */}
           <Link href={`/products/${product.id}`} className="block">
             <h3
-              className="font-bold text-[#17251F] text-sm md:text-base leading-snug line-clamp-2 hover:text-[#21A366] cursor-pointer transition-colors"
+              className="font-bold text-[#17251F] text-xs sm:text-sm md:text-base leading-snug line-clamp-2 hover:text-[#21A366] cursor-pointer transition-colors"
               title={product.name}
             >
               {product.name}
@@ -138,12 +138,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* Pricing & Add to Cart */}
-        <div className="mt-4 pt-3 border-t border-[#E5ECE7]/60 flex items-center justify-between gap-2">
+        <div className="mt-2.5 sm:mt-4 pt-2.5 sm:pt-3 border-t border-[#E5ECE7]/60 flex items-center justify-between gap-1.5 sm:gap-2">
           <div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-lg font-black text-[#123C2D]">৳{product.price}</span>
+            <div className="flex items-baseline gap-1 sm:gap-1.5">
+              <span className="text-base sm:text-lg font-black text-[#123C2D]">৳{product.price}</span>
               {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-xs text-gray-400 line-through">
+                <span className="text-[11px] sm:text-xs text-gray-400 line-through">
                   ৳{product.originalPrice}
                 </span>
               )}
@@ -161,12 +161,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     e.stopPropagation();
                     updateQuantity(product.id, -1);
                   }}
-                  className="w-7 h-8 flex items-center justify-center text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors"
+                  className="w-6 sm:w-7 h-7 sm:h-8 flex items-center justify-center text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors"
                   aria-label="Decrease quantity"
                 >
-                  <Minus className="w-3.5 h-3.5" />
+                  <Minus className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
                 </button>
-                <span className="w-7 text-center text-xs font-bold text-[#123C2D]">
+                <span className="w-6 sm:w-7 text-center text-xs font-bold text-[#123C2D]">
                   {cartQuantity}
                 </span>
                 <button
@@ -175,17 +175,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     e.stopPropagation();
                     updateQuantity(product.id, 1);
                   }}
-                  className="w-7 h-8 flex items-center justify-center text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors"
+                  className="w-6 sm:w-7 h-7 sm:h-8 flex items-center justify-center text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors"
                   aria-label="Increase quantity"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Plus className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
                 </button>
               </div>
             ) : (
               <button
                 type="button"
                 onClick={(e) => addToCart(product, e)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all duration-200 shadow-sm ${
+                className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all duration-200 shadow-sm ${
                   isJustAdded
                     ? 'bg-[#2EBD70] text-white scale-95'
                     : 'bg-[#21A366] text-white hover:bg-[#123C2D] active:scale-95'
@@ -199,7 +199,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 ) : (
                   <>
                     <ShoppingBag className="w-3.5 h-3.5" />
-                    <span>Add</span>
+                    <span className="hidden xs:inline">Add</span>
                   </>
                 )}
               </button>

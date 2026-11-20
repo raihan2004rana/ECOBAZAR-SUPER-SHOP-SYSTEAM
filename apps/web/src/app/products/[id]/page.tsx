@@ -295,13 +295,13 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         </section>
 
         {/* 1. TOP PRODUCT OVERVIEW & PROMOTIONAL BANNERS ROW (1600px High-Impact Layout) */}
-        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch">
             {/* Left 8 Columns: Main Product Card (Gallery + Buy Box) */}
-            <div className="lg:col-span-8 bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-7 lg:p-8 shadow-xs flex flex-col justify-between">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start">
+            <div className="lg:col-span-8 bg-white rounded-2xl sm:rounded-3xl border border-[#E5ECE7] p-4 sm:p-7 lg:p-8 shadow-xs flex flex-col justify-between">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-start">
                 {/* Product Gallery (Thumbnails + Main Image) */}
-                <div className="md:col-span-6 min-w-0 flex flex-col-reverse sm:flex-row gap-3.5 items-start">
+                <div className="md:col-span-6 min-w-0 flex flex-col-reverse sm:flex-row gap-3 sm:gap-3.5 items-start">
                   {/* Thumbnails strip - ONLY show if there are 2 or more images */}
                   {galleryImages.length > 1 && (
                     <div className="flex sm:flex-col gap-2.5 overflow-x-auto sm:overflow-visible w-full sm:w-20 shrink-0 pb-2 sm:pb-0">
@@ -566,10 +566,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
             </div>
 
             {/* Right 4 Columns: High-Impact Promotional Banners */}
-            <div className="lg:col-span-4 flex flex-col gap-4 h-full">
+            <div className="lg:col-span-4 flex flex-col gap-4 h-auto lg:h-full">
               {/* Top Card: 2-Slide Banner Slider (Expands to fill top portion) */}
               <div
-                className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] flex-1 min-h-[260px] flex flex-col justify-between"
+                className="group relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] flex-1 min-h-[230px] sm:min-h-[260px] flex flex-col justify-between"
                 onMouseEnter={() => setIsPromoPaused(true)}
                 onMouseLeave={() => setIsPromoPaused(false)}
               >
@@ -673,7 +673,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               </div>
 
               {/* Bottom 2 Cards Side-by-Side: Full Card Background as Banner Image (Expands to fill remaining bottom portion) */}
-              <div className="flex-1 min-h-[220px] grid grid-cols-2 gap-3.5">
+              <div className="flex-1 min-h-[200px] sm:min-h-[220px] grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
                 {/* Card 1: Tasty Seafood Daily Series */}
                 <Link
                   href="/category/meat-fish"

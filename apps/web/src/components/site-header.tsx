@@ -346,7 +346,7 @@ export const SiteHeader: React.FC = () => {
         </div>
 
         {/* Mobile Search Input */}
-        <div className="mt-3 md:hidden">
+        <div className="mt-3 md:hidden relative">
           <div className="relative">
             <input
               type="text"
@@ -361,10 +361,43 @@ export const SiteHeader: React.FC = () => {
                   setSearchQuery('');
                 }
               }}
-              className="w-full pl-10 pr-4 py-2 bg-[#F7F9F5] text-xs rounded-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366]"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#F7F9F5] text-xs rounded-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366] text-[#17251F]"
             />
             <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
           </div>
+
+          {/* Mobile Live Search Dropdown Suggestions */}
+          {isSearchFocused && searchResults.length > 0 && (
+            <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-[#E5ECE7] py-2 z-50 max-h-72 overflow-y-auto">
+              <div className="px-4 py-1.5 text-[10px] font-bold text-[#64736B] uppercase tracking-wider bg-[#F7F9F5]">
+                Found {searchResults.length} Products
+              </div>
+              {searchResults.map((product) => (
+                <Link
+                  key={product.id}
+                  href={`/products/${product.id}`}
+                  onClick={() => {
+                    setIsSearchFocused(false);
+                    setSearchQuery('');
+                  }}
+                  className="flex items-center gap-2.5 px-3.5 py-2 hover:bg-[#F7F9F5] cursor-pointer transition-colors border-b border-[#E5ECE7]/40 last:border-b-0"
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-9 h-9 rounded-lg object-cover bg-[#F7F9F5] border border-[#E5ECE7] shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-[#17251F] truncate">{product.name}</p>
+                    <p className="text-[10px] text-[#64736B] truncate">{product.category} • {product.unit}</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-xs font-black text-[#123C2D]">৳{product.price}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
