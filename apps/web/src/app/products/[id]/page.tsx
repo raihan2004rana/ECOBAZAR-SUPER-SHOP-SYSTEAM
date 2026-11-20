@@ -294,259 +294,433 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           </div>
         </section>
 
-        {/* 1. TOP PRODUCT OVERVIEW & BUY BOX */}
+        {/* 1. TOP PRODUCT OVERVIEW & PROMOTIONAL BANNERS ROW (1600px High-Impact Layout) */}
         <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
-          <div className="bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-8 lg:p-10 shadow-xs">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-              {/* Left Column: Gallery (Thumbnails + Main Image) */}
-              <div className="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4 items-start">
-                {/* Thumbnails strip - ONLY show if there are 2 or more images */}
-                {galleryImages.length > 1 && (
-                  <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible w-full sm:w-20 shrink-0 pb-2 sm:pb-0">
-                    {galleryImages.map((imgSrc, index) => (
-                      <button
-                        key={index}
-                        type="button"
-                        onClick={() => setSelectedImage(imgSrc)}
-                        className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-[#F7F9F5] shrink-0 ${
-                          selectedImage === imgSrc
-                            ? 'border-[#21A366] shadow-md ring-2 ring-[#21A366]/20'
-                            : 'border-[#E5ECE7] hover:border-gray-300 opacity-75 hover:opacity-100'
-                        }`}
-                      >
-                        <img
-                          src={imgSrc}
-                          alt={`Thumbnail ${index + 1}`}
-                          className="w-full h-full object-cover rounded-xl"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* Main Large Image Display */}
-                <div className="flex-1 relative w-full rounded-2xl sm:rounded-3xl bg-[#F7F9F5] border border-[#E5ECE7] p-6 sm:p-10 flex items-center justify-center overflow-hidden min-h-[340px] sm:min-h-[460px] group">
-                  {/* Badge */}
-                  {product.badge && (
-                    <span className="absolute top-4 left-4 z-10 text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-[#21A366] text-white shadow-md">
-                      {product.badge}
-                    </span>
-                  )}
-
-                  {/* Wishlist Button */}
-                  <button
-                    type="button"
-                    onClick={(e) => toggleWishlist(product, e)}
-                    aria-label="Wishlist"
-                    className={`absolute top-4 right-4 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                      isWishlisted
-                        ? 'bg-rose-50 text-rose-500 shadow-md'
-                        : 'bg-white/90 backdrop-blur-sm text-gray-500 hover:text-rose-500 hover:bg-white shadow-sm'
-                    }`}
-                  >
-                    <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
-                  </button>
-
-                  {/* Main Product Image with subtle hover zoom */}
-                  <img
-                    src={selectedImage}
-                    alt={product.name}
-                    className="w-full h-auto max-h-[380px] sm:max-h-[420px] object-contain transition-transform duration-500 group-hover:scale-105"
-                  />
-
-                  {/* Prev/Next Image Navigation Arrows (only if multi-image) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Left 8 Columns: Main Product Card (Gallery + Buy Box) */}
+            <div className="lg:col-span-8 bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-7 lg:p-8 shadow-xs">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start">
+                {/* Product Gallery (Thumbnails + Main Image) */}
+                <div className="md:col-span-6 flex flex-col-reverse sm:flex-row gap-3.5 items-start">
+                  {/* Thumbnails strip - ONLY show if there are 2 or more images */}
                   {galleryImages.length > 1 && (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const idx = galleryImages.indexOf(selectedImage);
-                          const cur = idx >= 0 ? idx : 0;
-                          const prevIdx = (cur - 1 + galleryImages.length) % galleryImages.length;
-                          setSelectedImage(galleryImages[prevIdx]);
-                        }}
-                        aria-label="Previous image"
-                        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <ChevronLeft className="w-5 h-5" />
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const idx = galleryImages.indexOf(selectedImage);
-                          const cur = idx >= 0 ? idx : 0;
-                          const nextIdx = (cur + 1) % galleryImages.length;
-                          setSelectedImage(galleryImages[nextIdx]);
-                        }}
-                        aria-label="Next image"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <ChevronRight className="w-5 h-5" />
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Right Column: Title, Price & Action Buttons */}
-              <div className="lg:col-span-5 space-y-6">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#17251F] leading-tight">
-                    {product.name}
-                  </h1>
-                  {product.nameBn && (
-                    <p className="text-sm font-bold text-[#21A366] mt-1">{product.nameBn}</p>
-                  )}
-
-                  {/* Rating & Stock row */}
-                  <div className="flex items-center gap-3 mt-3 pt-2 border-t border-[#E5ECE7]/60 text-xs">
-                    <div className="flex items-center text-amber-400">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400" />
+                    <div className="flex sm:flex-col gap-2.5 overflow-x-auto sm:overflow-visible w-full sm:w-18 shrink-0 pb-2 sm:pb-0">
+                      {galleryImages.map((imgSrc, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => setSelectedImage(imgSrc)}
+                          className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 transition-all p-1 bg-[#F7F9F5] shrink-0 ${
+                            selectedImage === imgSrc
+                              ? 'border-[#21A366] shadow-md ring-2 ring-[#21A366]/20'
+                              : 'border-[#E5ECE7] hover:border-gray-300 opacity-75 hover:opacity-100'
+                          }`}
+                        >
+                          <img
+                            src={imgSrc}
+                            alt={`Thumbnail ${index + 1}`}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </button>
                       ))}
                     </div>
-                    <span className="font-bold text-[#17251F]">{product.rating}</span>
-                    <span className="text-[#64736B]">({product.reviews} Customer Reviews)</span>
-                    <span className="text-[#21A366] font-bold bg-[#D8F3DC] px-2 py-0.5 rounded-full">
-                      ● In Stock
-                    </span>
-                  </div>
-                </div>
-
-                {/* Price Display */}
-                <div className="flex items-baseline gap-3 p-4 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7]/80">
-                  <span className="text-3xl sm:text-4xl font-black text-[#D9531E]">
-                    ৳{product.price}
-                  </span>
-                  {product.originalPrice && product.originalPrice > product.price && (
-                    <>
-                      <span className="text-lg text-gray-400 line-through">
-                        ৳{product.originalPrice}
-                      </span>
-                      <span className="text-xs font-black bg-[#21A366]/15 text-[#21A366] px-2.5 py-1 rounded-full">
-                        Save ৳{product.originalPrice - product.price}
-                      </span>
-                    </>
                   )}
-                  <span className="text-xs text-[#64736B] font-medium ml-auto">
-                    {product.unit}
-                  </span>
-                </div>
 
-                {/* Quantity Stepper */}
-                <div className="flex items-center gap-4">
-                  <span className="text-xs font-black uppercase tracking-wider text-[#17251F]">
-                    Quantity:
-                  </span>
-                  <div className="flex items-center border border-[#E5ECE7] rounded-xl overflow-hidden bg-white shadow-xs">
+                  {/* Main Large Image Display */}
+                  <div className="flex-1 relative w-full rounded-2xl bg-[#F7F9F5] border border-[#E5ECE7] p-4 sm:p-6 flex items-center justify-center overflow-hidden min-h-[300px] sm:min-h-[380px] group">
+                    {/* Badge */}
+                    {product.badge && (
+                      <span className="absolute top-3 left-3 z-10 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#21A366] text-white shadow-md">
+                        {product.badge}
+                      </span>
+                    )}
+
+                    {/* Wishlist Button */}
                     <button
                       type="button"
-                      onClick={handleDecrement}
-                      aria-label="Decrease quantity"
-                      className="w-10 h-10 flex items-center justify-center hover:bg-[#F7F9F5] text-[#17251F] transition-colors"
+                      onClick={(e) => toggleWishlist(product, e)}
+                      aria-label="Wishlist"
+                      className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                        isWishlisted
+                          ? 'bg-rose-50 text-rose-500 shadow-md'
+                          : 'bg-white/90 backdrop-blur-sm text-gray-500 hover:text-rose-500 hover:bg-white shadow-sm'
+                      }`}
                     >
-                      <Minus className="w-4 h-4" />
+                      <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
                     </button>
-                    <span className="w-12 text-center font-black text-sm text-[#17251F]">
-                      {quantity}
+
+                    {/* Main Product Image with subtle hover zoom */}
+                    <img
+                      src={selectedImage}
+                      alt={product.name}
+                      className="w-full h-auto max-h-[320px] sm:max-h-[360px] object-contain transition-transform duration-500 group-hover:scale-105"
+                    />
+
+                    {/* Prev/Next Image Navigation Arrows (only if multi-image) */}
+                    {galleryImages.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const idx = galleryImages.indexOf(selectedImage);
+                            const cur = idx >= 0 ? idx : 0;
+                            const prevIdx = (cur - 1 + galleryImages.length) % galleryImages.length;
+                            setSelectedImage(galleryImages[prevIdx]);
+                          }}
+                          aria-label="Previous image"
+                          className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const idx = galleryImages.indexOf(selectedImage);
+                            const cur = idx >= 0 ? idx : 0;
+                            const nextIdx = (cur + 1) % galleryImages.length;
+                            setSelectedImage(galleryImages[nextIdx]);
+                          }}
+                          aria-label="Next image"
+                          className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right Sub-Column: Title, Price & Action Buttons */}
+                <div className="md:col-span-6 space-y-4">
+                  <div>
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#17251F] leading-tight">
+                      {product.name}
+                    </h1>
+                    {product.nameBn && (
+                      <p className="text-xs sm:text-sm font-bold text-[#21A366] mt-0.5">{product.nameBn}</p>
+                    )}
+
+                    {/* Rating & Stock row */}
+                    <div className="flex items-center gap-2.5 mt-2.5 pt-2 border-t border-[#E5ECE7]/60 text-xs">
+                      <div className="flex items-center text-amber-400">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                        ))}
+                      </div>
+                      <span className="font-bold text-[#17251F]">{product.rating}</span>
+                      <span className="text-[#64736B]">({product.reviews} Reviews)</span>
+                      <span className="text-[#21A366] font-bold bg-[#D8F3DC] px-2 py-0.5 rounded-full ml-auto text-[11px]">
+                        ● In Stock
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Price Display */}
+                  <div className="flex items-baseline gap-2.5 p-3.5 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7]/80">
+                    <span className="text-2xl sm:text-3xl font-black text-[#D9531E]">
+                      ৳{product.price}
                     </span>
+                    {product.originalPrice && product.originalPrice > product.price && (
+                      <>
+                        <span className="text-base text-gray-400 line-through">
+                          ৳{product.originalPrice}
+                        </span>
+                        <span className="text-[11px] font-black bg-[#21A366]/15 text-[#21A366] px-2 py-0.5 rounded-full">
+                          Save ৳{product.originalPrice - product.price}
+                        </span>
+                      </>
+                    )}
+                    <span className="text-xs text-[#64736B] font-medium ml-auto">
+                      {product.unit}
+                    </span>
+                  </div>
+
+                  {/* Quantity Stepper */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-black uppercase tracking-wider text-[#17251F]">
+                      Quantity:
+                    </span>
+                    <div className="flex items-center border border-[#E5ECE7] rounded-xl overflow-hidden bg-white shadow-xs">
+                      <button
+                        type="button"
+                        onClick={handleDecrement}
+                        aria-label="Decrease quantity"
+                        className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center hover:bg-[#F7F9F5] text-[#17251F] transition-colors"
+                      >
+                        <Minus className="w-3.5 h-3.5" />
+                      </button>
+                      <span className="w-10 text-center font-black text-xs sm:text-sm text-[#17251F]">
+                        {quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleIncrement}
+                        aria-label="Increase quantity"
+                        className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center hover:bg-[#F7F9F5] text-[#17251F] transition-colors"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 4 Primary Action Buttons */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                    {/* ADD TO CART */}
                     <button
                       type="button"
-                      onClick={handleIncrement}
-                      aria-label="Increase quantity"
-                      className="w-10 h-10 flex items-center justify-center hover:bg-[#F7F9F5] text-[#17251F] transition-colors"
+                      onClick={handleAddToCart}
+                      className="w-full bg-[#F26522] hover:bg-[#D9531E] active:scale-95 text-white font-black py-3 px-3 rounded-xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
                     >
-                      <Plus className="w-4 h-4" />
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>ADD TO CART</span>
+                    </button>
+
+                    {/* BUY NOW */}
+                    <button
+                      type="button"
+                      onClick={handleBuyNow}
+                      className="w-full bg-[#102A27] hover:bg-[#123C2D] active:scale-95 text-white font-black py-3 px-3 rounded-xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
+                    >
+                      <span>BUY NOW</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+
+                    {/* Order via WhatsApp */}
+                    <button
+                      type="button"
+                      onClick={handleWhatsAppOrder}
+                      className="w-full bg-[#25D366] hover:bg-[#20BA5A] active:scale-95 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs shadow-xs hover:shadow-md transition-all"
+                    >
+                      <MessageCircle className="w-4 h-4 fill-white" />
+                      <span>Order via WhatsApp</span>
+                    </button>
+
+                    {/* Call for Order */}
+                    <button
+                      type="button"
+                      onClick={handleCallOrder}
+                      className="w-full bg-[#1A3B8B] hover:bg-[#152E6D] active:scale-95 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs shadow-xs hover:shadow-md transition-all"
+                    >
+                      <Phone className="w-4 h-4" />
+                      <span>Call for Order</span>
                     </button>
                   </div>
+
+                  {/* Product Metadata */}
+                  <div className="pt-3 border-t border-[#E5ECE7]/60 space-y-1.5 text-xs text-[#64736B]">
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-[#17251F]">Brand:</span>
+                      <span className="bg-[#E5ECE7]/60 text-[#17251F] font-bold px-2 py-0.5 rounded-md">
+                        {product.brand || 'ECOBAZAR Pure'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-[#17251F]">Origin:</span>
+                      <span>{product.origin || 'Organic Certified, Bangladesh'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-[#17251F]">Category:</span>
+                      <Link
+                        href={`/category/${product.categorySlug}`}
+                        className="text-[#21A366] hover:underline font-bold"
+                      >
+                        {product.category}
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Value & Delivery Assurances */}
+                  <div className="grid grid-cols-2 gap-2 pt-3 border-t border-[#E5ECE7]/60 text-[11px]">
+                    <div className="flex items-center gap-2 bg-[#F7F9F5] p-2 rounded-xl border border-[#E5ECE7]">
+                      <Truck className="w-3.5 h-3.5 text-[#21A366] shrink-0" />
+                      <span className="font-bold text-[#17251F]">30-Min Fast Delivery</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-[#F7F9F5] p-2 rounded-xl border border-[#E5ECE7]">
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#21A366] shrink-0" />
+                      <span className="font-bold text-[#17251F]">100% Formalin Free</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-[#F7F9F5] p-2 rounded-xl border border-[#E5ECE7]">
+                      <Sparkles className="w-3.5 h-3.5 text-[#F4A340] shrink-0" />
+                      <span className="font-bold text-[#17251F]">Cash on Delivery</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-[#F7F9F5] p-2 rounded-xl border border-[#E5ECE7]">
+                      <RotateCcw className="w-3.5 h-3.5 text-[#21A366] shrink-0" />
+                      <span className="font-bold text-[#17251F]">7 Days Return Policy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right 4 Columns: High-Impact Promotional Banners */}
+            <div className="lg:col-span-4 flex flex-col gap-4">
+              {/* Top Card: 2-Slide Banner Slider */}
+              <div
+                className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] min-h-[230px] sm:min-h-[250px] flex items-center justify-between"
+                onMouseEnter={() => setIsPromoPaused(true)}
+                onMouseLeave={() => setIsPromoPaused(false)}
+              >
+                {/* Slide 1 */}
+                <div
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    activePromoSlide === 0 ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'
+                  }`}
+                >
+                  <img
+                    src="/images/banner-farm-to-table.jpg"
+                    alt="Direct Farm Harvest"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/80 via-transparent to-black/20" />
                 </div>
 
-                {/* 4 Primary Action Buttons (Exact Ghorerbazar Layout) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  {/* ADD TO CART */}
-                  <button
-                    type="button"
-                    onClick={handleAddToCart}
-                    className="w-full bg-[#F26522] hover:bg-[#D9531E] active:scale-95 text-white font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-xs sm:text-sm uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>ADD TO CART</span>
-                  </button>
-
-                  {/* BUY NOW */}
-                  <button
-                    type="button"
-                    onClick={handleBuyNow}
-                    className="w-full bg-[#102A27] hover:bg-[#123C2D] active:scale-95 text-white font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-xs sm:text-sm uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
-                  >
-                    <span>BUY NOW</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-
-                  {/* Order via WhatsApp */}
-                  <button
-                    type="button"
-                    onClick={handleWhatsAppOrder}
-                    className="w-full bg-[#25D366] hover:bg-[#20BA5A] active:scale-95 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-xs sm:text-sm shadow-sm hover:shadow-md transition-all"
-                  >
-                    <MessageCircle className="w-4 h-4 fill-white" />
-                    <span>Order via WhatsApp</span>
-                  </button>
-
-                  {/* Call for Order */}
-                  <button
-                    type="button"
-                    onClick={handleCallOrder}
-                    className="w-full bg-[#1A3B8B] hover:bg-[#152E6D] active:scale-95 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-xs sm:text-sm shadow-sm hover:shadow-md transition-all"
-                  >
-                    <Phone className="w-4 h-4" />
-                    <span>Call for Order</span>
-                  </button>
+                {/* Slide 2 */}
+                <div
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    activePromoSlide === 1 ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'
+                  }`}
+                >
+                  <img
+                    src="/images/banner-mustard-oil.jpg"
+                    alt="Cold Pressed Mustard Oil"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/80 via-transparent to-black/20" />
                 </div>
 
-                {/* Product Metadata */}
-                <div className="pt-4 border-t border-[#E5ECE7]/60 space-y-2 text-xs text-[#64736B]">
-                  <div className="flex items-center gap-2">
-                    <span className="font-extrabold text-[#17251F]">Brand:</span>
-                    <span className="bg-[#E5ECE7]/60 text-[#17251F] font-bold px-2 py-0.5 rounded-md">
-                      {product.brand || 'ECOBAZAR Pure'}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-extrabold text-[#17251F]">Origin:</span>
-                    <span>{product.origin || 'Organic Certified, Bangladesh'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-extrabold text-[#17251F]">Category:</span>
+                {/* Slide Content */}
+                <div className="relative z-10 p-5 sm:p-6 text-white space-y-2">
+                  <span className="inline-block text-[10px] font-black tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-[#2EBD70] text-[#071F15] shadow-xs">
+                    {activePromoSlide === 0
+                      ? 'FARMER CO-OP • FORMALIN FREE'
+                      : 'COLD-PRESSED • PURE GHANI'}
+                  </span>
+                  <h2 className="text-lg sm:text-xl font-black leading-snug drop-shadow-md">
+                    {activePromoSlide === 0
+                      ? 'সরাসরি কৃষকের ক্ষেত থেকে নিরাপদ খাবার'
+                      : 'কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল ও মশলা'}
+                  </h2>
+                  <p className="text-xs text-emerald-100/90 font-medium leading-relaxed line-clamp-2">
+                    {activePromoSlide === 0
+                      ? '১২০+ সার্টিফাইড অর্গানিক খামার থেকে ভোরে সংগৃহীত সতেজ ফসল।'
+                      : 'প্রাকৃতিক ঘ্রাণ ও পুষ্টিতে ভরপুর কোনো কেমিক্যাল ছাড়া দেশি খাঁটি তেল।'}
+                  </p>
+                  <div className="pt-1.5">
                     <Link
-                      href={`/category/${product.categorySlug}`}
-                      className="text-[#21A366] hover:underline font-bold"
+                      href={activePromoSlide === 0 ? '/category/fresh-fruits-vegetables' : '/category/spices-oils'}
+                      className="inline-flex items-center gap-1.5 bg-[#21A366] hover:bg-[#123C2D] text-white px-4 py-2 rounded-xl text-xs font-black shadow-md hover:shadow-lg transition-all active:scale-95"
                     >
-                      {product.category}
+                      <span>{activePromoSlide === 0 ? 'Explore Harvest' : 'Shop Oils'}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </div>
 
-                {/* Value & Delivery Assurances */}
-                <div className="grid grid-cols-2 gap-3 pt-4 border-t border-[#E5ECE7]/60 text-xs">
-                  <div className="flex items-center gap-2.5 bg-[#F7F9F5] p-3 rounded-xl border border-[#E5ECE7]">
-                    <Truck className="w-4 h-4 text-[#21A366] shrink-0" />
-                    <span className="font-bold text-[#17251F]">30-Min Fast Delivery</span>
-                  </div>
-                  <div className="flex items-center gap-2.5 bg-[#F7F9F5] p-3 rounded-xl border border-[#E5ECE7]">
-                    <ShieldCheck className="w-4 h-4 text-[#21A366] shrink-0" />
-                    <span className="font-bold text-[#17251F]">100% Formalin Free</span>
-                  </div>
-                  <div className="flex items-center gap-2.5 bg-[#F7F9F5] p-3 rounded-xl border border-[#E5ECE7]">
-                    <Sparkles className="w-4 h-4 text-[#F4A340] shrink-0" />
-                    <span className="font-bold text-[#17251F]">Cash on Delivery</span>
-                  </div>
-                  <div className="flex items-center gap-2.5 bg-[#F7F9F5] p-3 rounded-xl border border-[#E5ECE7]">
-                    <RotateCcw className="w-4 h-4 text-[#21A366] shrink-0" />
-                    <span className="font-bold text-[#17251F]">7 Days Return Policy</span>
-                  </div>
+                {/* Slider Navigation Controls */}
+                <div className="absolute inset-y-0 left-2 right-2 flex items-center justify-between pointer-events-none z-20">
+                  <button
+                    type="button"
+                    onClick={() => setActivePromoSlide((prev) => (prev === 0 ? 1 : 0))}
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                    aria-label="Previous Slide"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActivePromoSlide((prev) => (prev === 0 ? 1 : 0))}
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                    aria-label="Next Slide"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
+
+                {/* Pagination Dots */}
+                <div className="absolute bottom-3 right-4 z-20 flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setActivePromoSlide(0)}
+                    className={`transition-all duration-300 rounded-full ${
+                      activePromoSlide === 0 ? 'w-5 h-1.5 bg-[#2EBD70]' : 'w-1.5 h-1.5 bg-white/50 hover:bg-white/80'
+                    }`}
+                    aria-label="Slide 1"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setActivePromoSlide(1)}
+                    className={`transition-all duration-300 rounded-full ${
+                      activePromoSlide === 1 ? 'w-5 h-1.5 bg-[#2EBD70]' : 'w-1.5 h-1.5 bg-white/50 hover:bg-white/80'
+                    }`}
+                    aria-label="Slide 2"
+                  />
+                </div>
+              </div>
+
+              {/* Bottom 2 Cards Side-by-Side: Full Card Background as Banner Image */}
+              <div className="grid grid-cols-2 gap-3">
+                {/* Card 1: Tasty Seafood Daily Series */}
+                <Link
+                  href="/category/meat-fish"
+                  className="group relative rounded-2xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[190px] sm:min-h-[210px] flex flex-col justify-end p-4"
+                >
+                  <div className="absolute inset-0 z-0">
+                    <img
+                      src="/images/banner-seafood.jpg"
+                      alt="Tasty Seafood Daily Series"
+                      className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/95 via-[#0A261B]/60 to-transparent" />
+                  </div>
+                  <div className="relative z-10 text-white space-y-1">
+                    <span className="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#F4A340] text-[#17251F] shadow-xs">
+                      FRESH CATCH
+                    </span>
+                    <h3 className="text-xs sm:text-sm font-black text-white leading-snug group-hover:text-[#D8F3DC] transition-colors drop-shadow-sm">
+                      Tasty Seafood Series
+                    </h3>
+                    <p className="text-[10px] text-white/80 font-medium line-clamp-1">
+                      Padma Hilsha & King Prawns
+                    </p>
+                    <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2EBD70] group-hover:text-white pt-0.5 transition-colors">
+                      <span>Explore</span>
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Card 2: Traditional Bogura Doi & Dairy */}
+                <Link
+                  href="/category/dairy-eggs"
+                  className="group relative rounded-2xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[190px] sm:min-h-[210px] flex flex-col justify-end p-4"
+                >
+                  <div className="absolute inset-0 z-0">
+                    <img
+                      src="/images/banner-bogura-doi.jpg"
+                      alt="ঐতিহ্যবাহী বগুড়ার দই"
+                      className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/95 via-[#0A261B]/60 to-transparent" />
+                  </div>
+                  <div className="relative z-10 text-white space-y-1">
+                    <span className="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#21A366] text-white shadow-xs">
+                      SWEET DAIRY
+                    </span>
+                    <h3 className="text-xs sm:text-sm font-black text-white leading-snug group-hover:text-[#D8F3DC] transition-colors drop-shadow-sm">
+                      বগুড়ার স্পেশাল দই
+                    </h3>
+                    <p className="text-[10px] text-white/80 font-medium line-clamp-1">
+                      Pure clay-pot curd & milk
+                    </p>
+                    <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#F4A340] group-hover:text-white pt-0.5 transition-colors">
+                      <span>Order Now</span>
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -874,181 +1048,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         </section>
 
         {/* ==================================================== */}
-        {/* 3. HIGH-IMPACT PROMOTIONAL BANNER SECTION           */}
-        {/* Top: 1 large 2-slide banner, Bottom: 2 side-by-side cards */}
-        {/* ==================================================== */}
-        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-12">
-          {/* Top Wide Card: 2-Slide Banner Slider */}
-          <div
-            className="group relative rounded-3xl overflow-hidden shadow-lg border border-[#E5ECE7] min-h-[230px] sm:min-h-[270px] md:min-h-[300px] flex items-center justify-between"
-            onMouseEnter={() => setIsPromoPaused(true)}
-            onMouseLeave={() => setIsPromoPaused(false)}
-          >
-            {/* Slide 1 */}
-            <div
-              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                activePromoSlide === 0 ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'
-              }`}
-            >
-              <img
-                src="/images/banner-farm-to-table.jpg"
-                alt="Direct Farm Harvest"
-                className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/80 via-transparent to-black/20" />
-            </div>
-
-            {/* Slide 2 */}
-            <div
-              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                activePromoSlide === 1 ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'
-              }`}
-            >
-              <img
-                src="/images/banner-mustard-oil.jpg"
-                alt="Cold Pressed Mustard Oil"
-                className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 sm:via-[#0A261B]/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/80 via-transparent to-black/20" />
-            </div>
-
-            {/* Slide Content */}
-            <div className="relative z-10 p-6 sm:p-10 lg:p-12 max-w-2xl text-white space-y-3">
-              <span className="inline-block text-[10px] sm:text-xs font-black tracking-wider uppercase px-3.5 py-1 rounded-full bg-[#2EBD70] text-[#071F15] shadow-sm">
-                {activePromoSlide === 0
-                  ? 'ORGANIC FARMER CO-OP • 100% FORMALIN FREE'
-                  : 'TRADITIONAL COLD-PRESSED • PURE GHANI OILS'}
-              </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight drop-shadow-md">
-                {activePromoSlide === 0
-                  ? 'সরাসরি কৃষকের ক্ষেত থেকে নিরাপদ টাটকা খাবার'
-                  : 'কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল ও খাঁটি মশলা'}
-              </h2>
-              <p className="text-xs sm:text-sm text-emerald-100/90 font-medium leading-relaxed max-w-lg">
-                {activePromoSlide === 0
-                  ? 'বগুড়া ও রাজশাহীর ১২০+ সার্টিফাইড অর্গানিক খামার থেকে ভোরে সংগৃহীত সতেজ ফসল সরাসরি আপনার ঘরে।'
-                  : 'কোনো কেমিক্যাল বা কৃত্রিম ঝাঁজ ছাড়া প্রাকৃতিক ঘ্রাণ ও পুষ্টিতে ভরপুর খাঁটি দেশি পণ্য।'}
-              </p>
-              <div className="pt-2">
-                <Link
-                  href={activePromoSlide === 0 ? '/category/fresh-fruits-vegetables' : '/category/spices-oils'}
-                  className="inline-flex items-center gap-2 bg-[#21A366] hover:bg-[#123C2D] text-white px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all active:scale-95"
-                >
-                  <span>{activePromoSlide === 0 ? 'Explore Fresh Harvest' : 'Shop Spices & Oils'}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Slider Navigation Controls */}
-            <div className="absolute inset-y-0 left-3 right-3 flex items-center justify-between pointer-events-none z-20">
-              <button
-                type="button"
-                onClick={() => setActivePromoSlide((prev) => (prev === 0 ? 1 : 0))}
-                className="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-lg backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
-                aria-label="Previous Slide"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setActivePromoSlide((prev) => (prev === 0 ? 1 : 0))}
-                className="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-lg backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
-                aria-label="Next Slide"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Pagination Dots */}
-            <div className="absolute bottom-4 right-6 z-20 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setActivePromoSlide(0)}
-                className={`transition-all duration-300 rounded-full ${
-                  activePromoSlide === 0 ? 'w-6 h-2 bg-[#2EBD70]' : 'w-2 h-2 bg-white/50 hover:bg-white/80'
-                }`}
-                aria-label="Slide 1"
-              />
-              <button
-                type="button"
-                onClick={() => setActivePromoSlide(1)}
-                className={`transition-all duration-300 rounded-full ${
-                  activePromoSlide === 1 ? 'w-6 h-2 bg-[#2EBD70]' : 'w-2 h-2 bg-white/50 hover:bg-white/80'
-                }`}
-                aria-label="Slide 2"
-              />
-            </div>
-          </div>
-
-          {/* Bottom 2 Cards Side-by-Side: Full Card Background as Banner Image */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            {/* Card 1: Tasty Seafood Daily Series */}
-            <Link
-              href="/category/meat-fish"
-              className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[210px] sm:min-h-[240px] flex flex-col justify-end p-6"
-            >
-              <div className="absolute inset-0 z-0">
-                <img
-                  src="/images/banner-seafood.jpg"
-                  alt="Tasty Seafood Daily Series"
-                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/95 via-[#0A261B]/50 to-transparent" />
-              </div>
-              <div className="relative z-10 text-white space-y-1.5">
-                <span className="inline-block text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#F4A340] text-[#17251F] shadow-xs">
-                  DAILY FRESH CATCH
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight group-hover:text-[#D8F3DC] transition-colors drop-shadow-sm">
-                  Tasty Seafood & River Fish Series
-                </h3>
-                <p className="text-xs text-white/90 font-medium line-clamp-1">
-                  Fresh Padma Hilsha, giant tiger prawns & river Katla on fresh ice.
-                </p>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2EBD70] group-hover:text-white pt-1 transition-colors">
-                  <span>Explore Meat & Fish</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            </Link>
-
-            {/* Card 2: Traditional Bogura Doi & Dairy */}
-            <Link
-              href="/category/dairy-eggs"
-              className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[210px] sm:min-h-[240px] flex flex-col justify-end p-6"
-            >
-              <div className="absolute inset-0 z-0">
-                <img
-                  src="/images/banner-bogura-doi.jpg"
-                  alt="ঐতিহ্যবাহী বগুড়ার দই"
-                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/95 via-[#0A261B]/50 to-transparent" />
-              </div>
-              <div className="relative z-10 text-white space-y-1.5">
-                <span className="inline-block text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#21A366] text-white shadow-xs">
-                  AUTHENTIC SPECIALTY
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight group-hover:text-[#D8F3DC] transition-colors drop-shadow-sm">
-                  ঐতিহ্যবাহী বগুড়ার স্পেশাল সরার মিষ্টি দই
-                </h3>
-                <p className="text-xs text-white/90 font-medium line-clamp-1">
-                  Pure clay-pot curd, artisan butter, farm eggs and cow milk.
-                </p>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F4A340] group-hover:text-white pt-1 transition-colors">
-                  <span>Order Fresh Dairy</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            </Link>
-          </div>
-        </section>
-
-        {/* ==================================================== */}
-        {/* 4. RELATED PRODUCTS SECTION                          */}
+        {/* 3. RELATED PRODUCTS SECTION (CROSS-SELLING)         */}
         {/* ==================================================== */}
         {relatedProducts.length > 0 && (
           <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-12">
@@ -1079,7 +1079,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         )}
 
         {/* ==================================================== */}
-        {/* 5. SPECIAL DEALS & OFFERS SECTION (CROSS-MARKETING) */}
+        {/* 4. SPECIAL DEALS & OFFERS SECTION (CROSS-MARKETING) */}
         {/* ==================================================== */}
         {hotDeals.length > 0 && (
           <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-10">
@@ -1117,7 +1117,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         )}
 
         {/* ==================================================== */}
-        {/* 6. DAILY FRESH HARVEST & NEW ARRIVALS (MARKETING)    */}
+        {/* 5. DAILY FRESH HARVEST & NEW ARRIVALS (MARKETING)    */}
         {/* ==================================================== */}
         {newArrivals.length > 0 && (
           <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-10">
