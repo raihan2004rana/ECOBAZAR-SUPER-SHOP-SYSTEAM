@@ -80,7 +80,7 @@ export const FarmToTableSlider: React.FC = () => {
   const slide = farmSlides[currentSlide];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
       <div
         className="group relative rounded-3xl overflow-hidden shadow-lg border border-emerald-900/20 min-h-[250px] sm:min-h-[290px] md:min-h-[310px] flex items-center bg-[#0C2B1F]"
         onMouseEnter={() => setIsPaused(true)}

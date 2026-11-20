@@ -105,7 +105,7 @@ export const SiteHeader: React.FC = () => {
     <header className="sticky top-0 z-40 bg-white shadow-xs">
       {/* 1. TOP ANNOUNCEMENT BAR — Solid Forest Green with High-Contrast Text */}
       <div className="bg-[#123C2D] text-white text-xs border-b border-[#21A366]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
           {/* Left helpline & banner */}
           <div className="flex items-center gap-4 text-white/90">
             <div className="flex items-center gap-1.5 font-medium">
@@ -163,7 +163,7 @@ export const SiteHeader: React.FC = () => {
       </div>
 
       {/* 2. MAIN HEADER BAR */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
         <div className="flex items-center justify-between gap-4 md:gap-8">
           {/* Logo */}
           <div className="flex items-center gap-3">
@@ -354,7 +354,7 @@ export const SiteHeader: React.FC = () => {
 
       {/* 3. SECONDARY NAVIGATION & DEPARTMENT BAR */}
       <div className="border-t border-[#E5ECE7] bg-[#F7F9F5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12">
             {/* All Categories Dropdown Trigger */}
             <div className="relative">

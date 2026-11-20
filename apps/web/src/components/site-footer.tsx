@@ -19,7 +19,7 @@ import {
 export const SiteFooter: React.FC = () => {
   return (
     <footer className="bg-[#123C2D] text-white pt-14 pb-8 border-t border-[#21A366]/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Trust Ribbon */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pb-12 border-b border-white/10 text-white">
           <div className="flex items-center gap-3">

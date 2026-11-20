@@ -135,7 +135,7 @@ export const AboutHeroSlider: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-[#061A12] via-transparent to-black/40 z-[1] pointer-events-none" />
 
       {/* Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
         <div className="max-w-2xl lg:max-w-3xl space-y-5">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#05170F] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg">

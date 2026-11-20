@@ -18,6 +18,7 @@ import {
 import { SiteHeader } from '../components/site-header';
 import { SiteFooter } from '../components/site-footer';
 import { HeroSlider } from '../components/hero-slider';
+import { FeaturedCategoriesSlider } from '../components/featured-categories-slider';
 import { FarmToTableSlider } from '../components/farm-to-table-slider';
 import { ProductCard } from '../components/product-card';
 import { CartDrawer } from '../components/cart-drawer';
@@ -66,7 +67,7 @@ export default function HomePage() {
         <HeroSlider />
 
         {/* 2. TRUST & BENEFITS BAR */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 sm:p-6 shadow-xs">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               <div className="flex items-center gap-3">
@@ -112,39 +113,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 3. CATEGORY QUICK CHIPS / DISCOVERY BAR */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-extrabold text-sm sm:text-base text-[#17251F] flex items-center gap-2">
-              <span>Quick Department Explorer</span>
-              <span className="text-xs font-normal text-[#64736B]">(11 Departments)</span>
-            </h3>
-            <span className="text-xs text-[#21A366] font-bold hidden sm:inline">
-              Instant Delivery Across Dhaka
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-11 gap-2.5">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/category/${cat.slug}`}
-                className="group bg-white rounded-xl p-2.5 border border-[#E5ECE7] hover:border-[#21A366] hover:shadow-md transition-all text-center flex flex-col items-center justify-center"
-              >
-                <div className="text-2xl mb-1 group-hover:scale-115 transition-transform duration-200">
-                  {cat.icon}
-                </div>
-                <h4 className="text-[11px] font-bold text-[#17251F] group-hover:text-[#21A366] leading-tight line-clamp-1">
-                  {cat.name.split(' ')[0]}
-                </h4>
-                <p className="text-[9px] text-[#64736B] mt-0.5 line-clamp-1">{cat.nameBn}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
+        {/* 3. FEATURED CATEGORIES SLIDER / QUICK DEPARTMENT EXPLORER */}
+        <FeaturedCategoriesSlider />
 
         {/* 4. TODAY'S BEST DEALS 🔥 (With Countdown & High Savings) */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-7 shadow-xs">
             {/* Header with Countdown */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E5ECE7]">
@@ -182,9 +155,9 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Product Cards Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mt-6">
-              {hotDeals.map((product) => (
+            {/* Product Cards Row - 5 Per Row on Wide Screens */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-4 mt-6">
+              {hotDeals.slice(0, 10).map((product) => (
                 <ProductCard key={product.id} product={product} compact />
               ))}
             </div>
@@ -197,12 +170,12 @@ export default function HomePage() {
         {categories.map((cat, index) => {
           const categoryProducts = (getProductsByCategory(cat.slug).length > 0
             ? getProductsByCategory(cat.slug)
-            : getProductsByCategorySlug(cat.slug)).slice(0, 8);
+            : getProductsByCategorySlug(cat.slug)).slice(0, 10);
 
           return (
             <React.Fragment key={cat.id}>
-              {/* Category Product Section */}
-              <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+              {/* Category Product Section - 5 Products Per Row on Wide Screens */}
+              <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-7 shadow-xs">
                   {/* Category Section Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-[#E5ECE7]">
@@ -248,8 +221,8 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* 8 Product Cards Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+                  {/* 10 Product Cards Grid (5 Per Row on Wide Displays) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 mt-6">
                     {categoryProducts.map((product) => (
                       <ProductCard key={product.id} product={product} />
                     ))}
@@ -259,7 +232,7 @@ export default function HomePage() {
 
               {/* Interspersed High-Impact Promotional Banners */}
               {index === 2 && (
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* 1. Bogura Doi Promotional Banner */}
                     <div className="group relative rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] hover:shadow-xl transition-all duration-300 min-h-[220px] sm:min-h-[260px] flex flex-col justify-end p-6 sm:p-8">

@@ -3123,48 +3123,48 @@ function AdminDashboardShell() {
                 </div>
               </div>
 
-              {/* REAL-TIME STOREFRONT SALES TELEMETRY BANNER */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-900/40 via-neutral-900/70 to-teal-950/40 border-2 border-emerald-500/40 shadow-lg text-left relative overflow-hidden backdrop-blur-md">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-500 text-neutral-950 font-black text-[10px] uppercase tracking-wider">
+              {/* REAL-TIME STOREFRONT SALES TELEMETRY BANNER - ULTRA-HIGH CONTRAST */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#082819] text-white border-2 border-emerald-400 shadow-xl text-left relative overflow-hidden">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 relative z-10">
+                  <div className="space-y-1.5 max-w-xl">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-400 text-neutral-950 font-black text-[11px] uppercase tracking-wider shadow-sm">
                         ⚡ Real-Time Store Sales
                       </span>
-                      <span className="text-xs text-emerald-400 font-bold">
+                      <span className="text-sm text-emerald-200 font-bold">
                         লাইভ বিক্রয় ও প্রোডাক্ট পারফরম্যান্স
                       </span>
                     </div>
-                    <p className="text-xs text-neutral-300 font-medium">
+                    <p className="text-xs text-emerald-100/90 font-medium leading-relaxed">
                       ফ্রন্টএন্ড স্টোর থেকে বিক্রি হওয়া মাত্র পণ্যের বিক্রিত পরিমাণ (যেমন: ১ কেজি + ২ কেজি = ৩ কেজি) ও মোট টাকা স্বয়ংক্রিয়ভাবে আপডেট হচ্ছে।
                     </p>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3">
-                    <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs">
-                      <span className="text-neutral-400 block text-[10px]">মোট বিক্রয়:</span>
-                      <strong className="text-emerald-400 font-black text-sm">৳{liveGrandRevenue.toLocaleString()}</strong>
+                    <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-emerald-400/50 text-xs shadow-inner">
+                      <span className="text-emerald-300 block text-[10px] font-bold tracking-wide uppercase">মোট বিক্রয়:</span>
+                      <strong className="text-emerald-300 font-black text-base">৳{liveGrandRevenue.toLocaleString()}</strong>
                     </div>
-                    <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs">
-                      <span className="text-neutral-400 block text-[10px]">মোট বিক্রিত পরিমাণ:</span>
-                      <strong className="text-cyan-400 font-black text-sm">{liveGrandUnits} kg/units</strong>
+                    <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-cyan-400/50 text-xs shadow-inner">
+                      <span className="text-cyan-300 block text-[10px] font-bold tracking-wide uppercase">মোট বিক্রিত পরিমাণ:</span>
+                      <strong className="text-cyan-300 font-black text-base">{liveGrandUnits} kg/units</strong>
                     </div>
-                    <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs">
-                      <span className="text-neutral-400 block text-[10px]">আজকের সেরা পণ্য:</span>
-                      <strong className="text-amber-300 font-black text-sm">{topSellingProduct?.name || 'Fresh Guava 1kg'}</strong>
+                    <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-amber-400/50 text-xs shadow-inner">
+                      <span className="text-amber-300 block text-[10px] font-bold tracking-wide uppercase">আজকের সেরা পণ্য:</span>
+                      <strong className="text-amber-300 font-black text-base">{topSellingProduct?.name || 'Fresh Guava 1kg'}</strong>
                     </div>
                     {badReviewsCount > 0 && (
-                      <div className="px-3 py-1.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-xs">
-                        <span className="text-rose-300 block text-[10px]">খারাপ রিভিউ এলার্ট:</span>
-                        <strong className="text-rose-400 font-black text-sm">{badReviewsCount} Flagged</strong>
+                      <div className="px-3.5 py-2 rounded-xl bg-[#2C0B0E] border border-rose-400 text-xs shadow-inner">
+                        <span className="text-rose-300 block text-[10px] font-bold tracking-wide uppercase">খারাপ রিভিউ এলার্ট:</span>
+                        <strong className="text-rose-300 font-black text-base">{badReviewsCount} Flagged</strong>
                       </div>
                     )}
                     <Button
                       variant="forest"
                       size="sm"
-                      leftIcon={<BarChart3 className="h-3.5 w-3.5" />}
+                      leftIcon={<BarChart3 className="h-4 w-4" />}
                       onClick={() => setActiveRouteId('orders')}
-                      className="font-black text-xs shadow-md shadow-emerald-600/30 ml-auto lg:ml-0"
+                      className="font-black text-xs bg-emerald-500 hover:bg-emerald-400 text-neutral-950 shadow-md ml-auto lg:ml-0 h-10 px-4"
                     >
                       View Full Live Report & Export 📊
                     </Button>

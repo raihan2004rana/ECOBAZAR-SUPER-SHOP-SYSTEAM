@@ -10,8 +10,10 @@ import {
   ShieldCheck,
   Truck,
   Flame,
+  Menu,
 } from 'lucide-react';
 import { useCatalog } from '../context/catalog-context';
+import { categoryDefinitions } from '../data/catalog';
 
 interface Slide {
   id: string;
@@ -107,13 +109,61 @@ export const HeroSlider: React.FC = () => {
   const slide = activeSlides[currentSlide] || activeSlides[0];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-stretch">
         {/* ==================================================== */}
-        {/* MAIN HERO CAROUSEL (Left & Center, 8 cols on desktop) */}
+        {/* 1. ALL CATEGORIES VERTICAL MENU (Desktop Left 3 cols) */}
+        {/* ==================================================== */}
+        <div className="hidden lg:flex lg:col-span-3 flex-col bg-white rounded-3xl border border-[#E5ECE7] shadow-xs overflow-hidden justify-between">
+          {/* Header */}
+          <div className="bg-[#123C2D] text-white px-4 py-3.5 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Menu className="w-4 h-4 text-[#2EBD70]" />
+              <span className="font-extrabold text-sm tracking-wide">All Categories</span>
+            </div>
+            <span className="text-[10px] bg-[#21A366] text-white font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+              11 Depts
+            </span>
+          </div>
+
+          {/* Department Items */}
+          <div className="flex-1 flex flex-col justify-between py-1.5 divide-y divide-neutral-100">
+            {categoryDefinitions.map((cat) => (
+              <Link
+                key={cat.id}
+                href={`/category/${cat.slug}`}
+                className="group flex items-center justify-between px-4 py-2 hover:bg-[#F2FBF6] transition-colors"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="text-base shrink-0 group-hover:scale-115 transition-transform">
+                    {cat.icon}
+                  </span>
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-[#17251F] group-hover:text-[#21A366] transition-colors block truncate">
+                      {cat.name}
+                    </span>
+                    <span className="text-[10px] text-[#64736B] block truncate">
+                      {cat.nameBn}
+                    </span>
+                  </div>
+                </div>
+                <ChevronRight className="w-3.5 h-3.5 text-neutral-300 group-hover:text-[#21A366] group-hover:translate-x-0.5 transition-all shrink-0" />
+              </Link>
+            ))}
+          </div>
+
+          {/* Express delivery note */}
+          <div className="p-3 bg-[#F8FAF7] border-t border-[#E5ECE7] flex items-center gap-2 text-[11px] font-semibold text-[#123C2D]">
+            <Truck className="w-3.5 h-3.5 text-[#21A366] shrink-0" />
+            <span className="truncate">30-Min Fast Delivery Across Dhaka</span>
+          </div>
+        </div>
+
+        {/* ==================================================== */}
+        {/* 2. MAIN HERO CAROUSEL (Center, 6 cols on desktop)    */}
         {/* ==================================================== */}
         <div
-          className="lg:col-span-8 relative rounded-3xl overflow-hidden shadow-xl min-h-[440px] sm:min-h-[480px] lg:min-h-[510px] flex flex-col justify-between group"
+          className="col-span-12 lg:col-span-6 relative rounded-3xl overflow-hidden shadow-xl min-h-[440px] sm:min-h-[480px] lg:min-h-[510px] flex flex-col justify-between group"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={handleTouchStart}
@@ -217,9 +267,9 @@ export const HeroSlider: React.FC = () => {
         </div>
 
         {/* ==================================================== */}
-        {/* RIGHT PROMOTIONAL BANNERS (2 Vertically Stacked, 4 cols) */}
+        {/* 3. RIGHT PROMOTIONAL BANNERS (2 Vertically Stacked, 3 cols) */}
         {/* ==================================================== */}
-        <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4 lg:gap-4 justify-between">
+        <div className="col-span-12 lg:col-span-3 flex flex-col sm:flex-row lg:flex-col gap-4 lg:gap-4 justify-between">
           {/* BANNER 1: Fish & Seafood Promotional Banner (Supplied Seafood Image) */}
           <Link
             href="/category/meat-fish"
