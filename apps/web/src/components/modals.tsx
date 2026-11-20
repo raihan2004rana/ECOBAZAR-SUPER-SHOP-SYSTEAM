@@ -313,6 +313,7 @@ export const Modals: React.FC = () => {
         open={!!selectedProductForModal}
         onOpenChange={(open) => !open && setSelectedProductForModal(null)}
         size="lg"
+        className="bg-white text-neutral-900 border border-neutral-200 shadow-2xl"
       >
         {selectedProductForModal && (
           <div className="p-6">
@@ -441,6 +442,7 @@ export const Modals: React.FC = () => {
         open={isBranchModalOpen}
         onOpenChange={setIsBranchModalOpen}
         size="md"
+        className="bg-white text-neutral-900 border border-neutral-200 shadow-2xl"
       >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
@@ -509,6 +511,7 @@ export const Modals: React.FC = () => {
         open={isTrackingModalOpen}
         onOpenChange={setIsTrackingModalOpen}
         size="md"
+        className="bg-white text-neutral-900 border border-neutral-200 shadow-2xl"
       >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
@@ -615,80 +618,98 @@ export const Modals: React.FC = () => {
         open={isAuthModalOpen}
         onOpenChange={setIsAuthModalOpen}
         size="sm"
+        className="bg-white text-neutral-900 border border-neutral-200 shadow-2xl"
       >
         <div className="p-6">
           <div className="text-center mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center mx-auto mb-3">
-              <Sparkles className="w-6 h-6" />
+            <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-600 flex items-center justify-center mx-auto mb-3 shadow-xs">
+              <Sparkles className="w-7 h-7" />
             </div>
-            <h2 className="text-xl font-black text-[#17251F]">
+            <h2 className="text-xl font-black text-neutral-900 tracking-tight">
               {authStep === 'phone' ? 'Welcome to ECOBAZAR' : 'Verify Mobile OTP'}
             </h2>
-            <p className="text-xs text-[#64736B] mt-1">
+            <p className="text-xs text-neutral-600 mt-1 max-w-xs mx-auto leading-relaxed">
               {authStep === 'phone'
-                ? 'Sign in or create account with your mobile number'
-                : `Enter the 4-digit code sent to ${phoneInput}`}
+                ? 'Sign in or create account with your mobile number for 1-click checkout'
+                : `Enter the 4-digit verification code sent to ${phoneInput}`}
             </p>
           </div>
 
           {authStep === 'phone' ? (
             <form onSubmit={handleSendOtp} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#17251F] block mb-1">
+                <label className="text-xs font-bold text-neutral-800 block mb-1.5">
                   Mobile Number (Bangladesh)
                 </label>
                 <div className="flex">
-                  <span className="inline-flex items-center px-3 bg-[#E5ECE7] text-xs font-bold text-[#17251F] rounded-l-xl border border-r-0 border-[#E5ECE7]">
-                    +880
+                  <span className="inline-flex items-center gap-1.5 px-3 bg-neutral-100 text-xs font-bold text-neutral-800 rounded-l-xl border border-r-0 border-neutral-300 shrink-0">
+                    <span>🇧🇩</span>
+                    <span>+880</span>
                   </span>
                   <input
                     type="tel"
                     required
-                    placeholder="1712345678"
+                    placeholder="1712-345678"
                     value={phoneInput}
                     onChange={(e) => setPhoneInput(e.target.value)}
-                    className="flex-1 px-3 py-2.5 text-xs rounded-r-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366] font-medium"
+                    className="flex-1 px-3 py-2.5 text-xs rounded-r-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 font-medium transition-all"
                   />
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#21A366] hover:bg-[#123C2D] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-colors"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
               >
-                Send Verification Code
+                <span>Send Verification Code</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
+
+              <div className="pt-2 border-t border-neutral-100">
+                <div className="grid grid-cols-2 gap-2 text-[10px] text-neutral-500 font-medium text-center">
+                  <div className="p-2 rounded-lg bg-neutral-50 border border-neutral-100">
+                    <p className="font-bold text-emerald-700">🚀 30-Min Fast</p>
+                    <p>Express Delivery</p>
+                  </div>
+                  <div className="p-2 rounded-lg bg-neutral-50 border border-neutral-100">
+                    <p className="font-bold text-emerald-700">🥬 100% Organic</p>
+                    <p>Formalin-Free Farm</p>
+                  </div>
+                </div>
+              </div>
             </form>
           ) : (
             <form onSubmit={handleVerifyOtp} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#17251F] block mb-1">
-                  4-Digit OTP Code (Use: 1234)
+                <label className="text-xs font-bold text-neutral-800 block mb-1.5 text-center">
+                  Enter 4-Digit Verification Code
                 </label>
                 <input
                   type="text"
                   maxLength={4}
                   required
-                  placeholder="1 2 3 4"
+                  autoFocus
+                  placeholder="• • • •"
                   value={otpInput}
                   onChange={(e) => setOtpInput(e.target.value)}
-                  className="w-full text-center tracking-widest text-lg font-black py-2.5 rounded-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366]"
+                  className="w-full text-center tracking-[0.6em] text-2xl font-black py-3 rounded-xl border border-neutral-300 bg-white text-neutral-900 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 font-mono transition-all"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#21A366] hover:bg-[#123C2D] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-colors"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
               >
-                Verify & Continue
+                <span>Verify & Continue</span>
+                <Check className="w-4 h-4" />
               </button>
 
               <button
                 type="button"
                 onClick={() => setAuthStep('phone')}
-                className="w-full text-center text-xs text-[#64736B] hover:text-[#17251F] font-medium"
+                className="w-full text-center text-xs text-neutral-500 hover:text-emerald-700 font-medium py-1 cursor-pointer transition-colors"
               >
-                Change Phone Number
+                ← Change Phone Number
               </button>
             </form>
           )}
@@ -700,28 +721,29 @@ export const Modals: React.FC = () => {
         open={isCheckoutModalOpen}
         onOpenChange={handleOpenCheckoutChange}
         size="xl"
+        className="bg-white text-neutral-900 border border-neutral-200 shadow-2xl"
       >
         <div className="max-h-[84vh] overflow-y-auto pr-1">
           {checkoutStep === 'form' ? (
             <div>
               {/* Header */}
-              <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#E5ECE7]">
+              <div className="flex items-start justify-between gap-4 pb-4 border-b border-neutral-200">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0 shadow-xs">
+                  <div className="w-11 h-11 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-600 flex items-center justify-center shrink-0 shadow-xs">
                     <ShoppingBag className="w-6 h-6" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h2 className="text-xl sm:text-2xl font-black text-[#17251F]">Complete Your Order</h2>
-                      <span className="text-xs font-bold text-[#21A366] bg-[#D8F3DC] px-2.5 py-0.5 rounded-full">
+                      <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">Complete Your Order</h2>
+                      <span className="text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-200/80 px-2.5 py-0.5 rounded-full">
                         অর্ডার সম্পন্ন করুন
                       </span>
                     </div>
-                    <p className="text-xs text-[#64736B] mt-0.5 flex items-center gap-1.5 flex-wrap">
-                      <span>⚡ Hub:</span>
-                      <span className="font-extrabold text-[#21A366]">{selectedBranch.name}</span>
-                      <span className="text-gray-300">•</span>
-                      <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded text-[11px]">
+                    <p className="text-xs text-neutral-600 mt-1 flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-neutral-700">⚡ Hub:</span>
+                      <span className="font-extrabold text-emerald-700">{selectedBranch.name}</span>
+                      <span className="text-neutral-300">•</span>
+                      <span className="text-emerald-800 font-bold bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded text-[11px] shadow-2xs">
                         🚀 Express Delivery {selectedBranch.deliveryTime || '25-30 Mins'}
                       </span>
                     </p>
@@ -734,11 +756,11 @@ export const Modals: React.FC = () => {
                 {/* Customer Name & Phone */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="text-xs font-bold text-[#17251F] block mb-1">
-                      Customer Full Name <span className="text-rose-500">*</span>
+                    <label className="text-xs font-bold text-neutral-900 block mb-1.5">
+                      Customer Full Name <span className="text-rose-500 font-black">*</span>
                     </label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-400">
                         <User className="w-4 h-4" />
                       </div>
                       <input
@@ -747,17 +769,17 @@ export const Modals: React.FC = () => {
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         placeholder="Enter your full name"
-                        className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366] focus:ring-2 focus:ring-[#21A366]/20 transition-all font-medium text-[#17251F]"
+                        className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-[#17251F] block mb-1">
-                      Contact Phone Number <span className="text-rose-500">*</span>
+                    <label className="text-xs font-bold text-neutral-900 block mb-1.5">
+                      Contact Phone Number <span className="text-rose-500 font-black">*</span>
                     </label>
                     <div className="flex">
-                      <span className="inline-flex items-center gap-1 px-2.5 bg-[#F7F9F5] text-xs font-bold text-[#17251F] rounded-l-xl border border-r-0 border-[#E5ECE7] shrink-0">
+                      <span className="inline-flex items-center gap-1 px-2.5 bg-neutral-100 text-xs font-bold text-neutral-800 rounded-l-xl border border-r-0 border-neutral-300 shrink-0">
                         <span>🇧🇩</span>
                         <span>+880</span>
                       </span>
@@ -767,7 +789,7 @@ export const Modals: React.FC = () => {
                         value={customerPhone}
                         onChange={(e) => setCustomerPhone(e.target.value)}
                         placeholder="1712-345678"
-                        className="flex-1 px-3 py-2.5 text-xs rounded-r-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366] focus:ring-2 focus:ring-[#21A366]/20 transition-all font-medium text-[#17251F]"
+                        className="flex-1 px-3 py-2.5 text-xs rounded-r-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium"
                       />
                     </div>
                   </div>
@@ -775,11 +797,11 @@ export const Modals: React.FC = () => {
 
                 {/* Delivery Address */}
                 <div>
-                  <label className="text-xs font-bold text-[#17251F] block mb-1">
-                    Delivery Street Address <span className="text-rose-500">*</span>
+                  <label className="text-xs font-bold text-neutral-900 block mb-1.5">
+                    Delivery Street Address <span className="text-rose-500 font-black">*</span>
                   </label>
                   <div className="relative">
-                    <div className="absolute top-2.5 left-3 text-gray-400 pointer-events-none">
+                    <div className="absolute top-2.5 left-3 text-neutral-400 pointer-events-none">
                       <MapPin className="w-4 h-4" />
                     </div>
                     <textarea
@@ -788,24 +810,24 @@ export const Modals: React.FC = () => {
                       value={deliveryAddress}
                       onChange={(e) => setDeliveryAddress(e.target.value)}
                       placeholder="Flat No, House No, Road No, Area / Landmark in Dhaka"
-                      className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366] focus:ring-2 focus:ring-[#21A366]/20 transition-all font-medium text-[#17251F]"
+                      className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium"
                     />
                   </div>
                 </div>
 
                 {/* Delivery Slot */}
                 <div>
-                  <label className="text-xs font-bold text-[#17251F] block mb-1">
+                  <label className="text-xs font-bold text-neutral-900 block mb-1.5">
                     Preferred Delivery Slot
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-400">
                       <Clock className="w-4 h-4" />
                     </div>
                     <select
                       value={deliveryTimeSlot}
                       onChange={(e) => setDeliveryTimeSlot(e.target.value)}
-                      className="w-full pl-9 pr-8 py-2.5 text-xs rounded-xl border border-[#E5ECE7] focus:outline-none focus:border-[#21A366] focus:ring-2 focus:ring-[#21A366]/20 transition-all bg-white font-medium text-[#17251F]"
+                      className="w-full pl-9 pr-8 py-2.5 text-xs rounded-xl border border-neutral-300 bg-white text-neutral-900 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium"
                     >
                       <option value="Express Delivery (25-30 Mins)">🚀 Express Delivery (~25-30 Mins)</option>
                       <option value="Today Afternoon (2:00 PM - 5:00 PM)">Today Afternoon (2:00 PM - 5:00 PM)</option>
@@ -818,11 +840,11 @@ export const Modals: React.FC = () => {
                 {/* PAYMENT METHODS SECTION WITH LOGOS */}
                 <div className="pt-2">
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-extrabold text-[#17251F] flex items-center gap-1.5">
-                      <CreditCard className="w-4 h-4 text-[#21A366]" />
+                    <label className="text-xs font-extrabold text-neutral-900 flex items-center gap-1.5">
+                      <CreditCard className="w-4 h-4 text-emerald-600" />
                       <span>Select Payment Method (পেমেন্ট পদ্ধতি)</span>
                     </label>
-                    <span className="text-[11px] font-bold text-[#21A366] bg-[#D8F3DC] px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 border border-emerald-200/80 px-2 py-0.5 rounded-full">
                       100% Secure Checkout
                     </span>
                   </div>
@@ -835,8 +857,8 @@ export const Modals: React.FC = () => {
                       onClick={() => setPaymentMethod('cod')}
                       className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between min-h-[96px] cursor-pointer ${
                         paymentMethod === 'cod'
-                          ? 'border-[#21A366] bg-[#F0FDF4] shadow-sm ring-2 ring-[#21A366]/30'
-                          : 'border-[#E5ECE7] bg-white hover:border-[#21A366]/40 hover:bg-[#F7F9F5]'
+                          ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-2 ring-emerald-500/30'
+                          : 'border-neutral-200 bg-white hover:border-emerald-500 hover:bg-neutral-50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -844,16 +866,16 @@ export const Modals: React.FC = () => {
                         <span
                           className={`w-4 h-4 rounded-full border flex items-center justify-center text-[10px] font-bold ${
                             paymentMethod === 'cod'
-                              ? 'border-[#21A366] bg-[#21A366] text-white'
-                              : 'border-gray-300 bg-white'
+                              ? 'border-emerald-600 bg-emerald-600 text-white'
+                              : 'border-neutral-300 bg-white'
                           }`}
                         >
                           {paymentMethod === 'cod' && '✓'}
                         </span>
                       </div>
                       <div>
-                        <p className="font-black text-xs text-[#17251F] mt-1.5">Cash on Del.</p>
-                        <p className="text-[10px] text-[#64736B] font-medium leading-tight">হাতে পেয়ে দিন</p>
+                        <p className="font-black text-xs text-neutral-900 mt-1.5">Cash on Del.</p>
+                        <p className="text-[10px] text-neutral-600 font-medium leading-tight">হাতে পেয়ে দিন</p>
                       </div>
                       <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded mt-1 self-start">
                         Pay on Arrival
@@ -866,8 +888,8 @@ export const Modals: React.FC = () => {
                       onClick={() => setPaymentMethod('bkash')}
                       className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between min-h-[96px] cursor-pointer ${
                         paymentMethod === 'bkash'
-                          ? 'border-[#E2136E] bg-pink-50/60 shadow-sm ring-2 ring-[#E2136E]/30'
-                          : 'border-[#E5ECE7] bg-white hover:border-[#E2136E]/40 hover:bg-[#F7F9F5]'
+                          ? 'border-[#E2136E] bg-pink-50/70 shadow-sm ring-2 ring-[#E2136E]/30'
+                          : 'border-neutral-200 bg-white hover:border-[#E2136E]/40 hover:bg-neutral-50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -876,15 +898,15 @@ export const Modals: React.FC = () => {
                           className={`w-4 h-4 rounded-full border flex items-center justify-center text-[10px] font-bold ${
                             paymentMethod === 'bkash'
                               ? 'border-[#E2136E] bg-[#E2136E] text-white'
-                              : 'border-gray-300 bg-white'
+                              : 'border-neutral-300 bg-white'
                           }`}
                         >
                           {paymentMethod === 'bkash' && '✓'}
                         </span>
                       </div>
                       <div>
-                        <p className="font-black text-xs text-[#17251F] mt-1.5">bKash</p>
-                        <p className="text-[10px] text-[#64736B] font-medium leading-tight">বিকাশ পেমেন্ট</p>
+                        <p className="font-black text-xs text-neutral-900 mt-1.5">bKash</p>
+                        <p className="text-[10px] text-neutral-600 font-medium leading-tight">বিকাশ পেমেন্ট</p>
                       </div>
                       <span className="text-[9px] font-black uppercase text-pink-700 bg-pink-100 px-1.5 py-0.5 rounded mt-1 self-start">
                         0% Fee Instant
@@ -897,8 +919,8 @@ export const Modals: React.FC = () => {
                       onClick={() => setPaymentMethod('nagad')}
                       className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between min-h-[96px] cursor-pointer ${
                         paymentMethod === 'nagad'
-                          ? 'border-[#F7941D] bg-orange-50/60 shadow-sm ring-2 ring-[#F7941D]/30'
-                          : 'border-[#E5ECE7] bg-white hover:border-[#F7941D]/40 hover:bg-[#F7F9F5]'
+                          ? 'border-[#F7941D] bg-orange-50/70 shadow-sm ring-2 ring-[#F7941D]/30'
+                          : 'border-neutral-200 bg-white hover:border-[#F7941D]/40 hover:bg-neutral-50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -907,15 +929,15 @@ export const Modals: React.FC = () => {
                           className={`w-4 h-4 rounded-full border flex items-center justify-center text-[10px] font-bold ${
                             paymentMethod === 'nagad'
                               ? 'border-[#F7941D] bg-[#F7941D] text-white'
-                              : 'border-gray-300 bg-white'
+                              : 'border-neutral-300 bg-white'
                           }`}
                         >
                           {paymentMethod === 'nagad' && '✓'}
                         </span>
                       </div>
                       <div>
-                        <p className="font-black text-xs text-[#17251F] mt-1.5">Nagad</p>
-                        <p className="text-[10px] text-[#64736B] font-medium leading-tight">নগদ ওয়ালেট</p>
+                        <p className="font-black text-xs text-neutral-900 mt-1.5">Nagad</p>
+                        <p className="text-[10px] text-neutral-600 font-medium leading-tight">নগদ ওয়ালেট</p>
                       </div>
                       <span className="text-[9px] font-black uppercase text-orange-700 bg-orange-100 px-1.5 py-0.5 rounded mt-1 self-start">
                         0% Extra Fee
@@ -928,8 +950,8 @@ export const Modals: React.FC = () => {
                       onClick={() => setPaymentMethod('card')}
                       className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between min-h-[96px] cursor-pointer ${
                         paymentMethod === 'card'
-                          ? 'border-[#1A1F71] bg-blue-50/60 shadow-sm ring-2 ring-[#1A1F71]/30'
-                          : 'border-[#E5ECE7] bg-white hover:border-[#1A1F71]/40 hover:bg-[#F7F9F5]'
+                          ? 'border-[#1A1F71] bg-blue-50/70 shadow-sm ring-2 ring-[#1A1F71]/30'
+                          : 'border-neutral-200 bg-white hover:border-[#1A1F71]/40 hover:bg-neutral-50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -938,15 +960,15 @@ export const Modals: React.FC = () => {
                           className={`w-4 h-4 rounded-full border flex items-center justify-center text-[10px] font-bold ${
                             paymentMethod === 'card'
                               ? 'border-[#1A1F71] bg-[#1A1F71] text-white'
-                              : 'border-gray-300 bg-white'
+                              : 'border-neutral-300 bg-white'
                           }`}
                         >
                           {paymentMethod === 'card' && '✓'}
                         </span>
                       </div>
                       <div>
-                        <p className="font-black text-xs text-[#17251F] mt-1.5">Visa / Cards</p>
-                        <p className="text-[10px] text-[#64736B] font-medium leading-tight">কার্ড পেমেন্ট</p>
+                        <p className="font-black text-xs text-neutral-900 mt-1.5">Visa / Cards</p>
+                        <p className="text-[10px] text-neutral-600 font-medium leading-tight">কার্ড পেমেন্ট</p>
                       </div>
                       <span className="text-[9px] font-black uppercase text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded mt-1 self-start">
                         256-Bit SSL
@@ -999,10 +1021,10 @@ export const Modals: React.FC = () => {
                 </div>
 
                 {/* Bill Summary */}
-                <div className="bg-[#F7F9F5] p-4 rounded-2xl border border-[#E5ECE7] space-y-2 text-xs text-[#64736B]">
+                <div className="bg-neutral-50/90 p-4 rounded-2xl border border-neutral-200 space-y-2 text-xs text-neutral-600">
                   <div className="flex justify-between">
                     <span>Items Subtotal ({cartItems.length} items):</span>
-                    <span className="font-bold text-[#17251F]">৳{cartSubtotal}</span>
+                    <span className="font-bold text-neutral-900">৳{cartSubtotal}</span>
                   </div>
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-emerald-600 font-bold">
@@ -1012,13 +1034,13 @@ export const Modals: React.FC = () => {
                   )}
                   <div className="flex justify-between">
                     <span>Express Delivery Fee:</span>
-                    <span className="font-bold text-[#17251F]">
-                      {deliveryFee === 0 ? <span className="text-[#21A366]">FREE</span> : `৳${deliveryFee}`}
+                    <span className="font-bold text-neutral-900">
+                      {deliveryFee === 0 ? <span className="text-emerald-700">FREE</span> : `৳${deliveryFee}`}
                     </span>
                   </div>
-                  <div className="flex justify-between text-base font-black text-[#123C2D] pt-2.5 border-t border-[#E5ECE7]">
+                  <div className="flex justify-between text-base font-black text-neutral-900 pt-2.5 border-t border-neutral-200">
                     <span>Total Amount Due:</span>
-                    <span className="text-lg">৳{cartGrandTotal}</span>
+                    <span className="text-lg text-emerald-700 font-black">৳{cartGrandTotal}</span>
                   </div>
                 </div>
 
@@ -1026,7 +1048,7 @@ export const Modals: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmittingOrder || cartItems.length === 0}
-                  className="w-full bg-[#21A366] hover:bg-[#123C2D] text-white py-4 rounded-2xl font-black text-sm sm:text-base shadow-lg hover:shadow-xl transition-all active:scale-[0.99] disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-black text-sm sm:text-base shadow-lg shadow-emerald-600/25 transition-all active:scale-[0.99] disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmittingOrder ? (
                     <>
@@ -1051,7 +1073,7 @@ export const Modals: React.FC = () => {
                   <div className="w-16 h-16 rounded-full bg-[#D8F3DC] text-[#21A366] flex items-center justify-center mx-auto mb-3 shadow-inner animate-in zoom-in-50 duration-300">
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-[#17251F] leading-tight">
+                  <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 leading-tight">
                     🎉 Order Placed Successfully!
                   </h2>
                   <p className="text-xs sm:text-sm text-[#21A366] font-extrabold mt-1">
@@ -1164,7 +1186,7 @@ export const Modals: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleCopyTrackingId(placedOrderInfo.orderId)}
-                    className="inline-flex items-center gap-1.5 bg-[#F7F9F5] hover:bg-[#E5ECE7] text-[#17251F] px-4 py-2.5 rounded-xl text-xs font-black border border-[#E5ECE7] transition-all active:scale-95 shrink-0 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 px-4 py-2.5 rounded-xl text-xs font-black border border-neutral-300 transition-all active:scale-95 shrink-0 cursor-pointer"
                   >
                     {copiedId ? (
                       <>

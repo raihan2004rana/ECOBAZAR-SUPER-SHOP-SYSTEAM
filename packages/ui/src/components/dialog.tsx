@@ -70,8 +70,8 @@ export const Dialog: React.FC<DialogProps> = ({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative z-50 w-full rounded-2xl bg-white dark:bg-neutral-900 p-6 shadow-2xl transition-all',
-          'border border-neutral-200 dark:border-neutral-800 animate-in fade-in-0 zoom-in-95 duration-200',
+          'relative z-50 w-full rounded-2xl bg-white text-neutral-900 p-6 shadow-2xl transition-all',
+          'border border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-100 animate-in fade-in-0 zoom-in-95 duration-200',
           sizeClasses,
           className
         )}
@@ -79,7 +79,7 @@ export const Dialog: React.FC<DialogProps> = ({
         <button
           type="button"
           onClick={() => onOpenChange(false)}
-          className="absolute right-4 top-4 rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 focus:outline-hidden focus:ring-2 focus:ring-primary-green transition-colors"
+          className="absolute right-4 top-4 rounded-full p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white transition-colors z-20"
           aria-label="Close dialog"
         >
           <X className="h-4 w-4" />

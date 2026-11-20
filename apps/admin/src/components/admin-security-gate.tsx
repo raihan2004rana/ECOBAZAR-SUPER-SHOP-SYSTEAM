@@ -8,12 +8,12 @@ import {
   Eye,
   EyeOff,
   AlertTriangle,
-  CheckCircle2,
   Clock,
   ArrowRight,
   Server,
   User,
-  Sparkles,
+  ShieldAlert,
+  Cpu,
 } from 'lucide-react';
 
 interface AdminSecurityGateProps {
@@ -96,7 +96,7 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
           sessionStorage.removeItem('ecobazar_admin_session');
         }
       }
-    } catch (e) {
+    } catch {
       // Ignore storage read errors
     }
   }, []);
@@ -207,13 +207,13 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
           );
         } else {
           setErrorMessage(
-            `Access Denied: Invalid credentials. (${MAX_FAILED_ATTEMPTS - nextAttempts} attempts remaining before lockout)`
+            `Access Denied: Invalid credentials. (${MAX_FAILED_ATTEMPTS - nextAttempts} attempts remaining before system lockout)`
           );
         }
       }
 
       setIsSubmitting(false);
-    }, 400);
+    }, 450);
   };
 
   const handleLogout = (message?: string) => {
@@ -227,23 +227,12 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
     }
   };
 
-  // Quick autofill for authorized developers / owner demonstration
-  const handleQuickFill = (accountIndex: number) => {
-    const acc = AUTHORIZED_ACCOUNTS[accountIndex];
-    if (acc) {
-      setEmail(acc.email);
-      setPassword(acc.password);
-      setPin(acc.pin);
-      setErrorMessage('');
-    }
-  };
-
   if (!isHydrated) {
     return (
-      <div className="min-h-screen bg-[#071F15] flex items-center justify-center text-white">
+      <div className="min-h-screen bg-[#071710] flex items-center justify-center text-white">
         <div className="flex items-center gap-3">
-          <div className="w-4 h-4 rounded-full border-2 border-[#2EBD70] border-t-transparent animate-spin" />
-          <span className="text-xs font-mono uppercase tracking-widest text-[#2EBD70]">
+          <div className="w-5 h-5 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">
             Verifying Terminal Security...
           </span>
         </div>
@@ -269,42 +258,47 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
   const lockSecs = remainingSeconds % 60;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#071F15] via-[#0B251B] to-[#05140E] flex flex-col items-center justify-center p-4 sm:p-6 text-white relative overflow-hidden select-none">
-      {/* Background Cyber-Grid Graphics */}
-      <div className="absolute inset-0 bg-[radial-gradient(#21A366_1px,transparent_1px)] [background-size:28px_28px] opacity-10 pointer-events-none" />
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-[#21A366]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-[#2EBD70]/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-[#071610] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0E2F22] via-[#071610] to-[#040C08] flex flex-col items-center justify-center p-4 sm:p-6 text-white relative overflow-hidden select-none">
+      {/* Background Cyber-Grid & Ambient Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(#21A366_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.07] pointer-events-none" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/15 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-teal-500/15 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Main Security Box */}
-      <div className="w-full max-w-md bg-[#0F2D21]/95 backdrop-blur-xl border border-[#21A366]/30 rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10">
-        {/* Top Security Shield Badge */}
+      <div className="w-full max-w-md bg-[#0C2219]/90 backdrop-blur-2xl border border-emerald-500/25 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/80 relative z-10 transition-all">
+        {/* Top Security Emblem & Branding */}
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-[#123C2D] border-2 border-[#2EBD70] flex items-center justify-center shadow-lg shadow-[#2EBD70]/20 mb-3 group transition-transform">
-            <ShieldCheck className="w-8 h-8 text-[#2EBD70] group-hover:scale-110 transition-transform" />
+          <div className="relative mb-3">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-950 to-[#0A1F16] border border-emerald-400/40 flex items-center justify-center shadow-lg shadow-emerald-500/20 group">
+              <ShieldCheck className="w-8 h-8 text-emerald-400 group-hover:scale-105 transition-transform" />
+            </div>
+            <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#0C2219] flex items-center justify-center">
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+            </span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 bg-[#123C2D]/80 border border-[#2EBD70]/40 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest text-[#2EBD70] mb-2 shadow-xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#2EBD70] animate-pulse" />
-            <span>Tier-4 Enterprise Terminal Lock</span>
+          <div className="inline-flex items-center gap-1.5 bg-emerald-950/80 border border-emerald-500/30 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest text-emerald-400 mb-2 shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <span>Restricted Admin Gateway</span>
           </div>
 
           <h1 className="text-2xl font-black text-white tracking-tight">ECOBAZAR Control OS</h1>
-          <p className="text-xs text-emerald-100/70 mt-1">
-            Restricted Central Administration & POS Terminal
+          <p className="text-xs text-emerald-100/70 mt-1 max-w-xs">
+            Central Administration, Multi-Store POS & Operations Hub
           </p>
         </div>
 
         {/* Lockout Warning Box */}
         {isLocked && (
           <div className="mb-5 p-4 rounded-2xl bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs flex items-start gap-3 animate-in fade-in">
-            <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+            <ShieldAlert className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
             <div>
-              <p className="font-extrabold text-white">Security Freeze Activated</p>
+              <p className="font-extrabold text-white text-sm">Security Lockdown Activated</p>
               <p className="text-[11px] text-rose-300 mt-0.5 leading-relaxed">
-                Excessive unauthorized attempts detected. Access is temporarily locked.
+                Too many incorrect login attempts detected. Terminal access is temporarily frozen.
               </p>
-              <p className="font-mono font-bold text-sm text-rose-400 mt-2 flex items-center gap-1.5">
-                <Clock className="w-4 h-4" />
+              <p className="font-mono font-bold text-xs text-rose-400 mt-2 flex items-center gap-1.5 bg-rose-950 px-2.5 py-1 rounded-lg border border-rose-800/60 inline-flex">
+                <Clock className="w-3.5 h-3.5" />
                 <span>
                   Unlocks in {lockMinutes}:{lockSecs < 10 ? `0${lockSecs}` : lockSecs} min
                 </span>
@@ -315,7 +309,7 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
 
         {/* Error Alert Box */}
         {!isLocked && errorMessage && (
-          <div className="mb-5 p-3.5 rounded-2xl bg-amber-950/80 border border-amber-500/50 text-amber-200 text-xs flex items-start gap-2.5 animate-in fade-in">
+          <div className="mb-5 p-3.5 rounded-2xl bg-amber-950/80 border border-amber-500/40 text-amber-200 text-xs flex items-start gap-2.5 animate-in fade-in">
             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
             <p className="font-medium leading-snug">{errorMessage}</p>
           </div>
@@ -326,7 +320,7 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
           {/* Email / Admin ID */}
           <div>
             <label className="block text-xs font-bold text-emerald-100/90 mb-1.5 flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-[#2EBD70]" />
+              <User className="w-3.5 h-3.5 text-emerald-400" />
               <span>Administrator Email / ID</span>
             </label>
             <input
@@ -336,7 +330,7 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@ecobazar.com"
-              className="w-full px-4 py-2.5 bg-[#071F15]/80 border border-[#21A366]/40 rounded-xl text-sm text-white placeholder-emerald-100/30 focus:outline-hidden focus:border-[#2EBD70] focus:ring-1 focus:ring-[#2EBD70] transition-all disabled:opacity-50"
+              className="w-full px-4 py-2.5 bg-[#061810]/80 border border-emerald-800/60 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 rounded-xl text-sm text-white placeholder-emerald-100/30 transition-all font-medium disabled:opacity-50"
             />
           </div>
 
@@ -344,7 +338,7 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
           <div>
             <label className="block text-xs font-bold text-emerald-100/90 mb-1.5 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <Lock className="w-3.5 h-3.5 text-[#2EBD70]" />
+                <Lock className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Master Password</span>
               </span>
             </label>
@@ -356,27 +350,30 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full px-4 py-2.5 pr-11 bg-[#071F15]/80 border border-[#21A366]/40 rounded-xl text-sm text-white placeholder-emerald-100/30 focus:outline-hidden focus:border-[#2EBD70] focus:ring-1 focus:ring-[#2EBD70] transition-all disabled:opacity-50"
+                className="w-full px-4 py-2.5 pr-11 bg-[#061810]/80 border border-emerald-800/60 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 rounded-xl text-sm text-white placeholder-emerald-100/30 transition-all disabled:opacity-50"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-100/50 hover:text-white transition-colors"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
 
-          {/* Security Access PIN */}
+          {/* Security Access PIN (4-Digits, strictly masked) */}
           <div>
-            <label className="block text-xs font-bold text-emerald-100/90 mb-1.5 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <KeyRound className="w-3.5 h-3.5 text-[#2EBD70]" />
-                <span>Security Access PIN (Master Key)</span>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-bold text-emerald-100/90 flex items-center gap-1.5">
+                <KeyRound className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Executive Security PIN</span>
+              </label>
+              <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40">
+                Confidential
               </span>
-              <span className="text-[10px] text-emerald-100/50 font-mono">4-digit PIN</span>
-            </label>
+            </div>
             <input
               type="password"
               maxLength={6}
@@ -385,7 +382,7 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               placeholder="••••"
-              className="w-full px-4 py-2.5 bg-[#071F15]/80 border border-[#21A366]/40 rounded-xl text-sm text-white placeholder-emerald-100/30 focus:outline-hidden focus:border-[#2EBD70] focus:ring-1 focus:ring-[#2EBD70] transition-all tracking-widest text-center font-mono disabled:opacity-50"
+              className="w-full px-4 py-2.5 bg-[#061810]/80 border border-emerald-800/60 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 rounded-xl text-base text-emerald-300 placeholder-emerald-100/30 transition-all tracking-[0.6em] text-center font-mono font-bold disabled:opacity-50"
             />
           </div>
 
@@ -393,12 +390,12 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
           <button
             type="submit"
             disabled={isLocked || isSubmitting}
-            className="w-full mt-2 bg-[#21A366] hover:bg-[#2EBD70] text-[#071F15] font-black py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#21A366]/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-2 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-neutral-950 font-black py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <>
-                <div className="w-4 h-4 rounded-full border-2 border-[#071F15] border-t-transparent animate-spin" />
-                <span>Authenticating Credentials...</span>
+                <div className="w-4 h-4 rounded-full border-2 border-neutral-950 border-t-transparent animate-spin" />
+                <span>Verifying Security Token...</span>
               </>
             ) : isLocked ? (
               <>
@@ -415,44 +412,30 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
           </button>
         </form>
 
-        {/* Demo Fast Login / Developer Bypass Credentials Box */}
-        <div className="mt-6 pt-5 border-t border-[#21A366]/20">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-[#2EBD70] flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
-              <span>Owner & Admin Quick Access:</span>
-            </span>
-            <span className="text-[10px] text-white/50">1-Click Fill</span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickFill(0)}
-              className="px-2.5 py-1.5 rounded-lg bg-[#123C2D]/60 hover:bg-[#21A366]/20 border border-[#21A366]/30 text-left transition-colors"
-            >
-              <p className="text-[11px] font-bold text-white truncate">Super Admin</p>
-              <p className="text-[9px] text-[#2EBD70] font-mono truncate">PIN: 2026</p>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickFill(1)}
-              className="px-2.5 py-1.5 rounded-lg bg-[#123C2D]/60 hover:bg-[#21A366]/20 border border-[#21A366]/30 text-left transition-colors"
-            >
-              <p className="text-[11px] font-bold text-white truncate">Store Manager</p>
-              <p className="text-[9px] text-[#2EBD70] font-mono truncate">PIN: 1122</p>
-            </button>
+        {/* Security Compliance Badges (No PINs or demo credentials displayed) */}
+        <div className="mt-6 pt-5 border-t border-emerald-800/40">
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="p-2 rounded-xl bg-[#081C13]/60 border border-emerald-900/50">
+              <Server className="w-3.5 h-3.5 text-emerald-400 mx-auto mb-1" />
+              <p className="text-[10px] font-bold text-white">TLS 1.3</p>
+              <p className="text-[9px] text-emerald-400/70">Encrypted</p>
+            </div>
+            <div className="p-2 rounded-xl bg-[#081C13]/60 border border-emerald-900/50">
+              <Lock className="w-3.5 h-3.5 text-emerald-400 mx-auto mb-1" />
+              <p className="text-[10px] font-bold text-white">Anti-Brute</p>
+              <p className="text-[9px] text-emerald-400/70">5 Attempts</p>
+            </div>
+            <div className="p-2 rounded-xl bg-[#081C13]/60 border border-emerald-900/50">
+              <Cpu className="w-3.5 h-3.5 text-emerald-400 mx-auto mb-1" />
+              <p className="text-[10px] font-bold text-white">Auto-Lock</p>
+              <p className="text-[9px] text-emerald-400/70">15m Inactive</p>
+            </div>
           </div>
         </div>
 
-        {/* Security Disclaimers */}
-        <div className="mt-5 text-center text-[10px] text-emerald-100/40 space-y-1">
-          <p className="flex items-center justify-center gap-1.5">
-            <Server className="w-3 h-3 text-[#2EBD70]" />
-            <span>Hardware Protected Session • TLS 1.3 Strict Enforced</span>
-          </p>
-          <p>© 2026 ECOBAZAR Enterprise Security System. All rights reserved.</p>
+        {/* Terminal Disclaimers */}
+        <div className="mt-5 text-center text-[10px] text-emerald-100/50">
+          <p>© 2026 ECOBAZAR Enterprise Security System. Unauthorized access is strictly logged and audited.</p>
         </div>
       </div>
     </div>
