@@ -22,6 +22,10 @@ export interface ProductItem {
   isOffer?: boolean;
   isAdvertisement?: boolean;
   showReviews?: boolean;
+  totalSold?: number;
+  totalRevenue?: number;
+  orderCount?: number;
+  badReviewsCount?: number;
   description: string;
   keyFeatures?: string[];
   healthBenefits?: string[];

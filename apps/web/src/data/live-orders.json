@@ -1,0 +1,166 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-11-20T11:45:00.000Z",
+  "orders": [
+    {
+      "id": "ECO-DH-901842",
+      "placedAt": "2026-11-20T10:45:12.000Z",
+      "formattedTime": "10:45 AM",
+      "formattedDate": "Today, 20 Nov 2026",
+      "customerName": "Mohammad Shakil",
+      "customerPhone": "+880 1712-887766",
+      "deliveryAddress": "Flat 5A, House 18, Road 11, Gulshan-2, Dhaka",
+      "deliveryTimeSlot": "Express Delivery (25-30 Mins)",
+      "paymentMethod": "cod",
+      "branch": "Gulshan-2 Superstore #02",
+      "status": "PROCESSING",
+      "subtotal": 470,
+      "deliveryFee": 0,
+      "discountAmount": 0,
+      "grandTotal": 470,
+      "trackingId": "ECO-DH-901842",
+      "items": [
+        {
+          "productId": "fre-mwohx1p0",
+          "name": "Fresh Guava 1kg",
+          "nameBn": "তাজা পেয়ারা ১ কেজি",
+          "price": 90,
+          "quantity": 2,
+          "unit": "1 kg pack",
+          "total": 180,
+          "image": "/uploads/fresh-guava-mwohtea2.jpg"
+        },
+        {
+          "productId": "gr-2",
+          "name": "Aromatic Chinigura Rice 2kg",
+          "nameBn": "সুগন্ধি চিনিগুঁড়া চাল ২ কেজি",
+          "price": 290,
+          "quantity": 1,
+          "unit": "2 kg pack",
+          "total": 290,
+          "image": "/images/products/chinigura-rice.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ECO-DH-847291",
+      "placedAt": "2026-11-20T10:12:44.000Z",
+      "formattedTime": "10:12 AM",
+      "formattedDate": "Today, 20 Nov 2026",
+      "customerName": "Nusrat Jahan",
+      "customerPhone": "+880 1819-334455",
+      "deliveryAddress": "House 24, Road 7/A, Dhanmondi, Dhaka",
+      "deliveryTimeSlot": "Today Afternoon (2:00 PM - 5:00 PM)",
+      "paymentMethod": "bkash",
+      "branch": "Dhanmondi Branch #01",
+      "status": "RIDER_ASSIGNED",
+      "subtotal": 415,
+      "deliveryFee": 50,
+      "discountAmount": 20,
+      "grandTotal": 445,
+      "trackingId": "ECO-DH-847291",
+      "items": [
+        {
+          "productId": "fv-1",
+          "name": "Fresh Organic Red Vine Tomatoes",
+          "nameBn": "তাজা পাকা লাল টমেটো",
+          "price": 80,
+          "quantity": 2,
+          "unit": "1 kg pack",
+          "total": 160,
+          "image": "/images/products/fresh-veggies-hero.jpg"
+        },
+        {
+          "productId": "dr-1",
+          "name": "Farm Fresh Pasteurized Pure Cow Milk 1L",
+          "nameBn": "ফার্ম ফ্রেশ খাঁটি তরল দুধ ১ লিটার",
+          "price": 95,
+          "quantity": 2,
+          "unit": "1 L bottle",
+          "total": 190,
+          "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+          "productId": "fv-3",
+          "name": "Organic Fresh Green Spinach 500g",
+          "nameBn": "তাজা দেশি পালং শাক ৫০০ গ্রাম",
+          "price": 65,
+          "quantity": 1,
+          "unit": "500 g bunch",
+          "total": 65,
+          "image": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&auto=format&fit=crop&q=80"
+        }
+      ]
+    },
+    {
+      "id": "ECO-DH-719302",
+      "placedAt": "2026-11-20T09:30:10.000Z",
+      "formattedTime": "09:30 AM",
+      "formattedDate": "Today, 20 Nov 2026",
+      "customerName": "Tanvir Ahmed",
+      "customerPhone": "+880 1911-223344",
+      "deliveryAddress": "Sector 11, Road 4, House 12, Uttara, Dhaka",
+      "deliveryTimeSlot": "Express Delivery (25-30 Mins)",
+      "paymentMethod": "nagad",
+      "branch": "Uttara Sector 11 Express #03",
+      "status": "DELIVERED",
+      "subtotal": 90,
+      "deliveryFee": 50,
+      "discountAmount": 0,
+      "grandTotal": 140,
+      "trackingId": "ECO-DH-719302",
+      "items": [
+        {
+          "productId": "fre-mwohx1p0",
+          "name": "Fresh Guava 1kg",
+          "nameBn": "তাজা পেয়ারা ১ কেজি",
+          "price": 90,
+          "quantity": 1,
+          "unit": "1 kg pack",
+          "total": 90,
+          "image": "/uploads/fresh-guava-mwohtea2.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ECO-DH-652918",
+      "placedAt": "2026-11-20T08:50:00.000Z",
+      "formattedTime": "08:50 AM",
+      "formattedDate": "Today, 20 Nov 2026",
+      "customerName": "Farhana Kabir",
+      "customerPhone": "+880 1612-556677",
+      "deliveryAddress": "Banani DOHS, Road 2, Dhaka",
+      "deliveryTimeSlot": "Express Delivery (25-30 Mins)",
+      "paymentMethod": "card",
+      "branch": "Gulshan-2 Superstore #02",
+      "status": "DELIVERED",
+      "subtotal": 850,
+      "deliveryFee": 0,
+      "discountAmount": 85,
+      "grandTotal": 765,
+      "trackingId": "ECO-DH-652918",
+      "items": [
+        {
+          "productId": "gr-1",
+          "name": "Sundarban Raw Wild Forest Honey 500g",
+          "nameBn": "সুন্দরবনের প্রাকৃতিক চাকের মধু ৫০০ গ্রাম",
+          "price": 650,
+          "quantity": 1,
+          "unit": "500 g glass jar",
+          "total": 650,
+          "image": "/images/products/sundarban-honey.webp"
+        },
+        {
+          "productId": "fv-1",
+          "name": "Fresh Organic Red Vine Tomatoes",
+          "nameBn": "তাজা পাকা লাল টমেটো",
+          "price": 80,
+          "quantity": 2,
+          "unit": "1 kg pack",
+          "total": 160,
+          "image": "/images/products/fresh-veggies-hero.jpg"
+        }
+      ]
+    }
+  ]
+}

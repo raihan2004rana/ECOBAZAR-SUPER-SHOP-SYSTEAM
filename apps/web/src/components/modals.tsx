@@ -213,10 +213,46 @@ export const Modals: React.FC = () => {
       return;
     }
     setIsSubmittingOrder(true);
-    setTimeout(() => {
+
+    const itemsPayload = cartItems.map((item) => ({
+      productId: item.product.id,
+      name: item.product.name,
+      nameBn: item.product.nameBn,
+      price: item.product.price,
+      quantity: item.quantity,
+      unit: item.product.unit || '1 unit',
+      total: item.product.price * item.quantity,
+      image: item.product.image,
+    }));
+
+    setTimeout(async () => {
       const orderId = handlePlaceOrder();
       const etaTime = getEstimatedDeliveryTime();
       const placedAt = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+      // Persist order to backend and update live inventory & sales counter
+      try {
+        await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId,
+            customerName: customerName.trim(),
+            customerPhone: `+880 ${customerPhone.trim()}`,
+            deliveryAddress: deliveryAddress.trim(),
+            deliveryTimeSlot,
+            paymentMethod,
+            subtotal: cartSubtotal,
+            deliveryFee,
+            discountAmount,
+            grandTotal: cartGrandTotal,
+            branch: selectedBranch.name,
+            items: itemsPayload,
+          }),
+        });
+      } catch (err) {
+        console.error('Failed to persist order to backend:', err);
+      }
 
       const snapshot = {
         orderId,

@@ -1,0 +1,66 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-11-20T11:45:00.000Z",
+  "reviews": [
+    {
+      "id": "rev-bad-1",
+      "productId": "dr-1",
+      "productName": "Farm Fresh Pasteurized Pure Cow Milk 1L",
+      "productImage": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop&q=80",
+      "author": "Tahmina Sultana",
+      "phone": "+880 1711-443322",
+      "location": "Dhanmondi, Dhaka",
+      "rating": 2,
+      "date": "Today, 10:15 AM",
+      "comment": "দুধের বোতলের ক্যাপ কিছুটা লুজ ছিল এবং ডেলিভারি ব্যাগে সামান্য পড়ে গিয়েছিল। কোল্ড চেইন প্যাকেজিং আরও শক্ত করা উচিত।",
+      "category": "Dairy & Free-Range Eggs",
+      "severity": "CRITICAL",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "rev-bad-2",
+      "productId": "fv-1",
+      "productName": "Fresh Organic Red Vine Tomatoes",
+      "productImage": "/images/products/fresh-veggies-hero.jpg",
+      "author": "Kamrul Islam",
+      "phone": "+880 1819-778899",
+      "location": "Uttara Sector 11, Dhaka",
+      "rating": 3,
+      "date": "Today, 09:40 AM",
+      "comment": "১ কেজি টমেটোর মধ্যে দুটি অতিরিক্ত নরম ও অতিরিক্ত পাকা ছিল। ডেলিভারির সময় বাছাইয়ে আরেকটু সতর্ক হওয়া দরকার।",
+      "category": "Fresh Fruits & Vegetables",
+      "severity": "WARNING",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "rev-good-1",
+      "productId": "fre-mwohx1p0",
+      "productName": "Fresh Guava 1kg",
+      "productImage": "/uploads/fresh-guava-mwohtea2.jpg",
+      "author": "Mohammad Shakil",
+      "phone": "+880 1712-887766",
+      "location": "Gulshan-2, Dhaka",
+      "rating": 5,
+      "date": "Today, 11:10 AM",
+      "comment": "অসাধারণ সুস্বাদু এবং একদম টাটকা পেয়ারা! প্যাকেজিং অনেক সুন্দর ছিল এবং ২৫ মিনিটের মধ্যে ডেলিভারি পেয়েছি।",
+      "category": "Fresh Fruits & Vegetables",
+      "severity": "POSITIVE",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "rev-good-2",
+      "productId": "gr-1",
+      "productName": "Sundarban Raw Wild Forest Honey 500g",
+      "productImage": "/images/products/sundarban-honey.webp",
+      "author": "Dr. Arifur Rahman",
+      "phone": "+880 1912-334411",
+      "location": "Banani, Dhaka",
+      "rating": 5,
+      "date": "Yesterday, 04:30 PM",
+      "comment": "১০০% খাঁটি সুন্দরবনের প্রাকৃতিক চাকের মধু। সুঘ্রাণ এবং ঘনত্ব দারুণ। পরিবারের সবাই পছন্দ করেছে।",
+      "category": "Groceries & Kitchen Staples",
+      "severity": "POSITIVE",
+      "status": "RESOLVED"
+    }
+  ]
+}

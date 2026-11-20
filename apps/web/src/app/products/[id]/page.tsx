@@ -180,13 +180,33 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     window.location.href = 'tel:+8809612000000';
   };
 
-  const handleReviewSubmit = (e: React.FormEvent) => {
+  const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!reviewerName.trim() || !reviewerComment.trim()) {
       toast.error('Missing Fields', 'Please enter your name and review comment.');
       return;
     }
     setIsSubmittingReview(true);
+
+    try {
+      await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: product.id,
+          productName: product.name,
+          productImage: product.image,
+          author: reviewerName.trim(),
+          rating: newRating,
+          comment: reviewerComment.trim(),
+          category: product.category,
+          location: 'Dhaka',
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to post review to backend:', err);
+    }
+
     setTimeout(() => {
       const newRev: ReviewItem = {
         id: `rev-${Date.now()}`,
@@ -203,7 +223,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
       setUploadedFiles([]);
       setIsSubmittingReview(false);
       toast.success('Review Submitted', 'Thank you for sharing your experience!');
-    }, 600);
+    }, 400);
   };
 
   const handleImageUploadSim = (e: React.ChangeEvent<HTMLInputElement>) => {

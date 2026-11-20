@@ -519,6 +519,22 @@ function AdminDashboardShell() {
   } | null>(null);
 
   // ==========================================
+  // REAL-TIME SALES, ORDERS & REVIEWS STATE
+  // ==========================================
+  const [liveOrders, setLiveOrders] = React.useState<any[]>([]);
+  const [liveSalesProducts, setLiveSalesProducts] = React.useState<any[]>([]);
+  const [topSellingProduct, setTopSellingProduct] = React.useState<any | null>(null);
+  const [liveGrandRevenue, setLiveGrandRevenue] = React.useState(0);
+  const [liveGrandUnits, setLiveGrandUnits] = React.useState(0);
+  const [badReviews, setBadReviews] = React.useState<any[]>([]);
+  const [badReviewsCount, setBadReviewsCount] = React.useState(0);
+  const [isOrdersSyncing, setIsOrdersSyncing] = React.useState(false);
+  const [salesSearchQuery, setSalesSearchQuery] = React.useState('');
+  const [salesCategoryFilter, setSalesCategoryFilter] = React.useState('all');
+  const [salesSortBy, setSalesSortBy] = React.useState<'volume' | 'revenue' | 'rating' | 'stock'>('volume');
+  const [salesReportTab, setSalesReportTab] = React.useState<'overview' | 'products' | 'orders' | 'bad-reviews'>('overview');
+
+  // ==========================================
   // FULL STORE & CATALOG MANAGEMENT STATE
   // ==========================================
   const [products, setProducts] = React.useState<any[]>([]);
@@ -846,6 +862,202 @@ function AdminDashboardShell() {
   React.useEffect(() => {
     fetchCatalog();
   }, [fetchCatalog]);
+
+  // Fetch live orders, product sales volume & customer reviews
+  const fetchLiveOrdersAndSales = React.useCallback(async () => {
+    try {
+      setIsOrdersSyncing(true);
+      const [ordersRes, reviewsRes] = await Promise.all([
+        fetch('/api/orders', { cache: 'no-store' }),
+        fetch('/api/reviews', { cache: 'no-store' }),
+      ]);
+
+      if (ordersRes.ok) {
+        const oData = await ordersRes.json();
+        if (oData.success) {
+          setLiveOrders(oData.orders || []);
+          setLiveSalesProducts(oData.productsWithSales || []);
+          setTopSellingProduct(oData.topSellingProduct || null);
+          setLiveGrandRevenue(oData.grandRevenue || 0);
+          setLiveGrandUnits(oData.grandUnits || 0);
+        }
+      }
+
+      if (reviewsRes.ok) {
+        const rData = await reviewsRes.json();
+        if (rData.success) {
+          setBadReviews(rData.badReviews || []);
+          setBadReviewsCount(rData.badReviewsCount || 0);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to sync live orders & sales:', err);
+    } finally {
+      setIsOrdersSyncing(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    fetchLiveOrdersAndSales();
+    const interval = setInterval(fetchLiveOrdersAndSales, 3500);
+    return () => clearInterval(interval);
+  }, [fetchLiveOrdersAndSales]);
+
+  // Export Product Sales Report CSV
+  const handleExportSalesReportCSV = () => {
+    if (!liveSalesProducts || liveSalesProducts.length === 0) {
+      toast.error('No Data', 'No product sales data available to export.');
+      return;
+    }
+
+    const headers = [
+      'Product ID',
+      'Product Name',
+      'Bengali Name',
+      'Category',
+      'Unit',
+      'Price (BDT)',
+      'Total Units Sold',
+      'Total Revenue (BDT)',
+      'Current Stock',
+      'Stock Status',
+      'Rating',
+      'Reviews Count',
+    ];
+
+    const rows = liveSalesProducts.map((p) => [
+      `"${p.id}"`,
+      `"${p.name?.replace(/"/g, '""') || ''}"`,
+      `"${p.nameBn?.replace(/"/g, '""') || ''}"`,
+      `"${p.category?.replace(/"/g, '""') || ''}"`,
+      `"${p.unit || ''}"`,
+      p.price || 0,
+      p.totalSold || 0,
+      p.totalRevenue || 0,
+      p.stock || 0,
+      `"${(p.stock || 0) <= 5 ? 'LOW_STOCK' : 'IN_STOCK'}"`,
+      p.rating || 5,
+      p.reviews || 0,
+    ]);
+
+    const csvContent =
+      'data:text/csv;charset=utf-8,\uFEFF' +
+      [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute(
+      'download',
+      `ecobazar-product-sales-report-${new Date().toISOString().split('T')[0]}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success('Sales Report Downloaded', 'Product-by-product sales audit CSV generated successfully.');
+  };
+
+  // Export Customer Orders CSV
+  const handleExportOrdersCSV = () => {
+    if (!liveOrders || liveOrders.length === 0) {
+      toast.error('No Orders', 'No orders available to export.');
+      return;
+    }
+
+    const headers = [
+      'Order ID',
+      'Date & Time',
+      'Customer Name',
+      'Customer Phone',
+      'Delivery Address',
+      'Delivery Slot',
+      'Payment Method',
+      'Branch',
+      'Items Summary',
+      'Items Count',
+      'Subtotal (BDT)',
+      'Delivery Fee (BDT)',
+      'Grand Total (BDT)',
+      'Status',
+    ];
+
+    const rows = liveOrders.map((o) => {
+      const itemsSummary = Array.isArray(o.items)
+        ? o.items.map((i: any) => `${i.name} (x${i.quantity || 1})`).join('; ')
+        : '';
+      return [
+        `"${o.id}"`,
+        `"${o.formattedDate || ''} ${o.formattedTime || ''}"`,
+        `"${o.customerName?.replace(/"/g, '""') || ''}"`,
+        `"${o.customerPhone || ''}"`,
+        `"${o.deliveryAddress?.replace(/"/g, '""') || ''}"`,
+        `"${o.deliveryTimeSlot || ''}"`,
+        `"${(o.paymentMethod || '').toUpperCase()}"`,
+        `"${o.branch || ''}"`,
+        `"${itemsSummary.replace(/"/g, '""')}"`,
+        Array.isArray(o.items) ? o.items.length : 0,
+        o.subtotal || 0,
+        o.deliveryFee || 0,
+        o.grandTotal || 0,
+        `"${o.status || 'PROCESSING'}"`,
+      ];
+    });
+
+    const csvContent =
+      'data:text/csv;charset=utf-8,\uFEFF' +
+      [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute(
+      'download',
+      `ecobazar-customer-orders-${new Date().toISOString().split('T')[0]}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success('Orders Sheet Downloaded', 'Omnichannel orders ledger exported.');
+  };
+
+  // Print Executive Report
+  const handlePrintExecutiveReport = () => {
+    window.print();
+  };
+
+  // Resolve Review
+  const handleResolveReview = async (reviewId: string) => {
+    try {
+      await fetch('/api/reviews', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reviewId, status: 'RESOLVED' }),
+      });
+      setBadReviews((prev) =>
+        prev.map((r) => (r.id === reviewId ? { ...r, status: 'RESOLVED' } : r))
+      );
+      toast.success('Quality Issue Flag Resolved', 'Customer feedback marked as reviewed & addressed.');
+    } catch {
+      toast.error('Action Failed', 'Could not update review status.');
+    }
+  };
+
+  // Update Order Status
+  const handleUpdateOrderStatus = async (orderId: string, status: string) => {
+    try {
+      await fetch('/api/orders', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, status }),
+      });
+      setLiveOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, status } : o))
+      );
+      toast.success('Order Updated', `Order #${orderId} marked as ${status}`);
+    } catch {
+      toast.error('Failed', 'Could not update order status.');
+    }
+  };
 
   const [manualImageUrl, setManualImageUrl] = React.useState('');
 
@@ -2858,6 +3070,55 @@ function AdminDashboardShell() {
                 </div>
               </div>
 
+              {/* REAL-TIME STOREFRONT SALES TELEMETRY BANNER */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-900/40 via-neutral-900/70 to-teal-950/40 border-2 border-emerald-500/40 shadow-lg text-left relative overflow-hidden backdrop-blur-md">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-500 text-neutral-950 font-black text-[10px] uppercase tracking-wider">
+                        ⚡ Real-Time Store Sales
+                      </span>
+                      <span className="text-xs text-emerald-400 font-bold">
+                        লাইভ বিক্রয় ও প্রোডাক্ট পারফরম্যান্স
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-300 font-medium">
+                      ফ্রন্টএন্ড স্টোর থেকে বিক্রি হওয়া মাত্র পণ্যের বিক্রিত পরিমাণ (যেমন: ১ কেজি + ২ কেজি = ৩ কেজি) ও মোট টাকা স্বয়ংক্রিয়ভাবে আপডেট হচ্ছে।
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs">
+                      <span className="text-neutral-400 block text-[10px]">মোট বিক্রয়:</span>
+                      <strong className="text-emerald-400 font-black text-sm">৳{liveGrandRevenue.toLocaleString()}</strong>
+                    </div>
+                    <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs">
+                      <span className="text-neutral-400 block text-[10px]">মোট বিক্রিত পরিমাণ:</span>
+                      <strong className="text-cyan-400 font-black text-sm">{liveGrandUnits} kg/units</strong>
+                    </div>
+                    <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs">
+                      <span className="text-neutral-400 block text-[10px]">আজকের সেরা পণ্য:</span>
+                      <strong className="text-amber-300 font-black text-sm">{topSellingProduct?.name || 'Fresh Guava 1kg'}</strong>
+                    </div>
+                    {badReviewsCount > 0 && (
+                      <div className="px-3 py-1.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-xs">
+                        <span className="text-rose-300 block text-[10px]">খারাপ রিভিউ এলার্ট:</span>
+                        <strong className="text-rose-400 font-black text-sm">{badReviewsCount} Flagged</strong>
+                      </div>
+                    )}
+                    <Button
+                      variant="forest"
+                      size="sm"
+                      leftIcon={<BarChart3 className="h-3.5 w-3.5" />}
+                      onClick={() => setActiveRouteId('orders')}
+                      className="font-black text-xs shadow-md shadow-emerald-600/30 ml-auto lg:ml-0"
+                    >
+                      View Full Live Report & Export 📊
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
               {/* ========================================================= */}
               {/* 2. 4 HOLOGRAPHIC CYBERNETIC KPI CARDS */}
               {/* ========================================================= */}
@@ -3675,9 +3936,748 @@ function AdminDashboardShell() {
           )}
 
           {/* ========================================== */}
+          {/* VIEW: LIVE SALES & PRODUCT INTELLIGENCE CENTER */}
+          {/* ========================================== */}
+          {(activeRouteId === 'orders' || activeRouteId === 'reports') && (
+            <div className="space-y-6 text-left">
+              {/* Header */}
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                      <BarChart3 className="h-7 w-7 text-primary-green" />
+                      <span>Live Sales & Product Intelligence Center</span>
+                    </h1>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-black border border-emerald-500/20">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                      </span>
+                      LIVE STOREFRONT SYNC
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1 font-medium">
+                    লাইভ সেলস ট্র্যাকিং: ফ্রন্টএন্ড থেকে পণ্য বিক্রি হওয়া মাত্র পণ্যের বিক্রিত পরিমাণ (কেজি/ইউনিট) ও মোট টাকার হিসাব স্বয়ংক্রিয়ভাবে আপডেট হচ্ছে।
+                  </p>
+                </div>
+
+                {/* Export & Action Buttons */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    variant="forest"
+                    size="sm"
+                    leftIcon={<Download className="h-3.5 w-3.5" />}
+                    onClick={handleExportSalesReportCSV}
+                    className="font-bold text-xs shadow-md shadow-emerald-600/20"
+                  >
+                    Export Product Sales (CSV)
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<FileSpreadsheet className="h-3.5 w-3.5 text-neutral-600 dark:text-neutral-300" />}
+                    onClick={handleExportOrdersCSV}
+                    className="font-bold text-xs"
+                  >
+                    Export Orders Sheet (CSV)
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<Printer className="h-3.5 w-3.5 text-neutral-600 dark:text-neutral-300" />}
+                    onClick={handlePrintExecutiveReport}
+                    className="font-bold text-xs"
+                  >
+                    Print Summary
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<RefreshCw className={`h-3.5 w-3.5 text-emerald-600 ${isOrdersSyncing ? 'animate-spin' : ''}`} />}
+                    onClick={fetchLiveOrdersAndSales}
+                    className="font-bold text-xs"
+                  >
+                    Sync
+                  </Button>
+                </div>
+              </div>
+
+              {/* 4 Holographic KPI Metric Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
+                {/* 1. Total Store Revenue */}
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
+                      Total Sales Revenue (মোট বিক্রয়)
+                    </span>
+                    <span className="h-8 w-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-base shadow-xs">
+                      ৳
+                    </span>
+                  </div>
+                  <div className="mt-3">
+                    <div className="text-2xl sm:text-3xl font-black text-forest-900 dark:text-emerald-300 tracking-tight">
+                      ৳{liveGrandRevenue.toLocaleString()}
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
+                      <TrendingUp className="h-3.5 w-3.5" />
+                      <span>Live from {liveOrders.length} customer orders</span>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 2. Total Volume Sold */}
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
+                      Total Volume Sold (মোট বিক্রি)
+                    </span>
+                    <span className="h-8 w-8 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm shadow-xs">
+                      📦
+                    </span>
+                  </div>
+                  <div className="mt-3">
+                    <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
+                      {liveGrandUnits} <span className="text-sm font-bold text-neutral-400">kg/units</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-cyan-600 dark:text-cyan-400 font-bold">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      <span>Auto-Accumulated live per sale</span>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 3. Today's Top Selling Product */}
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
+                      Top Seller Today (আজকের সেরা)
+                    </span>
+                    <span className="h-8 w-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm shadow-xs">
+                      🏆
+                    </span>
+                  </div>
+                  <div className="mt-2.5 flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200/60">
+                      <img
+                        src={topSellingProduct?.image || '/uploads/fresh-guava-mwohtea2.jpg'}
+                        alt={topSellingProduct?.name || 'Top Product'}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-xs font-black text-neutral-900 dark:text-white line-clamp-1">
+                        {topSellingProduct?.name || 'Fresh Guava 1kg'}
+                      </div>
+                      <div className="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-0.5">
+                        {topSellingProduct?.totalSold || 3} {topSellingProduct?.unit?.includes('kg') ? 'kg' : 'units'} sold • ৳{(topSellingProduct?.totalRevenue || 270).toLocaleString()}
+                      </div>
+                      <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase">
+                        #1 Leaderboard
+                      </span>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 4. Bad Reviews Watchlist */}
+                <Card
+                  onClick={() => setSalesReportTab('bad-reviews')}
+                  className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-rose-500/30 backdrop-blur-md cursor-pointer hover:border-rose-400 transition"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
+                      Review Quality Alert (খারাপ রিভিউ)
+                    </span>
+                    <span className="h-8 w-8 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-sm shadow-xs">
+                      ⚠️
+                    </span>
+                  </div>
+                  <div className="mt-3">
+                    <div className="text-2xl sm:text-3xl font-black text-rose-600 dark:text-rose-400 tracking-tight">
+                      {badReviewsCount} <span className="text-sm font-bold text-neutral-400">Flagged</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-rose-600 dark:text-rose-400 font-bold">
+                      <AlertTriangle className="h-3.5 w-3.5" />
+                      <span>{badReviewsCount > 0 ? 'Requires immediate QA follow-up' : 'All reviews 4-5 stars'}</span>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Internal Tab Navigation */}
+              <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                {[
+                  { id: 'overview', label: '📊 Graphic Leaderboard (গ্রাফে এগিয়ে)', icon: BarChart3 },
+                  { id: 'products', label: '📦 Product Sales Master Table (সব প্রোডাক্টের হিসাব)', icon: Package },
+                  { id: 'orders', label: `🛒 Storefront Orders Stream (${liveOrders.length})`, icon: ShoppingCart },
+                  { id: 'bad-reviews', label: `⚠️ Bad Reviews Watchlist (${badReviewsCount})`, icon: AlertTriangle, badge: badReviewsCount > 0 ? `${badReviewsCount}` : undefined },
+                ].map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setSalesReportTab(t.id as any)}
+                    className={`py-2 px-3.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+                      salesReportTab === t.id
+                        ? 'bg-primary-green text-white shadow-sm'
+                        : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                    }`}
+                  >
+                    <span>{t.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* TAB 1: GRAPHIC LEADERBOARD */}
+              {salesReportTab === 'overview' && (
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    {/* Left: Top Products Ranked Bar Chart */}
+                    <Card className="lg:col-span-8 p-6 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                      <div className="flex items-center justify-between mb-5">
+                        <div>
+                          <h3 className="text-base font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                            <span>🏆 Top Selling Products Leaderboard</span>
+                            <span className="text-xs font-bold text-primary-green bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
+                              গ্রাফে কে সবচেয়ে এগিয়ে
+                            </span>
+                          </h3>
+                          <p className="text-xs text-neutral-500 mt-0.5">
+                            Ranked in real-time by total volume/quantity sold and generated revenue
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        {liveSalesProducts
+                          .sort((a, b) => (b.totalSold || 0) - (a.totalSold || 0))
+                          .slice(0, 6)
+                          .map((prod, index) => {
+                            const maxSold = Math.max(...liveSalesProducts.map((p) => p.totalSold || 0), 1);
+                            const percent = Math.min(100, Math.round(((prod.totalSold || 0) / maxSold) * 100));
+                            return (
+                              <div
+                                key={prod.id}
+                                className="p-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200/60 dark:border-neutral-700/60 space-y-2 hover:border-emerald-500/60 transition"
+                              >
+                                <div className="flex items-center justify-between text-xs">
+                                  <div className="flex items-center gap-3">
+                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 ${
+                                      index === 0
+                                        ? 'bg-amber-400 text-neutral-900 shadow-sm'
+                                        : index === 1
+                                        ? 'bg-slate-300 text-neutral-900'
+                                        : index === 2
+                                        ? 'bg-amber-600 text-white'
+                                        : 'bg-neutral-200 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300'
+                                    }`}>
+                                      #{index + 1}
+                                    </span>
+                                    <div className="h-10 w-10 rounded-xl overflow-hidden bg-neutral-200 shrink-0 border border-neutral-300 dark:border-neutral-700">
+                                      <img
+                                        src={prod.image || '/images/products/sundarban-honey.webp'}
+                                        alt={prod.name}
+                                        className="h-full w-full object-cover"
+                                      />
+                                    </div>
+                                    <div>
+                                      <p className="font-bold text-neutral-900 dark:text-white line-clamp-1">
+                                        {prod.name}
+                                      </p>
+                                      <p className="text-[11px] text-neutral-500">
+                                        {prod.nameBn ? `${prod.nameBn} • ` : ''}{prod.unit}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <div className="text-right shrink-0">
+                                    <div className="font-black text-sm text-emerald-600 dark:text-emerald-400">
+                                      {prod.totalSold || 0} {prod.unit?.includes('kg') ? 'kg' : 'units'}
+                                    </div>
+                                    <div className="text-[11px] font-bold text-neutral-700 dark:text-neutral-300">
+                                      ৳{(prod.totalRevenue || 0).toLocaleString()}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Animated Velocity Progress Bar */}
+                                <div className="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2.5 overflow-hidden">
+                                  <div
+                                    className={`h-full rounded-full transition-all duration-700 ${
+                                      index === 0
+                                        ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
+                                        : index === 1
+                                        ? 'bg-gradient-to-r from-emerald-600 to-green-500'
+                                        : 'bg-gradient-to-r from-teal-600 to-cyan-500'
+                                    }`}
+                                    style={{ width: `${Math.max(percent, 8)}%` }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </Card>
+
+                    {/* Right: Quick Insights & Summary */}
+                    <div className="lg:col-span-4 space-y-4">
+                      {/* Top Product Highlight Card */}
+                      <Card className="p-5 bg-gradient-to-br from-emerald-950 via-neutral-900 to-[#071F15] text-white border border-emerald-500/30">
+                        <span className="text-[10px] font-black uppercase text-amber-400 tracking-wider">
+                          🥇 #1 BESTSELLER OF THE DAY
+                        </span>
+                        <div className="mt-3 flex items-center gap-3.5">
+                          <div className="h-16 w-16 rounded-2xl overflow-hidden bg-white/10 shrink-0 border border-emerald-400/40">
+                            <img
+                              src={topSellingProduct?.image || '/uploads/fresh-guava-mwohtea2.jpg'}
+                              alt={topSellingProduct?.name}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-black text-sm leading-snug line-clamp-2 text-white">
+                              {topSellingProduct?.name || 'Fresh Guava 1kg'}
+                            </h4>
+                            <p className="text-xs text-emerald-300 font-bold mt-1">
+                              {topSellingProduct?.totalSold || 3} kg Sold Today
+                            </p>
+                            <p className="text-xs text-neutral-300 font-mono">
+                              Total: ৳{(topSellingProduct?.totalRevenue || 270).toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-neutral-300">
+                          <span>Stock Remaining:</span>
+                          <span className="font-bold text-emerald-400">{topSellingProduct?.stock || 47} units</span>
+                        </div>
+                      </Card>
+
+                      {/* Rapid Actions */}
+                      <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3">
+                        <h4 className="font-black text-sm text-neutral-900 dark:text-white">
+                          Report Actions & Downloads
+                        </h4>
+                        <p className="text-xs text-neutral-500">
+                          সম্পূর্ণ বিক্রয় বিবরণী এক্সেল বা সিএসভি ফাইল হিসেবে ডাউনলোড করুন।
+                        </p>
+                        <div className="space-y-2 pt-1">
+                          <Button
+                            variant="forest"
+                            size="sm"
+                            leftIcon={<Download className="h-3.5 w-3.5" />}
+                            onClick={handleExportSalesReportCSV}
+                            className="w-full font-bold text-xs"
+                          >
+                            Download Product Sales CSV
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            leftIcon={<FileSpreadsheet className="h-3.5 w-3.5" />}
+                            onClick={handleExportOrdersCSV}
+                            className="w-full font-bold text-xs"
+                          >
+                            Download Customer Orders CSV
+                          </Button>
+                        </div>
+                      </Card>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 2: PRODUCT-BY-PRODUCT COMPLETE MASTER SALES TABLE */}
+              {salesReportTab === 'products' && (
+                <div className="space-y-4">
+                  {/* Filters Bar */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3.5 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800">
+                    <div className="relative flex-1 max-w-sm">
+                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                      <input
+                        type="text"
+                        placeholder="Search product by name or category..."
+                        value={salesSearchQuery}
+                        onChange={(e) => setSalesSearchQuery(e.target.value)}
+                        className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 focus:outline-none focus:border-primary-green"
+                      />
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <select
+                        value={salesCategoryFilter}
+                        onChange={(e) => setSalesCategoryFilter(e.target.value)}
+                        className="text-xs py-1.5 px-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 font-medium"
+                      >
+                        <option value="all">All Categories</option>
+                        {categories.map((c) => (
+                          <option key={c.id || c.slug} value={c.slug || c.name}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+
+                      <select
+                        value={salesSortBy}
+                        onChange={(e) => setSalesSortBy(e.target.value as any)}
+                        className="text-xs py-1.5 px-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 font-bold"
+                      >
+                        <option value="volume">Sort by Volume Sold (High to Low)</option>
+                        <option value="revenue">Sort by Revenue (High to Low)</option>
+                        <option value="stock">Sort by Lowest Stock First</option>
+                        <option value="rating">Sort by Rating</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Master Table */}
+                  <Card className="overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs text-left">
+                        <thead className="bg-neutral-50 dark:bg-neutral-800/70 border-b border-neutral-200 dark:border-neutral-700 text-neutral-500 uppercase font-black text-[10px] tracking-wider">
+                          <tr>
+                            <th className="py-3 px-4">Product</th>
+                            <th className="py-3 px-3">Category</th>
+                            <th className="py-3 px-3">Unit / Pack</th>
+                            <th className="py-3 px-3">Unit Price</th>
+                            <th className="py-3 px-3 text-center">কতটুকু বিক্রি হলো (Total Sold)</th>
+                            <th className="py-3 px-3 text-right">কত টাকার সেল (Revenue)</th>
+                            <th className="py-3 px-3 text-center">স্টক (Stock)</th>
+                            <th className="py-3 px-3">রিভিউ রেটিং</th>
+                            <th className="py-3 px-4">অবস্থা (Status)</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-neutral-200/60 dark:divide-neutral-800">
+                          {liveSalesProducts
+                            .filter((p) => {
+                              if (salesSearchQuery.trim()) {
+                                const q = salesSearchQuery.toLowerCase();
+                                if (!p.name?.toLowerCase().includes(q) && !p.nameBn?.includes(q) && !p.category?.toLowerCase().includes(q)) {
+                                  return false;
+                                }
+                              }
+                              if (salesCategoryFilter !== 'all') {
+                                if (p.categorySlug !== salesCategoryFilter && p.category !== salesCategoryFilter) {
+                                  return false;
+                                }
+                              }
+                              return true;
+                            })
+                            .sort((a, b) => {
+                              if (salesSortBy === 'volume') return (b.totalSold || 0) - (a.totalSold || 0);
+                              if (salesSortBy === 'revenue') return (b.totalRevenue || 0) - (a.totalRevenue || 0);
+                              if (salesSortBy === 'stock') return (a.stock || 0) - (b.stock || 0);
+                              return (b.rating || 0) - (a.rating || 0);
+                            })
+                            .map((p) => {
+                              const isTop = (p.totalSold || 0) > 0 && p.id === topSellingProduct?.id;
+                              const isLowStock = (p.stock || 0) <= 5;
+                              return (
+                                <tr key={p.id} className="hover:bg-neutral-50/80 dark:hover:bg-neutral-800/50 transition">
+                                  <td className="py-3 px-4">
+                                    <div className="flex items-center gap-3">
+                                      <div className="h-10 w-10 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200">
+                                        <img
+                                          src={p.image || '/images/products/sundarban-honey.webp'}
+                                          alt={p.name}
+                                          className="h-full w-full object-cover"
+                                        />
+                                      </div>
+                                      <div>
+                                        <p className="font-bold text-neutral-900 dark:text-white line-clamp-1">
+                                          {p.name}
+                                        </p>
+                                        <p className="text-[11px] text-neutral-500">
+                                          {p.nameBn || p.id}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className="py-3 px-3 text-neutral-600 dark:text-neutral-300 font-medium">
+                                    {p.category}
+                                  </td>
+                                  <td className="py-3 px-3 text-neutral-600 dark:text-neutral-300 font-bold">
+                                    {p.unit}
+                                  </td>
+                                  <td className="py-3 px-3 font-black text-neutral-900 dark:text-white">
+                                    ৳{p.price}
+                                  </td>
+                                  <td className="py-3 px-3 text-center">
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-black text-xs">
+                                      {p.totalSold || 0} {p.unit?.includes('kg') ? 'kg' : 'units'}
+                                    </span>
+                                  </td>
+                                  <td className="py-3 px-3 text-right font-black text-emerald-600 dark:text-emerald-400">
+                                    ৳{(p.totalRevenue || 0).toLocaleString()}
+                                  </td>
+                                  <td className="py-3 px-3 text-center">
+                                    <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
+                                      isLowStock
+                                        ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                                        : 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200'
+                                    }`}>
+                                      {p.stock || 0} left
+                                    </span>
+                                  </td>
+                                  <td className="py-3 px-3">
+                                    <div className="flex items-center gap-1 text-amber-400 font-bold">
+                                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                                      <span className="text-neutral-900 dark:text-white">{p.rating || 5.0}</span>
+                                      <span className="text-[10px] text-neutral-400">({p.reviews || 1})</span>
+                                    </div>
+                                  </td>
+                                  <td className="py-3 px-4">
+                                    {isTop ? (
+                                      <span className="px-2 py-0.5 rounded-full bg-amber-400 text-neutral-900 text-[10px] font-black uppercase">
+                                        🏆 #1 Top Seller
+                                      </span>
+                                    ) : (p.totalSold || 0) > 0 ? (
+                                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
+                                        Active Selling
+                                      </span>
+                                    ) : (
+                                      <span className="text-[10px] text-neutral-400 font-medium">
+                                        Ready for sale
+                                      </span>
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </Card>
+                </div>
+              )}
+
+              {/* TAB 3: LIVE STOREFRONT ORDERS STREAM */}
+              {salesReportTab === 'orders' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-base font-black text-neutral-900 dark:text-white">
+                        Customer Orders Stream (লাইভ কাস্টমার অর্ডার সমূহ)
+                      </h3>
+                      <p className="text-xs text-neutral-500">
+                        ওয়েবসাইট থেকে কাস্টমাররা যেসব অর্ডার দিচ্ছেন তা এখানে রিয়েল-টাইমে আসছে।
+                      </p>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      leftIcon={<Download className="h-3.5 w-3.5" />}
+                      onClick={handleExportOrdersCSV}
+                      className="font-bold text-xs"
+                    >
+                      Export Orders CSV
+                    </Button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {liveOrders.map((o) => (
+                      <Card
+                        key={o.id}
+                        className="p-4 sm:p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3"
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-2.5 border-b border-neutral-100 dark:border-neutral-800">
+                          <div className="flex items-center gap-2.5 flex-wrap">
+                            <span className="font-mono font-black text-sm text-neutral-900 dark:text-white">
+                              #{o.id}
+                            </span>
+                            <span className="text-xs text-neutral-400 font-medium">•</span>
+                            <span className="text-xs text-neutral-500 font-bold">{o.formattedDate || 'Today'} at {o.formattedTime}</span>
+                            <span className="text-xs text-neutral-400 font-medium">•</span>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                              o.paymentMethod === 'cod'
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                : o.paymentMethod === 'bkash'
+                                ? 'bg-pink-100 text-pink-800 dark:bg-pink-950 dark:text-pink-300'
+                                : o.paymentMethod === 'nagad'
+                                ? 'bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300'
+                                : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+                            }`}>
+                              {o.paymentMethod === 'cod' ? 'Cash on Delivery' : o.paymentMethod?.toUpperCase()}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <span className={`px-2.5 py-0.5 rounded-full text-xs font-black uppercase ${
+                              o.status === 'DELIVERED'
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                : o.status === 'RIDER_ASSIGNED'
+                                ? 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
+                                : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                            }`}>
+                              ● {o.status || 'PROCESSING'}
+                            </span>
+                            {o.status !== 'DELIVERED' && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleUpdateOrderStatus(o.id, 'DELIVERED')}
+                                className="text-[11px] font-bold py-1 h-7"
+                              >
+                                Mark Delivered
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Customer & Address Details */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                          <div>
+                            <span className="text-neutral-400 block font-medium">Customer:</span>
+                            <strong className="text-neutral-900 dark:text-white font-bold">{o.customerName}</strong>
+                            <p className="text-neutral-500">{o.customerPhone}</p>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block font-medium">Delivery Address:</span>
+                            <p className="text-neutral-700 dark:text-neutral-300 leading-tight">{o.deliveryAddress}</p>
+                            <span className="text-[11px] text-primary-green font-semibold">{o.deliveryTimeSlot}</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block font-medium">Total Bill:</span>
+                            <div className="text-base font-black text-forest-900 dark:text-emerald-400">
+                              ৳{o.grandTotal}
+                            </div>
+                            <span className="text-[11px] text-neutral-400">{o.branch}</span>
+                          </div>
+                        </div>
+
+                        {/* Order Items */}
+                        <div className="bg-neutral-50 dark:bg-neutral-800/50 rounded-xl p-3 space-y-1.5 text-xs">
+                          <span className="text-[11px] font-black uppercase text-neutral-500 tracking-wider block mb-1">
+                            Items Ordered ({o.items?.length || 0}):
+                          </span>
+                          {Array.isArray(o.items) && o.items.map((it: any, idx: number) => (
+                            <div key={idx} className="flex items-center justify-between text-neutral-800 dark:text-neutral-200">
+                              <span className="font-medium">
+                                • {it.name} <strong className="text-primary-green font-bold">x{it.quantity}</strong> ({it.unit || 'pack'})
+                              </span>
+                              <span className="font-bold">৳{it.total || (it.price * (it.quantity || 1))}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 4: BAD REVIEWS WATCHLIST */}
+              {salesReportTab === 'bad-reviews' && (
+                <div className="space-y-4">
+                  {/* Warning Banner */}
+                  <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-start gap-3">
+                    <AlertTriangle className="h-5 w-5 text-rose-500 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-black text-sm text-rose-700 dark:text-rose-400">
+                        Customer Quality Watchdog (আজকে কোন প্রোডাক্টে খারাপ রিভিউ আসছে)
+                      </h4>
+                      <p className="text-xs text-rose-600 dark:text-rose-300 mt-0.5 leading-relaxed font-medium">
+                        কাস্টমারদের যেসব রিভিউ ৩ স্টার বা তার কম আসছে, তা এখানে তাৎক্ষণিক সতর্কতা হিসেবে প্রদর্শন করা হচ্ছে। যাতে দ্রুত কাস্টমারের সাথে যোগাযোগ করে কোয়ালিটি বা প্যাকেজিং সমস্যা সমাধান করা যায়।
+                      </p>
+                    </div>
+                  </div>
+
+                  {badReviews.length === 0 ? (
+                    <Card className="p-8 text-center bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-2">
+                      <div className="h-12 w-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl">
+                        ✓
+                      </div>
+                      <h4 className="font-black text-sm text-neutral-900 dark:text-white">
+                        No Bad Reviews Today! 🎉
+                      </h4>
+                      <p className="text-xs text-neutral-500">
+                        All customer ratings today are 4 or 5 stars with high satisfaction.
+                      </p>
+                    </Card>
+                  ) : (
+                    <div className="space-y-3">
+                      {badReviews.map((rev) => (
+                        <Card
+                          key={rev.id}
+                          className="p-5 bg-white dark:bg-neutral-900 border-2 border-rose-200 dark:border-rose-900/40 space-y-3"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-2 border-b border-neutral-100 dark:border-neutral-800">
+                            <div className="flex items-center gap-3">
+                              <span className="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-[10px] font-black uppercase">
+                                {rev.severity || 'WARNING'}
+                              </span>
+                              <div className="flex items-center text-amber-400">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    className={`w-4 h-4 ${
+                                      i < rev.rating
+                                        ? 'fill-amber-400 text-amber-400'
+                                        : 'text-neutral-300 dark:text-neutral-700'
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                              <span className="font-black text-rose-600 text-xs">
+                                {rev.rating} / 5 Stars
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                                rev.status === 'RESOLVED'
+                                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                  : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                              }`}>
+                                {rev.status || 'UNRESOLVED'}
+                              </span>
+                              {rev.status !== 'RESOLVED' && (
+                                <Button
+                                  variant="forest"
+                                  size="sm"
+                                  onClick={() => handleResolveReview(rev.id)}
+                                  className="text-[11px] font-bold py-1 h-7"
+                                >
+                                  Mark Resolved
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="flex items-start gap-4">
+                            {rev.productImage && (
+                              <div className="h-14 w-14 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200">
+                                <img
+                                  src={rev.productImage}
+                                  alt={rev.productName}
+                                  className="h-full w-full object-cover"
+                                />
+                              </div>
+                            )}
+                            <div className="space-y-1">
+                              <h5 className="font-black text-sm text-neutral-900 dark:text-white">
+                                {rev.productName}
+                              </h5>
+                              <p className="text-xs text-neutral-700 dark:text-neutral-300 italic bg-rose-50 dark:bg-rose-950/20 p-2 rounded-xl border border-rose-200/40">
+                                &ldquo;{rev.comment}&rdquo;
+                              </p>
+                              <div className="flex items-center gap-3 text-[11px] text-neutral-400 pt-1">
+                                <span>Customer: <strong className="text-neutral-700 dark:text-neutral-300">{rev.author}</strong></span>
+                                {rev.phone && <span>• Phone: <strong className="text-neutral-700 dark:text-neutral-300">{rev.phone}</strong></span>}
+                                <span>• {rev.date}</span>
+                                <span>• {rev.location}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ========================================== */}
           {/* VIEW: GENERIC ENTERPRISE MODULE FALLBACK */}
           {/* ========================================== */}
-          {activeRouteId !== 'pos' && activeRouteId !== 'products' && activeRouteId !== 'expiry' && activeRouteId !== 'dashboard' && activeRouteId !== 'analytics' && (
+          {activeRouteId !== 'pos' && activeRouteId !== 'products' && activeRouteId !== 'expiry' && activeRouteId !== 'dashboard' && activeRouteId !== 'analytics' && activeRouteId !== 'orders' && activeRouteId !== 'reports' && (
             <div className="space-y-6 text-left">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
