@@ -370,7 +370,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
             <div className="absolute inset-0 bg-gradient-to-t from-[#071F15] via-transparent to-black/30" />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-xs text-white/80 mb-6">
               <Link href="/" className="hover:text-white transition-colors">
@@ -412,7 +412,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
         </section>
 
         {/* B. CATEGORY BENEFITS RIBBON */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
           <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 sm:p-5 shadow-lg grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
             {ribbonPoints.map((item, idx) => (
               <div key={idx} className="flex items-center gap-3">
@@ -430,7 +430,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
 
         {/* C. HOT DEALS IN THIS CATEGORY */}
         {hotDealsInCategory.length > 0 && (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-6 shadow-xs">
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#E5ECE7]">
                 <div className="flex items-center gap-2">
@@ -446,7 +446,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
                 {hotDealsInCategory.map((product) => (
                   <ProductCard key={product.id} product={product} compact />
                 ))}
@@ -456,7 +456,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
         )}
 
         {/* D. CATEGORY FILTERS & PRODUCT LISTING */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-6 shadow-xs">
             {/* Filter Controls Header */}
             <div className="space-y-4 pb-5 border-b border-[#E5ECE7]">
@@ -584,7 +584,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
                   {displayedProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
@@ -596,7 +596,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
                 <div className="text-center pt-8">
                   <button
                     type="button"
-                    onClick={() => setVisibleCount((prev) => prev + 8)}
+                    onClick={() => setVisibleCount((prev) => prev + 10)}
                     className="bg-[#123C2D] hover:bg-[#21A366] text-white px-6 py-2.5 rounded-xl font-bold text-xs transition-colors shadow-xs"
                   >
                     Load More Products ({filteredProducts.length - visibleCount} remaining)
@@ -608,7 +608,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
         </section>
 
         {/* E. CATEGORY CAMPAIGN BANNER CARD */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="group relative rounded-3xl overflow-hidden shadow-lg border border-[#E5ECE7] hover:shadow-xl transition-all duration-300 min-h-[190px] sm:min-h-[230px] md:min-h-[260px] flex flex-col justify-end p-6 sm:p-8">
             {/* Full Background Banner Image */}
             <img
@@ -634,7 +634,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
 
         {/* F. RELATED CATEGORIES & CROSS-SELL */}
         {relatedCategories.length > 0 && (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="bg-white rounded-3xl border border-[#E5ECE7] p-6 shadow-xs">
               <h3 className="text-lg font-black text-[#17251F] mb-4">
                 Customers Also Frequently Shop

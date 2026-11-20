@@ -70,7 +70,7 @@ export default function DealsPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#1A0A0F] via-transparent to-black/40" />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
                 <div className="inline-flex items-center gap-2 bg-rose-500/40 border border-rose-400/50 backdrop-blur-md px-3.5 py-1.5 rounded-full text-white text-xs font-black mb-3 shadow-md">
@@ -112,7 +112,7 @@ export default function DealsPage() {
         </section>
 
         {/* Filter bar */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 shadow-xs flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs font-bold text-[#64736B]">Filter by Category:</span>
@@ -149,9 +149,9 @@ export default function DealsPage() {
           </div>
         </section>
 
-        {/* Product Grid */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {/* Product Grid - 5 Columns on Wide Screens */}
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
             {filteredDeals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

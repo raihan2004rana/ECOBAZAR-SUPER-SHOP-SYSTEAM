@@ -124,7 +124,7 @@ function ShowcaseContent() {
     <div className="min-h-screen bg-[#F7F9F5] text-neutral-900 font-sans pb-24">
       {/* Top Banner */}
       <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-forest-900 text-white font-bold text-xl shadow-xs">
               E
@@ -162,7 +162,7 @@ function ShowcaseContent() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 pt-8 space-y-12">
+      <main className="mx-auto max-w-[1600px] px-6 pt-8 space-y-12">
         {/* Navigation Breadcrumb */}
         <Breadcrumb
           items={[

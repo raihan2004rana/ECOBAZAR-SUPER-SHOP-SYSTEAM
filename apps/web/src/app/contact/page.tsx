@@ -68,7 +68,7 @@ export default function ContactPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#071F15] via-transparent to-black/30" />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider mb-3 shadow-md">
                 <HelpCircle className="w-4 h-4 text-[#071F15]" />
@@ -85,7 +85,7 @@ export default function ContactPage() {
         </section>
 
         {/* Quick Contact Cards */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
             <div className="bg-white rounded-2xl border border-[#E5ECE7] p-5 shadow-lg flex items-center gap-4">
               <div className="w-12 h-12 rounded-2xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0">
@@ -133,7 +133,7 @@ export default function ContactPage() {
         </section>
 
         {/* Contact Form & Branches Grid */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Form */}
             <div className="lg:col-span-7 bg-white rounded-3xl border border-[#E5ECE7] p-6 sm:p-8 shadow-xs">

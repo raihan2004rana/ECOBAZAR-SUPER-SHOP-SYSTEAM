@@ -95,7 +95,7 @@ export default function OffersPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#071F15] via-transparent to-black/30" />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider mb-3 shadow-md">
                 <Gift className="w-4 h-4 text-[#071F15]" />
@@ -112,7 +112,7 @@ export default function OffersPage() {
         </section>
 
         {/* Coupons List */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <h2 className="text-xl font-black text-[#17251F] mb-6 flex items-center gap-2">
             <Tag className="w-5 h-5 text-[#21A366]" />
             <span>Available Voucher Codes</span>
@@ -180,7 +180,7 @@ export default function OffersPage() {
         </section>
 
         {/* Value Bundle Packs */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-14">
           <h2 className="text-xl font-black text-[#17251F] mb-6 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-[#F4A340]" />
             <span>Curated Family Value Bundles</span>

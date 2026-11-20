@@ -180,7 +180,7 @@ export default function AboutUsPage() {
         <AboutHeroSlider />
 
         {/* 2. STATS RIBBON */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-12 relative z-20">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-12 relative z-20">
           <div className="bg-white rounded-3xl border border-[#E5ECE7] p-6 sm:p-8 shadow-xl grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
             {stats.map((s) => (
               <div key={s.label} className="p-2 sm:p-3 flex flex-col items-center">
@@ -195,7 +195,7 @@ export default function AboutUsPage() {
         </section>
 
         {/* 3. FOUNDER & LEADERSHIP STORY SECTION */}
-        <section id="our-story" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 scroll-mt-10">
+        <section id="our-story" className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 scroll-mt-10">
           <div className="bg-white rounded-3xl border border-[#E5ECE7] overflow-hidden shadow-md">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
               {/* Founder Image Column */}
@@ -310,7 +310,7 @@ export default function AboutUsPage() {
 
         {/* 4. OUR 3 SUPERMARKET LOCATIONS SECTION */}
         <section id="locations" className="bg-white py-16 border-y border-[#E5ECE7] scroll-mt-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
               <div>
                 <span className="text-xs font-black uppercase text-[#21A366] bg-[#D8F3DC] px-3.5 py-1 rounded-full inline-block mb-2">
@@ -476,7 +476,7 @@ export default function AboutUsPage() {
         </section>
 
         {/* 5. THE TIMELINE & MILESTONES (2021 – 2026) */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-black uppercase text-[#21A366] bg-[#D8F3DC] px-3.5 py-1 rounded-full">
               OUR MILESTONES & GROWTH
@@ -540,7 +540,7 @@ export default function AboutUsPage() {
 
         {/* 6. QUALITY STANDARDS & THE 4 PILLARS */}
         <section id="quality-standards" className="bg-[#071F15] text-white py-16 scroll-mt-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="text-xs font-black uppercase text-[#071F15] bg-[#2EBD70] px-3.5 py-1 rounded-full">
                 QUALITY STANDARDS & INTEGRITY
@@ -571,7 +571,7 @@ export default function AboutUsPage() {
         </section>
 
         {/* 7. CALL TO ACTION (CTA) BANNER */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="bg-gradient-to-r from-[#123C2D] via-[#164B38] to-[#0A261B] rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="relative z-10 max-w-xl space-y-2">
               <span className="inline-block bg-[#2EBD70] text-[#071F15] text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full">

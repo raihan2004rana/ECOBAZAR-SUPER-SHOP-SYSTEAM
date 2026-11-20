@@ -241,7 +241,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
       <main className="flex-1 pb-16">
         {/* Breadcrumb Navigation */}
         <section className="bg-white border-b border-[#E5ECE7]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
             <nav className="flex items-center gap-2 text-xs text-[#64736B]">
               <Link href="/" className="hover:text-[#21A366] transition-colors font-medium">
                 Home
@@ -262,7 +262,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         </section>
 
         {/* 1. TOP PRODUCT OVERVIEW & BUY BOX */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
           <div className="bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-8 lg:p-10 shadow-xs">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               {/* Left Column: Gallery (Thumbnails + Main Image) */}
@@ -520,7 +520,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         </section>
 
         {/* 2. MIDDLE TABBED SECTION (DESCRIPTION & REVIEWS) */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           <div className="bg-white rounded-3xl border border-[#E5ECE7] overflow-hidden shadow-xs">
             {/* Tab Buttons */}
             <div className="flex border-b border-[#E5ECE7] bg-[#F7F9F5]">
@@ -842,7 +842,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
         {/* 3. RELATED PRODUCTS */}
         {relatedProducts.length > 0 && (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+          <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-12">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl sm:text-2xl font-black text-[#17251F]">Related Products</h2>

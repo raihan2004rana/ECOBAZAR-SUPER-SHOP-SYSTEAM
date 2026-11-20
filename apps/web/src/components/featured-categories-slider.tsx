@@ -124,6 +124,7 @@ export const FeaturedCategoriesSlider: React.FC = () => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
+  const [isPaused, setIsPaused] = React.useState(false);
 
   const checkScroll = React.useCallback(() => {
     if (!scrollRef.current) return;
@@ -143,6 +144,26 @@ export const FeaturedCategoriesSlider: React.FC = () => {
       window.removeEventListener('resize', checkScroll);
     };
   }, [checkScroll]);
+
+  // Smooth Auto-slide effect every 3.2 seconds (pauses on hover or touch)
+  React.useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      if (!scrollRef.current) return;
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+
+      // If at or near the end, loop back smoothly to the beginning
+      if (scrollLeft + clientWidth >= scrollWidth - 15) {
+        scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        // Step forward by card width (~180px)
+        scrollRef.current.scrollBy({ left: 220, behavior: 'smooth' });
+      }
+    }, 3200);
+
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (!scrollRef.current) return;
@@ -200,8 +221,14 @@ export const FeaturedCategoriesSlider: React.FC = () => {
           </div>
         </div>
 
-        {/* Horizontal Carousel Track */}
-        <div className="relative mt-6">
+        {/* Horizontal Carousel Track with Auto-Slide on/off listeners */}
+        <div
+          className="relative mt-6"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+        >
           <div
             ref={scrollRef}
             className="flex items-center gap-4 sm:gap-6 overflow-x-auto scroll-smooth py-2 px-1 scrollbar-none"

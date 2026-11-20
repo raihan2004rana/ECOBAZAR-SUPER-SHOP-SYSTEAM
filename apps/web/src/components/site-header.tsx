@@ -56,6 +56,22 @@ export const SiteHeader: React.FC = () => {
   // Category dropdown state in nav
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = React.useState(false);
 
+  // Track scroll position so All Categories button only shows on scroll on HomePage (hero has its own sidebar)
+  const isHomePage = pathname === '/';
+  const [isScrolledPastHero, setIsScrolledPastHero] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      // When user scrolls past 380px, hero sidebar is no longer in view
+      setIsScrolledPastHero(window.scrollY > 380);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const showCategoryButton = !isHomePage || isScrolledPastHero;
+
   const searchContainerRef = React.useRef<HTMLDivElement>(null);
 
   // Handle live search
@@ -356,24 +372,32 @@ export const SiteHeader: React.FC = () => {
       <div className="border-t border-[#E5ECE7] bg-[#F7F9F5]">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12">
-            {/* All Categories Dropdown Trigger */}
+            {/* All Categories Dropdown Trigger - Shown on all pages, but on HomePage only when scrolled past Hero */}
             <div className="relative">
-              <button
-                type="button"
-                onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
-                className="flex items-center gap-2.5 bg-[#123C2D] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#21A366] transition-colors"
-              >
-                <Menu className="w-4 h-4" />
-                <span>All Categories</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    isCategoryDropdownOpen ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
+              {showCategoryButton ? (
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                  className="flex items-center gap-2.5 bg-[#123C2D] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#21A366] transition-all duration-300 shadow-xs animate-in fade-in"
+                >
+                  <Menu className="w-4 h-4" />
+                  <span>All Categories</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                      isCategoryDropdownOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+              ) : (
+                /* Elegant indicator on HomePage top to keep spacing consistent */
+                <div className="hidden lg:flex items-center gap-2 text-xs font-bold text-[#123C2D] bg-[#EBF7F0] px-3.5 py-1.5 rounded-xl border border-[#21A366]/20">
+                  <Sparkles className="w-3.5 h-3.5 text-[#21A366]" />
+                  <span>Fresh Express Supermarket</span>
+                </div>
+              )}
 
               {/* Mega Categories Dropdown */}
-              {isCategoryDropdownOpen && (
+              {showCategoryButton && isCategoryDropdownOpen && (
                 <div
                   onMouseLeave={() => setIsCategoryDropdownOpen(false)}
                   className="absolute left-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-xl border border-[#E5ECE7] py-2 z-50 max-h-[480px] overflow-y-auto"

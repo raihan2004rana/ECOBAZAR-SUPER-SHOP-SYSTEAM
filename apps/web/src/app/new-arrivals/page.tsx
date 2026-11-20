@@ -43,7 +43,7 @@ export default function NewArrivalsPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#071F15] via-transparent to-black/30" />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-3 shadow-md">
                 <Sparkles className="w-4 h-4 text-[#071F15]" />
@@ -60,7 +60,7 @@ export default function NewArrivalsPage() {
         </section>
 
         {/* Benefits Ribbon */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 -mt-7 relative z-20">
           <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 sm:p-5 shadow-lg grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center font-bold">
@@ -94,15 +94,15 @@ export default function NewArrivalsPage() {
           </div>
         </section>
 
-        {/* Catalog Grid */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Catalog Grid - 5 Columns on Wide Screens */}
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-black text-[#17251F]">
               Recently Harvested & Restocked ({newArrivals.length} items)
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
             {newArrivals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

@@ -63,7 +63,7 @@ export default function BranchesPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#071F15] via-transparent to-black/30" />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl space-y-3">
               <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-md">
                 <Building2 className="w-4 h-4 text-[#071F15]" />
@@ -80,7 +80,7 @@ export default function BranchesPage() {
         </section>
 
         {/* BRANCHES LISTING SECTION */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
           {/* Section Header & Area Filter */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
@@ -297,7 +297,7 @@ export default function BranchesPage() {
 
         {/* IN-STORE SERVICES & AMENITIES */}
         <section className="bg-white py-14 border-y border-[#E5ECE7]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-10">
               <span className="text-xs font-black uppercase text-[#21A366] bg-[#D8F3DC] px-3.5 py-1 rounded-full">
                 WALK-IN AMENITIES
@@ -355,7 +355,7 @@ export default function BranchesPage() {
         </section>
 
         {/* COLD-CHAIN & ASSURANCE SECTION */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <div className="bg-[#071F15] text-white rounded-3xl p-6 sm:p-10 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="space-y-2.5 max-w-xl">
               <span className="text-xs font-black uppercase text-[#2EBD70] bg-[#2EBD70]/20 px-3 py-1 rounded-full">
