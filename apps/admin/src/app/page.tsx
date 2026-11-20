@@ -534,6 +534,38 @@ function AdminDashboardShell() {
   const [salesSortBy, setSalesSortBy] = React.useState<'volume' | 'revenue' | 'rating' | 'stock'>('volume');
   const [salesReportTab, setSalesReportTab] = React.useState<'overview' | 'products' | 'orders' | 'bad-reviews'>('overview');
 
+  // AI Copilot state
+  const [aiPromptInput, setAiPromptInput] = React.useState('');
+  const [aiResponses, setAiResponses] = React.useState<Array<{ q: string; a: string; time: string; tag: string }>>([
+    {
+      q: 'Gulshan-2 ব্রাঞ্চের জন্য আগামী শুক্রবারের ফ্রেশ মিল্ক ও মিষ্টি পেয়ারা ডিমান্ড প্রেডিকশন কী?',
+      a: 'গত ৩ সপ্তাহের শুক্রবারের সেলস ডাটা ও আবহাওয়ার রিপোর্ট বিশ্লেষণ করে দেখা যাচ্ছে: আগামী শুক্রবারে Gulshan-2 তে ফ্রেশ মিল্কের চাহিদা প্রায় ৪৫% বৃদ্ধি পাবে (প্রত্যাশিত সেলস: ১৪০ লিটার)। ফ্রেশ পেয়ারার বর্তমান ৩ কেজি লাইভ রান রেট অনুযায়ী স্টক অন্তত ৩৫ কেজিতে উন্নীত করার জন্য বগুড়া ও বরিশাল সরবরাহকারীদের সাথে ইনওয়ার্ড পিও (PO) অবিলম্বে প্রস্তুত করার পরামর্শ দেওয়া হলো।',
+      time: '10:30 AM',
+      tag: 'Demand Surge Forecast',
+    },
+    {
+      q: 'কোন কোন পণ্যের স্টক দ্রুত শেষ হয়ে যাওয়ার ঝুঁকিতে রয়েছে?',
+      a: '৩টি পণ্যের স্টক সেফটি বাফারের নিচে নেমে গেছে: ১. তাজা পেয়ারা ১ কেজি (বর্তমান স্টক: ৪৭ কেজি, রান রেট উচ্চ), ২. দেশি খাঁটি ঘি ৫০০ গ্রাম (মজুদ: ৩ জার), ৩. সুগন্ধি চিনিগুঁড়া চাল (মজুদ: ৮ ব্যাগ)। আজকের মধ্যে স্টক ট্রান্সফার বা সরবরাহকারী রিকুইজিশন পাঠান।',
+      time: '09:15 AM',
+      tag: 'Stock Depletion Warning',
+    },
+  ]);
+  const [isAiThinking, setIsAiThinking] = React.useState(false);
+
+  // Settings State
+  const [storeSettings, setStoreSettings] = React.useState({
+    storeName: 'ECOBAZAR SUPERMARKET',
+    tagline: 'Freshness in Every Choice',
+    binNumber: '003891048-0101',
+    vatPercent: 5,
+    currencySymbol: '৳',
+    contactPhone: '+880 9612-000000',
+    contactEmail: 'contact@ecobazar.com.bd',
+    address: 'Gulshan-2 Superstore, Circle-2, Dhaka',
+    enableSmsAlerts: true,
+    enableFefoDiscount: true,
+  });
+
   // ==========================================
   // FULL STORE & CATALOG MANAGEMENT STATE
   // ==========================================
@@ -1057,6 +1089,27 @@ function AdminDashboardShell() {
     } catch {
       toast.error('Failed', 'Could not update order status.');
     }
+  };
+
+  // Ask AI Copilot
+  const handleAskAi = (promptText?: string) => {
+    const text = promptText || aiPromptInput;
+    if (!text.trim()) return;
+    setIsAiThinking(true);
+    setTimeout(() => {
+      setAiResponses((prev) => [
+        {
+          q: text.trim(),
+          a: `ECOBAZAR AI Copilot অ্যানালাইসিস সম্পন্ন করেছে: "${text.trim()}" সংক্রান্ত সমস্ত ব্রাঞ্চের ইনভেন্টরি, সেলস ভেলোসিটি এবং ঢাকা আবহাওয়ার প্রেডিকশন মডেল পর্যালোচনা করা হয়েছে। অপ্টিমাইজেশন সুপারিশ কার্যকর অবস্থায় আছে।`,
+          time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
+          tag: 'Real-Time AI Insight',
+        },
+        ...prev,
+      ]);
+      setAiPromptInput('');
+      setIsAiThinking(false);
+      toast.success('AI Insight Ready', 'Operations intelligence generated.');
+    }, 600);
   };
 
   const [manualImageUrl, setManualImageUrl] = React.useState('');
@@ -4675,47 +4728,800 @@ function AdminDashboardShell() {
           )}
 
           {/* ========================================== */}
-          {/* VIEW: GENERIC ENTERPRISE MODULE FALLBACK */}
+          {/* VIEW: INVENTORY MANAGEMENT */}
           {/* ========================================== */}
-          {activeRouteId !== 'pos' && activeRouteId !== 'products' && activeRouteId !== 'expiry' && activeRouteId !== 'dashboard' && activeRouteId !== 'analytics' && activeRouteId !== 'orders' && activeRouteId !== 'reports' && (
+          {activeRouteId === 'inventory' && (
             <div className="space-y-6 text-left">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight capitalize">
-                    {activeRouteId.replace('-', ' ')} Module
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <Boxes className="h-7 w-7 text-primary-green" />
+                    <span>Warehouse & Stock Inventory Management</span>
                   </h1>
-                  <p className="text-xs sm:text-sm text-neutral-500 font-medium">
-                    Enterprise multi-tenant controls for ECOBAZAR Bangladesh operations.
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Multi-branch stock monitoring across Dhanmondi, Gulshan-2, and Uttara hubs with automated reorder thresholds.
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" onClick={() => setActiveRouteId('dashboard')}>
-                    ← Back to Dashboard
+                  <Button
+                    variant="forest"
+                    size="sm"
+                    leftIcon={<Plus className="h-3.5 w-3.5" />}
+                    onClick={handleOpenAddProduct}
+                    className="font-bold text-xs"
+                  >
+                    Inward Stock
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<Download className="h-3.5 w-3.5" />}
+                    onClick={handleExportSalesReportCSV}
+                    className="font-bold text-xs"
+                  >
+                    Stock Audit CSV
                   </Button>
                 </div>
               </div>
 
-              <Card className="p-8 text-center space-y-4">
-                <div className="h-16 w-16 mx-auto rounded-3xl bg-emerald-50 dark:bg-emerald-950 text-primary-green flex items-center justify-center shadow-xs">
-                  <Sparkles className="h-8 w-8" />
+              {/* Inventory Metric Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-emerald-500/20">
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Total Inventory Valuation</span>
+                  <div className="text-2xl font-black text-forest-900 dark:text-emerald-300 mt-2">৳2,840,500</div>
+                  <span className="text-[10px] text-emerald-600 font-bold mt-1 block">✓ Fully Insured & Refrigerated</span>
+                </Card>
+                <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-emerald-500/20">
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Active Catalog SKUs</span>
+                  <div className="text-2xl font-black text-neutral-900 dark:text-white mt-2">1,420 Items</div>
+                  <span className="text-[10px] text-neutral-400 font-medium mt-1 block">Across 6 Store Departments</span>
+                </Card>
+                <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-rose-500/30">
+                  <span className="text-[11px] font-bold text-rose-500 uppercase">Low Stock Alerts</span>
+                  <div className="text-2xl font-black text-rose-600 mt-2">14 Items</div>
+                  <span className="text-[10px] text-rose-500 font-bold mt-1 block">⚠️ Below Safety Threshold (5 units)</span>
+                </Card>
+                <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-cyan-500/20">
+                  <span className="text-[11px] font-bold text-cyan-600 uppercase">Optimal Buffer Stock</span>
+                  <div className="text-2xl font-black text-cyan-700 dark:text-cyan-300 mt-2">1,406 Items</div>
+                  <span className="text-[10px] text-cyan-600 font-bold mt-1 block">Sufficient for 14 Days</span>
+                </Card>
+              </div>
+
+              {/* Inventory Table */}
+              <Card className="overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+                  <h3 className="font-black text-sm text-neutral-900 dark:text-white">Active Stock Level Audit</h3>
+                  <span className="text-xs text-neutral-500 font-medium">Consolidated Dhaka Region</span>
                 </div>
-                <div>
-                  <h3 className="text-lg font-black text-neutral-900 dark:text-white capitalize">
-                    {activeRouteId.replace('-', ' ')} Active Management Console
-                  </h3>
-                  <p className="text-xs text-neutral-500 max-w-md mx-auto mt-1">
-                    Connected to Prisma ORM backend on PostgreSQL. Live multi-branch scopes are active for {selectedBranch.name}.
-                  </p>
-                </div>
-                <div className="flex items-center justify-center gap-3 pt-2">
-                  <Button variant="forest" size="sm" onClick={() => toast.success('Action Registered', `Operation executed in ${activeRouteId} module.`)}>
-                    Execute Module Sync
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => setActiveRouteId('pos')}>
-                    Switch to POS Register
-                  </Button>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-500 uppercase font-black text-[10px]">
+                      <tr>
+                        <th className="py-3 px-4">SKU / Item</th>
+                        <th className="py-3 px-3">Category</th>
+                        <th className="py-3 px-3 text-center">Current Stock</th>
+                        <th className="py-3 px-3 text-center">Safety Buffer</th>
+                        <th className="py-3 px-3 text-right">Unit Value</th>
+                        <th className="py-3 px-3 text-right">Total Valuation</th>
+                        <th className="py-3 px-4 text-center">Status & Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                      {[
+                        { sku: 'ECO-FR-0012', name: 'Fresh Guava 1kg (তাজা পেয়ারা)', cat: 'Fresh Fruits', stock: 47, safety: 15, price: 90, status: 'OPTIMAL' },
+                        { sku: 'ECO-VG-0003', name: 'Fresh Organic Red Vine Tomatoes', cat: 'Fresh Produce', stock: 84, safety: 20, price: 80, status: 'OPTIMAL' },
+                        { sku: 'ECO-GR-0021', name: 'Aromatic Chinigura Rice 2kg', cat: 'Groceries', stock: 12, safety: 10, price: 290, status: 'REORDER_SOON' },
+                        { sku: 'ECO-DR-0001', name: 'Farm Fresh Pure Cow Milk 1L', cat: 'Dairy & Eggs', stock: 4, safety: 15, price: 95, status: 'CRITICAL_LOW' },
+                        { sku: 'ECO-HN-0002', name: 'Sundarban Raw Wild Forest Honey 500g', cat: 'Groceries', stock: 35, safety: 8, price: 650, status: 'OPTIMAL' },
+                      ].map((item) => (
+                        <tr key={item.sku} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
+                          <td className="py-3 px-4 font-bold text-neutral-900 dark:text-white">
+                            <div>{item.name}</div>
+                            <span className="text-[10px] text-neutral-400 font-mono">{item.sku}</span>
+                          </td>
+                          <td className="py-3 px-3 text-neutral-600 dark:text-neutral-300 font-medium">{item.cat}</td>
+                          <td className="py-3 px-3 text-center font-black text-sm">
+                            <span className={item.stock <= 5 ? 'text-rose-600' : 'text-neutral-900 dark:text-white'}>
+                              {item.stock} units
+                            </span>
+                          </td>
+                          <td className="py-3 px-3 text-center text-neutral-500 font-mono">{item.safety} units</td>
+                          <td className="py-3 px-3 text-right font-bold">৳{item.price}</td>
+                          <td className="py-3 px-3 text-right font-black text-emerald-600">৳{(item.stock * item.price).toLocaleString()}</td>
+                          <td className="py-3 px-4 text-center">
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                              item.status === 'CRITICAL_LOW'
+                                ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                                : item.status === 'REORDER_SOON'
+                                ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                                : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                            }`}>
+                              {item.status.replace('_', ' ')}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </Card>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: STOCK TRANSFERS */}
+          {/* ========================================== */}
+          {activeRouteId === 'transfers' && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <ArrowLeftRight className="h-7 w-7 text-primary-green" />
+                    <span>Inter-Branch Stock Transfers & Logistics</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Multi-hub rebalancing between Dhanmondi Flagship, Gulshan-2 Superstore, and Uttara Express corridor.
+                  </p>
+                </div>
+                <Button
+                  variant="forest"
+                  size="sm"
+                  leftIcon={<Plus className="h-3.5 w-3.5" />}
+                  onClick={() => toast.success('Transfer Ticket Created', 'Draft TR-2026-104 initiated.')}
+                  className="font-bold text-xs"
+                >
+                  Create Transfer
+                </Button>
+              </div>
+
+              {/* Transfer Cards */}
+              <div className="space-y-3">
+                {[
+                  { id: 'TR-2026-092', from: 'Dhanmondi Flagship #01', to: 'Uttara Sector 11 Express #03', items: 'Aromatic Chinigura Rice (40kg), Pure Milk (25L)', van: 'Cold Van DH-9012', temp: '3.4°C OK', status: 'IN_TRANSIT', eta: '35 Mins' },
+                  { id: 'TR-2026-091', from: 'Gulshan-2 Superstore #02', to: 'Dhanmondi Flagship #01', items: 'Fresh Guava (30kg), Organic Tomatoes (50kg)', van: 'Cold Van DH-4412', temp: '3.8°C OK', status: 'DELIVERED', eta: 'Completed' },
+                  { id: 'TR-2026-090', from: 'Central Cold Storage Savar', to: 'Gulshan-2 Superstore #02', items: 'Raw Wild Honey (100 Jars), Mustard Oil (80L)', van: 'Bulk Lorry DH-1190', temp: 'Ambient', status: 'PENDING_DISPATCH', eta: 'Tomorrow 08:00 AM' },
+                ].map((tr) => (
+                  <Card key={tr.id} className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-2">
+                    <div className="flex items-center justify-between text-xs pb-2 border-b border-neutral-100 dark:border-neutral-800">
+                      <div className="flex items-center gap-2.5">
+                        <span className="font-mono font-black text-sm text-neutral-900 dark:text-white">#{tr.id}</span>
+                        <span className="text-neutral-400">•</span>
+                        <span className="font-bold text-primary-green">{tr.from} → {tr.to}</span>
+                      </div>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                        tr.status === 'DELIVERED'
+                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                          : tr.status === 'IN_TRANSIT'
+                          ? 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
+                          : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                      }`}>
+                        ● {tr.status.replace('_', ' ')}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                      <div><span className="text-neutral-400 block text-[11px]">Consignment:</span><strong>{tr.items}</strong></div>
+                      <div><span className="text-neutral-400 block text-[11px]">Fleet & IoT Temp:</span><strong>{tr.van} • <span className="text-cyan-600 font-bold">{tr.temp}</span></strong></div>
+                      <div><span className="text-neutral-400 block text-[11px]">Transit Timeline:</span><strong>{tr.eta}</strong></div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: PURCHASING, SUPPLIERS & PURCHASE ORDERS */}
+          {/* ========================================== */}
+          {(activeRouteId === 'suppliers' || activeRouteId === 'purchase-orders' || activeRouteId === 'goods-received') && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <Truck className="h-7 w-7 text-primary-green" />
+                    <span>Procurement, Farm Cooperatives & POs</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Direct rural sourcing from Bogura, Rajshahi, Sirajganj, and Sylhet organic farmer partners.
+                  </p>
+                </div>
+                <Button
+                  variant="forest"
+                  size="sm"
+                  leftIcon={<Plus className="h-3.5 w-3.5" />}
+                  onClick={() => toast.success('New PO Created', 'Draft Purchase Order PO-2026-118 initiated.')}
+                  className="font-bold text-xs"
+                >
+                  Create Purchase Order
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  { name: 'Bogura Organic Cooperative', produce: 'Fresh Farm Produce, Tomatoes & Cauliflower', contact: 'Al-Amin Hossain', phone: '+880 1711-229988', terms: 'Net 15 Days', rating: 4.9, activePOs: 2, balanceDue: 45000 },
+                  { name: 'Rajshahi Orchard Growers Ltd', produce: 'Seasonal Fruits, Guava, Mango & Citrus', contact: 'Rafiqul Islam', phone: '+880 1812-776655', terms: 'Cash on Delivery', rating: 4.8, activePOs: 1, balanceDue: 28000 },
+                  { name: 'Sirajganj Pure Dairy Agro', produce: 'Fresh Pasteurized Pure Cow Milk & Butter', contact: 'Mizanur Rahman', phone: '+880 1912-334455', terms: 'Weekly Ledger', rating: 5.0, activePOs: 3, balanceDue: 62000 },
+                  { name: 'Sundarban Ethic Honey Gatherers', produce: 'Raw Wild Mangrove Honey & Pure Wax', contact: 'Golam Kibria', phone: '+880 1612-998811', terms: 'Advance 50%', rating: 4.95, activePOs: 1, balanceDue: 15000 },
+                ].map((sup) => (
+                  <Card key={sup.name} className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-black text-sm text-neutral-900 dark:text-white">{sup.name}</h4>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">
+                        ★ {sup.rating} Verified
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-500 font-medium">{sup.produce}</p>
+                    <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-neutral-100 dark:border-neutral-800">
+                      <div><span className="text-neutral-400 block text-[10px]">Contact Person:</span><strong>{sup.contact} ({sup.phone})</strong></div>
+                      <div><span className="text-neutral-400 block text-[10px]">Payment Terms:</span><strong>{sup.terms}</strong></div>
+                    </div>
+                    <div className="flex items-center justify-between text-xs pt-2 border-t border-neutral-100 dark:border-neutral-800">
+                      <span className="text-neutral-500">Active POs: <strong>{sup.activePOs}</strong></span>
+                      <span className="text-forest-900 dark:text-emerald-400 font-black">Due: ৳{sup.balanceDue.toLocaleString()}</span>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: CUSTOMERS & LOYALTY PROGRAM */}
+          {/* ========================================== */}
+          {(activeRouteId === 'customers' || activeRouteId === 'loyalty') && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <Users className="h-7 w-7 text-primary-green" />
+                    <span>Customer Relationship & EcoPoints Loyalty</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Manage 14,800+ registered retail shoppers, VIP tier progression, and automated SMS marketing.
+                  </p>
+                </div>
+                <Button
+                  variant="forest"
+                  size="sm"
+                  leftIcon={<Plus className="h-3.5 w-3.5" />}
+                  onClick={() => toast.success('Customer Profile Added', 'New VIP customer record initiated.')}
+                  className="font-bold text-xs"
+                >
+                  Add Customer
+                </Button>
+              </div>
+
+              <Card className="overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-500 uppercase font-black text-[10px]">
+                      <tr>
+                        <th className="py-3 px-4">Customer Name</th>
+                        <th className="py-3 px-3">Phone</th>
+                        <th className="py-3 px-3">Delivery Zone</th>
+                        <th className="py-3 px-3 text-center">Total Orders</th>
+                        <th className="py-3 px-3 text-right">Lifetime Spend</th>
+                        <th className="py-3 px-3 text-center">EcoPoints</th>
+                        <th className="py-3 px-4 text-center">VIP Tier</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                      {[
+                        { name: 'Mohammad Rahim', phone: '+880 1712-345678', zone: 'Gulshan-2, Dhaka', orders: 28, spend: 34800, points: 3480, tier: 'DIAMOND_VIP' },
+                        { name: 'Sharmin Akhter', phone: '+880 1819-223344', zone: 'Dhanmondi, Dhaka', orders: 19, spend: 22400, points: 2240, tier: 'GOLD' },
+                        { name: 'Tanvir Hossain', phone: '+880 1911-556677', zone: 'Uttara Sector 11', orders: 14, spend: 16800, points: 1680, tier: 'GOLD' },
+                        { name: 'Farhana Kabir', phone: '+880 1612-990011', zone: 'Banani DOHS', orders: 9, spend: 11200, points: 1120, tier: 'SILVER' },
+                      ].map((cust) => (
+                        <tr key={cust.phone} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
+                          <td className="py-3 px-4 font-bold text-neutral-900 dark:text-white">{cust.name}</td>
+                          <td className="py-3 px-3 font-mono text-neutral-600 dark:text-neutral-300">{cust.phone}</td>
+                          <td className="py-3 px-3 text-neutral-500 font-medium">{cust.zone}</td>
+                          <td className="py-3 px-3 text-center font-bold">{cust.orders}</td>
+                          <td className="py-3 px-3 text-right font-black text-emerald-600">৳{cust.spend.toLocaleString()}</td>
+                          <td className="py-3 px-3 text-center font-bold text-amber-500">🌟 {cust.points}</td>
+                          <td className="py-3 px-4 text-center">
+                            <span className="px-2 py-0.5 rounded-full bg-amber-400 text-neutral-950 text-[10px] font-black uppercase">
+                              {cust.tier.replace('_', ' ')}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: FINANCE, DAILY CASH LEDGER & NBR VAT */}
+          {/* ========================================== */}
+          {activeRouteId === 'finance' && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <CircleDollarSign className="h-7 w-7 text-primary-green" />
+                    <span>Financial Ledger, Operating P&L & NBR VAT</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Daily cash drawer reconciliation, bKash/Card settlement, and 5% NBR supermarket VAT compliance.
+                  </p>
+                </div>
+                <Button
+                  variant="forest"
+                  size="sm"
+                  leftIcon={<Download className="h-3.5 w-3.5" />}
+                  onClick={() => toast.success('Financial Audit Exported', 'P&L statement downloaded.')}
+                  className="font-bold text-xs"
+                >
+                  Export P&L (CSV)
+                </Button>
+              </div>
+
+              {/* Finance Metrics */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Gross Sales Revenue</span>
+                  <div className="text-2xl font-black text-forest-900 dark:text-emerald-400 mt-2">৳148,920</div>
+                  <span className="text-[10px] text-emerald-600 font-bold mt-1 block">+12.4% vs Yesterday</span>
+                </Card>
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Cost of Goods Sold (COGS)</span>
+                  <div className="text-2xl font-black text-neutral-900 dark:text-white mt-2">৳108,400</div>
+                  <span className="text-[10px] text-neutral-400 font-medium mt-1 block">Gross Margin: 27.2%</span>
+                </Card>
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Net Operating Profit</span>
+                  <div className="text-2xl font-black text-emerald-600 mt-2">৳28,520</div>
+                  <span className="text-[10px] text-emerald-600 font-bold mt-1 block">Net Margin: 19.1%</span>
+                </Card>
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">NBR 5% VAT Collected</span>
+                  <div className="text-2xl font-black text-amber-500 mt-2">৳7,446</div>
+                  <span className="text-[10px] text-amber-500 font-bold mt-1 block">NBR BIN: 003891048-0101</span>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: BRANCHES & MULTI-STORE MANAGEMENT */}
+          {/* ========================================== */}
+          {activeRouteId === 'branches' && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <Building2 className="h-7 w-7 text-primary-green" />
+                    <span>Multi-Branch Hubs & Store Operations</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Live operational telemetry from Dhanmondi #01, Gulshan-2 #02, and Uttara #03 superstores.
+                  </p>
+                </div>
+                <Button
+                  variant="forest"
+                  size="sm"
+                  leftIcon={<Plus className="h-3.5 w-3.5" />}
+                  onClick={() => toast.success('New Branch Form', 'Ready to add new Dhaka location.')}
+                  className="font-bold text-xs"
+                >
+                  Add Branch Hub
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  { name: 'Dhanmondi Branch #01 (Flagship)', code: 'DHN-01', manager: 'Farhan Shakil', pos: 6, footfall: 640, sales: 84200, status: 'OPEN_BUSY' },
+                  { name: 'Gulshan-2 Superstore #02', code: 'GLS-02', manager: 'Tanvir Ahmed', pos: 5, footfall: 520, sales: 52400, status: 'OPEN_NORMAL' },
+                  { name: 'Uttara Sector 11 Express #03', code: 'UTR-03', manager: 'Nusrat Jahan', pos: 3, footfall: 380, sales: 32320, status: 'OPEN_NORMAL' },
+                ].map((b) => (
+                  <Card key={b.code} className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs font-bold text-neutral-400">{b.code}</span>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
+                        ● {b.status.replace('_', ' ')}
+                      </span>
+                    </div>
+                    <h4 className="font-black text-sm text-neutral-900 dark:text-white">{b.name}</h4>
+                    <p className="text-xs text-neutral-500">Store Manager: <strong>{b.manager}</strong></p>
+                    <div className="pt-2 border-t border-neutral-100 dark:border-neutral-800 grid grid-cols-3 gap-2 text-center text-xs">
+                      <div><span className="text-neutral-400 block text-[10px]">POS Counters</span><strong>{b.pos} Live</strong></div>
+                      <div><span className="text-neutral-400 block text-[10px]">Footfall</span><strong>{b.footfall}</strong></div>
+                      <div><span className="text-neutral-400 block text-[10px]">Today Sales</span><strong className="text-emerald-600">৳{b.sales.toLocaleString()}</strong></div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: STAFF & EMPLOYEES */}
+          {/* ========================================== */}
+          {activeRouteId === 'employees' && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <Briefcase className="h-7 w-7 text-primary-green" />
+                    <span>Employee Directory, Shifts & Attendance</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Store managers, POS cashiers, warehouse inventory keepers, and cold-chain express riders.
+                  </p>
+                </div>
+                <Button
+                  variant="forest"
+                  size="sm"
+                  leftIcon={<Plus className="h-3.5 w-3.5" />}
+                  onClick={() => toast.success('Staff Onboarding', 'New employee creation form opened.')}
+                  className="font-bold text-xs"
+                >
+                  Onboard Staff
+                </Button>
+              </div>
+
+              <Card className="overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-500 uppercase font-black text-[10px]">
+                      <tr>
+                        <th className="py-3 px-4">Employee</th>
+                        <th className="py-3 px-3">Role</th>
+                        <th className="py-3 px-3">Assigned Branch</th>
+                        <th className="py-3 px-3">Shift Timing</th>
+                        <th className="py-3 px-3">Contact</th>
+                        <th className="py-3 px-4 text-center">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                      {[
+                        { name: 'Raihan Hasan Rana', role: 'Executive Store Owner & Director', branch: 'All Branches (HQ)', shift: 'Day General', phone: '+880 1712-000000', status: 'ACTIVE' },
+                        { name: 'Farhan Shakil', role: 'Store General Manager', branch: 'Dhanmondi Flagship #01', shift: 'Morning (07:00 - 15:30)', phone: '+880 1711-998877', status: 'ON_DUTY' },
+                        { name: 'Tanvir Ahmed', role: 'Head POS Cashier', branch: 'Gulshan-2 Superstore #02', shift: 'Evening (15:00 - 23:30)', phone: '+880 1812-334455', status: 'ON_DUTY' },
+                        { name: 'Mahmudul Hasan', role: 'Cold-Chain Delivery Lead', branch: 'Uttara Sector 11 Express #03', shift: 'Express On-Call', phone: '+880 1912-778899', status: 'ON_DUTY' },
+                      ].map((emp) => (
+                        <tr key={emp.phone} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
+                          <td className="py-3 px-4 font-bold text-neutral-900 dark:text-white">{emp.name}</td>
+                          <td className="py-3 px-3 font-semibold text-primary-green">{emp.role}</td>
+                          <td className="py-3 px-3 text-neutral-500">{emp.branch}</td>
+                          <td className="py-3 px-3 text-neutral-600 dark:text-neutral-300 font-mono">{emp.shift}</td>
+                          <td className="py-3 px-3 font-mono">{emp.phone}</td>
+                          <td className="py-3 px-4 text-center">
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
+                              ● {emp.status.replace('_', ' ')}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: AI ASSISTANT / COPILOT */}
+          {/* ========================================== */}
+          {activeRouteId === 'ai-assistant' && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <Sparkles className="h-7 w-7 text-primary-green animate-pulse" />
+                    <span>ECOBAZAR AI Operations Copilot</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Autonomous neural agent for retail demand forecasting, dynamic pricing, and inventory optimization.
+                  </p>
+                </div>
+                <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-black text-xs border border-emerald-500/40">
+                  AI MODEL GEMINI-2.0 LIVE
+                </span>
+              </div>
+
+              {/* Quick AI Prompts */}
+              <div className="flex flex-wrap gap-2">
+                {[
+                  'Gulshan-2 ব্রাঞ্চের জন্য আগামী শুক্রবারের ফ্রেশ মিল্ক ও মিষ্টি পেয়ারা ডিমান্ড প্রেডিকশন কী?',
+                  'কোন কোন পণ্যের স্টক দ্রুত শেষ হয়ে যাওয়ার ঝুঁকিতে রয়েছে?',
+                  'ধামন্ডি স্টোরে যেসব পণ্যের মেয়াদ ৪৮ ঘণ্টার মধ্যে শেষ হবে তাদের ডিসকাউন্ট দিন',
+                  'আজকের ঢাকা বৃষ্টির কারণে কোন কোন গ্রোসারি আইটেম সবচেয়ে বেশি বিক্রি হবে?',
+                ].map((prompt, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleAskAi(prompt)}
+                    className="p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-xs text-neutral-700 dark:text-neutral-200 hover:bg-emerald-100 dark:hover:bg-emerald-950/60 font-semibold text-left transition border border-transparent hover:border-emerald-500/40"
+                  >
+                    💡 {prompt}
+                  </button>
+                ))}
+              </div>
+
+              {/* Chat Input */}
+              <div className="p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Ask ECOBAZAR AI Copilot anything about sales, stock, forecasting, or Dhaka market rates..."
+                  value={aiPromptInput}
+                  onChange={(e) => setAiPromptInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAskAi()}
+                  className="flex-1 px-4 py-2.5 rounded-xl text-xs bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:outline-none focus:border-primary-green"
+                />
+                <Button
+                  variant="forest"
+                  size="sm"
+                  disabled={isAiThinking || !aiPromptInput.trim()}
+                  onClick={() => handleAskAi()}
+                  className="font-black text-xs px-5"
+                >
+                  {isAiThinking ? 'Analyzing...' : 'Ask AI'}
+                </Button>
+              </div>
+
+              {/* AI Responses Log */}
+              <div className="space-y-3">
+                {aiResponses.map((item, i) => (
+                  <Card key={i} className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-2.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                        <Sparkles className="h-4 w-4 text-primary-green" />
+                        {item.q}
+                      </span>
+                      <span className="text-[10px] text-neutral-400 font-mono">{item.time}</span>
+                    </div>
+                    <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed bg-emerald-50/50 dark:bg-emerald-950/20 p-3.5 rounded-xl border border-emerald-500/20 font-medium">
+                      {item.a}
+                    </p>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: SETTINGS & NBR VAT CONFIG */}
+          {/* ========================================== */}
+          {activeRouteId === 'settings' && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <Settings className="h-7 w-7 text-primary-green" />
+                    <span>Supermarket Configuration & NBR VAT Settings</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Store identification, thermal receipt headers, tax brackets, and SMS notification gateways.
+                  </p>
+                </div>
+                <Button
+                  variant="forest"
+                  size="sm"
+                  onClick={() => toast.success('Settings Saved', 'Supermarket parameters updated successfully.')}
+                  className="font-bold text-xs"
+                >
+                  Save Changes
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4">
+                  <h4 className="font-black text-sm text-neutral-900 dark:text-white">Store Identity & Legal</h4>
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">Store Legal Name</label>
+                      <input
+                        type="text"
+                        value={storeSettings.storeName}
+                        onChange={(e) => setStoreSettings({ ...storeSettings, storeName: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">NBR Business Identification Number (BIN)</label>
+                      <input
+                        type="text"
+                        value={storeSettings.binNumber}
+                        onChange={(e) => setStoreSettings({ ...storeSettings, binNumber: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 font-mono"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">Standard Supermarket VAT Rate (%)</label>
+                      <input
+                        type="number"
+                        value={storeSettings.vatPercent}
+                        onChange={(e) => setStoreSettings({ ...storeSettings, vatPercent: Number(e.target.value) })}
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800"
+                      />
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4">
+                  <h4 className="font-black text-sm text-neutral-900 dark:text-white">Communication & Automation</h4>
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">Helpline Phone</label>
+                      <input
+                        type="text"
+                        value={storeSettings.contactPhone}
+                        onChange={(e) => setStoreSettings({ ...storeSettings, contactPhone: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 font-mono"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">Support Email</label>
+                      <input
+                        type="email"
+                        value={storeSettings.contactEmail}
+                        onChange={(e) => setStoreSettings({ ...storeSettings, contactEmail: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800"
+                      />
+                    </div>
+                    <div className="pt-2">
+                      <label className="flex items-center gap-2 cursor-pointer font-bold text-neutral-800 dark:text-neutral-200">
+                        <input
+                          type="checkbox"
+                          checked={storeSettings.enableSmsAlerts}
+                          onChange={(e) => setStoreSettings({ ...storeSettings, enableSmsAlerts: e.target.checked })}
+                          className="rounded text-primary-green focus:ring-primary-green h-4 w-4"
+                        />
+                        <span>Send Automated SMS Order Tracking to Customers</span>
+                      </label>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: AUDIT LOGS & SECURITY TRAIL */}
+          {/* ========================================== */}
+          {activeRouteId === 'audit-logs' && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <History className="h-7 w-7 text-primary-green" />
+                    <span>Immutable Audit Log Trail & Security</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    System activity, price changes, cashier tenders, and administrative operations log.
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  leftIcon={<Download className="h-3.5 w-3.5" />}
+                  onClick={() => toast.success('Audit Log Exported', 'Security audit trail CSV downloaded.')}
+                  className="font-bold text-xs"
+                >
+                  Export Audit Log
+                </Button>
+              </div>
+
+              <Card className="overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-500 uppercase font-black text-[10px]">
+                      <tr>
+                        <th className="py-3 px-4">Timestamp</th>
+                        <th className="py-3 px-3">Actor / Staff</th>
+                        <th className="py-3 px-3">Branch Scope</th>
+                        <th className="py-3 px-3">Action Type</th>
+                        <th className="py-3 px-4">Event Details</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                      {[
+                        { time: 'Today, 11:45 AM', actor: 'Store Admin (Raihan Hasan Rana)', branch: 'Central HQ', type: 'PRICE_UPDATE', desc: 'Updated price for Fresh Guava 1kg to ৳90 with 15% OFF badge' },
+                        { time: 'Today, 10:45 AM', actor: 'POS Terminal 02', branch: 'Gulshan-2 #02', type: 'SALE_TENDER', desc: 'Processed Cash on Delivery order #ECO-DH-901842 for ৳470' },
+                        { time: 'Today, 10:12 AM', actor: 'Customer Web Checkout', branch: 'Dhanmondi #01', type: 'ONLINE_ORDER', desc: 'Received online order #ECO-DH-847291 with bKash digital payment' },
+                        { time: 'Today, 09:30 AM', actor: 'Manager (Farhan Shakil)', branch: 'Dhanmondi #01', type: 'STOCK_TRANSFER', desc: 'Approved inter-branch stock dispatch TR-2026-092 to Uttara hub' },
+                      ].map((log, idx) => (
+                        <tr key={idx} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
+                          <td className="py-3 px-4 font-mono text-neutral-500">{log.time}</td>
+                          <td className="py-3 px-3 font-bold text-neutral-900 dark:text-white">{log.actor}</td>
+                          <td className="py-3 px-3 text-neutral-500">{log.branch}</td>
+                          <td className="py-3 px-3">
+                            <span className="px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-mono text-[10px] font-bold">
+                              {log.type}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-neutral-700 dark:text-neutral-300 font-medium">{log.desc}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: ROLES & PERMISSIONS */}
+          {/* ========================================== */}
+          {activeRouteId === 'roles' && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <ShieldCheck className="h-7 w-7 text-primary-green" />
+                    <span>Role-Based Access Control (RBAC)</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Manage administrative privileges, price modification rights, and cashier register permissions.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  { role: 'Super Admin', desc: 'Full unrestricted control over all branches, pricing, financials & settings', users: '1 User (Raihan Hasan Rana)' },
+                  { role: 'Store Branch Manager', desc: 'Branch inventory, stock transfers, purchase orders & shift scheduling', users: '3 Users (Dhanmondi, Gulshan, Uttara)' },
+                  { role: 'Head POS Cashier', desc: 'POS checkout terminal, cash tender, customer return & receipt printing', users: '14 Cashiers across Dhaka' },
+                ].map((r) => (
+                  <Card key={r.role} className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3">
+                    <h4 className="font-black text-sm text-neutral-900 dark:text-white">{r.role}</h4>
+                    <p className="text-xs text-neutral-500">{r.desc}</p>
+                    <div className="pt-2 border-t border-neutral-100 dark:border-neutral-800 text-[11px] font-bold text-primary-green">
+                      {r.users}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* VIEW: NOTIFICATIONS & MARKET INTEL */}
+          {/* ========================================== */}
+          {(activeRouteId === 'notifications' || activeRouteId === 'market-intel' || activeRouteId === 'campaigns' || activeRouteId === 'returns') && (
+            <div className="space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight capitalize flex items-center gap-2.5">
+                    <Bell className="h-7 w-7 text-primary-green" />
+                    <span>{activeRouteId.replace('-', ' ')} Console</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Active operational intelligence and marketing telemetry for ECOBAZAR Dhaka network.
+                  </p>
+                </div>
+                <Button
+                  variant="forest"
+                  size="sm"
+                  onClick={() => toast.success('Operation Executed', `${activeRouteId} refreshed.`)}
+                  className="font-bold text-xs"
+                >
+                  Refresh Feed
+                </Button>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  { title: 'Karwan Bazar & Shyambazar Wholesale Price Index', desc: 'Fresh tomato wholesale prices decreased by 8% today. Retail margin opportunity is now 32%.', badge: 'Market Intel', time: '10 Mins Ago' },
+                  { title: 'Sub-4°C Cold Storage IoT Alert: Dhanmondi Chiller #02', desc: 'Temperature calibrated to 3.2°C. Cold-chain unbroken. Dairy and meat stock in pristine freshness.', badge: 'Telemetry OK', time: '25 Mins Ago' },
+                  { title: 'Weekend Flash Campaign: Friday Organic Bazar', desc: 'Campaign scheduled to launch tomorrow at 06:00 AM across web store and Dhanmondi/Gulshan branches.', badge: 'Campaign Ready', time: '1 Hour Ago' },
+                ].map((item, idx) => (
+                  <Card key={idx} className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-black text-neutral-900 dark:text-white">{item.title}</span>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-black uppercase">
+                        {item.badge}
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-600 dark:text-neutral-300">{item.desc}</p>
+                    <span className="text-[10px] text-neutral-400 font-mono block pt-1">{item.time}</span>
+                  </Card>
+                ))}
+              </div>
             </div>
           )}
         </main>
