@@ -8,7 +8,8 @@ export interface DialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
+  className?: string;
   closeOnOutsideClick?: boolean;
 }
 
@@ -17,6 +18,7 @@ export const Dialog: React.FC<DialogProps> = ({
   onOpenChange,
   children,
   size = 'md',
+  className,
   closeOnOutsideClick = true,
 }) => {
   const dialogRef = React.useRef<HTMLDivElement>(null);
@@ -48,14 +50,16 @@ export const Dialog: React.FC<DialogProps> = ({
     md: 'max-w-md',
     lg: 'max-w-lg',
     xl: 'max-w-2xl',
+    '2xl': 'max-w-4xl',
+    '3xl': 'max-w-6xl',
     full: 'max-w-[95vw] h-[90vh]',
   }[size];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-neutral-900/50 backdrop-blur-xs transition-opacity animate-in fade-in-0 duration-200"
+        className="fixed inset-0 bg-neutral-950/60 backdrop-blur-xs transition-opacity animate-in fade-in-0 duration-200"
         aria-hidden="true"
         onClick={() => closeOnOutsideClick && onOpenChange(false)}
       />
@@ -66,9 +70,10 @@ export const Dialog: React.FC<DialogProps> = ({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative z-50 w-full rounded-xl bg-white p-6 shadow-2xl transition-all',
-          'border border-neutral-200 animate-in fade-in-0 zoom-in-95 duration-200',
-          sizeClasses
+          'relative z-50 w-full rounded-2xl bg-white dark:bg-neutral-900 p-6 shadow-2xl transition-all',
+          'border border-neutral-200 dark:border-neutral-800 animate-in fade-in-0 zoom-in-95 duration-200',
+          sizeClasses,
+          className
         )}
       >
         <button

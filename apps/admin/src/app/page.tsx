@@ -78,6 +78,9 @@ import {
   Pencil,
   Image as ImageIcon,
   Layers,
+  Star,
+  Heart,
+  ArrowRight,
 } from 'lucide-react';
 import {
   Button,
@@ -549,6 +552,9 @@ function AdminDashboardShell() {
   >('general');
   const [isSavingProduct, setIsSavingProduct] = React.useState(false);
   const [isUploadingImage, setIsUploadingImage] = React.useState(false);
+  const [isDraggingFile, setIsDraggingFile] = React.useState(false);
+  const [livePreviewTab, setLivePreviewTab] = React.useState<'card' | 'details'>('card');
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   // Default product form
   interface ProductFormData {
@@ -565,7 +571,7 @@ function AdminDashboardShell() {
     unit: string;
     stock: number | string;
     badge: string;
-    badgeColor: 'red' | 'green' | 'orange';
+    badgeColor: 'red' | 'green' | 'orange' | 'purple';
     image: string;
     isHotDeal: boolean;
     isNewArrival: boolean;
@@ -578,6 +584,144 @@ function AdminDashboardShell() {
     storageInstructions: string;
     countryOfOrigin: string;
   }
+
+  const quickPresets: (Omit<ProductFormData, 'id'> & { label: string })[] = [
+    {
+      label: '🍯 Pure Sundarban Honey',
+      name: 'Sundarban Raw Wild Honey 1kg',
+      nameBn: 'সুন্দরবন খাঁটি প্রাকৃতিক চাকের মধু ১ কেজি',
+      category: 'Honey & Natural Spreads',
+      categorySlug: 'honey-spreads',
+      subcategory: 'Sundarban Honey',
+      brand: 'ECOBAZAR Organic',
+      origin: 'Sundarbans, Bangladesh',
+      price: 1200,
+      originalPrice: 1450,
+      unit: '1 kg jar',
+      stock: 85,
+      badge: '17% OFF',
+      badgeColor: 'red',
+      image: '/images/products/sundarban-honey.webp',
+      isHotDeal: true,
+      isNewArrival: true,
+      isOffer: false,
+      isAdvertisement: true,
+      description: 'Ethically hand-harvested from deep mangrove forests of the Sundarbans. 100% raw, unfiltered honey rich in natural active enzymes, pollen, and antimicrobial flavonoids.',
+      keyFeaturesText: '100% Pure, raw, unfiltered and unpasteurized\nDirectly harvested by traditional Mouwals in the Sundarbans\nZero added sugar, corn syrup, or preservative chemicals\nLab tested for diastase activity and moisture purity',
+      healthBenefitsText: 'Natural cough suppressor and throat soothing agent\nPowerful antioxidant and immune system booster\nHealthy alternative to refined sugar for tea and desserts',
+      howToUse: 'Mix 1-2 teaspoons in warm water with fresh lemon every morning on an empty stomach.',
+      storageInstructions: 'Store at room temperature in a dry place. Never refrigerate raw honey.',
+      countryOfOrigin: 'Bangladesh',
+    },
+    {
+      label: '🌾 Miniket Rice',
+      name: 'Premium Miniket Rice (Special Cleaned)',
+      nameBn: 'প্রিমিয়াম মিনিকেট চাল (স্পেশাল বাছাইকৃত)',
+      category: 'Rice, Flour & Grains',
+      categorySlug: 'rice-grains',
+      subcategory: 'Miniket Rice',
+      brand: 'Kushtia Golden Rice',
+      origin: 'Kushtia, Bangladesh',
+      price: 360,
+      originalPrice: 410,
+      unit: '5 kg bag',
+      stock: 120,
+      badge: 'BEST VALUE',
+      badgeColor: 'green',
+      image: '/images/products/miniket-chal.jpg',
+      isHotDeal: true,
+      isNewArrival: false,
+      isOffer: true,
+      isAdvertisement: false,
+      description: 'Slender, fragrant, triple-sorted Miniket rice milled from fresh paddy. Fluffs up non-sticky with exceptional culinary texture.',
+      keyFeaturesText: '100% stone-free, triple automated optical sorting\nCooks extra-long, non-sticky and fragrant grains\nMilled from single-origin Kushtia farm paddy\nFood-grade breathable woven packaging',
+      healthBenefitsText: 'Easily digestible carbohydrates for sustained daily energy\nLow fat and zero cholesterol staple grain\nIdeal for everyday family lunch and dinner',
+      howToUse: 'Wash thoroughly 2-3 times before cooking. Boil with 1:2 rice-to-water ratio for 15-18 minutes.',
+      storageInstructions: 'Store in an airtight drum or cool container away from moisture and pests.',
+      countryOfOrigin: 'Bangladesh',
+    },
+    {
+      label: '🍅 Farm Red Tomato',
+      name: 'Farm Fresh Red Salad Tomatoes',
+      nameBn: 'ক্ষেতের তাজা লাল টমেটো',
+      category: 'Fresh Fruits & Vegetables',
+      categorySlug: 'fresh-fruits-vegetables',
+      subcategory: 'Fresh Vegetables',
+      brand: 'Bogura Farmers Co-op',
+      origin: 'Bogura, Bangladesh',
+      price: 75,
+      originalPrice: 90,
+      unit: '1 kg pack',
+      stock: 200,
+      badge: 'FRESH PICK',
+      badgeColor: 'green',
+      image: '/images/products/red-tomato.jpg',
+      isHotDeal: true,
+      isNewArrival: true,
+      isOffer: false,
+      isAdvertisement: false,
+      description: 'Crisp, juicy vine-ripened tomatoes harvested at peak sweetness from Bogura soils. Unbroken cold transport locks in garden flavor.',
+      keyFeaturesText: 'Vine-ripened without harmful calcium carbide or ripening agents\nHand-graded for uniform firmness and skin luster\nDirect farm dispatch within 12 hours of harvest',
+      healthBenefitsText: 'Packed with Lycopene, a potent antioxidant for heart and skin health\nRich in Vitamin C, Vitamin K, and Potassium\nNaturally low-calorie and hydrating for daily salads',
+      howToUse: 'Perfect for fresh salads, bhorta, rich curries, soups, and slow-simmered sauces.',
+      storageInstructions: 'Keep at room temperature until ripe, then store in the vegetable crisper drawer.',
+      countryOfOrigin: 'Bangladesh',
+    },
+    {
+      label: '🧈 Pure Deshi Ghee',
+      name: 'Pure Deshi Cow Milk Ghee (Bilona Churned)',
+      nameBn: 'খাঁটি দেশি গাভীর বিলোনা ঘি',
+      category: 'Dairy, Eggs & Butter',
+      categorySlug: 'dairy-eggs',
+      subcategory: 'Deshi Ghee',
+      brand: 'Pabna Heritage Dairy',
+      origin: 'Pabna, Bangladesh',
+      price: 1350,
+      originalPrice: 1550,
+      unit: '500 gm jar',
+      stock: 45,
+      badge: 'PREMIUM',
+      badgeColor: 'orange',
+      image: '/images/products/deshi-ghee.webp',
+      isHotDeal: false,
+      isNewArrival: true,
+      isOffer: true,
+      isAdvertisement: true,
+      description: 'Traditional bilona churned aromatic ghee made from pure grass-fed Deshi cow milk cultured curd. Golden granulated texture with unforgettable nutty fragrance.',
+      keyFeaturesText: 'Traditional Vedic Bilona slow-simmer method from cultured curd\n100% grass-fed Deshi cow whole milk\nNo artificial coloring, essence, or palm oil adulteration\nGlass jar packaging preserves authentic grain texture',
+      healthBenefitsText: 'Contains Butyric acid supporting intestinal gut lining\nRich in fat-soluble vitamins A, D, E, and K\nEnhances digestion and nutrient assimilation',
+      howToUse: 'Drizzle over steaming hot rice, khichuri, dal, or use for baking and roasting.',
+      storageInstructions: 'Store in a cool dry pantry. Use a dry spoon every time.',
+      countryOfOrigin: 'Bangladesh',
+    },
+    {
+      label: '🥚 Organic Brown Eggs',
+      name: 'Fresh Organic Brown Farm Eggs',
+      nameBn: 'ফার্মের তাজা লাল ডিম (১২ পিস)',
+      category: 'Dairy, Eggs & Butter',
+      categorySlug: 'dairy-eggs',
+      subcategory: 'Farm Eggs',
+      brand: 'ECOBAZAR Poultry',
+      origin: 'Gazipur, Bangladesh',
+      price: 145,
+      originalPrice: 160,
+      unit: '12 pcs pack',
+      stock: 180,
+      badge: 'DAILY ESSENTIAL',
+      badgeColor: 'green',
+      image: '/images/products/dozen-egg.webp',
+      isHotDeal: true,
+      isNewArrival: false,
+      isOffer: true,
+      isAdvertisement: false,
+      description: 'Farm-fresh graded brown eggs laid by healthy, grain-fed hens. Packed with clean thick egg whites and golden nutrient-rich yolks.',
+      keyFeaturesText: 'UV-sanitized and graded for size and weight\nDelivered within 24 hours of farm collection\nShock-absorbent molded paper pulp egg carton',
+      healthBenefitsText: 'Complete high-biological-value protein for muscle development\nRich in choline for brain and cognitive health\nEssential vitamins B12, riboflavin, and selenium',
+      howToUse: 'Boil, poach, fry, scramble, or use in baking and savory batters.',
+      storageInstructions: 'Refrigerate pointed end down for maximum shelf freshness.',
+      countryOfOrigin: 'Bangladesh',
+    },
+  ];
 
   const defaultProductForm: ProductFormData = {
     id: '',
@@ -797,28 +941,94 @@ function AdminDashboardShell() {
     }
   };
 
-  // Upload Image from PC
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setIsUploadingImage(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      if (!res.ok) throw new Error('Image upload failed');
-      const data = await res.json();
-      setProductForm((prev) => ({ ...prev, image: data.url }));
-      toast.success('Image Uploaded', 'Product image uploaded & ready for store.');
-    } catch (e: any) {
-      toast.error('Upload Error', e.message || 'Failed to upload image');
-    } finally {
-      setIsUploadingImage(false);
+  // Unified Rock-Solid Image Upload Engine (Base64 + Local 0ms Preview + Server Persistence)
+  const processSelectedFile = (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      toast.error('Invalid Format', 'Please choose an image file (JPG, PNG, WEBP, AVIF).');
+      return;
     }
+    if (file.size > 15 * 1024 * 1024) {
+      toast.error('File Too Large', 'Maximum image size is 15MB.');
+      return;
+    }
+
+    // 1. Instant 0ms visual preview on client via FileReader
+    const localReader = new FileReader();
+    localReader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      setProductForm((prev) => ({ ...prev, image: dataUrl }));
+    };
+    localReader.readAsDataURL(file);
+
+    // 2. Persist to server via /api/upload
+    setIsUploadingImage(true);
+    const serverReader = new FileReader();
+    serverReader.onload = async (e) => {
+      try {
+        const base64Data = e.target?.result as string;
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            base64: base64Data,
+            filename: file.name,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.url) throw new Error(data.error || 'Upload failed');
+        setProductForm((prev) => ({ ...prev, image: data.url }));
+        toast.success('Image Uploaded Successfully', `"${file.name}" saved and synced to store.`);
+      } catch (err: any) {
+        toast.error('Upload Failed', err.message || 'Could not save image to server');
+      } finally {
+        setIsUploadingImage(false);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      }
+    };
+    serverReader.readAsDataURL(file);
+  };
+
+  const handleImageFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) processSelectedFile(file);
+  };
+
+  const handleFileDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingFile(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) processSelectedFile(file);
+  };
+
+  const handleApplyPreset = (preset: (typeof quickPresets)[0]) => {
+    setProductForm({
+      id: editingProduct ? editingProduct.id : '',
+      name: preset.name,
+      nameBn: preset.nameBn,
+      category: preset.category,
+      categorySlug: preset.categorySlug,
+      subcategory: preset.subcategory,
+      brand: preset.brand,
+      origin: preset.origin,
+      price: preset.price,
+      originalPrice: preset.originalPrice,
+      unit: preset.unit,
+      stock: preset.stock,
+      badge: preset.badge,
+      badgeColor: preset.badgeColor,
+      image: preset.image,
+      isHotDeal: preset.isHotDeal,
+      isNewArrival: preset.isNewArrival,
+      isOffer: preset.isOffer,
+      isAdvertisement: preset.isAdvertisement,
+      description: preset.description,
+      keyFeaturesText: preset.keyFeaturesText,
+      healthBenefitsText: preset.healthBenefitsText,
+      howToUse: preset.howToUse,
+      storageInstructions: preset.storageInstructions,
+      countryOfOrigin: preset.countryOfOrigin,
+    });
+    toast.success('Preset Applied', `Loaded "${preset.label}" details into form.`);
   };
 
   // Save Banners & Announcements
@@ -3522,368 +3732,535 @@ function AdminDashboardShell() {
       )}
 
       {/* ========================================================= */}
-      {/* COMPREHENSIVE PRODUCT ADD & EDIT MODAL */}
+      {/* ULTRA-PREMIUM DUAL-COLUMN PRODUCT CREATION & STOREFRONT STUDIO */}
       {/* ========================================================= */}
-      <Dialog open={isProductModalOpen} onOpenChange={setIsProductModalOpen} size="lg">
-        <DialogHeader>
-          <div className="flex items-center justify-between pr-6">
-            <div>
-              <DialogTitle className="text-lg font-black text-neutral-900 dark:text-white flex items-center gap-2">
-                <Package className="h-5 w-5 text-primary-green" />
-                <span>{editingProduct ? `Edit Product: ${editingProduct.name}` : 'Add New Product to Store'}</span>
-              </DialogTitle>
-              <DialogDescription className="text-xs text-neutral-500">
-                {editingProduct
-                  ? `Editing SKU ${editingProduct.id} • Changes will immediately reflect across live store`
-                  : 'Configure product details, images, prices, and frontpage placement flags.'}
-              </DialogDescription>
+      <Dialog
+        open={isProductModalOpen}
+        onOpenChange={setIsProductModalOpen}
+        size="3xl"
+        className="max-w-6xl w-full p-0 overflow-hidden rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 shadow-2xl flex flex-col max-h-[92vh]"
+      >
+        {/* Studio Top Header */}
+        <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border-b border-neutral-200 dark:border-neutral-800 px-6 py-4.5 flex flex-col gap-3">
+          <div className="flex items-center justify-between pr-8">
+            <div className="flex items-center gap-3.5">
+              <div className="h-11 w-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-600/25 shrink-0">
+                <Package className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-neutral-900 dark:text-white flex items-center gap-2 tracking-tight">
+                  <span>{editingProduct ? `Edit Live Product: ${editingProduct.name}` : 'Product Creation & Storefront Studio'}</span>
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
+                    {editingProduct ? 'Update Mode' : 'Live Sync'}
+                  </span>
+                </h3>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                  {editingProduct
+                    ? `SKU: ${editingProduct.id} • Real-time catalog sync enabled across live storefront`
+                    : 'Configure catalog specs, upload imagery, tune prices, and monitor live storefront preview.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 shadow-2xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[11px] font-bold text-neutral-700 dark:text-neutral-300">
+                Catalog Engine Active
+              </span>
             </div>
           </div>
-        </DialogHeader>
 
-        <DialogBody>
-          <div className="space-y-4 text-left">
-            {/* Modal Tabs Header */}
-            <div className="flex items-center gap-1 border-b border-neutral-200 dark:border-neutral-800 pb-2 overflow-x-auto text-xs">
-              {[
-                { id: 'general', label: '1. General Info' },
-                { id: 'pricing', label: '2. Pricing & Badges' },
-                { id: 'media', label: '3. Image & Media' },
-                { id: 'placements', label: '4. Store Placements' },
-                { id: 'details', label: '5. Details & Specs' },
-              ].map((tab) => (
+          {/* Quick Presets Bar */}
+          {!editingProduct && (
+            <div className="flex items-center gap-2 pt-1 border-t border-neutral-200/60 dark:border-neutral-800/60 overflow-x-auto pb-1 text-xs">
+              <span className="text-[11px] font-black uppercase text-neutral-400 dark:text-neutral-500 shrink-0 flex items-center gap-1">
+                <Sparkles className="h-3 w-3 text-amber-500" /> 1-Click Presets:
+              </span>
+              {quickPresets.map((preset) => (
                 <button
-                  key={tab.id}
+                  key={preset.label}
                   type="button"
-                  onClick={() => setProductModalTab(tab.id as any)}
-                  className={`px-3 py-1.5 rounded-lg font-bold transition shrink-0 ${
-                    productModalTab === tab.id
-                      ? 'bg-emerald-600 text-white shadow-xs'
-                      : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800'
-                  }`}
+                  onClick={() => handleApplyPreset(preset)}
+                  className="px-2.5 py-1 rounded-lg font-bold text-[11px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700 transition shrink-0 flex items-center gap-1"
                 >
-                  {tab.label}
+                  {preset.label}
                 </button>
               ))}
             </div>
+          )}
+        </div>
 
-            {/* TAB 1: GENERAL INFO */}
+        {/* Dual-Column Studio Workspace */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 flex-1 overflow-hidden divide-y lg:divide-y-0 lg:divide-x divide-neutral-200 dark:divide-neutral-800">
+          {/* LEFT COLUMN: Comprehensive Form (7 cols) */}
+          <div className="lg:col-span-7 flex flex-col overflow-y-auto max-h-[calc(92vh-175px)] p-6 space-y-5 text-xs text-left">
+            {/* Tab Navigation Pill Bar */}
+            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200/80 dark:border-neutral-700/60 overflow-x-auto shrink-0">
+              {[
+                { id: 'general', label: '1. Identity & Dept', icon: Package },
+                { id: 'pricing', label: '2. Pricing & Savings', icon: DollarSign },
+                { id: 'media', label: '3. Media Center', icon: UploadCloud },
+                { id: 'placements', label: '4. Store Placements', icon: Flame },
+                { id: 'details', label: '5. Story & Specs', icon: Layers },
+              ].map((tab) => {
+                const IconComponent = tab.icon;
+                const isActive = productModalTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setProductModalTab(tab.id as any)}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold transition shrink-0 ${
+                      isActive
+                        ? 'bg-white dark:bg-neutral-900 text-emerald-700 dark:text-emerald-400 shadow-sm border border-neutral-200/60 dark:border-neutral-700'
+                        : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <IconComponent className={`h-3.5 w-3.5 ${isActive ? 'text-emerald-600' : 'text-neutral-400'}`} />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* TAB 1: IDENTITY & DEPARTMENT */}
             {productModalTab === 'general' && (
-              <div className="space-y-3.5 text-xs">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Product Name (English) *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Sundarban Pure Raw Honey 1kg"
-                      value={productForm.name}
-                      onChange={(e) => setProductForm((prev) => ({ ...prev, name: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
-                    />
+              <div className="space-y-4">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3.5">
+                  <h4 className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                    <Package className="h-4 w-4 text-emerald-600" />
+                    <span>Product Names & Branding</span>
+                  </h4>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Product Name (English) *
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Sundarban Pure Raw Honey 1kg"
+                        value={productForm.name}
+                        onChange={(e) => setProductForm((prev) => ({ ...prev, name: e.target.value }))}
+                        className="w-full px-3.5 py-2.5 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Product Name (বাংলা / Bangla)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. সুন্দরবন খাঁটি প্রাকৃতিক মধু ১ কেজি"
+                        value={productForm.nameBn}
+                        onChange={(e) => setProductForm((prev) => ({ ...prev, nameBn: e.target.value }))}
+                        className="w-full px-3.5 py-2.5 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Product Name (বাংলা / Bangla)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. সুন্দরবন খাঁটি প্রাকৃতিক মধু ১ কেজি"
-                      value={productForm.nameBn}
-                      onChange={(e) => setProductForm((prev) => ({ ...prev, nameBn: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
-                    />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Brand / Producer
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. ECOBAZAR Organic, Bogura Farmers"
+                        value={productForm.brand}
+                        onChange={(e) => setProductForm((prev) => ({ ...prev, brand: e.target.value }))}
+                        className="w-full px-3.5 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Region / Origin
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Sundarbans, Bogura, Sylhet"
+                        value={productForm.origin}
+                        onChange={(e) => setProductForm((prev) => ({ ...prev, origin: e.target.value }))}
+                        className="w-full px-3.5 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Department / Category *
-                    </label>
-                    <select
-                      value={productForm.categorySlug}
-                      onChange={(e) => {
-                        const slug = e.target.value;
-                        const cat = categories.find((c) => c.slug === slug);
-                        setProductForm((prev) => ({
-                          ...prev,
-                          categorySlug: slug,
-                          category: cat ? cat.name : prev.category,
-                        }));
-                      }}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
-                    >
-                      {categories.map((c) => (
-                        <option key={c.id} value={c.slug}>
-                          {c.name} ({c.nameBn})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Subcategory
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Honey & Natural Spreads, Fresh Vegetables"
-                      value={productForm.subcategory}
-                      onChange={(e) => setProductForm((prev) => ({ ...prev, subcategory: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
-                    />
-                  </div>
-                </div>
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3.5">
+                  <h4 className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                    <FolderTree className="h-4 w-4 text-emerald-600" />
+                    <span>Category Hierarchy & Packaging</span>
+                  </h4>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Brand / Producer
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. ECOBAZAR Organic, Bogura Farms"
-                      value={productForm.brand}
-                      onChange={(e) => setProductForm((prev) => ({ ...prev, brand: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Department / Category *
+                      </label>
+                      <select
+                        value={productForm.categorySlug}
+                        onChange={(e) => {
+                          const slug = e.target.value;
+                          const cat = categories.find((c) => c.slug === slug);
+                          setProductForm((prev) => ({
+                            ...prev,
+                            categorySlug: slug,
+                            category: cat ? cat.name : prev.category,
+                          }));
+                        }}
+                        className="w-full px-3.5 py-2.5 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
+                      >
+                        {categories.map((c) => (
+                          <option key={c.id} value={c.slug}>
+                            {c.icon || '📦'} {c.name} ({c.nameBn})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Subcategory
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Sundarban Honey, Organic Rice, Farm Eggs"
+                        value={productForm.subcategory}
+                        onChange={(e) => setProductForm((prev) => ({ ...prev, subcategory: e.target.value }))}
+                        className="w-full px-3.5 py-2.5 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Region / Origin
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Sundarbans, Bogura, Sylhet"
-                      value={productForm.origin}
-                      onChange={(e) => setProductForm((prev) => ({ ...prev, origin: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
-                    />
-                  </div>
+
                   <div>
                     <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
                       Packaging Unit
                     </label>
+                    <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                      {['1 kg pack', '500 gm jar', '250 gm', '1 L bottle', '12 pcs pack', '5 kg bag'].map((u) => (
+                        <button
+                          key={u}
+                          type="button"
+                          onClick={() => setProductForm((prev) => ({ ...prev, unit: u }))}
+                          className={`px-2 py-1 rounded-lg text-[10px] font-bold border transition ${
+                            productForm.unit === u
+                              ? 'bg-emerald-600 text-white border-emerald-600'
+                              : 'bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700 hover:border-emerald-400'
+                          }`}
+                        >
+                          {u}
+                        </button>
+                      ))}
+                    </div>
                     <input
                       type="text"
-                      placeholder="e.g. 1 kg pack, 500 gm, 12 pcs, 1 L"
+                      placeholder="e.g. 1 kg pack, 500 gm jar, 12 pcs"
                       value={productForm.unit}
                       onChange={(e) => setProductForm((prev) => ({ ...prev, unit: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                      className="w-full px-3.5 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                    Opening Stock Quantity (Units)
-                  </label>
-                  <input
-                    type="number"
-                    value={productForm.stock}
-                    onChange={(e) => setProductForm((prev) => ({ ...prev, stock: e.target.value }))}
-                    className="w-full sm:w-1/2 px-3 py-2 border rounded-xl outline-hidden font-mono font-bold border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
-                  />
+                  <div>
+                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                      Opening Stock Quantity (Units in Warehouse)
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="number"
+                        value={productForm.stock}
+                        onChange={(e) => setProductForm((prev) => ({ ...prev, stock: e.target.value }))}
+                        className="w-40 px-3.5 py-2 border rounded-xl outline-hidden font-mono font-bold border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                      />
+                      <span className="text-[11px] font-bold text-neutral-500">
+                        {Number(productForm.stock) > 20 ? (
+                          <span className="text-emerald-600 flex items-center gap-1">
+                            <CheckCircle2 className="h-3.5 w-3.5" /> Healthy stock level
+                          </span>
+                        ) : Number(productForm.stock) > 0 ? (
+                          <span className="text-amber-600 flex items-center gap-1">
+                            <AlertTriangle className="h-3.5 w-3.5" /> Low stock alert threshold
+                          </span>
+                        ) : (
+                          <span className="text-rose-600 flex items-center gap-1">
+                            <AlertCircle className="h-3.5 w-3.5" /> Out of stock
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* TAB 2: PRICING & BADGES */}
+            {/* TAB 2: PRICING & SAVINGS */}
             {productModalTab === 'pricing' && (
-              <div className="space-y-3.5 text-xs">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Selling Price (৳ BDT) *
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="e.g. 280"
-                      value={productForm.price}
-                      onChange={(e) => setProductForm((prev) => ({ ...prev, price: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden font-mono font-black text-sm border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-forest-900 dark:text-emerald-400"
-                    />
-                    <span className="text-[10px] text-neutral-400 mt-0.5 block">
-                      The active price charged at checkout.
-                    </span>
+              <div className="space-y-4">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3.5">
+                  <h4 className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                    <DollarSign className="h-4 w-4 text-emerald-600" />
+                    <span>Price Formulation & Value</span>
+                  </h4>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Active Selling Price (৳ BDT) *
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 font-bold">
+                          ৳
+                        </span>
+                        <input
+                          type="number"
+                          placeholder="e.g. 280"
+                          value={productForm.price}
+                          onChange={(e) => setProductForm((prev) => ({ ...prev, price: e.target.value }))}
+                          className="w-full pl-8 pr-3.5 py-2.5 border rounded-xl outline-hidden font-mono font-black text-sm border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-emerald-700 dark:text-emerald-400 focus:ring-2 focus:ring-emerald-500/30"
+                        />
+                      </div>
+                      <span className="text-[10px] text-neutral-400 mt-1 block">
+                        The real-time price charged on storefront cart and checkout.
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Regular / Original Price (৳ BDT)
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 font-bold">
+                          ৳
+                        </span>
+                        <input
+                          type="number"
+                          placeholder="e.g. 350 (leave empty if no discount)"
+                          value={productForm.originalPrice}
+                          onChange={(e) => setProductForm((prev) => ({ ...prev, originalPrice: e.target.value }))}
+                          className="w-full pl-8 pr-3.5 py-2.5 border rounded-xl outline-hidden font-mono text-sm border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                        />
+                      </div>
+                      <span className="text-[10px] text-neutral-400 mt-1 block">
+                        Rendered as crossed-out on product card to display customer savings.
+                      </span>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Regular / Original Price (৳ BDT)
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="e.g. 350 (leave blank if no discount)"
-                      value={productForm.originalPrice}
-                      onChange={(e) => setProductForm((prev) => ({ ...prev, originalPrice: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden font-mono text-sm border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
-                    />
-                    <span className="text-[10px] text-neutral-400 mt-0.5 block">
-                      Crossed out on product card to show customer savings.
-                    </span>
-                  </div>
+                  {/* Dynamic Real-Time Savings Calculator */}
+                  {Number(productForm.originalPrice) > Number(productForm.price) && (
+                    <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="h-4 w-4 text-emerald-600" />
+                        <span className="font-bold text-emerald-800 dark:text-emerald-300">
+                          Real-time Customer Savings:
+                        </span>
+                      </div>
+                      <strong className="font-black text-emerald-700 dark:text-emerald-400 font-mono text-xs">
+                        Save ৳{Number(productForm.originalPrice) - Number(productForm.price)} (
+                        {Math.round(
+                          ((Number(productForm.originalPrice) - Number(productForm.price)) /
+                            Number(productForm.originalPrice)) *
+                            100
+                        )}
+                        % OFF)
+                      </strong>
+                    </div>
+                  )}
                 </div>
 
-                {Number(productForm.originalPrice) > Number(productForm.price) && (
-                  <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between">
-                    <span className="font-bold text-emerald-800 dark:text-emerald-300">
-                      Calculated Customer Savings:
-                    </span>
-                    <strong className="font-black text-emerald-600 dark:text-emerald-400 font-mono">
-                      Save ৳{Number(productForm.originalPrice) - Number(productForm.price)} (
-                      {Math.round(
-                        ((Number(productForm.originalPrice) - Number(productForm.price)) /
-                          Number(productForm.originalPrice)) *
-                          100
-                      )}
-                      % OFF)
-                    </strong>
-                  </div>
-                )}
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3.5">
+                  <h4 className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                    <Tag className="h-4 w-4 text-emerald-600" />
+                    <span>Storefront Promotional Badges</span>
+                  </h4>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Promo Badge Text (Optional)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. 20% OFF, SAVE ৳50, BEST VALUE"
-                      value={productForm.badge}
-                      onChange={(e) => setProductForm((prev) => ({ ...prev, badge: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                      Badge Color
-                    </label>
-                    <select
-                      value={productForm.badgeColor}
-                      onChange={(e) => setProductForm((prev: any) => ({ ...prev, badgeColor: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
-                    >
-                      <option value="red">Red (Discount / Flash Sale)</option>
-                      <option value="green">Green (Organic / Fresh)</option>
-                      <option value="orange">Orange (Special Offer)</option>
-                    </select>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Promo Badge Text (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 20% OFF, BEST VALUE, ORGANIC"
+                        value={productForm.badge}
+                        onChange={(e) => setProductForm((prev) => ({ ...prev, badge: e.target.value }))}
+                        className="w-full px-3.5 py-2.5 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                        Badge Color Theme
+                      </label>
+                      <div className="grid grid-cols-4 gap-1.5 pt-0.5">
+                        {[
+                          { id: 'red', label: 'Red', bg: 'bg-rose-500' },
+                          { id: 'green', label: 'Green', bg: 'bg-emerald-600' },
+                          { id: 'orange', label: 'Orange', bg: 'bg-amber-500' },
+                          { id: 'purple', label: 'Violet', bg: 'bg-purple-600' },
+                        ].map((c) => (
+                          <button
+                            key={c.id}
+                            type="button"
+                            onClick={() => setProductForm((prev) => ({ ...prev, badgeColor: c.id as any }))}
+                            className={`py-1.5 px-2 rounded-xl border flex items-center justify-center gap-1.5 transition ${
+                              productForm.badgeColor === c.id
+                                ? 'border-neutral-900 dark:border-white ring-2 ring-emerald-500/30 font-black'
+                                : 'border-neutral-200 dark:border-neutral-700 opacity-70 hover:opacity-100'
+                            }`}
+                          >
+                            <span className={`h-2.5 w-2.5 rounded-full ${c.bg}`}></span>
+                            <span className="text-[10px] font-bold">{c.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* TAB 3: IMAGE & MEDIA */}
+            {/* TAB 3: MEDIA CENTER (ROCK-SOLID COMPUTER UPLOAD & GALLERY) */}
             {productModalTab === 'media' && (
-              <div className="space-y-4 text-xs">
-                {/* 1. Upload Local File */}
-                <div className="p-4 rounded-2xl border-2 border-dashed border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/20 text-center space-y-2">
-                  <UploadCloud className="h-8 w-8 text-primary-green mx-auto" />
+              <div className="space-y-4">
+                {/* 1. Super Drag-and-Drop and File Uploader */}
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDraggingFile(true);
+                  }}
+                  onDragLeave={() => setIsDraggingFile(false)}
+                  onDrop={handleFileDrop}
+                  className={`p-6 rounded-3xl border-2 border-dashed transition-all text-center space-y-3 ${
+                    isDraggingFile
+                      ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 scale-[1.01]'
+                      : 'border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/20 hover:border-emerald-500'
+                  }`}
+                >
+                  {/* Hidden Native File Input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageFileInputChange}
+                    className="hidden"
+                    disabled={isUploadingImage}
+                  />
+
+                  <div className="h-14 w-14 rounded-2xl bg-white dark:bg-neutral-800 shadow-md border border-emerald-200 dark:border-emerald-800 text-emerald-600 flex items-center justify-center mx-auto">
+                    {isUploadingImage ? (
+                      <RefreshCw className="h-6 w-6 animate-spin text-emerald-600" />
+                    ) : (
+                      <UploadCloud className="h-7 w-7 text-emerald-600" />
+                    )}
+                  </div>
+
                   <div>
-                    <p className="font-bold text-neutral-900 dark:text-white">
-                      Upload Image File from Your Computer
-                    </p>
-                    <p className="text-[11px] text-neutral-500">
-                      Supports JPG, PNG, WEBP, AVIF up to 10MB
+                    <h4 className="font-black text-sm text-neutral-900 dark:text-white">
+                      Drag & Drop Product Photo Here
+                    </h4>
+                    <p className="text-[11px] text-neutral-500 mt-0.5">
+                      Or click the button below to browse files from your computer (JPG, PNG, WEBP, AVIF up to 15MB)
                     </p>
                   </div>
-                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary-green text-white font-bold cursor-pointer hover:bg-forest-900 transition shadow-xs">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
+
+                  <div className="flex items-center justify-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
                       disabled={isUploadingImage}
-                    />
-                    {isUploadingImage ? 'Uploading Image...' : 'Browse Computer Files'}
-                  </label>
+                      className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs transition shadow-md shadow-emerald-600/25 flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                    >
+                      <ImageIcon className="h-4 w-4" />
+                      <span>{isUploadingImage ? 'Uploading Image...' : 'Browse Computer Files'}</span>
+                    </button>
+                  </div>
+
+                  {productForm.image && (
+                    <div className="pt-2 text-[11px] text-emerald-700 dark:text-emerald-400 font-bold flex items-center justify-center gap-1.5">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      <span>Image loaded & ready for live store sync!</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* 2. Direct Image URL */}
-                <div>
-                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                    Or Enter Image URL / Path
+                {/* 2. Direct Image URL Input */}
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
+                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block">
+                    Or Enter Direct Image URL / Public Path
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. /images/products/sundarban-honey.jpg or https://images.unsplash.com/..."
+                    placeholder="e.g. /images/products/sundarban-honey.webp or https://..."
                     value={productForm.image}
                     onChange={(e) => setProductForm((prev) => ({ ...prev, image: e.target.value }))}
-                    className="w-full px-3 py-2 border rounded-xl outline-hidden font-mono text-xs border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    className="w-full px-3.5 py-2 border rounded-xl outline-hidden font-mono text-xs border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                   />
                 </div>
 
-                {/* 3. Preset Organic Produce Gallery */}
-                <div>
-                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1.5">
-                    Or Quick Select from Authentic Supermarket Gallery:
+                {/* 3. Preset Authentic Produce Gallery */}
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2.5">
+                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block">
+                    Quick Pick from Authentic Supermarket Library (1-Click):
                   </label>
-                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
                     {[
                       { label: 'Red Tomato', url: '/images/products/red-tomato.jpg' },
                       { label: 'Sagor Banana', url: '/images/products/banena.jpg' },
                       { label: 'Sundarban Honey', url: '/images/products/sundarban-honey.webp' },
                       { label: 'Mustard Oil', url: '/images/products/mustard-oil.webp' },
                       { label: 'Deshi Ghee', url: '/images/products/deshi-ghee.webp' },
-                      { label: 'Bogura Doi', url: '/images/products/bogura-doi.jpg' },
                       { label: 'Brown Eggs', url: '/images/products/dozen-egg.webp' },
                       { label: 'Miniket Rice', url: '/images/products/miniket-chal.jpg' },
                       { label: 'Polao Chal', url: '/images/products/polao-chal.jpg' },
                       { label: 'Moshur Daal', url: '/images/products/moshur-dal.jpeg' },
                       { label: 'Rui Fish', url: '/images/products/rui-fish.webp' },
+                      { label: 'Bogura Doi', url: '/images/products/bogura-doi.jpg' },
                       { label: 'Deshi Murgi', url: '/images/products/deshi-murgi.jpg' },
                     ].map((preset) => (
                       <button
                         key={preset.url}
                         type="button"
                         onClick={() => setProductForm((prev) => ({ ...prev, image: preset.url }))}
-                        className={`p-1 rounded-xl border text-center transition ${
+                        className={`p-1.5 rounded-xl border text-center transition ${
                           productForm.image === preset.url
-                            ? 'border-emerald-500 ring-2 ring-emerald-500/30 bg-emerald-50/50'
-                            : 'border-neutral-200 dark:border-neutral-700 hover:border-emerald-400'
+                            ? 'border-emerald-500 ring-2 ring-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/60'
+                            : 'border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:border-emerald-400'
                         }`}
                       >
-                        <div className="h-12 w-full rounded-lg overflow-hidden bg-neutral-100 mb-1">
+                        <div className="h-11 w-full rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-700 mb-1">
                           <img src={preset.url} alt={preset.label} className="h-full w-full object-cover" />
                         </div>
-                        <span className="text-[10px] font-bold text-neutral-700 dark:text-neutral-200 line-clamp-1">
+                        <span className="text-[9px] font-bold text-neutral-700 dark:text-neutral-300 line-clamp-1">
                           {preset.label}
                         </span>
                       </button>
                     ))}
                   </div>
                 </div>
-
-                {/* Live Preview */}
-                {productForm.image && (
-                  <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 flex items-center gap-4">
-                    <div className="h-16 w-16 rounded-xl overflow-hidden bg-neutral-200 shrink-0 border border-neutral-300 dark:border-neutral-600">
-                      <img src={productForm.image} alt="Preview" className="h-full w-full object-cover" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-black text-neutral-900 dark:text-white block">
-                        Live Image Preview
-                      </span>
-                      <span className="text-[11px] text-neutral-400 font-mono block break-all">
-                        {productForm.image}
-                      </span>
-                    </div>
-                  </div>
-                )}
               </div>
             )}
 
-            {/* TAB 4: STORE PLACEMENTS */}
+            {/* TAB 4: STORE PLACEMENTS & MARKETING FLAGS */}
             {productModalTab === 'placements' && (
-              <div className="space-y-4 text-xs">
-                <p className="text-neutral-500 dark:text-neutral-400 font-medium">
-                  Select which sections of the Customer Store front page this product will be featured in:
+              <div className="space-y-4">
+                <p className="text-neutral-600 dark:text-neutral-300 font-medium">
+                  Toggle which customer-facing promotional sections of the storefront this product will appear in:
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {/* Hot Deal */}
-                  <label className="p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 flex items-start gap-3 cursor-pointer hover:border-rose-400 transition">
+                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    productForm.isHotDeal
+                      ? 'border-rose-400 bg-rose-50/40 dark:bg-rose-950/30 shadow-xs'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={productForm.isHotDeal}
@@ -3891,18 +4268,22 @@ function AdminDashboardShell() {
                       className="rounded text-rose-600 focus:ring-rose-500 h-4 w-4 mt-0.5"
                     />
                     <div>
-                      <span className="font-black text-rose-600 flex items-center gap-1.5">
+                      <span className="font-black text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
                         <Flame className="h-4 w-4 fill-rose-500" />
-                        Feature in Today&apos;s Best Deals 🔥
+                        Today&apos;s Best Deals 🔥
                       </span>
-                      <p className="text-[11px] text-neutral-500 mt-0.5">
-                        Displays in the homepage countdown deals carousel and at <strong>/deals</strong>.
+                      <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
+                        Displayed in the homepage countdown deals carousel and featured at <strong>/deals</strong>.
                       </p>
                     </div>
                   </label>
 
                   {/* New Arrival */}
-                  <label className="p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 flex items-start gap-3 cursor-pointer hover:border-cyan-400 transition">
+                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    productForm.isNewArrival
+                      ? 'border-cyan-400 bg-cyan-50/40 dark:bg-cyan-950/30 shadow-xs'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={productForm.isNewArrival}
@@ -3910,18 +4291,22 @@ function AdminDashboardShell() {
                       className="rounded text-cyan-600 focus:ring-cyan-500 h-4 w-4 mt-0.5"
                     />
                     <div>
-                      <span className="font-black text-cyan-600 flex items-center gap-1.5">
+                      <span className="font-black text-cyan-600 dark:text-cyan-400 flex items-center gap-1.5">
                         <Sparkles className="h-4 w-4" />
-                        Feature in New Arrivals ✨
+                        New Arrival Batch ✨
                       </span>
-                      <p className="text-[11px] text-neutral-500 mt-0.5">
-                        Displays in fresh restock highlights and at <strong>/new-arrivals</strong>.
+                      <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
+                        Highlights fresh restocks on the homepage and at <strong>/new-arrivals</strong>.
                       </p>
                     </div>
                   </label>
 
                   {/* Special Offer */}
-                  <label className="p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 flex items-start gap-3 cursor-pointer hover:border-amber-400 transition">
+                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    productForm.isOffer
+                      ? 'border-amber-400 bg-amber-50/40 dark:bg-amber-950/30 shadow-xs'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={productForm.isOffer}
@@ -3929,18 +4314,22 @@ function AdminDashboardShell() {
                       className="rounded text-amber-600 focus:ring-amber-500 h-4 w-4 mt-0.5"
                     />
                     <div>
-                      <span className="font-black text-amber-600 flex items-center gap-1.5">
+                      <span className="font-black text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
                         <Percent className="h-4 w-4" />
-                        Feature in Special Offers 🏷️
+                        Special Discount Offer 🏷️
                       </span>
-                      <p className="text-[11px] text-neutral-500 mt-0.5">
-                        Displays in the discounts section and at <strong>/offers</strong>.
+                      <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
+                        Showcased in the discounted deals catalog and at <strong>/offers</strong>.
                       </p>
                     </div>
                   </label>
 
                   {/* Frontpage Ad */}
-                  <label className="p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 flex items-start gap-3 cursor-pointer hover:border-purple-400 transition">
+                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    productForm.isAdvertisement
+                      ? 'border-purple-400 bg-purple-50/40 dark:bg-purple-950/30 shadow-xs'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={productForm.isAdvertisement}
@@ -3948,12 +4337,12 @@ function AdminDashboardShell() {
                       className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mt-0.5"
                     />
                     <div>
-                      <span className="font-black text-purple-600 flex items-center gap-1.5">
+                      <span className="font-black text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
                         <Megaphone className="h-4 w-4" />
-                        Feature as Promotional Advertisement 📢
+                        Frontpage Advertisement 📢
                       </span>
-                      <p className="text-[11px] text-neutral-500 mt-0.5">
-                        Featured on hero promo cards, category highlight banners, and search priorities.
+                      <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
+                        Spotlighted on hero banner carousel and given top search placement.
                       </p>
                     </div>
                   </label>
@@ -3961,25 +4350,25 @@ function AdminDashboardShell() {
               </div>
             )}
 
-            {/* TAB 5: DETAILS & SPECS */}
+            {/* TAB 5: STORY & SPECS */}
             {productModalTab === 'details' && (
-              <div className="space-y-3.5 text-xs">
-                <div>
-                  <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+              <div className="space-y-4">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                  <label className="font-black text-neutral-900 dark:text-white block">
                     Product Narrative Description
                   </label>
                   <textarea
                     rows={3}
-                    placeholder="Detailed paragraph describing the product origin, freshness, and quality assurance..."
+                    placeholder="Rich paragraph describing the origin, organic verification, and unbroken cold-chain transport..."
                     value={productForm.description}
                     onChange={(e) => setProductForm((prev) => ({ ...prev, description: e.target.value }))}
-                    className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    className="w-full px-3.5 py-2.5 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
+                    <label className="font-black text-neutral-900 dark:text-white block">
                       Key Features (1 per line)
                     </label>
                     <textarea
@@ -3987,12 +4376,12 @@ function AdminDashboardShell() {
                       placeholder="100% Raw & Natural&#10;Cold-chain handled&#10;Zero chemical additives"
                       value={productForm.keyFeaturesText}
                       onChange={(e) => setProductForm((prev) => ({ ...prev, keyFeaturesText: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
                     />
                   </div>
 
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
+                    <label className="font-black text-neutral-900 dark:text-white block">
                       Health Benefits (1 per line)
                     </label>
                     <textarea
@@ -4000,14 +4389,14 @@ function AdminDashboardShell() {
                       placeholder="High natural antioxidants&#10;Soothes digestive tract&#10;Boosts daily vitality"
                       value={productForm.healthBenefitsText}
                       onChange={(e) => setProductForm((prev) => ({ ...prev, healthBenefitsText: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
+                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono text-[11px]"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
+                    <label className="font-black text-neutral-900 dark:text-white block">
                       How to Use / Recommended Usage
                     </label>
                     <input
@@ -4015,51 +4404,282 @@ function AdminDashboardShell() {
                       placeholder="e.g. Mix 1-2 teaspoons in warm water with lemon every morning."
                       value={productForm.howToUse}
                       onChange={(e) => setProductForm((prev) => ({ ...prev, howToUse: e.target.value }))}
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                      className="w-full px-3.5 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                     />
                   </div>
-                  <div>
-                    <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
+
+                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
+                    <label className="font-black text-neutral-900 dark:text-white block">
                       Storage Instructions
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. Store at room temperature in a sealed container."
+                      placeholder="e.g. Store at room temperature in a dry place. Do not refrigerate."
                       value={productForm.storageInstructions}
                       onChange={(e) =>
                         setProductForm((prev) => ({ ...prev, storageInstructions: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                      className="w-full px-3.5 py-2 border rounded-xl outline-hidden border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                     />
                   </div>
                 </div>
               </div>
             )}
           </div>
-        </DialogBody>
 
-        <DialogFooter className="flex items-center justify-between">
-          <Button variant="outline" size="sm" onClick={() => setIsProductModalOpen(false)}>
-            Cancel
-          </Button>
-          <Button
-            variant="forest"
-            size="sm"
-            onClick={handleSaveProduct}
-            disabled={isSavingProduct}
-            className="font-black px-5"
-          >
-            {isSavingProduct ? (
-              <span className="flex items-center gap-1.5">
-                <RefreshCw className="h-3.5 w-3.5 animate-spin" /> Saving to Live Store...
-              </span>
-            ) : editingProduct ? (
-              'Save & Update Live Product'
-            ) : (
-              'Create & Publish to Store'
+          {/* RIGHT COLUMN: Live Storefront Card Preview (5 cols) */}
+          <div className="lg:col-span-5 bg-gradient-to-b from-neutral-50 to-neutral-100/70 dark:from-neutral-900/90 dark:to-neutral-950 p-6 flex flex-col justify-between overflow-y-auto max-h-[calc(92vh-175px)] space-y-5 text-left">
+            <div>
+              {/* Preview Header */}
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-200 dark:border-neutral-800">
+                <div className="flex items-center gap-2">
+                  <Eye className="h-4 w-4 text-emerald-600" />
+                  <span className="font-black text-xs text-neutral-900 dark:text-white uppercase tracking-wider">
+                    Live Storefront Card Preview
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
+                  0ms Sync
+                </span>
+              </div>
+
+              {/* Realistic Customer Store Product Card */}
+              <div className="mt-4 mx-auto max-w-sm rounded-3xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white dark:bg-neutral-850 p-4 shadow-xl relative overflow-hidden transition-all">
+                {/* Promo Badge on Card */}
+                {(productForm.badge || Number(productForm.originalPrice) > Number(productForm.price)) && (
+                  <div
+                    className={`absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase text-white shadow-xs ${
+                      productForm.badgeColor === 'green'
+                        ? 'bg-emerald-600'
+                        : productForm.badgeColor === 'orange'
+                        ? 'bg-amber-500'
+                        : productForm.badgeColor === 'purple'
+                        ? 'bg-purple-600'
+                        : 'bg-rose-500'
+                    }`}
+                  >
+                    {productForm.badge ||
+                      (Number(productForm.originalPrice) > Number(productForm.price)
+                        ? `${Math.round(
+                            ((Number(productForm.originalPrice) - Number(productForm.price)) /
+                              Number(productForm.originalPrice)) *
+                              100
+                          )}% OFF`
+                        : 'HOT DEAL')}
+                  </div>
+                )}
+
+                {/* Heart Button */}
+                <button
+                  type="button"
+                  className="absolute top-3 right-3 z-10 h-8 w-8 rounded-full bg-white/90 dark:bg-neutral-800/90 shadow-sm border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-neutral-400 hover:text-rose-500 transition"
+                >
+                  <Heart className="h-4 w-4" />
+                </button>
+
+                {/* Image Container */}
+                <div className="h-48 w-full rounded-2xl bg-neutral-100 dark:bg-neutral-800/80 overflow-hidden flex items-center justify-center p-3 mb-3 border border-neutral-100 dark:border-neutral-700/50">
+                  {productForm.image ? (
+                    <img
+                      src={productForm.image}
+                      alt={productForm.name || 'Preview'}
+                      className="h-full w-full object-contain transition-transform hover:scale-105 duration-300"
+                    />
+                  ) : (
+                    <div className="text-center text-neutral-400">
+                      <ImageIcon className="h-10 w-10 mx-auto mb-1 opacity-50" />
+                      <span className="text-[10px] font-bold">No Image Selected</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Category & Department */}
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
+                  <span>{productForm.category || 'Category'}</span>
+                  <span className="text-neutral-400 font-mono font-normal">
+                    {productForm.origin || 'Bangladesh'}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h4 className="font-black text-sm text-neutral-900 dark:text-white line-clamp-1">
+                  {productForm.name || 'Untitled Product'}
+                </h4>
+                {productForm.nameBn && (
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-1 mb-1 font-medium">
+                    {productForm.nameBn}
+                  </p>
+                )}
+
+                {/* Star Rating & Unit */}
+                <div className="flex items-center justify-between mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-800">
+                  <div className="flex items-center gap-1 text-amber-400">
+                    <Star className="h-3.5 w-3.5 fill-amber-400" />
+                    <span className="text-xs font-bold text-neutral-700 dark:text-neutral-200">
+                      4.9
+                    </span>
+                    <span className="text-[10px] text-neutral-400">(24)</span>
+                  </div>
+                  <span className="text-[11px] font-bold text-neutral-500 bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-md">
+                    {productForm.unit || '1 unit'}
+                  </span>
+                </div>
+
+                {/* Pricing & Add to Cart */}
+                <div className="mt-3 flex items-center justify-between">
+                  <div>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-base font-black text-forest-900 dark:text-emerald-400 font-mono">
+                        ৳{Number(productForm.price) || 0}
+                      </span>
+                      {Number(productForm.originalPrice) > Number(productForm.price) && (
+                        <span className="text-xs text-neutral-400 line-through font-mono">
+                          ৳{productForm.originalPrice}
+                        </span>
+                      )}
+                    </div>
+                    {Number(productForm.originalPrice) > Number(productForm.price) && (
+                      <span className="text-[10px] font-bold text-emerald-600 block">
+                        Save ৳{Number(productForm.originalPrice) - Number(productForm.price)}
+                      </span>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="px-3.5 py-2 rounded-xl bg-forest-900 hover:bg-forest-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-black text-xs flex items-center gap-1.5 shadow-sm transition cursor-pointer"
+                  >
+                    <ShoppingCart className="h-3.5 w-3.5" />
+                    <span>Add to Cart</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Active Placement Checklist */}
+              <div className="mt-5 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 space-y-2">
+                <span className="text-[10px] uppercase font-black tracking-wider text-neutral-400 block">
+                  Storefront Distribution
+                </span>
+                <div className="space-y-1.5 text-[11px] font-bold">
+                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                    <Check className="h-3.5 w-3.5" />
+                    <span>Catalog Grid ({productForm.category})</span>
+                  </div>
+                  {productForm.isHotDeal && (
+                    <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400">
+                      <Flame className="h-3.5 w-3.5" />
+                      <span>Best Deals Countdown Carousel (/deals)</span>
+                    </div>
+                  )}
+                  {productForm.isNewArrival && (
+                    <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      <span>New Arrivals Restock Showcase (/new-arrivals)</span>
+                    </div>
+                  )}
+                  {productForm.isOffer && (
+                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                      <Percent className="h-3.5 w-3.5" />
+                      <span>Special Promotional Offers (/offers)</span>
+                    </div>
+                  )}
+                  {productForm.isAdvertisement && (
+                    <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
+                      <Megaphone className="h-3.5 w-3.5" />
+                      <span>Homepage Hero Featured Advertisement</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Validation Pill */}
+            <div className="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-[11px]">
+              <span className="text-neutral-500">Status Check:</span>
+              {productForm.name.trim() && Number(productForm.price) > 0 ? (
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Ready for Live Storefront
+                </span>
+              ) : (
+                <span className="font-bold text-amber-600 flex items-center gap-1">
+                  <AlertCircle className="h-3.5 w-3.5" /> Name & Price required
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Studio Bottom Action Footer */}
+        <div className="bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 px-6 py-3.5 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsProductModalOpen(false)}
+              className="text-xs"
+            >
+              Cancel
+            </Button>
+            <div className="hidden sm:flex items-center gap-1 text-[11px] text-neutral-400 pl-2">
+              <span>Section:</span>
+              <strong className="text-neutral-700 dark:text-neutral-300 capitalize font-mono">
+                {productModalTab}
+              </strong>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            {/* Step navigation */}
+            {productModalTab !== 'general' && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const tabs: any[] = ['general', 'pricing', 'media', 'placements', 'details'];
+                  const idx = tabs.indexOf(productModalTab);
+                  if (idx > 0) setProductModalTab(tabs[idx - 1]);
+                }}
+                className="text-xs"
+              >
+                Previous Step
+              </Button>
             )}
-          </Button>
-        </DialogFooter>
+
+            {productModalTab !== 'details' ? (
+              <Button
+                variant="forest"
+                size="sm"
+                onClick={() => {
+                  const tabs: any[] = ['general', 'pricing', 'media', 'placements', 'details'];
+                  const idx = tabs.indexOf(productModalTab);
+                  if (idx < tabs.length - 1) setProductModalTab(tabs[idx + 1]);
+                }}
+                className="text-xs font-bold"
+              >
+                Next Step
+              </Button>
+            ) : null}
+
+            {/* Final Save Button */}
+            <Button
+              variant="forest"
+              size="sm"
+              onClick={handleSaveProduct}
+              disabled={isSavingProduct || !productForm.name.trim()}
+              className="font-black px-6 text-xs shadow-md shadow-emerald-600/25"
+            >
+              {isSavingProduct ? (
+                <span className="flex items-center gap-1.5">
+                  <RefreshCw className="h-3.5 w-3.5 animate-spin" /> Saving to Live Store...
+                </span>
+              ) : editingProduct ? (
+                'Save & Update Live Product'
+              ) : (
+                'Create & Publish to Store 🚀'
+              )}
+            </Button>
+          </div>
+        </div>
       </Dialog>
 
       {/* ========================================================= */}
