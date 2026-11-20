@@ -139,41 +139,41 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Pricing & Save Badge */}
         <div className="mt-2.5">
-          <div className="flex items-baseline gap-1.5 flex-wrap">
-            <span className="text-base sm:text-lg font-black text-[#123C2D]">৳{product.price}</span>
+          <div className="flex items-baseline gap-1.5 flex-nowrap overflow-hidden">
+            <span className="text-base sm:text-lg font-black text-[#123C2D] whitespace-nowrap">৳{product.price}</span>
             {product.originalPrice && product.originalPrice > product.price && (
-              <span className="text-xs text-gray-400 line-through">
+              <span className="text-xs text-gray-400 line-through whitespace-nowrap">
                 ৳{product.originalPrice}
               </span>
             )}
           </div>
           {product.originalPrice && product.originalPrice > product.price ? (
             <div className="mt-1">
-              <span className="inline-block bg-[#EBF7F0] text-[#21A366] text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded-md">
+              <span className="inline-block bg-[#EBF7F0] text-[#21A366] text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded-md whitespace-nowrap">
                 Save ৳{product.originalPrice - product.price}
               </span>
             </div>
           ) : (
-            <span className="text-[10px] text-[#64736B] block mt-1">Fresh harvest</span>
+            <span className="text-[10px] text-[#64736B] block mt-1 whitespace-nowrap">Fresh harvest</span>
           )}
         </div>
 
-        {/* Clean Full-Width Add To Cart Button at Bottom */}
+        {/* Clean Full-Width Add To Cart Button at Bottom (Layout-Safe) */}
         <div className="mt-3 pt-2.5 border-t border-[#E5ECE7]/60">
           {cartQuantity > 0 ? (
-            <div className="flex items-center justify-between bg-[#EBF7F0] border border-[#21A366]/40 rounded-xl p-1 shadow-xs">
+            <div className="w-full flex items-center justify-between bg-[#EBF7F0] border border-[#21A366]/40 rounded-xl p-1 shadow-xs select-none">
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   updateQuantity(product.id, -1);
                 }}
-                className="w-7 sm:w-8 h-7 sm:h-8 rounded-lg flex items-center justify-center bg-white text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors shadow-xs"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-white text-[#123C2D] hover:bg-[#21A366] hover:text-white transition-colors shadow-xs shrink-0"
                 aria-label="Decrease quantity"
               >
-                <Minus className="w-3.5 h-3.5" />
+                <Minus className="w-3.5 h-3.5 shrink-0" />
               </button>
-              <span className="text-xs sm:text-sm font-extrabold text-[#123C2D]">
+              <span className="text-xs sm:text-sm font-extrabold text-[#123C2D] whitespace-nowrap px-1 text-center truncate">
                 {cartQuantity} in Cart
               </span>
               <button
@@ -182,17 +182,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   e.stopPropagation();
                   updateQuantity(product.id, 1);
                 }}
-                className="w-7 sm:w-8 h-7 sm:h-8 rounded-lg flex items-center justify-center bg-[#21A366] text-white hover:bg-[#123C2D] transition-colors shadow-xs"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-[#21A366] text-white hover:bg-[#123C2D] transition-colors shadow-xs shrink-0"
                 aria-label="Increase quantity"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-3.5 h-3.5 shrink-0" />
               </button>
             </div>
           ) : (
             <button
               type="button"
               onClick={(e) => addToCart(product, e)}
-              className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold border transition-all duration-200 shadow-xs ${
+              className={`w-full flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold border transition-all duration-200 shadow-xs whitespace-nowrap overflow-hidden ${
                 isJustAdded
                   ? 'bg-[#2EBD70] border-[#2EBD70] text-white scale-[0.98]'
                   : 'bg-white border-[#21A366] text-[#21A366] hover:bg-[#21A366] hover:text-white active:scale-[0.98]'
@@ -200,13 +200,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             >
               {isJustAdded ? (
                 <>
-                  <Check className="w-4 h-4" />
-                  <span>Added</span>
+                  <Check className="w-4 h-4 shrink-0" />
+                  <span className="whitespace-nowrap">Added</span>
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-4 h-4" />
-                  <span>Add To Cart</span>
+                  <ShoppingBag className="w-4 h-4 shrink-0" />
+                  <span className="whitespace-nowrap">Add To Cart</span>
                 </>
               )}
             </button>

@@ -121,8 +121,8 @@ export const SiteHeader: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 bg-white shadow-xs">
-      {/* 1. TOP ANNOUNCEMENT BAR — Hidden on Mobile for Clean Header, Shown on Desktop */}
-      <div className="hidden md:block bg-[#123C2D] text-white text-xs border-b border-[#21A366]/30">
+      {/* 1. TOP ANNOUNCEMENT BAR — Hidden on Mobile and Tablet for Clean Header, Shown on Desktop */}
+      <div className="hidden xl:block bg-[#123C2D] text-white text-xs border-b border-[#21A366]/30">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
           {/* Left helpline & banner */}
           <div className="flex items-center gap-4 text-white/90">
@@ -183,13 +183,13 @@ export const SiteHeader: React.FC = () => {
       {/* 2. MAIN HEADER BAR */}
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
         <div className="flex items-center justify-between gap-4 md:gap-8">
-          {/* Logo & Mobile Menu Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Logo & Mobile/Tablet Menu Toggle */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-1.5 -ml-1 text-[#17251F] hover:text-[#21A366] md:hidden"
-              aria-label="Toggle mobile menu"
+              className="p-1.5 -ml-1 text-[#17251F] hover:text-[#21A366] xl:hidden"
+              aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -199,8 +199,8 @@ export const SiteHeader: React.FC = () => {
             </Link>
           </div>
 
-          {/* Search Autocomplete Bar */}
-          <div ref={searchContainerRef} className="relative flex-1 max-w-2xl hidden md:block">
+          {/* Search Autocomplete Bar - IN THE HEADER on tablet (md:) and desktop */}
+          <div ref={searchContainerRef} className="relative flex-1 max-w-2xl mx-2 sm:mx-4 hidden md:block">
             <div className="relative">
               <input
                 type="text"
@@ -301,7 +301,7 @@ export const SiteHeader: React.FC = () => {
               <div className="w-9 h-9 rounded-full bg-[#F7F9F5] border border-[#E5ECE7] flex items-center justify-center text-gray-700">
                 <User className="w-4 h-4" />
               </div>
-              <div className="hidden sm:block text-left">
+              <div className="hidden xl:block text-left">
                 <p className="text-[10px] text-[#64736B] leading-none">Account</p>
                 <p className="text-xs font-bold leading-tight mt-0.5">Sign In</p>
               </div>
@@ -339,7 +339,7 @@ export const SiteHeader: React.FC = () => {
                   </span>
                 )}
               </div>
-              <div className="hidden sm:block text-left text-xs leading-none">
+              <div className="hidden xl:block text-left text-xs leading-none">
                 <p className="text-[10px] text-white/80 font-medium">Cart</p>
                 <p className="font-extrabold text-white mt-0.5">৳{isHydrated ? cartGrandTotal : 0}</p>
               </div>
@@ -419,8 +419,8 @@ export const SiteHeader: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. SECONDARY NAVIGATION & DEPARTMENT BAR - Hidden on mobile for clean screen */}
-      <div className="hidden md:block border-t border-[#E5ECE7] bg-[#F7F9F5]">
+      {/* 3. SECONDARY NAVIGATION & DEPARTMENT BAR - Hidden on mobile and tablet for clean header */}
+      <div className="hidden xl:block border-t border-[#E5ECE7] bg-[#F7F9F5]">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12">
             {/* All Categories Dropdown Trigger - Shown on all pages, but on HomePage only when scrolled past Hero */}
@@ -515,9 +515,9 @@ export const SiteHeader: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. MOBILE DRAWER NAVIGATION */}
+      {/* 4. MOBILE & TABLET DRAWER NAVIGATION */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex">
+        <div className="xl:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex">
           <div className="w-4/5 max-w-sm bg-white h-full overflow-y-auto flex flex-col justify-between p-5">
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-[#E5ECE7]">

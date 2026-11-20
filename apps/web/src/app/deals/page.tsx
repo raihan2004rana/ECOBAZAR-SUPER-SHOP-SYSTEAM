@@ -151,7 +151,7 @@ export default function DealsPage() {
 
         {/* Product Grid - 3 Columns on Tablet, 5 Columns on Wide Screens */}
         <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-14">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
             {filteredDeals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
