@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
+// Security: Whitelist allowed file extensions & enforce maximum upload size
+const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif']);
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB limit
+
 export async function POST(req: NextRequest) {
   try {
     const contentType = req.headers.get('content-type') || '';
@@ -15,8 +19,22 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'No file provided' }, { status: 400 });
       }
 
+      const ext = path.extname(file.name).toLowerCase() || '.jpg';
+      if (!ALLOWED_EXTENSIONS.has(ext)) {
+        return NextResponse.json(
+          { error: 'Security violation: Only image files (.jpg, .png, .webp, .svg, .gif) are allowed' },
+          { status: 403 }
+        );
+      }
+
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        return NextResponse.json(
+          { error: 'Security violation: File exceeds 5MB maximum limit' },
+          { status: 413 }
+        );
+      }
+
       const buffer = Buffer.from(await file.arrayBuffer());
-      const ext = path.extname(file.name) || '.jpg';
       const cleanBase = path.basename(file.name, ext).replace(/[^a-zA-Z0-9_-]/g, '-').toLowerCase();
       const filename = `${cleanBase}-${Date.now().toString(36)}${ext}`;
 
@@ -46,9 +64,24 @@ export async function POST(req: NextRequest) {
     // 2. Handle base64 JSON payload
     const body = await req.json();
     if (body.base64 && body.filename) {
+      const ext = path.extname(body.filename).toLowerCase() || '.jpg';
+      if (!ALLOWED_EXTENSIONS.has(ext)) {
+        return NextResponse.json(
+          { error: 'Security violation: Only image files (.jpg, .png, .webp, .svg, .gif) are allowed' },
+          { status: 403 }
+        );
+      }
+
       const base64Data = body.base64.replace(/^data:image\/\w+;base64,/, '');
       const buffer = Buffer.from(base64Data, 'base64');
-      const ext = path.extname(body.filename) || '.jpg';
+
+      if (buffer.length > MAX_FILE_SIZE_BYTES) {
+        return NextResponse.json(
+          { error: 'Security violation: File exceeds 5MB maximum limit' },
+          { status: 413 }
+        );
+      }
+
       const cleanBase = path.basename(body.filename, ext).replace(/[^a-zA-Z0-9_-]/g, '-').toLowerCase();
       const filename = `${cleanBase}-${Date.now().toString(36)}${ext}`;
 

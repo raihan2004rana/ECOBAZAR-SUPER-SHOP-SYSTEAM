@@ -78,10 +78,12 @@ import {
   Pencil,
   Image as ImageIcon,
   Layers,
+  Lock,
   Star,
   Heart,
   ArrowRight,
 } from 'lucide-react';
+import { AdminSecurityGate } from '../components/admin-security-gate';
 import {
   Button,
   Badge,
@@ -441,7 +443,12 @@ const salesChartData = [
 // ==========================================
 // ADMIN DASHBOARD MAIN SHELL
 // ==========================================
-function AdminDashboardShell() {
+interface AdminDashboardShellProps {
+  adminUser?: { name: string; role: string; email: string };
+  onLogout?: () => void;
+}
+
+function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps = {}) {
   const { toast } = useToast();
 
   // App Layout States
@@ -1911,6 +1918,24 @@ function AdminDashboardShell() {
               )}
             </div>
 
+            {/* Instant Terminal Lockout Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if (onLogout) {
+                  onLogout();
+                } else {
+                  sessionStorage.removeItem('ecobazar_admin_session');
+                  window.location.reload();
+                }
+              }}
+              title="Lock admin session immediately"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-600 dark:bg-rose-950/60 dark:text-rose-300 dark:hover:bg-rose-600 dark:hover:text-white border border-rose-200 dark:border-rose-800 text-xs font-bold transition-all shadow-xs"
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Lock Terminal</span>
+            </button>
+
             {/* Profile Menu Popover */}
             <div className="relative">
               <button
@@ -1919,23 +1944,33 @@ function AdminDashboardShell() {
                 className="flex items-center gap-2 p-1 pl-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
               >
                 <div className="h-8 w-8 rounded-full bg-[#123C2D] text-[#2EBD70] border border-[#2EBD70]/30 flex items-center justify-center font-bold text-xs shadow-xs">
-                  RR
+                  {adminUser ? adminUser.name.substring(0, 2).toUpperCase() : 'RR'}
                 </div>
                 <div className="hidden md:flex flex-col text-left leading-none">
-                  <span className="text-xs font-bold text-neutral-900 dark:text-white">Raihan Hasan Rana</span>
-                  <span className="text-[10px] text-[#21A366] font-semibold mt-0.5">Founder & Super Admin</span>
+                  <span className="text-xs font-bold text-neutral-900 dark:text-white">
+                    {adminUser?.name || 'Raihan Hasan Rana'}
+                  </span>
+                  <span className="text-[10px] text-[#21A366] font-semibold mt-0.5 truncate max-w-[140px]">
+                    {adminUser?.role || 'Founder & Super Admin'}
+                  </span>
                 </div>
                 <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
               </button>
 
               {isUserMenuOpen && (
-                <div className={`absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl border py-1.5 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${
+                <div className={`absolute right-0 mt-2 w-64 rounded-2xl shadow-2xl border py-1.5 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${
                   isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
                 }`}>
                   <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-neutral-800 text-left">
-                    <p className="text-xs font-bold text-neutral-900 dark:text-white">Raihan Hasan Rana</p>
-                    <p className="text-[10px] text-neutral-400">raihan@ecobazar.com.bd</p>
-                    <Badge variant="forest" size="sm" className="mt-1 text-[9px]">Founder & CEO</Badge>
+                    <p className="text-xs font-bold text-neutral-900 dark:text-white">
+                      {adminUser?.name || 'Raihan Hasan Rana'}
+                    </p>
+                    <p className="text-[10px] text-neutral-400">
+                      {adminUser?.email || 'admin@ecobazar.com'}
+                    </p>
+                    <Badge variant="forest" size="sm" className="mt-1 text-[9px]">
+                      {adminUser?.role || 'Founder & CEO'}
+                    </Badge>
                   </div>
                   <div className="py-1 text-left text-xs font-semibold">
                     <button
@@ -1959,12 +1994,17 @@ function AdminDashboardShell() {
                       type="button"
                       onClick={() => {
                         setIsUserMenuOpen(false);
-                        toast.info('Session Terminated', 'Logged out of admin dashboard.');
+                        if (onLogout) {
+                          onLogout();
+                        } else {
+                          sessionStorage.removeItem('ecobazar_admin_session');
+                          window.location.reload();
+                        }
                       }}
                       className="w-full px-4 py-2 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2 text-rose-600 font-bold"
                     >
-                      <X className="h-3.5 w-3.5" />
-                      <span>Sign Out</span>
+                      <Lock className="h-3.5 w-3.5" />
+                      <span>Lock & Sign Out</span>
                     </button>
                   </div>
                 </div>
@@ -7064,7 +7104,11 @@ function AdminDashboardShell() {
 export default function AdminPage() {
   return (
     <ToastProvider>
-      <AdminDashboardShell />
+      <AdminSecurityGate>
+        {({ adminUser, onLogout }) => (
+          <AdminDashboardShell adminUser={adminUser} onLogout={onLogout} />
+        )}
+      </AdminSecurityGate>
     </ToastProvider>
   );
 }
