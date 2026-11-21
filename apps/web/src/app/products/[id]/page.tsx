@@ -154,19 +154,19 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   // Top promotional slider in product details page (Clean offer banners with NO text overlay)
   const promoSlides = [
     {
-      image: '/images/hero-december-deals.jpg',
+      image: '/images/details-slider1.jpg',
       href: '/deals',
-      alt: 'ডিসেম্বর মেগা ডিল ও অফার',
+      alt: 'প্রমোশনাল অফার ব্যানার ১',
     },
     {
-      image: '/images/banner-staples-deals.jpg',
+      image: '/images/details-slider2.avif',
       href: '/offers',
-      alt: 'সেরা ডিল ও নিত্যপণ্য অফার',
+      alt: 'প্রমোশনাল অফার ব্যানার ২',
     },
     {
-      image: '/images/hero-nature-bites.webp',
+      image: '/images/details-slider3.avif',
       href: '/category/organic-wellness',
-      alt: 'প্রাকৃতিক ও অর্গানিক অফার',
+      alt: 'প্রমোশনাল অফার ব্যানার ৩',
     },
   ];
 
@@ -649,32 +649,32 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
               {/* Bottom 2 Cards Side-by-Side: Clean High-Resolution Offer Banners (No text overlays) */}
               <div className="flex-1 min-h-[200px] sm:min-h-[220px] grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
-                {/* Card 1: Fresh Catch & Seafood Daily Offer Banner */}
+                {/* Card 1: Details Mini Promo 1 */}
                 <Link
                   href="/category/meat-fish"
                   className="group relative rounded-2xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full block bg-[#F0F9FF]"
                 >
                   <img
-                    src="/images/banner-seafood-clean.jpg"
-                    alt="Fresh Catch Seafood Offer"
+                    src="/images/details-mini1.jpg"
+                    alt="Special Offer Banner 1"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/images/banner-seafood.jpg';
+                      (e.target as HTMLImageElement).src = '/images/banner-seafood-clean.jpg';
                     }}
                   />
                 </Link>
 
-                {/* Card 2: Pure Cold-Pressed Mustard Oil & Spices Offer Banner */}
+                {/* Card 2: Details Mini Promo 2 */}
                 <Link
                   href="/category/spices-oils"
                   className="group relative rounded-2xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full block bg-[#FFFDF5]"
                 >
                   <img
-                    src="/images/banner-oil-clean.jpg"
-                    alt="Pure Cold Pressed Mustard Oil Offer"
+                    src="/images/details-mini2.avif"
+                    alt="Special Offer Banner 2"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/images/banner-mustard-oil.jpg';
+                      (e.target as HTMLImageElement).src = '/images/banner-oil-clean.jpg';
                     }}
                   />
                 </Link>
