@@ -243,19 +243,22 @@ export const FeaturedCategoriesSlider: React.FC = () => {
                 className="group flex flex-col items-center shrink-0 w-[125px] sm:w-[150px] md:w-[165px] focus:outline-hidden"
               >
                 {/* Clean Rounded Card with Artwork */}
-                <div className="w-full aspect-square bg-white rounded-3xl p-4 sm:p-5 border border-[#E5ECE7] shadow-xs group-hover:border-[#21A366] group-hover:shadow-xl group-hover:-translate-y-1.5 transition-all duration-300 flex items-center justify-center relative overflow-hidden">
+                <div className="w-full aspect-square bg-white rounded-3xl p-3 sm:p-3.5 md:p-4 border border-[#E5ECE7] shadow-xs group-hover:border-[#21A366] group-hover:shadow-xl group-hover:-translate-y-1.5 transition-all duration-300 flex items-center justify-center relative overflow-hidden">
                   {/* Subtle inner background glow on hover */}
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#F2FBF6] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain transition-transform duration-500 ease-out group-hover:scale-110 drop-shadow-sm relative z-10"
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/images/products/sundarban-honey.webp';
-                    }}
-                  />
+                  {/* Rounded Artwork Wrapper Matching Box Radius */}
+                  <div className="w-full h-full rounded-2xl overflow-hidden relative z-10 flex items-center justify-center bg-[#F7F9F5]">
+                    <img
+                      src={cat.image}
+                      alt={cat.name}
+                      className="w-full h-full object-cover rounded-2xl transition-transform duration-500 ease-out group-hover:scale-110"
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/products/sundarban-honey.webp';
+                      }}
+                    />
+                  </div>
                 </div>
 
                 {/* Category Name Underneath */}

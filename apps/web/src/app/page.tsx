@@ -6,10 +6,6 @@ import {
   Flame,
   Clock,
   ArrowRight,
-  Truck,
-  ShieldCheck,
-  RotateCcw,
-  Headphones,
   Sparkles,
   ChevronRight,
   Tag,
@@ -68,54 +64,7 @@ export default function HomePage() {
         {/* 1. HERO SECTION WITH SLIDER & USER-SUPPLIED BANNERS */}
         <HeroSlider />
 
-        {/* 2. TRUST & BENEFITS BAR */}
-        <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="bg-white rounded-2xl border border-[#E5ECE7] p-4 sm:p-6 shadow-xs">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0">
-                  <Truck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-xs sm:text-sm text-[#17251F]">Same Day Delivery</h4>
-                  <p className="text-[11px] text-[#64736B]">Fast & Reliable (30 Mins)</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-xs sm:text-sm text-[#17251F]">100% Secure Payment</h4>
-                  <p className="text-[11px] text-[#64736B]">bKash, Cards, Cash on Delivery</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0">
-                  <RotateCcw className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-xs sm:text-sm text-[#17251F]">Easy Returns</h4>
-                  <p className="text-[11px] text-[#64736B]">Hassle Free at Doorstep</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0">
-                  <Headphones className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-xs sm:text-sm text-[#17251F]">24/7 Dedicated Support</h4>
-                  <p className="text-[11px] text-[#64736B]">Always Here for You</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 3. FEATURED CATEGORIES SLIDER / QUICK DEPARTMENT EXPLORER */}
+        {/* 2. FEATURED CATEGORIES SLIDER / QUICK DEPARTMENT EXPLORER */}
         <FeaturedCategoriesSlider />
 
         {/* 4. TODAY'S BEST DEALS 🔥 (With Countdown & High Savings) */}
