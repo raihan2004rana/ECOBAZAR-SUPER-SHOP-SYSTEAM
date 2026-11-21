@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   ChevronDown,
+  ChevronRight,
   Truck,
   HelpCircle,
   ArrowRight,
@@ -24,6 +25,7 @@ import {
 } from 'lucide-react';
 import { Logo } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
+import { useUser } from '../context/user-context';
 import { categoryDefinitions, categoryRealisticThumbnails, masterCatalogProducts, ProductItem } from '../data/catalog';
 import { useCatalog } from '../context/catalog-context';
 import { useLanguage } from '../context/language-context';
@@ -45,6 +47,7 @@ export const SiteHeader: React.FC = () => {
     setSelectedProductForModal,
     selectedBranch,
   } = useCart();
+  const { user, isLoggedIn, membership } = useUser();
   const { products: dynamicProducts, categories: dynamicCategories, topBanner } = useCatalog();
   const allProducts = dynamicProducts && dynamicProducts.length > 0 ? dynamicProducts : masterCatalogProducts;
   const categories = dynamicCategories && dynamicCategories.length > 0 ? dynamicCategories : categoryDefinitions;
@@ -316,20 +319,44 @@ export const SiteHeader: React.FC = () => {
               <span className={language === 'bn' ? 'text-[#21A366] font-black font-bangla' : 'text-neutral-400 font-bangla font-medium'}>বাং</span>
             </button>
 
-            {/* Account / Login - Hidden on mobile & tablet header (moved to hamburger menu for tablet per request) */}
-            <button
-              type="button"
-              onClick={() => setIsAuthModalOpen(true)}
-              className="hidden xl:flex items-center gap-2 p-2 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F7F9F5] transition-colors"
-            >
-              <div className="w-9 h-9 rounded-full bg-[#F7F9F5] border border-[#E5ECE7] flex items-center justify-center text-gray-700">
-                <User className="w-4 h-4" />
-              </div>
-              <div className="hidden xl:block text-left">
-                <p className="text-[10px] text-[#64736B] leading-none">{t('Account', 'একাউন্ট')}</p>
-                <p className="text-xs font-bold leading-tight mt-0.5">{t('Sign In', 'লগইন')}</p>
-              </div>
-            </button>
+            {/* Account / Profile Link */}
+            {isLoggedIn ? (
+              <Link
+                href="/profile"
+                className="hidden xl:flex items-center gap-2.5 p-1.5 px-2.5 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F2FBF6] border border-transparent hover:border-[#21A366]/20 transition-all group"
+              >
+                <div className="w-9 h-9 rounded-full bg-[#EBF7F0] border border-[#21A366]/30 flex items-center justify-center text-[#21A366] font-black text-xs shadow-2xs group-hover:scale-105 transition-transform">
+                  {user.name ? user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() : 'RA'}
+                </div>
+                <div className="hidden xl:block text-left">
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-xs font-bold leading-tight truncate max-w-[100px] text-[#17251F]">
+                      {user.name.split(' ')[0]}
+                    </p>
+                    <span className="text-[9px] bg-amber-500/15 text-amber-700 font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                      {membership.tier === 'PLATINUM' ? 'Platinum' : membership.tier === 'GOLD' ? 'Gold VIP' : 'Silver'}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-[#21A366] font-semibold leading-none mt-0.5">
+                    {t('Profile & Orders', 'প্রোফাইল ও অর্ডার')}
+                  </p>
+                </div>
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsAuthModalOpen(true)}
+                className="hidden xl:flex items-center gap-2 p-2 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F7F9F5] transition-colors"
+              >
+                <div className="w-9 h-9 rounded-full bg-[#F7F9F5] border border-[#E5ECE7] flex items-center justify-center text-gray-700">
+                  <User className="w-4 h-4" />
+                </div>
+                <div className="hidden xl:block text-left">
+                  <p className="text-[10px] text-[#64736B] leading-none">{t('Account', 'একাউন্ট')}</p>
+                  <p className="text-xs font-bold leading-tight mt-0.5">{t('Sign In', 'লগইন')}</p>
+                </div>
+              </button>
+            )}
 
             {/* Wishlist - Hidden on mobile top header */}
             <button
@@ -578,27 +605,53 @@ export const SiteHeader: React.FC = () => {
               </div>
 
               {/* Login / User Profile Info inside Hamburger Menu (Tablet & Mobile) */}
-              <div className="my-3 p-3.5 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] flex items-center justify-between gap-3 shadow-xs">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-full bg-white border border-[#E5ECE7] flex items-center justify-center text-[#21A366] shrink-0 shadow-xs">
-                    <User className="w-5 h-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-xs font-black text-[#17251F] truncate">{t('My Account', 'আমার একাউন্ট')}</p>
-                    <p className="text-[10px] text-[#64736B] truncate">{t('Sign in for exclusive perks', 'অফারের জন্য লগইন করুন')}</p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    setIsAuthModalOpen(true);
-                  }}
-                  className="bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors shadow-xs shrink-0"
+              {isLoggedIn ? (
+                <Link
+                  href="/profile"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="my-3 p-3.5 bg-[#F2FBF6] rounded-2xl border border-[#21A366]/30 flex items-center justify-between gap-3 shadow-xs hover:bg-[#EBF7F0] transition-colors"
                 >
-                  {t('Sign In', 'লগইন')}
-                </button>
-              </div>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-full bg-[#21A366] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs">
+                      {user.name ? user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() : 'RA'}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-xs font-black text-[#17251F] truncate">{user.name}</p>
+                        <span className="text-[9px] bg-amber-500/20 text-amber-700 font-extrabold px-1.5 py-0.5 rounded-full uppercase">
+                          {membership.tier}
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-[#21A366] font-semibold truncate mt-0.5">
+                        {t('View Profile, Orders & Offers →', 'প্রোফাইল, অর্ডার ও অফার দেখুন →')}
+                      </p>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-[#21A366] shrink-0" />
+                </Link>
+              ) : (
+                <div className="my-3 p-3.5 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] flex items-center justify-between gap-3 shadow-xs">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-full bg-white border border-[#E5ECE7] flex items-center justify-center text-[#21A366] shrink-0 shadow-xs">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-black text-[#17251F] truncate">{t('My Account', 'আমার একাউন্ট')}</p>
+                      <p className="text-[10px] text-[#64736B] truncate">{t('Sign in for exclusive perks', 'অফারের জন্য লগইন করুন')}</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsAuthModalOpen(true);
+                    }}
+                    className="bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors shadow-xs shrink-0"
+                  >
+                    {t('Sign In', 'লগইন')}
+                  </button>
+                </div>
+              )}
 
               {/* Mobile Links */}
               <div className="py-4 space-y-1 border-b border-[#E5ECE7]">
@@ -717,14 +770,15 @@ export const SiteHeader: React.FC = () => {
           </button>
 
           {/* 5. Account */}
-          <button
-            type="button"
-            onClick={() => setIsAuthModalOpen(true)}
-            className="flex flex-col items-center justify-center gap-1 py-1 text-[#64736B] hover:text-[#17251F] transition-colors"
+          <Link
+            href="/profile"
+            className={`flex flex-col items-center justify-center gap-1 py-1 transition-colors ${
+              pathname === '/profile' ? 'text-[#21A366]' : 'text-[#64736B] hover:text-[#17251F]'
+            }`}
           >
             <User className="w-5 h-5" />
-            <span className="text-[10px] font-black tracking-tight">ACCOUNT</span>
-          </button>
+            <span className="text-[10px] font-black tracking-tight">{t('ACCOUNT', 'একাউন্ট')}</span>
+          </Link>
         </div>
       </nav>
     </header>

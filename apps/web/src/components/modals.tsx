@@ -12,6 +12,7 @@ import {
   useToast,
 } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
+import { useUser } from '../context/user-context';
 import { storeBranches, StoreBranch } from '../data/catalog';
 import {
   Star,
@@ -101,6 +102,7 @@ export const Modals: React.FC = () => {
     discountAmount,
     handlePlaceOrder,
   } = useCart();
+  const { user, login: userLogin, refreshOrders, updateProfile } = useUser();
 
   // Modal local state
   const [modalQty, setModalQty] = React.useState(1);
@@ -129,10 +131,11 @@ export const Modals: React.FC = () => {
   });
 
   // Checkout local state
-  const [customerName, setCustomerName] = React.useState('Raihan Ahmed');
-  const [customerPhone, setCustomerPhone] = React.useState('1712-345678');
-  const [customerEmail, setCustomerEmail] = React.useState('raihan2004rana@gmail.com');
-  const [deliveryAddress, setDeliveryAddress] = React.useState('Flat 4B, House 12, Road 7/A, Dhanmondi');
+  const defaultAddr = user.savedAddresses?.find((a) => a.isDefault)?.address || 'Flat 4B, House 12, Road 7/A, Dhanmondi';
+  const [customerName, setCustomerName] = React.useState(user.name || 'Raihan Ahmed');
+  const [customerPhone, setCustomerPhone] = React.useState(user.phone?.replace('+880 ', '') || '1712-345678');
+  const [customerEmail, setCustomerEmail] = React.useState(user.email || 'raihan.ahmed@gmail.com');
+  const [deliveryAddress, setDeliveryAddress] = React.useState(defaultAddr);
   const [deliveryTimeSlot, setDeliveryTimeSlot] = React.useState('Express Delivery (25-30 Mins)');
   const [paymentMethod, setPaymentMethod] = React.useState<'cod' | 'bkash' | 'nagad' | 'card'>('cod');
   const [isSubmittingOrder, setIsSubmittingOrder] = React.useState(false);
@@ -178,11 +181,12 @@ export const Modals: React.FC = () => {
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
     if (otpInput === '1234' || otpInput.length === 4) {
+      userLogin(phoneInput || user.phone, 'Raihan Ahmed');
       setIsLoggedIn(true);
       setIsAuthModalOpen(false);
       setAuthStep('phone');
       setOtpInput('');
-      toast.success('Welcome Back!', 'Logged in as Raihan Ahmed (Premium Member).');
+      toast.success('Welcome Back!', 'Logged in as Raihan Ahmed (Gold VIP Member).');
     } else {
       toast.error('Invalid Code', 'Please enter demo code "1234".');
     }
@@ -252,6 +256,11 @@ export const Modals: React.FC = () => {
             items: itemsPayload,
           }),
         });
+
+        // Refresh user context orders and reward cashback points (1 point per ৳50 spent)
+        refreshOrders();
+        const earnedPoints = Math.round(cartGrandTotal / 50);
+        updateProfile({ points: user.points + earnedPoints });
       } catch (err) {
         console.error('Failed to persist order to backend:', err);
       }

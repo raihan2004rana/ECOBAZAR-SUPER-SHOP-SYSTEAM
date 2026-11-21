@@ -22,6 +22,7 @@ interface CartContextType {
   updateQuantity: (productId: string, delta: number) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
+  reorderProducts: (items: Array<{ productId: string; name: string; price: number; quantity: number; unit?: string; image?: string }>) => void;
   addedFeedback: Record<string, boolean>;
   isHydrated: boolean;
 
@@ -130,33 +131,57 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Totals
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const cartSubtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-  const discountAmount =
-    appliedCoupon === 'ECO10'
-      ? Math.round(cartSubtotal * 0.1)
-      : appliedCoupon === 'DHAKA25'
-      ? Math.min(100, cartSubtotal)
-      : 0;
+  const discountAmount = React.useMemo(() => {
+    if (!appliedCoupon) return 0;
+    const clean = appliedCoupon.toUpperCase();
+    if (clean === 'ECO10' || clean === 'GOLDVIP10') return Math.round(cartSubtotal * 0.1);
+    if (clean === 'HARVEST15') return Math.round(cartSubtotal * 0.15);
+    if (clean === 'DHAKA25' || clean === 'BEEF100') return Math.min(100, cartSubtotal);
+    if (clean === 'WELCOME200') return Math.min(200, cartSubtotal);
+    if (clean.startsWith('POINTS')) {
+      const pts = parseInt(clean.replace('POINTS', ''), 10);
+      if (!isNaN(pts)) return Math.min(pts, cartSubtotal);
+    }
+    return 0;
+  }, [appliedCoupon, cartSubtotal]);
+
   const deliveryFee = cartSubtotal >= 1000 || appliedCoupon === 'FREESHIP' ? 0 : 50;
   const cartGrandTotal = Math.max(0, cartSubtotal - discountAmount + deliveryFee);
 
   const applyCoupon = (code: string): boolean => {
     const clean = code.trim().toUpperCase();
-    if (clean === 'ECO10') {
-      setAppliedCoupon('ECO10');
-      toast.success('Coupon Applied!', '10% discount applied to your subtotal.');
+    if (clean === 'ECO10' || clean === 'GOLDVIP10') {
+      setAppliedCoupon(clean);
+      toast.success('VIP Coupon Applied!', '10% discount applied to your order.');
+      return true;
+    }
+    if (clean === 'HARVEST15') {
+      setAppliedCoupon('HARVEST15');
+      toast.success('Coupon Applied!', '15% Farm Harvest discount applied.');
       return true;
     }
     if (clean === 'FREESHIP') {
       setAppliedCoupon('FREESHIP');
-      toast.success('Coupon Applied!', 'Free delivery granted on this order.');
+      toast.success('Coupon Applied!', 'Free Express Delivery granted on this order.');
       return true;
     }
-    if (clean === 'DHAKA25') {
-      setAppliedCoupon('DHAKA25');
+    if (clean === 'DHAKA25' || clean === 'BEEF100') {
+      setAppliedCoupon(clean);
       toast.success('Coupon Applied!', '৳100 Instant Discount applied.');
       return true;
     }
-    toast.error('Invalid Voucher', 'Code not recognized. Try "ECO10", "FREESHIP", or "DHAKA25".');
+    if (clean === 'WELCOME200') {
+      setAppliedCoupon('WELCOME200');
+      toast.success('Bonus Applied!', '৳200 Mega Voucher discount applied.');
+      return true;
+    }
+    if (clean.startsWith('POINTS')) {
+      setAppliedCoupon(clean);
+      const pts = parseInt(clean.replace('POINTS', ''), 10);
+      toast.success('Points Voucher Applied!', `৳${pts} deducted from subtotal.`);
+      return true;
+    }
+    toast.error('Invalid Voucher', 'Code not recognized. Check your Profile for active vouchers.');
     return false;
   };
 
@@ -235,6 +260,50 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const wishlistProducts = masterCatalogProducts.filter((p) => wishlistMap[p.id]);
 
+  const reorderProducts = (
+    items: Array<{ productId: string; name: string; price: number; quantity: number; unit?: string; image?: string }>
+  ) => {
+    if (!items || items.length === 0) return;
+
+    setCartItems((prev) => {
+      const nextCart = [...prev];
+      items.forEach((item) => {
+        const foundProduct = masterCatalogProducts.find((p) => p.id === item.productId);
+        const productToAdd: ProductItem = foundProduct || {
+          id: item.productId,
+          name: item.name,
+          nameBn: item.name,
+          category: 'Groceries & Staples',
+          categorySlug: 'groceries-staples',
+          brand: 'ECOBAZAR Pure',
+          origin: 'Bangladesh',
+          price: item.price,
+          unit: item.unit || '1 unit',
+          stock: 50,
+          image: item.image || '/images/products/red-apple.webp',
+          rating: 4.9,
+          reviews: 120,
+          description: item.name,
+          specifications: {},
+        };
+
+        const existingIdx = nextCart.findIndex((c) => c.product.id === productToAdd.id);
+        if (existingIdx >= 0) {
+          nextCart[existingIdx] = {
+            ...nextCart[existingIdx],
+            quantity: nextCart[existingIdx].quantity + item.quantity,
+          };
+        } else {
+          nextCart.push({ product: productToAdd, quantity: item.quantity });
+        }
+      });
+      return nextCart;
+    });
+
+    setIsCartDrawerOpen(true);
+    toast.success('Items Added to Cart', `${items.length} items from previous order loaded into your cart.`);
+  };
+
   const handlePlaceOrder = (): string => {
     const orderNum = `ECO-DH-${Math.floor(100000 + Math.random() * 900000)}`;
     clearCart();
@@ -257,6 +326,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         updateQuantity,
         removeFromCart,
         clearCart,
+        reorderProducts,
         addedFeedback,
         isHydrated,
         wishlistMap,

@@ -193,11 +193,10 @@ export const FeaturedCategoriesSlider: React.FC = () => {
               type="button"
               onClick={() => scroll('left')}
               disabled={!canScrollLeft}
-              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${
-                canScrollLeft
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${canScrollLeft
                   ? 'bg-[#F2722B] hover:bg-[#E05E17] text-white hover:scale-105 active:scale-95 cursor-pointer shadow-orange-500/20'
                   : 'bg-neutral-200 text-neutral-400 cursor-not-allowed opacity-50'
-              }`}
+                }`}
               aria-label="Previous Categories"
             >
               <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
@@ -206,11 +205,10 @@ export const FeaturedCategoriesSlider: React.FC = () => {
               type="button"
               onClick={() => scroll('right')}
               disabled={!canScrollRight}
-              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${
-                canScrollRight
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${canScrollRight
                   ? 'bg-[#F2722B] hover:bg-[#E05E17] text-white hover:scale-105 active:scale-95 cursor-pointer shadow-orange-500/20'
                   : 'bg-neutral-200 text-neutral-400 cursor-not-allowed opacity-50'
-              }`}
+                }`}
               aria-label="Next Categories"
             >
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />

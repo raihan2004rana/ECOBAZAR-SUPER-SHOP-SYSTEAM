@@ -113,6 +113,12 @@ export const SiteFooter: React.FC = () => {
               Explore & Hubs
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-1 gap-2 text-xs text-white/80">
+              <Link href="/profile" className="hover:text-[#2EBD70] transition-colors font-bold text-white flex items-center gap-1.5">
+                <span>Customer Profile</span>
+                <span className="text-[9px] bg-amber-400 text-neutral-900 font-black px-1.5 py-0.2 rounded-full uppercase">
+                  VIP
+                </span>
+              </Link>
               <Link href="/deals" className="hover:text-[#2EBD70] transition-colors">
                 Today&apos;s Deals
               </Link>
