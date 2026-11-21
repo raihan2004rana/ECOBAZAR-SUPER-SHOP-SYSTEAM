@@ -48,37 +48,33 @@ const defaultSlides: Slide[] = [
   },
   {
     id: 'slide-2',
-    badge: 'Up to 25% Off Daily Essentials',
-    badgeBn: 'দৈনন্দিন নিত্যপণ্যে সর্বোচ্চ ২৫% ছাড়',
-    title: 'Wholesale Kitchen Staples & Pantry Care',
-    titleBn: 'পাইকারি মূল্যে খাঁটি চাল, ডাল ও নিত্যপণ্য',
-    subtitle:
-      'Unpolished Miniket rice, premium lentils, and pantry essentials sourced directly from rural farming cooperatives at fair prices.',
-    subtitleBn:
-      'সরাসরি কৃষকদের থেকে সংগৃহীত পুষ্টিকর মিনিকেট চাল, দেশি মসুর ডাল ও তেল ন্যায্য মূল্যে।',
-    ctaText: 'Explore Groceries',
-    ctaTextBn: 'মুদি পণ্য দেখুন',
-    ctaLink: '/category/groceries-staples',
-    image: '/images/banner-staples-deals.jpg',
-    tag: '100% Pure & Laboratory Tested Quality',
-    tagBn: '১০০% খাঁটি ও ল্যাব-পরীক্ষিত মান',
+    badge: '',
+    badgeBn: '',
+    title: '',
+    titleBn: '',
+    subtitle: '',
+    subtitleBn: '',
+    ctaText: 'Shop Now',
+    ctaTextBn: 'অর্ডার করুন',
+    ctaLink: '/category/spices-oils',
+    image: '/images/hero-nature-bites.webp',
+    tag: '',
+    tagBn: '',
   },
   {
     id: 'slide-3',
-    badge: 'Chilled Under 4°C Cold Chain',
-    badgeBn: '৪° সে. কোল্ড-চেইনে সংরক্ষিত',
-    title: 'Natural Farm Milk & Free-Range Dairy',
-    titleBn: 'প্রাকৃতিক গরুর দুধ ও ফ্রেশ ডেইরি',
-    subtitle:
-      'Pasteurized pure cow milk, country brown eggs, and pure artisanal butter delivered refrigerated to your doorstep.',
-    subtitleBn:
-      'পাস্তুরিত খাঁটি তরল দুধ, দেশি ডিম ও খাঁটি মাখন রেফ্রিজারেটেড ভ্যানে আপনার দরজায়।',
-    ctaText: 'Shop Dairy & Eggs',
-    ctaTextBn: 'ডেইরি ও ডিম দেখুন',
-    ctaLink: '/category/dairy-eggs',
-    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1200&auto=format&fit=crop&q=80',
-    tag: 'Zero Formalin • Guaranteed Freshness',
-    tagBn: 'ফরমালিনমুক্ত • শতভাগ সতেজতার নিশ্চয়তা',
+    badge: '',
+    badgeBn: '',
+    title: '',
+    titleBn: '',
+    subtitle: '',
+    subtitleBn: '',
+    ctaText: 'Shop Now',
+    ctaTextBn: 'অর্ডার করুন',
+    ctaLink: '/deals',
+    image: '/images/hero-december-deals.jpg',
+    tag: '',
+    tagBn: '',
   },
 ];
 
@@ -87,12 +83,11 @@ export const HeroSlider: React.FC = () => {
   const { heroSlides, categories: dynamicCategories } = useCatalog();
   const categories = dynamicCategories && dynamicCategories.length > 0 ? dynamicCategories : categoryDefinitions;
 
-  // Adapt dynamic slides or fall back to default bilingual slides
+  // Adapt dynamic slides or fall back to default slides
   const activeSlides: Slide[] = React.useMemo(() => {
     if (heroSlides && heroSlides.length > 0) {
       return heroSlides.map((s, idx) => {
         if (idx === 0) {
-          // Slide 1 is ALWAYS the clean "Quality You Can Trust" banner with NO extra overlay text
           return {
             id: s.id || 'slide-1',
             badge: '',
@@ -109,6 +104,40 @@ export const HeroSlider: React.FC = () => {
             tagBn: '',
           };
         }
+        if (idx === 1) {
+          return {
+            id: s.id || 'slide-2',
+            badge: '',
+            badgeBn: '',
+            title: '',
+            titleBn: '',
+            subtitle: '',
+            subtitleBn: '',
+            ctaText: s.ctaText || 'Shop Now',
+            ctaTextBn: (s as any).ctaTextBn || 'অর্ডার করুন',
+            ctaLink: s.ctaLink || '/category/spices-oils',
+            image: '/images/hero-nature-bites.webp',
+            tag: '',
+            tagBn: '',
+          };
+        }
+        if (idx === 2) {
+          return {
+            id: s.id || 'slide-3',
+            badge: '',
+            badgeBn: '',
+            title: '',
+            titleBn: '',
+            subtitle: '',
+            subtitleBn: '',
+            ctaText: s.ctaText || 'Shop Now',
+            ctaTextBn: (s as any).ctaTextBn || 'অর্ডার করুন',
+            ctaLink: s.ctaLink || '/deals',
+            image: '/images/hero-december-deals.jpg',
+            tag: '',
+            tagBn: '',
+          };
+        }
         return {
           id: s.id || `dyn-slide-${idx}`,
           badge: s.badge || '',
@@ -119,7 +148,7 @@ export const HeroSlider: React.FC = () => {
           subtitleBn: (s as any).subtitleBn || '',
           ctaText: s.ctaText || 'Shop Now',
           ctaTextBn: (s as any).ctaTextBn || 'অর্ডার করুন',
-          ctaLink: s.ctaLink || '/category/groceries-staples',
+          ctaLink: s.ctaLink || '/deals',
           image: s.image || defaultSlides[idx % defaultSlides.length].image,
           tag: s.tag || '',
           tagBn: (s as any).tagBn || '',
