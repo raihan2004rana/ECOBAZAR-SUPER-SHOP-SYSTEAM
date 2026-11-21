@@ -123,6 +123,12 @@ export const SiteFooter: React.FC = () => {
               <Link href="/offers" className="hover:text-[#2EBD70] transition-colors">
                 Coupons & Promos
               </Link>
+              <Link href="/careers" className="hover:text-[#2EBD70] transition-colors flex items-center gap-1.5 font-bold text-white">
+                <span>Careers</span>
+                <span className="text-[9px] bg-[#2EBD70] text-[#123C2D] font-black px-1.5 py-0.2 rounded-full uppercase">
+                  Hiring
+                </span>
+              </Link>
               <Link href="/branches" className="hover:text-[#2EBD70] transition-colors">
                 Store Branches
               </Link>

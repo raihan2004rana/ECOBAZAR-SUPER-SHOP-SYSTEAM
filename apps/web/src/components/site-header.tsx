@@ -116,9 +116,6 @@ export const SiteHeader: React.FC = () => {
     { label: t('Deals', 'ডিলস'), href: '/deals', badge: 'HOT' },
     { label: t('New Arrivals', 'নতুন পণ্য'), href: '/new-arrivals' },
     { label: t('Offers', 'অফার'), href: '/offers', badge: '10%' },
-    { label: t('Branches', 'শাখা সমূহ'), href: '/branches', badge: t('3 Live', '৩ শাখা') },
-    { label: t('About Us', 'আমাদের সম্পর্কে'), href: '/about-us' },
-    { label: t('Contact', 'যোগাযোগ'), href: '/contact' },
   ];
 
   return (

@@ -82,6 +82,14 @@ import {
   Star,
   Heart,
   ArrowRight,
+  UserCheck,
+  GraduationCap,
+  Mail,
+  Phone,
+  FileText,
+  MapPin,
+  Calendar,
+  UserPlus,
 } from 'lucide-react';
 import { AdminSecurityGate } from '../components/admin-security-gate';
 import {
@@ -239,6 +247,7 @@ const navigationSections: NavSection[] = [
       { id: 'reports', label: 'Reports', icon: FileSpreadsheet },
       { id: 'branches', label: 'Branch Management', icon: Building2 },
       { id: 'employees', label: 'Employees & Staff', icon: Briefcase },
+      { id: 'careers', label: 'Careers & Recruitment', icon: UserCheck, badge: 'Hiring', badgeVariant: 'mint' },
     ],
   },
   {
@@ -611,6 +620,39 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
   const [livePreviewTab, setLivePreviewTab] = React.useState<'card' | 'details'>('card');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
+  // ==========================================
+  // CAREERS & RECRUITMENT STATE
+  // ==========================================
+  const [careerJobs, setCareerJobs] = React.useState<any[]>([]);
+  const [careerApplicants, setCareerApplicants] = React.useState<any[]>([]);
+  const [careersTab, setCareersTab] = React.useState<'jobs' | 'applicants'>('jobs');
+  const [isCareersLoading, setIsCareersLoading] = React.useState(false);
+  const [isCreateJobOpen, setIsCreateJobOpen] = React.useState(false);
+  const [selectedApplicant, setSelectedApplicant] = React.useState<any | null>(null);
+  const [applicantNotesDraft, setApplicantNotesDraft] = React.useState('');
+  const [careerSearch, setCareerSearch] = React.useState('');
+  const [careerBranchFilter, setCareerBranchFilter] = React.useState('all');
+  const [careerDeptFilter, setCareerDeptFilter] = React.useState('all');
+  const [careerStatusFilter, setCareerStatusFilter] = React.useState('all');
+  const [isSavingJob, setIsSavingJob] = React.useState(false);
+
+  const [newJobForm, setNewJobForm] = React.useState({
+    title: '',
+    titleBn: '',
+    department: 'Store Operations',
+    branch: 'Gulshan Superstore',
+    location: 'Gulshan-2 Circle, Dhaka',
+    type: 'Full-time',
+    salary: '৳25,000 - ৳35,000 / month',
+    experience: '1-2 years preferred',
+    deadline: '2026-12-15',
+    vacancies: 2,
+    description: '',
+    responsibilities: '',
+    requirements: '',
+    benefits: 'Festival Bonus (2x), Health Coverage, Daily Meal Subsidy, Staff Purchase 15% Discount',
+  });
+
   // Product Form Model & Types
   interface ProductFormData {
     id: string;
@@ -941,6 +983,148 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
     const interval = setInterval(fetchLiveOrdersAndSales, 3500);
     return () => clearInterval(interval);
   }, [fetchLiveOrdersAndSales]);
+
+  // ==========================================
+  // CAREERS API INTEGRATION HANDLERS
+  // ==========================================
+  const fetchCareers = React.useCallback(async () => {
+    try {
+      setIsCareersLoading(true);
+      const res = await fetch('/api/careers', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.jobs && Array.isArray(data.jobs)) setCareerJobs(data.jobs);
+        if (data.applicants && Array.isArray(data.applicants)) setCareerApplicants(data.applicants);
+      }
+    } catch (e) {
+      console.error('Failed to load careers:', e);
+    } finally {
+      setIsCareersLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (activeRouteId === 'careers') {
+      fetchCareers();
+    }
+  }, [activeRouteId, fetchCareers]);
+
+  const handleCreateJobOpening = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newJobForm.title.trim()) {
+      toast.error('Validation Error', 'Please enter a job title');
+      return;
+    }
+    setIsSavingJob(true);
+    try {
+      const res = await fetch('/api/careers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newJobForm),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to create job');
+      toast.success('Job Published!', `New opening "${newJobForm.title}" is now live on the customer Careers page.`);
+      setIsCreateJobOpen(false);
+      setNewJobForm({
+        title: '',
+        titleBn: '',
+        department: 'Store Operations',
+        branch: 'Gulshan Superstore',
+        location: 'Gulshan-2 Circle, Dhaka',
+        type: 'Full-time',
+        salary: '৳25,000 - ৳35,000 / month',
+        experience: '1-2 years preferred',
+        deadline: '2026-12-15',
+        vacancies: 2,
+        description: '',
+        responsibilities: '',
+        requirements: '',
+        benefits: 'Festival Bonus (2x), Health Coverage, Daily Meal Subsidy, Staff Purchase 15% Discount',
+      });
+      fetchCareers();
+    } catch (err: any) {
+      toast.error('Publish Failed', err.message);
+    } finally {
+      setIsSavingJob(false);
+    }
+  };
+
+  const handleToggleJobStatus = async (jobId: string, currentStatus: string) => {
+    const nextStatus = currentStatus === 'ACTIVE' ? 'CLOSED' : 'ACTIVE';
+    try {
+      const res = await fetch('/api/careers', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target: 'job', id: jobId, status: nextStatus }),
+      });
+      if (!res.ok) throw new Error('Status update failed');
+      setCareerJobs((prev) =>
+        prev.map((j) => (j.id === jobId ? { ...j, status: nextStatus } : j))
+      );
+      toast.success('Status Updated', `Job status changed to ${nextStatus}.`);
+    } catch {
+      toast.error('Update Failed', 'Could not change job status.');
+      fetchCareers();
+    }
+  };
+
+  const handleDeleteJob = async (jobId: string, title: string) => {
+    if (!confirm(`Are you sure you want to delete the job posting "${title}"?`)) return;
+    try {
+      const res = await fetch(`/api/careers?target=job&id=${encodeURIComponent(jobId)}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Delete failed');
+      setCareerJobs((prev) => prev.filter((j) => j.id !== jobId));
+      toast.success('Job Removed', `"${title}" has been deleted.`);
+    } catch {
+      toast.error('Delete Failed', 'Could not delete job.');
+      fetchCareers();
+    }
+  };
+
+  const handleUpdateApplicantStatus = async (appId: string, nextStatus: string, notes?: string) => {
+    try {
+      const res = await fetch('/api/careers', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          target: 'applicant',
+          id: appId,
+          status: nextStatus,
+          notes: notes !== undefined ? notes : undefined,
+        }),
+      });
+      if (!res.ok) throw new Error('Update failed');
+      setCareerApplicants((prev) =>
+        prev.map((a) => (a.id === appId ? { ...a, status: nextStatus, notes: notes !== undefined ? notes : a.notes } : a))
+      );
+      if (selectedApplicant && selectedApplicant.id === appId) {
+        setSelectedApplicant((prev: any) => ({ ...prev, status: nextStatus, notes: notes !== undefined ? notes : prev.notes }));
+      }
+      toast.success('Candidate Updated', `Applicant status set to ${nextStatus}.`);
+    } catch {
+      toast.error('Update Failed', 'Could not update applicant.');
+      fetchCareers();
+    }
+  };
+
+  const handleDeleteApplicant = async (appId: string, name: string) => {
+    if (!confirm(`Are you sure you want to remove applicant "${name}"?`)) return;
+    try {
+      const res = await fetch(`/api/careers?target=applicant&id=${encodeURIComponent(appId)}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Delete failed');
+      setCareerApplicants((prev) => prev.filter((a) => a.id !== appId));
+      if (selectedApplicant?.id === appId) setSelectedApplicant(null);
+      toast.success('Applicant Removed', `"${name}" removed from candidate pool.`);
+    } catch {
+      toast.error('Delete Failed', 'Could not delete applicant.');
+      fetchCareers();
+    }
+  };
 
   // Export Product Sales Report CSV
   const handleExportSalesReportCSV = () => {
@@ -5244,6 +5428,441 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
           )}
 
           {/* ========================================== */}
+          {/* VIEW: CAREERS & RECRUITMENT */}
+          {/* ========================================== */}
+          {activeRouteId === 'careers' && (
+            <div className="space-y-6 text-left">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <UserCheck className="h-7 w-7 text-primary-green" />
+                    <span>Careers & Recruitment Management</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Superstore branch vacancies, job postings, candidate applications screening, and automatic email dispatch.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<RefreshCw className={`h-3.5 w-3.5 ${isCareersLoading ? 'animate-spin' : ''}`} />}
+                    onClick={fetchCareers}
+                    className="text-xs font-semibold"
+                  >
+                    Sync
+                  </Button>
+                  <Button
+                    variant="forest"
+                    size="sm"
+                    leftIcon={<Plus className="h-3.5 w-3.5" />}
+                    onClick={() => setIsCreateJobOpen(true)}
+                    className="font-bold text-xs shadow-md shadow-emerald-900/20"
+                  >
+                    Post New Job
+                  </Button>
+                </div>
+              </div>
+
+              {/* KPI Stat Cards */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Total Postings</p>
+                    <Briefcase className="h-4 w-4 text-primary-green" />
+                  </div>
+                  <div className="mt-2 flex items-baseline gap-2">
+                    <span className="text-2xl font-black text-neutral-900 dark:text-white">{careerJobs.length}</span>
+                    <span className="text-xs font-semibold text-emerald-600">
+                      {careerJobs.filter((j) => j.status === 'ACTIVE').length} Active
+                    </span>
+                  </div>
+                </Card>
+
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Total Candidates</p>
+                    <Users className="h-4 w-4 text-blue-500" />
+                  </div>
+                  <div className="mt-2 flex items-baseline gap-2">
+                    <span className="text-2xl font-black text-neutral-900 dark:text-white">{careerApplicants.length}</span>
+                    <span className="text-xs font-semibold text-blue-600">All Superstores</span>
+                  </div>
+                </Card>
+
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Pending Review</p>
+                    <Clock className="h-4 w-4 text-amber-500" />
+                  </div>
+                  <div className="mt-2 flex items-baseline gap-2">
+                    <span className="text-2xl font-black text-amber-600">
+                      {careerApplicants.filter((a) => a.status === 'PENDING').length}
+                    </span>
+                    <span className="text-xs text-neutral-400">Needs screening</span>
+                  </div>
+                </Card>
+
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Shortlisted / Hired</p>
+                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                  </div>
+                  <div className="mt-2 flex items-baseline gap-2">
+                    <span className="text-2xl font-black text-emerald-600">
+                      {careerApplicants.filter((a) => a.status === 'SHORTLISTED' || a.status === 'HIRED').length}
+                    </span>
+                    <span className="text-xs text-neutral-400">Qualified</span>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Tabs Switcher */}
+              <div className="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-800">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setCareersTab('jobs')}
+                    className={`pb-3 px-3 text-xs font-bold flex items-center gap-2 border-b-2 transition ${
+                      careersTab === 'jobs'
+                        ? 'border-primary-green text-primary-green'
+                        : 'border-transparent text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <Briefcase className="h-4 w-4" />
+                    <span>Job Openings</span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                      {careerJobs.length}
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setCareersTab('applicants')}
+                    className={`pb-3 px-3 text-xs font-bold flex items-center gap-2 border-b-2 transition ${
+                      careersTab === 'applicants'
+                        ? 'border-primary-green text-primary-green'
+                        : 'border-transparent text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <Users className="h-4 w-4" />
+                    <span>Job Applicants & Candidates</span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] bg-primary-green/10 text-primary-green font-black">
+                      {careerApplicants.length}
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Filters & Search Toolbar */}
+              <Card className="p-3 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div className="relative">
+                    <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                    <input
+                      type="text"
+                      placeholder="Search title, skills, candidate, phone..."
+                      value={careerSearch}
+                      onChange={(e) => setCareerSearch(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                    />
+                  </div>
+
+                  <select
+                    value={careerBranchFilter}
+                    onChange={(e) => setCareerBranchFilter(e.target.value)}
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                  >
+                    <option value="all">All Branches</option>
+                    <option value="Gulshan Superstore">Gulshan Superstore</option>
+                    <option value="Dhanmondi Mega Outlet">Dhanmondi Mega Outlet</option>
+                    <option value="Uttara Express Hub">Uttara Express Hub</option>
+                    <option value="Banani Flagship">Banani Flagship</option>
+                    <option value="Mirpur City Branch">Mirpur City Branch</option>
+                    <option value="Central Warehouse">Central Warehouse & Fulfillment</option>
+                  </select>
+
+                  <select
+                    value={careerDeptFilter}
+                    onChange={(e) => setCareerDeptFilter(e.target.value)}
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                  >
+                    <option value="all">All Departments</option>
+                    <option value="Store Operations">Store Operations</option>
+                    <option value="Quality & Farm Sourcing">Quality & Farm Sourcing</option>
+                    <option value="Cold-Chain Logistics">Cold-Chain Logistics</option>
+                    <option value="Front Desk & Cash">Front Desk & Cash</option>
+                    <option value="Customer Care">Customer Care</option>
+                    <option value="Warehouse & Inventory">Warehouse & Inventory</option>
+                  </select>
+
+                  <select
+                    value={careerStatusFilter}
+                    onChange={(e) => setCareerStatusFilter(e.target.value)}
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                  >
+                    <option value="all">All Statuses</option>
+                    {careersTab === 'jobs' ? (
+                      <>
+                        <option value="ACTIVE">ACTIVE Openings</option>
+                        <option value="CLOSED">CLOSED</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="PENDING">PENDING</option>
+                        <option value="REVIEWED">REVIEWED</option>
+                        <option value="SHORTLISTED">SHORTLISTED</option>
+                        <option value="HIRED">HIRED</option>
+                        <option value="REJECTED">REJECTED</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+              </Card>
+
+              {/* TAB 1: JOBS LISTING */}
+              {careersTab === 'jobs' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {careerJobs
+                    .filter((job) => {
+                      if (careerStatusFilter !== 'all' && job.status !== careerStatusFilter) return false;
+                      if (careerBranchFilter !== 'all' && !job.branch?.toLowerCase().includes(careerBranchFilter.toLowerCase())) return false;
+                      if (careerDeptFilter !== 'all' && !job.department?.toLowerCase().includes(careerDeptFilter.toLowerCase())) return false;
+                      if (careerSearch.trim()) {
+                        const q = careerSearch.toLowerCase();
+                        return (
+                          job.title?.toLowerCase().includes(q) ||
+                          job.titleBn?.toLowerCase().includes(q) ||
+                          job.description?.toLowerCase().includes(q)
+                        );
+                      }
+                      return true;
+                    })
+                    .map((job) => {
+                      const applicantsCount = careerApplicants.filter((a) => a.jobId === job.id).length;
+                      return (
+                        <Card
+                          key={job.id}
+                          className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between hover:shadow-md transition"
+                        >
+                          <div className="space-y-3">
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 mb-1.5">
+                                  {job.department}
+                                </span>
+                                <h3 className="text-base font-bold text-neutral-900 dark:text-white leading-snug">
+                                  {job.title}
+                                </h3>
+                                {job.titleBn && (
+                                  <p className="text-xs text-primary-green font-medium">{job.titleBn}</p>
+                                )}
+                              </div>
+                              <span
+                                className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                  job.status === 'ACTIVE'
+                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300/40'
+                                    : 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400'
+                                }`}
+                              >
+                                {job.status}
+                              </span>
+                            </div>
+
+                            <p className="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-relaxed">
+                              {job.description}
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-2 text-[11px] text-neutral-600 dark:text-neutral-400 pt-1 border-t border-neutral-100 dark:border-neutral-800/80">
+                              <div className="flex items-center gap-1.5">
+                                <Building2 className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
+                                <span className="truncate">{job.branch}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <DollarSign className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
+                                <span className="truncate">{job.salary}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <Users className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
+                                <span>{job.vacancies} {job.vacancies === 1 ? 'Opening' : 'Openings'} • {job.type}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <Calendar className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
+                                <span>Deadline: {job.deadline}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mt-4 pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setCareersTab('applicants');
+                                setCareerSearch(job.title);
+                              }}
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-primary-green hover:underline"
+                            >
+                              <Users className="h-3 w-3" />
+                              <span>{applicantsCount} {applicantsCount === 1 ? 'Applicant' : 'Applicants'}</span>
+                            </button>
+
+                            <div className="flex items-center gap-1.5">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleToggleJobStatus(job.id, job.status)}
+                                className="text-[11px] py-1 px-2.5 h-7"
+                              >
+                                {job.status === 'ACTIVE' ? 'Close Position' : 'Reopen Position'}
+                              </Button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteJob(job.id, job.title)}
+                                className="p-1.5 text-neutral-400 hover:text-red-600 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+                                title="Delete job posting"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        </Card>
+                      );
+                    })}
+                </div>
+              )}
+
+              {/* TAB 2: APPLICANTS DIRECTORY */}
+              {careersTab === 'applicants' && (
+                <Card className="overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs text-left">
+                      <thead className="bg-neutral-100 dark:bg-neutral-800/60 font-black text-neutral-700 dark:text-neutral-300 border-b border-neutral-200 dark:border-neutral-800">
+                        <tr>
+                          <th className="py-3 px-4">Applicant & Contact</th>
+                          <th className="py-3 px-3">Position & Branch</th>
+                          <th className="py-3 px-3">Experience & Salary</th>
+                          <th className="py-3 px-3">Applied Date</th>
+                          <th className="py-3 px-3">Status</th>
+                          <th className="py-3 px-3">Confirmation Email</th>
+                          <th className="py-3 px-4 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                        {careerApplicants
+                          .filter((app) => {
+                            if (careerStatusFilter !== 'all' && app.status !== careerStatusFilter) return false;
+                            if (careerBranchFilter !== 'all' && !app.branch?.toLowerCase().includes(careerBranchFilter.toLowerCase())) return false;
+                            if (careerSearch.trim()) {
+                              const q = careerSearch.toLowerCase();
+                              return (
+                                app.fullName?.toLowerCase().includes(q) ||
+                                app.email?.toLowerCase().includes(q) ||
+                                app.phone?.toLowerCase().includes(q) ||
+                                app.jobTitle?.toLowerCase().includes(q)
+                              );
+                            }
+                            return true;
+                          })
+                          .map((app) => (
+                            <tr key={app.id} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition">
+                              <td className="py-3.5 px-4">
+                                <div className="font-bold text-neutral-900 dark:text-white flex items-center gap-1.5">
+                                  <span>{app.fullName}</span>
+                                </div>
+                                <div className="text-[11px] text-neutral-500 font-mono mt-0.5">
+                                  {app.email} • {app.phone}
+                                </div>
+                              </td>
+
+                              <td className="py-3.5 px-3">
+                                <div className="font-semibold text-neutral-800 dark:text-neutral-200">
+                                  {app.jobTitle}
+                                </div>
+                                <div className="text-[11px] text-primary-green flex items-center gap-1 mt-0.5">
+                                  <Building2 className="h-3 w-3" />
+                                  <span>{app.branch}</span>
+                                </div>
+                              </td>
+
+                              <td className="py-3.5 px-3">
+                                <div className="text-neutral-700 dark:text-neutral-300 font-medium">
+                                  {app.experience || 'Not specified'}
+                                </div>
+                                <div className="text-[11px] text-neutral-500">
+                                  Exp. Salary: {app.expectedSalary || 'Negotiable'}
+                                </div>
+                              </td>
+
+                              <td className="py-3.5 px-3 font-mono text-[11px] text-neutral-500">
+                                {app.appliedAt ? new Date(app.appliedAt).toLocaleDateString() : 'Recent'}
+                              </td>
+
+                              <td className="py-3.5 px-3">
+                                <select
+                                  value={app.status}
+                                  onChange={(e) => handleUpdateApplicantStatus(app.id, e.target.value)}
+                                  className={`text-[10px] font-black uppercase rounded-lg px-2 py-1 border focus:outline-none ${
+                                    app.status === 'HIRED'
+                                      ? 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300'
+                                      : app.status === 'SHORTLISTED'
+                                      ? 'bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-950 dark:text-purple-300'
+                                      : app.status === 'REVIEWED'
+                                      ? 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950 dark:text-blue-300'
+                                      : app.status === 'REJECTED'
+                                      ? 'bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950 dark:text-rose-300'
+                                      : 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300'
+                                  }`}
+                                >
+                                  <option value="PENDING">PENDING</option>
+                                  <option value="REVIEWED">REVIEWED</option>
+                                  <option value="SHORTLISTED">SHORTLISTED</option>
+                                  <option value="HIRED">HIRED</option>
+                                  <option value="REJECTED">REJECTED</option>
+                                </select>
+                              </td>
+
+                              <td className="py-3.5 px-3">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                                  <Check className="h-3 w-3" />
+                                  <span>Email Sent</span>
+                                </span>
+                              </td>
+
+                              <td className="py-3.5 px-4 text-right">
+                                <div className="flex items-center justify-end gap-1.5">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      setSelectedApplicant(app);
+                                      setApplicantNotesDraft(app.notes || '');
+                                    }}
+                                    className="text-[11px] py-1 px-2.5 h-7"
+                                  >
+                                    View Profile
+                                  </Button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteApplicant(app.id, app.fullName)}
+                                    className="p-1.5 text-neutral-400 hover:text-red-600 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+                                    title="Remove applicant"
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </Card>
+              )}
+            </div>
+          )}
+
+          {/* ========================================== */}
           {/* VIEW: AI ASSISTANT / COPILOT */}
           {/* ========================================== */}
           {activeRouteId === 'ai-assistant' && (
@@ -7047,6 +7666,340 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
           </Button>
         </DialogFooter>
       </Dialog>
+
+      {/* ========================================================= */}
+      {/* POST NEW JOB OPENING MODAL */}
+      {/* ========================================================= */}
+      <Dialog open={isCreateJobOpen} onOpenChange={setIsCreateJobOpen} size="lg">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <UserPlus className="h-5 w-5 text-primary-green" />
+            <span>Post New Superstore Job Opening</span>
+          </DialogTitle>
+          <DialogDescription>
+            Publish a live vacancy across ECOBAZAR branches. Candidates will see this immediately on the Careers page.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogBody className="space-y-4 max-h-[70vh] overflow-y-auto">
+          <form id="createJobForm" onSubmit={handleCreateJobOpening} className="space-y-4 text-left">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Job Title (English) *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Branch Supervisor, Cold-Chain Rider"
+                  value={newJobForm.title}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, title: e.target.value })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Job Title (Bengali)
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. শাখা সুপারভাইজার, ডেলিভারি রাইডার"
+                  value={newJobForm.titleBn}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, titleBn: e.target.value })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Department *
+                </label>
+                <select
+                  value={newJobForm.department}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, department: e.target.value })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                >
+                  <option value="Store Operations">Store Operations</option>
+                  <option value="Quality & Farm Sourcing">Quality & Farm Sourcing</option>
+                  <option value="Cold-Chain Logistics">Cold-Chain Logistics</option>
+                  <option value="Front Desk & Cash">Front Desk & Cash</option>
+                  <option value="Customer Care">Customer Care</option>
+                  <option value="Warehouse & Inventory">Warehouse & Inventory</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Branch Location *
+                </label>
+                <select
+                  value={newJobForm.branch}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, branch: e.target.value })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                >
+                  <option value="Gulshan Superstore">Gulshan Superstore (Circle-2)</option>
+                  <option value="Dhanmondi Mega Outlet">Dhanmondi Mega Outlet (Road 27)</option>
+                  <option value="Uttara Express Hub">Uttara Express Hub (Sector 11)</option>
+                  <option value="Banani Flagship">Banani Flagship (Road 11)</option>
+                  <option value="Mirpur City Branch">Mirpur City Branch (Section 10)</option>
+                  <option value="Central Warehouse & Fulfillment">Central Warehouse & Fulfillment (Tejgaon)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Employment Type
+                </label>
+                <select
+                  value={newJobForm.type}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, type: e.target.value })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                >
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Internship">Internship</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Vacancies
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="50"
+                  value={newJobForm.vacancies}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, vacancies: parseInt(e.target.value) || 1 })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Salary Range
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. ৳25,000 - ৳35,000 / month"
+                  value={newJobForm.salary}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, salary: e.target.value })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Experience Required
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 1-2 years supermarket experience"
+                  value={newJobForm.experience}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, experience: e.target.value })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                  Application Deadline
+                </label>
+                <input
+                  type="date"
+                  value={newJobForm.deadline}
+                  onChange={(e) => setNewJobForm({ ...newJobForm, deadline: e.target.value })}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                Role Summary / Description
+              </label>
+              <textarea
+                rows={2}
+                placeholder="Brief summary of what this role entails..."
+                value={newJobForm.description}
+                onChange={(e) => setNewJobForm({ ...newJobForm, description: e.target.value })}
+                className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                Key Responsibilities (One per line)
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Manage daily morning inventory inward&#10;Ensure shelf display complies with standards&#10;Lead customer checkout team"
+                value={newJobForm.responsibilities}
+                onChange={(e) => setNewJobForm({ ...newJobForm, responsibilities: e.target.value })}
+                className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green font-mono"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                Requirements & Qualifications (One per line)
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Bachelor's degree or equivalent experience&#10;Strong communication in Bengali and conversational English&#10;Willing to work on rotational shifts"
+                value={newJobForm.requirements}
+                onChange={(e) => setNewJobForm({ ...newJobForm, requirements: e.target.value })}
+                className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green font-mono"
+              />
+            </div>
+          </form>
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="outline" size="sm" onClick={() => setIsCreateJobOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="forest"
+            size="sm"
+            type="submit"
+            form="createJobForm"
+            disabled={isSavingJob}
+            className="font-bold"
+          >
+            {isSavingJob ? 'Publishing...' : 'Publish Job Opening'}
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+      {/* ========================================================= */}
+      {/* CANDIDATE DETAILS & EVALUATION MODAL */}
+      {/* ========================================================= */}
+      {selectedApplicant && (
+        <Dialog open={!!selectedApplicant} onOpenChange={() => setSelectedApplicant(null)} size="md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserCheck className="h-5 w-5 text-primary-green" />
+              <span>Candidate Profile: {selectedApplicant.fullName}</span>
+            </DialogTitle>
+            <DialogDescription>
+              Application reference #{selectedApplicant.id} • Applied for {selectedApplicant.jobTitle} ({selectedApplicant.branch})
+            </DialogDescription>
+          </DialogHeader>
+          <DialogBody className="space-y-4 text-left max-h-[70vh] overflow-y-auto">
+            <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 text-xs">
+              <div>
+                <span className="text-neutral-400 block text-[10px] uppercase font-bold">Email Address</span>
+                <span className="font-mono text-neutral-800 dark:text-neutral-200 font-semibold">{selectedApplicant.email}</span>
+              </div>
+              <div>
+                <span className="text-neutral-400 block text-[10px] uppercase font-bold">Phone Number</span>
+                <span className="font-mono text-neutral-800 dark:text-neutral-200 font-semibold">{selectedApplicant.phone}</span>
+              </div>
+              <div>
+                <span className="text-neutral-400 block text-[10px] uppercase font-bold">Experience Level</span>
+                <span className="text-neutral-800 dark:text-neutral-200 font-semibold">{selectedApplicant.experience || 'None listed'}</span>
+              </div>
+              <div>
+                <span className="text-neutral-400 block text-[10px] uppercase font-bold">Expected Salary</span>
+                <span className="text-neutral-800 dark:text-neutral-200 font-semibold">{selectedApplicant.expectedSalary || 'Negotiable'}</span>
+              </div>
+              <div>
+                <span className="text-neutral-400 block text-[10px] uppercase font-bold">Applied On</span>
+                <span className="text-neutral-800 dark:text-neutral-200">{new Date(selectedApplicant.appliedAt).toLocaleString()}</span>
+              </div>
+              <div>
+                <span className="text-neutral-400 block text-[10px] uppercase font-bold">Confirmation Email</span>
+                <span className="text-emerald-600 font-bold flex items-center gap-1">
+                  <Check className="h-3 w-3" /> Sent to Candidate
+                </span>
+              </div>
+            </div>
+
+            {selectedApplicant.resumeLink && (
+              <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-bold text-emerald-900 dark:text-emerald-300">Resume / Portfolio Attached</p>
+                  <p className="text-[11px] text-emerald-700 dark:text-emerald-400 truncate max-w-xs">{selectedApplicant.resumeLink}</p>
+                </div>
+                <a
+                  href={selectedApplicant.resumeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-primary-green text-white text-xs font-bold hover:bg-emerald-700 transition inline-flex items-center gap-1"
+                >
+                  <span>Open Resume</span>
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </div>
+            )}
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                Cover Letter / Candidate Note
+              </label>
+              <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed whitespace-pre-wrap">
+                {selectedApplicant.coverLetter || 'No cover letter provided.'}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                Internal HR / Branch Manager Screening Notes
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Write interview remarks, salary discussions, or verification notes..."
+                value={applicantNotesDraft}
+                onChange={(e) => setApplicantNotesDraft(e.target.value)}
+                className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1.5">
+                Recruitment Stage / Status
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {(['PENDING', 'REVIEWED', 'SHORTLISTED', 'HIRED', 'REJECTED'] as const).map((st) => (
+                  <button
+                    key={st}
+                    type="button"
+                    onClick={() => {
+                      handleUpdateApplicantStatus(selectedApplicant.id, st, applicantNotesDraft);
+                    }}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border ${
+                      selectedApplicant.status === st
+                        ? 'bg-primary-green text-white border-primary-green'
+                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-transparent hover:border-neutral-300'
+                    }`}
+                  >
+                    {st}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                handleUpdateApplicantStatus(selectedApplicant.id, selectedApplicant.status, applicantNotesDraft);
+                setSelectedApplicant(null);
+              }}
+            >
+              Save Notes & Close
+            </Button>
+          </DialogFooter>
+        </Dialog>
+      )}
 
       {/* ========================================================= */}
       {/* GLOBAL COMMAND PALETTE MODAL (CTRL+K) */}

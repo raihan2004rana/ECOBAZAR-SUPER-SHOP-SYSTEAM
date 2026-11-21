@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { sendOrderConfirmationEmail } from '../../../lib/email-service';
 
 function getOrdersPath(): string {
   const candidates = [
@@ -137,6 +138,7 @@ export async function POST(req: NextRequest) {
       formattedTime: now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
       formattedDate: `Today, ${now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`,
       customerName: body.customerName || 'Anonymous Customer',
+      customerEmail: body.customerEmail || '',
       customerPhone: body.customerPhone || '',
       deliveryAddress: body.deliveryAddress || '',
       deliveryTimeSlot: body.deliveryTimeSlot || 'Express Delivery (25-30 Mins)',
@@ -174,6 +176,30 @@ export async function POST(req: NextRequest) {
 
     if (catalogModified) {
       writeCatalog(catalogData);
+    }
+
+    // 3. Dispatch detailed invoice & confirmation email to customer
+    if (newOrder.customerEmail) {
+      try {
+        await sendOrderConfirmationEmail({
+          orderId: newOrder.id,
+          customerName: newOrder.customerName,
+          customerEmail: newOrder.customerEmail,
+          customerPhone: newOrder.customerPhone,
+          deliveryAddress: newOrder.deliveryAddress,
+          deliveryTimeSlot: newOrder.deliveryTimeSlot,
+          branch: newOrder.branch,
+          paymentMethod: newOrder.paymentMethod,
+          items: newOrder.items,
+          subtotal: newOrder.subtotal,
+          deliveryFee: newOrder.deliveryFee,
+          discountAmount: newOrder.discountAmount,
+          grandTotal: newOrder.grandTotal,
+          placedAt: newOrder.formattedTime,
+        });
+      } catch (emailErr) {
+        console.error('[OrdersAPI] Error sending order confirmation email:', emailErr);
+      }
     }
 
     return NextResponse.json({

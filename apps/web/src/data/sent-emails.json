@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "emails": [
+    {
+      "id": "email-1795242723890-nhchvr",
+      "type": "CAREER_APPLICATION_CONFIRMATION",
+      "to": "raihan2004rana@gmail.com",
+      "applicationId": "ECO-APP-2026-5657",
+      "subject": "Application Received: Express Cold-Chain Delivery Hero (রাইডার) - ECOBAZAR Careers",
+      "sentAt": "2026-11-21T06:32:03.890Z",
+      "status": "DELIVERED",
+      "applicantName": "Raihan Hasan",
+      "jobTitle": "Express Cold-Chain Delivery Hero (রাইডার)",
+      "previewSnippet": "Application #ECO-APP-2026-5657 for Express Cold-Chain Delivery Hero (রাইডার) confirmed for Raihan Hasan."
+    }
+  ]
+}

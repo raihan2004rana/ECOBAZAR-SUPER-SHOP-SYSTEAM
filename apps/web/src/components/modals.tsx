@@ -33,6 +33,7 @@ import {
   Copy,
   Check,
   User,
+  Mail,
   Banknote,
 } from 'lucide-react';
 
@@ -130,7 +131,8 @@ export const Modals: React.FC = () => {
 
   // Checkout local state
   const [customerName, setCustomerName] = React.useState('Raihan Ahmed');
-  const [customerPhone, setCustomerPhone] = React.useState('+880 1712-345678');
+  const [customerPhone, setCustomerPhone] = React.useState('1712-345678');
+  const [customerEmail, setCustomerEmail] = React.useState('raihan.ahmed@gmail.com');
   const [deliveryAddress, setDeliveryAddress] = React.useState('Flat 4B, House 12, Road 7/A, Dhanmondi');
   const [deliveryTimeSlot, setDeliveryTimeSlot] = React.useState('Express Delivery (25-30 Mins)');
   const [paymentMethod, setPaymentMethod] = React.useState<'cod' | 'bkash' | 'nagad' | 'card'>('cod');
@@ -208,8 +210,8 @@ export const Modals: React.FC = () => {
   // Checkout Submit
   const onConfirmCheckout = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!customerName.trim() || !customerPhone.trim() || !deliveryAddress.trim()) {
-      toast.error('Missing Details', 'Please provide your name, phone number, and address.');
+    if (!customerName.trim() || !customerPhone.trim() || !customerEmail.trim() || !deliveryAddress.trim()) {
+      toast.error('Missing Details', 'Please provide your name, phone number, email address, and delivery location.');
       return;
     }
     setIsSubmittingOrder(true);
@@ -238,6 +240,7 @@ export const Modals: React.FC = () => {
           body: JSON.stringify({
             orderId,
             customerName: customerName.trim(),
+            customerEmail: customerEmail.trim(),
             customerPhone: `+880 ${customerPhone.trim()}`,
             deliveryAddress: deliveryAddress.trim(),
             deliveryTimeSlot,
@@ -257,6 +260,7 @@ export const Modals: React.FC = () => {
       const snapshot = {
         orderId,
         customerName,
+        customerEmail,
         customerPhone,
         deliveryAddress,
         deliveryTimeSlot,
@@ -795,6 +799,29 @@ export const Modals: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Email Address for Order Confirmation & Digital Invoice */}
+                <div>
+                  <label className="text-xs font-bold text-neutral-900 block mb-1.5">
+                    Email Address (অর্ডার রসিদ ও ইনভয়েস প্রাপ্তির জন্য) <span className="text-rose-500 font-black">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-400">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="email"
+                      required
+                      value={customerEmail}
+                      onChange={(e) => setCustomerEmail(e.target.value)}
+                      placeholder="e.g. raihan@example.com"
+                      className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium"
+                    />
+                  </div>
+                  <p className="text-[10px] text-[#21A366] font-semibold mt-1">
+                    ✓ অর্ডারের পণ্যের তালিকা ও ডিজিটাল মেমো তাৎক্ষণিকভাবে এই ইমেইলে পাঠিয়ে দেওয়া হবে।
+                  </p>
+                </div>
+
                 {/* Delivery Address */}
                 <div>
                   <label className="text-xs font-bold text-neutral-900 block mb-1.5">
@@ -1303,6 +1330,12 @@ export const Modals: React.FC = () => {
                     <span className="text-[#64736B]">মোবাইল নম্বর:</span>
                     <span className="font-bold">{placedOrderInfo.customerPhone}</span>
                   </div>
+                  {placedOrderInfo.customerEmail && (
+                    <div className="flex justify-between items-center text-[#17251F]">
+                      <span className="text-[#64736B]">ইমেইল রসিদ:</span>
+                      <span className="font-bold text-[#21A366]">{placedOrderInfo.customerEmail}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-start text-[#17251F]">
                     <span className="text-[#64736B] shrink-0">ডেলিভারি ঠিকানা:</span>
                     <span className="font-bold text-right ml-4">{placedOrderInfo.deliveryAddress}</span>
