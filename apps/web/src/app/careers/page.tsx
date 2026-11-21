@@ -14,7 +14,6 @@ import {
   ArrowRight,
   Search,
   Filter,
-  Sparkles,
   Users,
   ChevronRight,
   ChevronDown,
@@ -190,7 +189,7 @@ export default function CareersPage() {
           <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#21A366]/20 border border-[#21A366]/40 text-[#2EBD70] text-xs font-black uppercase tracking-wider mb-4">
-                <Sparkles className="w-3.5 h-3.5" />
+                <Briefcase className="w-3.5 h-3.5" />
                 <span>{t("We're Hiring • Join Our Team", 'আমরা নিয়োগ দিচ্ছি • আমাদের টিমে যোগ দিন')}</span>
               </div>
 
@@ -604,7 +603,7 @@ export default function CareersPage() {
                   <ul className="space-y-1.5">
                     {viewingJob.benefits.map((b, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <Sparkles className="w-4 h-4 text-[#F4A340] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#21A366] shrink-0 mt-0.5" />
                         <span>{b}</span>
                       </li>
                     ))}

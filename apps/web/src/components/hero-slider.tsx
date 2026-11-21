@@ -5,13 +5,12 @@ import Link from 'next/link';
 import {
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   ArrowRight,
   Truck,
   Menu,
 } from 'lucide-react';
 import { useCatalog } from '../context/catalog-context';
-import { categoryDefinitions } from '../data/catalog';
+import { categoryDefinitions, categoryRealisticThumbnails } from '../data/catalog';
 import { useLanguage } from '../context/language-context';
 
 interface Slide {
@@ -205,18 +204,20 @@ export const HeroSlider: React.FC = () => {
         <div className="hidden lg:flex w-[260px] xl:w-[280px] shrink-0 flex-col bg-white rounded-3xl border border-[#E5ECE7] shadow-xs overflow-hidden justify-between">
           {/* Header */}
           <div className="bg-[#0D2E21] text-white px-4 py-3.5 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Menu className="w-4 h-4 text-[#2EBD70]" />
-              <span className="font-extrabold text-sm tracking-wide">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-[#21A366] text-white flex items-center justify-center shrink-0 shadow-xs border border-emerald-400/30">
+                <Menu className="w-4 h-4 text-white stroke-[2.5]" />
+              </div>
+              <span className="font-extrabold text-sm tracking-wide text-white">
                 {t('Browse Categories', 'ক্যাটাগরি ব্রাউজ করুন')}
               </span>
             </div>
-            <span className="text-[10px] bg-[#21A366] text-white font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+            <span className="text-[10px] bg-white/15 text-white font-black px-2 py-0.5 rounded-full uppercase tracking-wider border border-white/20">
               {t('11 DEPTS', '১১ বিভাগ')}
             </span>
           </div>
 
-          {/* Department Items (Single Language clean typography - no bilingual clutter) */}
+          {/* Department Items (Single Language clean typography with realistic product photos) */}
           <div className="flex-1 flex flex-col justify-between py-1.5 divide-y divide-neutral-100">
             {categories.slice(0, 11).map((cat) => (
               <Link
@@ -225,9 +226,14 @@ export const HeroSlider: React.FC = () => {
                 className="group flex items-center justify-between px-3.5 py-2 hover:bg-[#F2FBF6] transition-colors"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="text-base shrink-0 group-hover:scale-115 transition-transform">
-                    {cat.icon}
-                  </span>
+                  <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 bg-[#F7F9F5] flex items-center justify-center border border-neutral-200/80 shadow-2xs group-hover:scale-110 group-hover:border-[#21A366] transition-all">
+                    <img
+                      src={categoryRealisticThumbnails[cat.slug] || '/images/products/red-apple.webp'}
+                      alt={cat.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
                   <span className="text-xs font-bold text-[#17251F] group-hover:text-[#21A366] transition-colors truncate">
                     {language === 'bn' ? cat.nameBn : cat.name}
                   </span>
@@ -288,7 +294,6 @@ export const HeroSlider: React.FC = () => {
                   {/* Campaign badge */}
                   {slide.badge && (
                     <div className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold shadow-xs mb-3">
-                      <Sparkles className="w-3.5 h-3.5 text-[#F4A340]" />
                       <span>{t(slide.badge, slide.badgeBn)}</span>
                     </div>
                   )}

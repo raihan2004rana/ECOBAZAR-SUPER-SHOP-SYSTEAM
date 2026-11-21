@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Tag, Sparkles, Copy, Check, ShoppingBag, ArrowRight, Gift, Percent } from 'lucide-react';
+import { Tag, Copy, Check, ShoppingBag, ArrowRight, Gift, Percent } from 'lucide-react';
 import { SiteHeader } from '../../components/site-header';
 import { SiteFooter } from '../../components/site-footer';
 import { CartDrawer } from '../../components/cart-drawer';
@@ -182,7 +182,7 @@ export default function OffersPage() {
         {/* Value Bundle Packs */}
         <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-14">
           <h2 className="text-xl font-black text-[#17251F] mb-6 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[#F4A340]" />
+            <Gift className="w-5 h-5 text-[#21A366]" />
             <span>Curated Family Value Bundles</span>
           </h2>
 

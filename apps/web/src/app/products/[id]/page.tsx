@@ -20,7 +20,8 @@ import {
   UploadCloud,
   ThumbsUp,
   RotateCcw,
-  Sparkles,
+  Banknote,
+  Calendar,
   Share2,
   Flame,
   Tag,
@@ -574,7 +575,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                       <span className="font-bold text-[#17251F]">100% Formalin Free</span>
                     </div>
                     <div className="flex items-center gap-2 bg-[#F7F9F5] p-2 rounded-xl border border-[#E5ECE7]">
-                      <Sparkles className="w-3.5 h-3.5 text-[#F4A340] shrink-0" />
+                      <Banknote className="w-3.5 h-3.5 text-[#21A366] shrink-0" />
                       <span className="font-bold text-[#17251F]">Cash on Delivery</span>
                     </div>
                     <div className="flex items-center gap-2 bg-[#F7F9F5] p-2 rounded-xl border border-[#E5ECE7]">
@@ -1087,7 +1088,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E5ECE7]">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center shrink-0">
-                    <Sparkles className="w-5 h-5" />
+                    <Calendar className="w-5 h-5" />
                   </div>
                   <div>
                     <h2 className="text-xl sm:text-2xl font-black text-[#17251F]">

@@ -126,6 +126,20 @@ export const storeBranches: StoreBranch[] = [
   },
 ];
 
+export const categoryRealisticThumbnails: Record<string, string> = {
+  'fresh-fruits-vegetables': '/images/products/red-apple.webp',
+  'groceries-staples': '/images/products/chakki-ata.webp',
+  'dairy-eggs': '/images/products/dairy-cream.png',
+  'snacks-beverages': '/images/products/tea-leaves.jpg',
+  'meat-fish': '/images/products/beef-cube.webp',
+  'bakery-fresh-snacks': '/images/products/butter-cross.webp',
+  'rice-pulses-grains': '/images/products/miniket-chal.jpg',
+  'spices-oils': '/images/products/holud-gura.avif',
+  'frozen-foods': '/images/products/chicken-nugs.jpg',
+  'health-personal-care': '/images/products/coconut-oil.webp',
+  'baby-food-care': '/images/products/baby-cereal.png',
+};
+
 export const categoryDefinitions: CategoryDef[] = [
   {
     id: 'cat-veg',

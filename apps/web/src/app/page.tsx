@@ -6,7 +6,6 @@ import {
   Flame,
   Clock,
   ArrowRight,
-  Sparkles,
   ChevronRight,
   Tag,
   Check,
@@ -22,6 +21,7 @@ import { WishlistDrawer } from '../components/wishlist-drawer';
 import { Modals } from '../components/modals';
 import {
   categoryDefinitions,
+  categoryRealisticThumbnails,
   getProductsByCategorySlug,
   getHotDeals,
   masterCatalogProducts,
@@ -131,8 +131,17 @@ export default function HomePage() {
                   {/* Category Section Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-[#E5ECE7]">
                     <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-2xl bg-[#D8F3DC] text-[#21A366] flex items-center justify-center text-2xl shrink-0 shadow-xs">
-                        {cat.icon}
+                      <div className="w-11 h-11 rounded-2xl bg-[#F7F9F5] border border-neutral-200/80 overflow-hidden shrink-0 shadow-xs flex items-center justify-center p-1">
+                        <img
+                          src={categoryRealisticThumbnails[cat.slug] || '/images/products/red-apple.webp'}
+                          alt={cat.name}
+                          className="w-full h-full object-cover rounded-xl"
+                          loading="lazy"
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            target.style.display = 'none';
+                          }}
+                        />
                       </div>
                       <div>
                         <div className="flex items-center gap-2">

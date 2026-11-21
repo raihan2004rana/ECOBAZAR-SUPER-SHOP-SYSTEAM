@@ -3,7 +3,6 @@
 import * as React from 'react';
 import Link from 'next/link';
 import {
-  Sparkles,
   ShieldCheck,
   HeartHandshake,
   ArrowRight,
@@ -14,7 +13,7 @@ import {
 interface AboutSlide {
   id: string;
   badge: string;
-  icon: 'sparkles' | 'shield' | 'handshake';
+  icon: 'shield' | 'handshake';
   title: string;
   subtitle: string;
   primaryCtaText: string;
@@ -28,7 +27,7 @@ const aboutSlides: AboutSlide[] = [
   {
     id: 'slide-mission',
     badge: "BANGLADESH'S PREMIER FRESH SUPERMARKET",
-    icon: 'sparkles',
+    icon: 'shield',
     title: 'Bringing Safe, Farm-Fresh Food to Every Family in Dhaka',
     subtitle:
       'Founded with a mission to bring transparency and uncompromised food purity to Bangladesh, ECOBAZAR connects organic farmers directly with urban households through a high-efficiency retail network.',
@@ -139,9 +138,11 @@ export const AboutHeroSlider: React.FC = () => {
         <div className="max-w-2xl lg:max-w-3xl space-y-5">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#05170F] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg">
-            {current.icon === 'sparkles' && <Sparkles className="w-4 h-4 text-[#05170F]" />}
-            {current.icon === 'handshake' && <HeartHandshake className="w-4 h-4 text-[#05170F]" />}
-            {current.icon === 'shield' && <ShieldCheck className="w-4 h-4 text-[#05170F]" />}
+            {current.icon === 'handshake' ? (
+              <HeartHandshake className="w-4 h-4 text-[#05170F]" />
+            ) : (
+              <ShieldCheck className="w-4 h-4 text-[#05170F]" />
+            )}
             <span>{current.badge}</span>
           </div>
 

@@ -12,7 +12,6 @@ import {
   Building2,
   Truck,
   ShieldCheck,
-  Sparkles,
   Calendar,
   Compass,
   ArrowRight,

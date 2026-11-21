@@ -27,7 +27,6 @@ import {
   Phone,
   Package,
   ArrowRight,
-  Sparkles,
   CreditCard,
   Building2,
   Copy,
@@ -627,7 +626,7 @@ export const Modals: React.FC = () => {
         <div className="p-6">
           <div className="text-center mb-6">
             <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-600 flex items-center justify-center mx-auto mb-3 shadow-xs">
-              <Sparkles className="w-7 h-7" />
+              <User className="w-7 h-7" />
             </div>
             <h2 className="text-xl font-black text-neutral-900 tracking-tight">
               {authStep === 'phone' ? 'Welcome to ECOBAZAR' : 'Verify Mobile OTP'}

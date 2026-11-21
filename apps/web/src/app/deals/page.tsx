@@ -6,7 +6,6 @@ import {
   Flame,
   Clock,
   Filter,
-  Sparkles,
   ArrowRight,
   ShieldCheck,
   Truck,

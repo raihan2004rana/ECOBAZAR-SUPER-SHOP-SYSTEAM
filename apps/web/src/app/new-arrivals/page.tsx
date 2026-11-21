@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Sparkles, Calendar, ArrowRight, ShieldCheck, Truck } from 'lucide-react';
+import { Calendar, ArrowRight, ShieldCheck, Truck } from 'lucide-react';
 import { SiteHeader } from '../../components/site-header';
 import { SiteFooter } from '../../components/site-footer';
 import { ProductCard } from '../../components/product-card';
@@ -46,7 +46,7 @@ export default function NewArrivalsPage() {
           <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-3 shadow-md">
-                <Sparkles className="w-4 h-4 text-[#071F15]" />
+                <ShieldCheck className="w-4 h-4 text-[#071F15]" />
                 <span>FRESH HARVEST • ARRIVED THIS MORNING</span>
               </div>
               <h1 className="text-3xl sm:text-5xl font-black leading-tight text-white drop-shadow-md">

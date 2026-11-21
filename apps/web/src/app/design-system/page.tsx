@@ -53,7 +53,6 @@ import {
   useToast,
 } from '@ecobazar/ui';
 import {
-  Sparkles,
   ShoppingBag,
   Bell,
   Trash2,

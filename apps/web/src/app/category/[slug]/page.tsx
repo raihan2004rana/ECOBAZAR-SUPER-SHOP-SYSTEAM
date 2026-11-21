@@ -8,7 +8,7 @@ import {
   Flame,
   Filter,
   ArrowUpDown,
-  Sparkles,
+  Award,
   ArrowRight,
   Tag,
   Check,
@@ -86,7 +86,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: 'Triple optical machine cleaned grains',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Aged Aromatic Harvest',
       subtitle: 'Naturally cured 12 months for royal aroma',
     },
@@ -120,7 +120,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: 'Maintained chilled until your doorstep',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Grass-Fed Pure Cow Milk',
       subtitle: 'Pasteurized with zero water or starch added',
     },
@@ -137,7 +137,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: 'Dressed & cleaned in sterile chilled facility',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Daily Dawn River Catch',
       subtitle: 'Padma Ilish, live Ruhit, Katla & bay prawns',
     },
@@ -154,7 +154,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: '100% pure mustard & black seed oil, zero heat',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Stone-Ground Whole Spices',
       subtitle: 'High curcumin turmeric & chili with zero artificial color',
     },
@@ -171,7 +171,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: 'Baked not fried, roasted seeds & cold drinks',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Zero Artificial Additives',
       subtitle: 'Real fruit pulps & whole wheat ingredients',
     },
@@ -188,7 +188,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: 'Locks in taste, vitamins & natural texture',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Ready in 5-10 Minutes',
       subtitle: 'Parathas, nuggets, samosas & marinated cuts',
     },
@@ -205,7 +205,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: 'Verified highest grade sugar, salt, atta & daal',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Bulk & Family Pack Savings',
       subtitle: 'Best value wholesale prices directly to home',
     },
@@ -222,7 +222,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: 'Sourced directly from authorized distributors',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Dermatologically Tested',
       subtitle: 'Gentle organic herbal personal care items',
     },
@@ -239,7 +239,7 @@ const categoryRibbonMap: Record<string, RibbonPoint[]> = {
       subtitle: 'Zero harmful chemicals, phthalates or parabens',
     },
     {
-      icon: Sparkles,
+      icon: Award,
       title: 'Freshly Dated Stock Only',
       subtitle: 'Long expiry dates checked before every dispatch',
     },
@@ -258,7 +258,7 @@ const defaultRibbonPoints: RibbonPoint[] = [
     subtitle: 'Directly sourced from trusted partner producers',
   },
   {
-    icon: Sparkles,
+    icon: Award,
     title: 'Guaranteed Purity & Safety',
     subtitle: 'Screened & inspected for zero adulteration',
   },
@@ -403,7 +403,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
               {/* Delivery Promise Card */}
               <div className="bg-[#0A261B]/80 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-xs space-y-1.5 shrink-0 shadow-xl">
                 <div className="flex items-center gap-2 text-[#2EBD70] font-black">
-                  <Sparkles className="w-4 h-4" />
+                  <Clock className="w-4 h-4" />
                   <span>30-Min Fast Dispatch</span>
                 </div>
                 <p className="text-white/90">Temperature-controlled cold storage pack</p>

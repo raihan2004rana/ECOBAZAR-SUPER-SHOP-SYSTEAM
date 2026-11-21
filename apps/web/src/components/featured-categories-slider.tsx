@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../context/language-context';
 
 interface FeaturedCategory {
@@ -179,14 +179,9 @@ export const FeaturedCategoriesSlider: React.FC = () => {
         {/* Header with Title and Circular Navigation Controls */}
         <div className="flex items-center justify-between gap-3 pb-4 sm:pb-5 border-b border-[#E5ECE7]/80">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-[#EBF7F0] text-[#21A366]">
-                <Sparkles className="w-4 h-4" />
-              </span>
-              <h2 className="text-lg sm:text-2xl font-black text-[#17251F] tracking-tight">
-                {t('Featured Categories', 'ফিচার্ড ক্যাটাগরি')}
-              </h2>
-            </div>
+            <h2 className="text-lg sm:text-2xl font-black text-[#17251F] tracking-tight">
+              {t('Featured Categories', 'ফিচার্ড ক্যাটাগরি')}
+            </h2>
             <p className="text-[11px] sm:text-xs text-[#64736B] mt-0.5 line-clamp-1">
               {t('Explore 100% natural, lab-tested pantry staples and fresh organic harvest', 'বাছাইকৃত ১০০% প্রাকৃতিক ও ল্যাব-পরীক্ষিত তাজা পণ্যসামগ্রী')}
             </p>

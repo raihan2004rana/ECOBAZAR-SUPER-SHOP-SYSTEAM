@@ -8,7 +8,6 @@ import {
   HeartHandshake,
   Users,
   Award,
-  Sparkles,
   ArrowRight,
   CheckCircle2,
   MapPin,

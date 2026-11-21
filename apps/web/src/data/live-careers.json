@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-11-21T06:47:41.477Z",
+  "lastUpdated": "2026-11-21T09:19:25.622Z",
   "jobs": [
     {
       "id": "job-eco-mwq1kkmo",
@@ -189,6 +189,24 @@
     }
   ],
   "applicants": [
+    {
+      "id": "ECO-APP-2026-1996",
+      "jobId": "job-eco-02",
+      "jobTitle": "Quality Assurance & Food Safety Inspector",
+      "applicantName": "Ashiqur Rahman",
+      "email": "Ed.gtorres20@gmail.com",
+      "phone": "+8804703655242",
+      "branchPreference": "Dhanmondi Branch #01 (Flagship)",
+      "experience": "20",
+      "expectedSalary": "30000",
+      "resumeUrl": "Uploaded to System",
+      "coverLetter": "fhdrth",
+      "appliedAt": "2026-11-21T09:19:25.616Z",
+      "formattedDate": "21 Nov 2026",
+      "status": "PENDING",
+      "notes": "",
+      "emailNotificationSent": true
+    },
     {
       "id": "ECO-APP-2026-8094",
       "jobId": "job-eco-mwq1kkmo",

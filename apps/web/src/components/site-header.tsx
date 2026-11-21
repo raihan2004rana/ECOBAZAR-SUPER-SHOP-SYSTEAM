@@ -14,7 +14,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  Sparkles,
   Truck,
   HelpCircle,
   ArrowRight,
@@ -25,7 +24,7 @@ import {
 } from 'lucide-react';
 import { Logo } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
-import { categoryDefinitions, masterCatalogProducts, ProductItem } from '../data/catalog';
+import { categoryDefinitions, categoryRealisticThumbnails, masterCatalogProducts, ProductItem } from '../data/catalog';
 import { useCatalog } from '../context/catalog-context';
 import { useLanguage } from '../context/language-context';
 
@@ -137,7 +136,6 @@ export const SiteHeader: React.FC = () => {
             </div>
             <span className="hidden md:inline text-white/40">|</span>
             <div className="hidden md:flex items-center gap-1.5 text-white/90">
-              <Sparkles className="w-3.5 h-3.5 text-[#F4A340]" />
               <span>{t('Free Express Delivery on orders over ৳1,000!', '৳১,০০০ টাকার বেশি অর্ডারে ফ্রি এক্সপ্রেস ডেলিভারি!')}</span>
             </div>
           </div>
@@ -468,7 +466,6 @@ export const SiteHeader: React.FC = () => {
               ) : (
                 /* Elegant indicator on HomePage top to keep spacing consistent */
                 <div className="hidden lg:flex items-center gap-2 text-xs font-bold text-[#123C2D] bg-[#EBF7F0] px-3.5 py-1.5 rounded-xl border border-[#21A366]/20">
-                  <Sparkles className="w-3.5 h-3.5 text-[#21A366]" />
                   <span>{t('Fresh Express Supermarket', 'তাজা এক্সপ্রেস সুপারশপ')}</span>
                 </div>
               )}
@@ -487,15 +484,19 @@ export const SiteHeader: React.FC = () => {
                       key={cat.id}
                       href={`/category/${cat.slug}`}
                       onClick={() => setIsCategoryDropdownOpen(false)}
-                      className="flex items-center justify-between px-4 py-2.5 text-xs text-[#17251F] hover:bg-[#D8F3DC]/40 hover:text-[#21A366] transition-colors font-medium border-b border-[#E5ECE7]/30 last:border-b-0"
+                      className="group flex items-center justify-between px-4 py-2 text-xs text-[#17251F] hover:bg-[#F2FBF6] hover:text-[#21A366] transition-colors font-medium border-b border-[#E5ECE7]/30 last:border-b-0"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <span className="text-base">{cat.icon}</span>
-                        <div>
-                          <p className="font-bold leading-tight">{language === 'bn' ? cat.nameBn : cat.name}</p>
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-6 h-6 rounded-md overflow-hidden shrink-0 bg-[#F7F9F5] border border-neutral-200/80 group-hover:border-[#21A366] transition-all">
+                          <img
+                            src={categoryRealisticThumbnails[cat.slug] || '/images/products/red-apple.webp'}
+                            alt={cat.name}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
+                        <span className="font-bold leading-tight truncate">{language === 'bn' ? cat.nameBn : cat.name}</span>
                       </div>
-                      <span className="text-[10px] text-gray-400">→</span>
+                      <span className="text-[10px] text-gray-400 group-hover:text-[#21A366] transition-colors">→</span>
                     </Link>
                   ))}
                 </div>
@@ -631,9 +632,20 @@ export const SiteHeader: React.FC = () => {
                     key={cat.id}
                     href={`/category/${cat.slug}`}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-2 py-1.5 text-xs text-[#17251F] hover:text-[#21A366] font-medium"
+                    className="flex items-center gap-2.5 py-1.5 text-xs text-[#17251F] hover:text-[#21A366] font-medium"
                   >
-                    <span>{cat.icon}</span>
+                    <div className="w-6 h-6 rounded-md overflow-hidden shrink-0 bg-[#F7F9F5] border border-neutral-200/80 flex items-center justify-center shadow-2xs">
+                      <img
+                        src={categoryRealisticThumbnails[cat.slug] || '/images/products/red-apple.webp'}
+                        alt={cat.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    </div>
                     <span>{language === 'bn' ? cat.nameBn : cat.name}</span>
                   </Link>
                 ))}

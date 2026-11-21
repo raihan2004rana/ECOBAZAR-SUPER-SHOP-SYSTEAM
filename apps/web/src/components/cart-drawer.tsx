@@ -10,7 +10,7 @@ import {
   Button,
 } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
-import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, Check, Sparkles } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, Check } from 'lucide-react';
 import Link from 'next/link';
 
 export const CartDrawer: React.FC = () => {
@@ -77,7 +77,7 @@ export const CartDrawer: React.FC = () => {
         <div className="px-4 py-2.5 bg-[#D8F3DC]/40 border-b border-[#D8F3DC] text-xs">
           {remainingForFreeShipping === 0 || appliedCoupon === 'FREESHIP' ? (
             <div className="flex items-center gap-1.5 text-[#123C2D] font-bold">
-              <Sparkles className="w-4 h-4 text-[#21A366]" />
+              <Check className="w-4 h-4 text-[#21A366]" />
               <span>Congratulations! You unlocked FREE Delivery across Dhaka.</span>
             </div>
           ) : (

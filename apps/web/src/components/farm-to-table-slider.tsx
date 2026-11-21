@@ -2,12 +2,11 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
 
 interface FarmSlide {
   id: string;
   badge: string;
-  badgeIcon?: 'shield' | 'sparkles';
   title: string;
   subtitle: string;
   ctaText: string;
@@ -19,7 +18,6 @@ const farmSlides: FarmSlide[] = [
   {
     id: 'slide-farm-to-table',
     badge: 'ORGANIC FARMER CO-OP',
-    badgeIcon: 'sparkles',
     title: 'Direct From Farm to Your Dining Table',
     subtitle:
       'We partner with 120+ certified organic farms across Bogura, Rajshahi, and Sylhet. No middlemen, zero harmful chemicals, harvest-to-home freshness.',
@@ -30,7 +28,6 @@ const farmSlides: FarmSlide[] = [
   {
     id: 'slide-lab-screened',
     badge: '100% CHEMICAL & FORMALIN FREE',
-    badgeIcon: 'shield',
     title: 'Lab-Screened Daily Freshness at Dawn',
     subtitle:
       'Harvested at sunrise and multi-stage screened for formalin and pesticides before express dispatch in sub-4°C refrigerated vans.',
@@ -114,11 +111,7 @@ export const FarmToTableSlider: React.FC = () => {
           <div className="max-w-xl lg:max-w-2xl space-y-3">
             {/* Badge */}
             <div className="inline-flex items-center gap-1.5 bg-[#2EBD70] text-[#082216] px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-md">
-              {slide.badgeIcon === 'shield' ? (
-                <ShieldCheck className="w-3.5 h-3.5" />
-              ) : (
-                <Sparkles className="w-3.5 h-3.5" />
-              )}
+              <ShieldCheck className="w-3.5 h-3.5" />
               <span>{slide.badge}</span>
             </div>
 

@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   Truck,
   RotateCcw,
-  Sparkles,
   CreditCard,
   Banknote,
 } from 'lucide-react';
