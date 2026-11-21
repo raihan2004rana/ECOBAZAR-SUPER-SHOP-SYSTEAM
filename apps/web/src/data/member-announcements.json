@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-11-21T10:00:00.000Z",
+  "announcements": [
+    {
+      "id": "ann-gold-01",
+      "targetTier": "GOLD",
+      "targetCustomerId": null,
+      "targetCustomerName": "Gold VIP Members",
+      "type": "VIP_REWARD",
+      "title": "Exclusive Gold VIP 15% Weekend Treat",
+      "titleBn": "গোল্ড ভিআইপি মেম্বারদের জন্য বিশেষ ১৫% উইকেন্ড ছাড়",
+      "message": "As a valued Gold VIP member, enjoy an exclusive 15% discount on all organic fruits & fresh beef this weekend! Apply your secret code at checkout.",
+      "couponCode": "GOLDSECRET15",
+      "discountPercent": 15,
+      "minSpend": 1200,
+      "validUntil": "28 Nov 2026",
+      "createdAt": "2026-11-21T09:00:00.000Z",
+      "branch": "All Branches",
+      "priority": "HIGH"
+    },
+    {
+      "id": "ann-restock-01",
+      "targetTier": "GOLD",
+      "targetCustomerId": "ECO-USR-8821",
+      "targetCustomerName": "Raihan Ahmed",
+      "type": "RESTOCK_ALERT",
+      "title": "Back in Stock: Fresh Padma River Katla Fish",
+      "titleBn": "স্টকে এসেছে: আপনার পছন্দের তাজা পদ্মা নদীর কাতলা মাছ!",
+      "message": "Fresh morning catch arrived directly from Mawa Ghat cold-chain hub. Zero formalin guaranteed, pre-sliced & ready to cook.",
+      "relatedProductId": "mf-7",
+      "relatedProductName": "Fresh River Katla Fish Head & Steaks (1kg)",
+      "relatedProductPrice": 450,
+      "relatedProductImage": "/images/products/chicken-nugs.jpg",
+      "couponCode": "KATLA10",
+      "discountPercent": 10,
+      "minSpend": 450,
+      "validUntil": "25 Nov 2026",
+      "createdAt": "2026-11-21T08:30:00.000Z",
+      "branch": "Dhanmondi Branch #01 (Flagship)",
+      "priority": "MEDIUM"
+    }
+  ]
+}

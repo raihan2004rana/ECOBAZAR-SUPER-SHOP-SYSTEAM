@@ -55,6 +55,8 @@ export default function CustomerProfilePage() {
     lifetimeSpend,
     totalSaved,
     availableCoupons,
+    announcements,
+    dismissAnnouncement,
     updateProfile,
     addAddress,
     removeAddress,
@@ -435,6 +437,124 @@ export default function CustomerProfilePage() {
         {/* ========================================================= */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
+            {/* VIP Targeted Announcements & Restock Alerts from Admin */}
+            {announcements && announcements.length > 0 && (
+              <div className="space-y-3.5">
+                {announcements.map((ann) => (
+                  <div
+                    key={ann.id}
+                    className={`rounded-3xl p-5 sm:p-6 border shadow-sm relative overflow-hidden transition-all ${
+                      ann.type === 'RESTOCK_ALERT'
+                        ? 'bg-gradient-to-r from-emerald-50 via-white to-emerald-50/40 border-[#21A366]/50'
+                        : 'bg-gradient-to-r from-amber-50/80 via-white to-amber-50/40 border-amber-300'
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => dismissAnnouncement(ann.id)}
+                      className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-neutral-100 text-neutral-400 hover:text-neutral-700 transition-colors"
+                      title="Dismiss announcement"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pr-8">
+                      <div className="flex items-start gap-3.5">
+                        <div
+                          className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-xs border ${
+                            ann.type === 'RESTOCK_ALERT'
+                              ? 'bg-[#D8F3DC] text-[#21A366] border-emerald-300'
+                              : 'bg-amber-100 text-amber-700 border-amber-300'
+                          }`}
+                        >
+                          {ann.type === 'RESTOCK_ALERT' ? (
+                            <Truck className="w-6 h-6" />
+                          ) : (
+                            <Crown className="w-6 h-6" />
+                          )}
+                        </div>
+
+                        <div className="space-y-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span
+                              className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full ${
+                                ann.type === 'RESTOCK_ALERT'
+                                  ? 'bg-[#21A366] text-white'
+                                  : 'bg-amber-500 text-white'
+                              }`}
+                            >
+                              {ann.type === 'RESTOCK_ALERT'
+                                ? 'FAVORITE PRODUCT BACK IN STOCK'
+                                : `${ann.targetTier} VIP EXCLUSIVE`}
+                            </span>
+                            <span className="text-[11px] text-[#64736B] font-medium">
+                              From: {ann.branch || 'Headquarters'}
+                            </span>
+                          </div>
+
+                          <h4 className="text-base sm:text-lg font-black text-[#17251F]">
+                            {language === 'bn' ? ann.titleBn : ann.title}
+                          </h4>
+                          <p className="text-xs text-[#64736B] max-w-2xl leading-relaxed">{ann.message}</p>
+
+                          {/* Related Product for Restock */}
+                          {ann.relatedProductName && (
+                            <div className="inline-flex items-center gap-2 mt-1.5 px-3 py-1 bg-white rounded-xl border border-neutral-200 text-xs font-bold text-[#17251F]">
+                              {ann.relatedProductImage && (
+                                <img
+                                  src={ann.relatedProductImage}
+                                  alt={ann.relatedProductName}
+                                  className="w-5 h-5 rounded object-cover"
+                                />
+                              )}
+                              <span>{ann.relatedProductName}</span>
+                              {ann.relatedProductPrice && (
+                                <span className="text-emerald-700 font-black">৳{ann.relatedProductPrice}</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-end sm:self-center">
+                        {ann.couponCode && (
+                          <button
+                            type="button"
+                            onClick={() => handleApplyCouponToCart(ann.couponCode!)}
+                            className="bg-[#21A366] hover:bg-[#123C2D] text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <Tag className="w-3.5 h-3.5" />
+                            <span>Apply Code: {ann.couponCode}</span>
+                          </button>
+                        )}
+
+                        {ann.relatedProductId && (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              reorderProducts([
+                                {
+                                  productId: ann.relatedProductId!,
+                                  name: ann.relatedProductName || 'Fresh Item',
+                                  price: ann.relatedProductPrice || 450,
+                                  quantity: 1,
+                                  image: ann.relatedProductImage,
+                                },
+                              ])
+                            }
+                            className="bg-[#123C2D] hover:bg-[#21A366] text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <ShoppingBag className="w-3.5 h-3.5" />
+                            <span>Add Restocked Item to Cart</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
             {/* Active Live Order Delivery Tracker */}
             {activeOrder && (
               <div className="bg-white rounded-3xl border border-[#E5ECE7] p-6 sm:p-7 shadow-xs">

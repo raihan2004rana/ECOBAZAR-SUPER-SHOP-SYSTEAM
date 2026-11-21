@@ -22,6 +22,8 @@ import {
   Flag,
   Users,
   Award,
+  Crown,
+  Gift,
   CircleDollarSign,
   FileSpreadsheet,
   Building2,
@@ -675,6 +677,20 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
   const [previewEmail, setPreviewEmail] = React.useState<any | null>(null);
   const [resendingEmailId, setResendingEmailId] = React.useState<string | null>(null);
 
+  // VIP Announcements & Member Offers State
+  const [memberAnnouncements, setMemberAnnouncements] = React.useState<any[]>([]);
+  const [isBroadcastingOffer, setIsBroadcastingOffer] = React.useState(false);
+  const [broadcastTargetTier, setBroadcastTargetTier] = React.useState<'GOLD' | 'PLATINUM' | 'SILVER' | 'ALL'>('GOLD');
+  const [broadcastType, setBroadcastType] = React.useState<'VIP_REWARD' | 'RESTOCK_ALERT' | 'PROMO_COUPON'>('VIP_REWARD');
+  const [broadcastTitle, setBroadcastTitle] = React.useState('Exclusive Gold VIP 15% Weekend Treat');
+  const [broadcastTitleBn, setBroadcastTitleBn] = React.useState('গোল্ড ভিআইপি মেম্বারদের জন্য বিশেষ ১৫% উইকেন্ড ছাড়');
+  const [broadcastMessage, setBroadcastMessage] = React.useState('As a valued Gold VIP member, enjoy an exclusive 15% discount on all organic fruits & fresh beef this weekend! Apply code at checkout.');
+  const [broadcastCoupon, setBroadcastCoupon] = React.useState('GOLDSECRET15');
+  const [broadcastDiscount, setBroadcastDiscount] = React.useState('15');
+  const [broadcastMinSpend, setBroadcastMinSpend] = React.useState('1200');
+  const [broadcastRelatedProduct, setBroadcastRelatedProduct] = React.useState('mf-7');
+  const [broadcastBranch, setBroadcastBranch] = React.useState('All Branches');
+
   // Product Form Model & Types
   interface ProductFormData {
     id: string;
@@ -1005,6 +1021,101 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
     const interval = setInterval(fetchLiveOrdersAndSales, 3500);
     return () => clearInterval(interval);
   }, [fetchLiveOrdersAndSales]);
+
+  // ==========================================
+  // VIP MEMBER ANNOUNCEMENTS & PROMOTIONS API HANDLERS
+  // ==========================================
+  const fetchMemberAnnouncements = React.useCallback(async () => {
+    try {
+      const res = await fetch('/api/member-announcements', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.announcements && Array.isArray(data.announcements)) {
+          setMemberAnnouncements(data.announcements);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load member announcements:', e);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (activeRouteId === 'customers' || activeRouteId === 'loyalty') {
+      fetchMemberAnnouncements();
+    }
+  }, [activeRouteId, fetchMemberAnnouncements]);
+
+  const handleBroadcastAnnouncement = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!broadcastTitle.trim()) {
+      toast.error('Validation Error', 'Please enter an announcement title');
+      return;
+    }
+    setIsBroadcastingOffer(true);
+    try {
+      const targetCustomerName =
+        broadcastTargetTier === 'GOLD'
+          ? 'Gold VIP Members'
+          : broadcastTargetTier === 'PLATINUM'
+          ? 'Platinum Elite Members'
+          : broadcastTargetTier === 'SILVER'
+          ? 'Silver Members'
+          : 'All Customers';
+
+      const payload = {
+        targetTier: broadcastTargetTier,
+        targetCustomerName,
+        type: broadcastType,
+        title: broadcastTitle,
+        titleBn: broadcastTitleBn || broadcastTitle,
+        message: broadcastMessage,
+        couponCode: broadcastCoupon ? broadcastCoupon.trim().toUpperCase() : undefined,
+        discountPercent: broadcastDiscount ? Number(broadcastDiscount) : undefined,
+        minSpend: broadcastMinSpend ? Number(broadcastMinSpend) : 0,
+        validUntil: '7 Days',
+        relatedProductId: broadcastType === 'RESTOCK_ALERT' ? broadcastRelatedProduct : undefined,
+        relatedProductName:
+          broadcastType === 'RESTOCK_ALERT'
+            ? broadcastRelatedProduct === 'mf-7'
+              ? 'Fresh River Katla Fish Head & Steaks (1kg)'
+              : broadcastRelatedProduct === 'mf-1'
+              ? 'Premium Fresh Deshi Beef Meat (1kg)'
+              : 'Featured Organic Harvest'
+            : undefined,
+        relatedProductPrice: broadcastType === 'RESTOCK_ALERT' ? 450 : undefined,
+        branch: broadcastBranch,
+        priority: broadcastTargetTier === 'PLATINUM' || broadcastTargetTier === 'GOLD' ? 'HIGH' : 'MEDIUM',
+      };
+
+      const res = await fetch('/api/member-announcements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to broadcast');
+      toast.success('VIP Offer Broadcasted!', `Live notification sent to ${targetCustomerName} profiles.`);
+      fetchMemberAnnouncements();
+    } catch (err: any) {
+      toast.error('Broadcast Failed', err.message || 'Could not send announcement');
+    } finally {
+      setIsBroadcastingOffer(false);
+    }
+  };
+
+  const handleDeleteAnnouncement = async (id: string) => {
+    try {
+      const res = await fetch(`/api/member-announcements?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      if (res.ok) {
+        toast.success('Announcement Deleted', 'Offer removed from customer profiles');
+        setMemberAnnouncements((prev) => prev.filter((a) => a.id !== id));
+      } else {
+        toast.error('Failed to delete announcement');
+      }
+    } catch (e: any) {
+      toast.error('Delete error', e.message);
+    }
+  };
 
   // ==========================================
   // CAREERS API INTEGRATION HANDLERS
@@ -5341,6 +5452,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     </thead>
                     <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
                       {[
+                        { name: 'Raihan Ahmed (Active VIP Session)', phone: '+880 1711-000000', zone: 'Dhanmondi R/A, Dhaka', orders: 12, spend: 18450, points: 1845, tier: 'GOLD_VIP' },
                         { name: 'Mohammad Rahim', phone: '+880 1712-345678', zone: 'Gulshan-2, Dhaka', orders: 28, spend: 34800, points: 3480, tier: 'DIAMOND_VIP' },
                         { name: 'Sharmin Akhter', phone: '+880 1819-223344', zone: 'Dhanmondi, Dhaka', orders: 19, spend: 22400, points: 2240, tier: 'GOLD' },
                         { name: 'Tanvir Hossain', phone: '+880 1911-556677', zone: 'Uttara Sector 11', orders: 14, spend: 16800, points: 1680, tier: 'GOLD' },
@@ -5364,6 +5476,426 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   </table>
                 </div>
               </Card>
+
+              {/* VIP Targeted Broadcaster Section */}
+              <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent p-4 rounded-2xl border border-amber-200 dark:border-amber-900/50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center font-black">
+                      <Crown className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                        <span>Targeted VIP Promotions & Restock Broadcaster</span>
+                        <Badge variant="warning" className="text-[10px] uppercase font-black tracking-wider">
+                          Live CRM Push
+                        </Badge>
+                      </h3>
+                      <p className="text-xs text-neutral-500 font-medium">
+                        Broadcast exclusive discounts, secret coupon codes, and restock alerts directly into customer profiles based on membership tier and past purchase habits.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => fetchMemberAnnouncements()}
+                      leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
+                      className="text-xs font-bold"
+                    >
+                      Refresh Feed
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  {/* Left Column: Form */}
+                  <Card className="lg:col-span-7 p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
+                      <h4 className="text-sm font-black text-neutral-900 dark:text-white flex items-center gap-2">
+                        <Gift className="w-4 h-4 text-emerald-600" />
+                        <span>Compose Member Offer / Announcement</span>
+                      </h4>
+                      <span className="text-[11px] font-bold text-neutral-400">Direct-to-Profile Sync</span>
+                    </div>
+
+                    {/* Quick Preset Buttons */}
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-400 mb-1.5">
+                        Quick Preset Templates
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBroadcastTargetTier('GOLD');
+                            setBroadcastType('VIP_REWARD');
+                            setBroadcastTitle('Exclusive Gold VIP 15% Weekend Treat');
+                            setBroadcastTitleBn('গোল্ড ভিআইপি মেম্বারদের জন্য বিশেষ ১৫% উইকেন্ড ছাড়');
+                            setBroadcastMessage('As a valued Gold VIP member, enjoy an exclusive 15% discount on all organic fruits & fresh beef this weekend! Apply code at checkout.');
+                            setBroadcastCoupon('GOLDSECRET15');
+                            setBroadcastDiscount('15');
+                            setBroadcastMinSpend('1200');
+                          }}
+                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 transition-colors"
+                        >
+                          👑 Gold VIP 15% Reward
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBroadcastTargetTier('GOLD');
+                            setBroadcastType('RESTOCK_ALERT');
+                            setBroadcastTitle('Back in Stock: Fresh Padma River Katla Fish');
+                            setBroadcastTitleBn('স্টকে এসেছে: আপনার পছন্দের তাজা পদ্মা নদীর কাতলা মাছ!');
+                            setBroadcastMessage('Fresh morning catch arrived directly from Mawa Ghat cold-chain hub. Zero formalin guaranteed, pre-sliced & ready to cook.');
+                            setBroadcastCoupon('KATLA10');
+                            setBroadcastDiscount('10');
+                            setBroadcastMinSpend('450');
+                            setBroadcastRelatedProduct('mf-7');
+                          }}
+                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors"
+                        >
+                          🐟 Restock: Padma Katla Fish
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBroadcastTargetTier('PLATINUM');
+                            setBroadcastType('VIP_REWARD');
+                            setBroadcastTitle('Platinum Elite: Complimentary Farm Ghee & Free Express');
+                            setBroadcastTitleBn('প্লাটিনাম এলিট: ফ্রি খাঁটি গাওয়া ঘি ও ফ্রি ডেলিভারি');
+                            setBroadcastMessage('Congratulations on reaching Platinum Elite! Enjoy flat ৳300 off + zero delivery fees across all orders this month.');
+                            setBroadcastCoupon('VIPGIFT300');
+                            setBroadcastDiscount('20');
+                            setBroadcastMinSpend('2000');
+                          }}
+                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 transition-colors"
+                        >
+                          💎 Platinum Elite Bonus
+                        </button>
+                      </div>
+                    </div>
+
+                    <form onSubmit={handleBroadcastAnnouncement} className="space-y-4">
+                      {/* Audience & Type */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Target Membership Tier <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            value={broadcastTargetTier}
+                            onChange={(e: any) => setBroadcastTargetTier(e.target.value)}
+                            className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2 font-bold text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none"
+                          >
+                            <option value="GOLD">🥇 Gold VIP Members (৳15,000+ Spend)</option>
+                            <option value="PLATINUM">💎 Platinum Elite (৳35,000+ Spend)</option>
+                            <option value="SILVER">🥈 Silver Shoppers (৳5,000+ Spend)</option>
+                            <option value="ALL">🌐 All Registered Customers</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Announcement Type <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            value={broadcastType}
+                            onChange={(e: any) => setBroadcastType(e.target.value)}
+                            className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2 font-bold text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none"
+                          >
+                            <option value="VIP_REWARD">👑 VIP Exclusive Tier Reward</option>
+                            <option value="RESTOCK_ALERT">🔔 Customer Favorite Restock Alert</option>
+                            <option value="PROMO_COUPON">🏷️ Seasonal Campaign Promo Code</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Title (EN & BN) */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Offer Title (English) <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={broadcastTitle}
+                            onChange={(e) => setBroadcastTitle(e.target.value)}
+                            placeholder="e.g. Exclusive Gold VIP 15% Weekend Treat"
+                            className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2 text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none font-medium"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Offer Title (Bengali)
+                          </label>
+                          <input
+                            type="text"
+                            value={broadcastTitleBn}
+                            onChange={(e) => setBroadcastTitleBn(e.target.value)}
+                            placeholder="e.g. গোল্ড ভিআইপি মেম্বারদের জন্য বিশেষ ১৫% উইকেন্ড ছাড়"
+                            className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2 text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none font-medium"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Message Content */}
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                          Personalized Announcement Message
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={broadcastMessage}
+                          onChange={(e) => setBroadcastMessage(e.target.value)}
+                          placeholder="Describe the offer or restock details visible inside the customer profile..."
+                          className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none font-medium resize-none"
+                        />
+                      </div>
+
+                      {/* Coupon Code, Discount %, Min Spend */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Exclusive Coupon Code
+                          </label>
+                          <div className="relative">
+                            <Tag className="w-3.5 h-3.5 absolute left-3 top-2.5 text-neutral-400" />
+                            <input
+                              type="text"
+                              value={broadcastCoupon}
+                              onChange={(e) => setBroadcastCoupon(e.target.value)}
+                              placeholder="GOLDSECRET15"
+                              className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 pl-8 pr-3 py-2 uppercase font-black text-amber-600 focus:ring-2 focus:ring-primary-green focus:outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Discount Rate (%)
+                          </label>
+                          <div className="relative">
+                            <Percent className="w-3.5 h-3.5 absolute left-3 top-2.5 text-neutral-400" />
+                            <input
+                              type="number"
+                              min="0"
+                              max="90"
+                              value={broadcastDiscount}
+                              onChange={(e) => setBroadcastDiscount(e.target.value)}
+                              placeholder="15"
+                              className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 pl-8 pr-3 py-2 font-bold text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Min Order Spend (৳)
+                          </label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-2 text-xs font-bold text-neutral-400">৳</span>
+                            <input
+                              type="number"
+                              min="0"
+                              value={broadcastMinSpend}
+                              onChange={(e) => setBroadcastMinSpend(e.target.value)}
+                              placeholder="1200"
+                              className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 pl-7 pr-3 py-2 font-bold text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Restocked Product Link & Branch */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Featured / Restocked Item (1-Click Cart)
+                          </label>
+                          <select
+                            value={broadcastRelatedProduct}
+                            onChange={(e) => setBroadcastRelatedProduct(e.target.value)}
+                            className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2 font-medium text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none"
+                          >
+                            <option value="mf-7">Fresh River Katla Fish Head & Steaks (1kg) - ৳450</option>
+                            <option value="mf-1">Premium Fresh Deshi Beef Meat (1kg) - ৳780</option>
+                            <option value="pro-honey-1">Sundarban Raw Pure Honey (500g) - ৳650</option>
+                            <option value="fv-1">Organic Gala Fresh Apples (1kg) - ৳90</option>
+                            <option value="gs-1">Premium Chakki Fresh Whole Wheat Atta (2kg) - ৳135</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Applicable Superstore Branch
+                          </label>
+                          <select
+                            value={broadcastBranch}
+                            onChange={(e) => setBroadcastBranch(e.target.value)}
+                            className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2 font-medium text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none"
+                          >
+                            <option value="All Branches">All Superstores & Express Delivery</option>
+                            <option value="Dhanmondi Branch #01 (Flagship)">Dhanmondi Branch #01 (Flagship)</option>
+                            <option value="Gulshan Superstore Hub">Gulshan Superstore Hub</option>
+                            <option value="Uttara Sector 11 Express">Uttara Sector 11 Express</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Submit */}
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="text-[11px] text-neutral-500 font-medium">
+                          Targeting: <strong className="text-amber-600 dark:text-amber-400">{broadcastTargetTier} Members</strong>
+                        </div>
+                        <Button
+                          type="submit"
+                          variant="forest"
+                          disabled={isBroadcastingOffer}
+                          leftIcon={isBroadcastingOffer ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                          className="font-black text-xs px-5 shadow-lg shadow-emerald-900/10"
+                        >
+                          {isBroadcastingOffer ? 'Broadcasting...' : 'Broadcast to Profile Feed'}
+                        </Button>
+                      </div>
+                    </form>
+                  </Card>
+
+                  {/* Right Column: Live Preview & Active Broadcasts */}
+                  <div className="lg:col-span-5 space-y-4">
+                    {/* Live Preview of how it will look in /profile */}
+                    <Card className="p-4 bg-gradient-to-br from-neutral-900 to-neutral-950 text-white border border-neutral-800 space-y-3 shadow-xl">
+                      <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+                        <div className="flex items-center gap-1.5 text-xs font-black text-amber-400 uppercase tracking-wider">
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Live Customer Profile View</span>
+                        </div>
+                        <span className="text-[10px] text-neutral-400 bg-neutral-800 px-2 py-0.5 rounded-full font-mono">
+                          /profile preview
+                        </span>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 space-y-2.5">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 rounded-full bg-amber-500 text-neutral-950 text-[10px] font-black uppercase tracking-wider">
+                              {broadcastTargetTier} VIP EXCLUSIVE
+                            </span>
+                            <span className="text-[10px] text-amber-300 font-medium">
+                              {broadcastType === 'RESTOCK_ALERT' ? 'Restock Alert' : 'VIP Reward'}
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-neutral-400 font-mono">Just Now</span>
+                        </div>
+
+                        <div>
+                          <h5 className="font-black text-sm text-amber-200 leading-snug">
+                            {broadcastTitle || 'Exclusive Gold VIP Offer'}
+                          </h5>
+                          {broadcastTitleBn && (
+                            <p className="text-xs text-neutral-300 font-medium mt-0.5">
+                              {broadcastTitleBn}
+                            </p>
+                          )}
+                          <p className="text-xs text-neutral-400 mt-1 line-clamp-2">
+                            {broadcastMessage}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2 border-t border-amber-500/20">
+                          {broadcastCoupon ? (
+                            <div className="flex items-center gap-1.5">
+                              <span className="px-2 py-1 rounded-md bg-neutral-900 border border-amber-400/50 font-mono font-black text-amber-400 text-xs tracking-wider">
+                                {broadcastCoupon}
+                              </span>
+                              <span className="text-[11px] text-neutral-300 font-medium">
+                                ({broadcastDiscount}% off &bull; Min ৳{broadcastMinSpend})
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-emerald-400 font-bold">In-Stock Now</span>
+                          )}
+
+                          <button
+                            type="button"
+                            className="px-3 py-1 bg-amber-500 text-neutral-950 font-black text-[11px] rounded-lg hover:bg-amber-400 transition-colors shadow-sm"
+                          >
+                            {broadcastType === 'RESTOCK_ALERT' ? 'Add to Cart 🛒' : 'Apply Code 🎁'}
+                          </button>
+                        </div>
+                      </div>
+                    </Card>
+
+                    {/* Active Announcements List */}
+                    <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3">
+                      <div className="flex items-center justify-between pb-2 border-b border-neutral-100 dark:border-neutral-800">
+                        <h4 className="text-xs font-black uppercase tracking-wider text-neutral-700 dark:text-neutral-300 flex items-center gap-1.5">
+                          <Bell className="w-3.5 h-3.5 text-amber-500" />
+                          <span>Active Broadcasted Feeds ({memberAnnouncements.length})</span>
+                        </h4>
+                        <span className="text-[10px] text-emerald-600 font-black bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">
+                          Live Sync
+                        </span>
+                      </div>
+
+                      {memberAnnouncements.length === 0 ? (
+                        <div className="p-4 text-center text-xs text-neutral-400 font-medium">
+                          No active announcements found. Broadcast one using the form.
+                        </div>
+                      ) : (
+                        <div className="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+                          {memberAnnouncements.map((ann) => (
+                            <div
+                              key={ann.id}
+                              className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/60 hover:border-amber-400/50 transition-colors space-y-1.5"
+                            >
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                                    {ann.targetTier}
+                                  </span>
+                                  <span className="font-bold text-xs text-neutral-900 dark:text-white line-clamp-1">
+                                    {ann.title}
+                                  </span>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteAnnouncement(ann.id)}
+                                  className="text-neutral-400 hover:text-red-500 transition-colors p-1"
+                                  title="Revoke / Delete Announcement"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                              <p className="text-[11px] text-neutral-500 line-clamp-2">
+                                {ann.message}
+                              </p>
+                              <div className="flex items-center justify-between text-[10px] pt-1 border-t border-neutral-200 dark:border-neutral-700/60 text-neutral-400">
+                                <div>
+                                  {ann.couponCode && (
+                                    <span className="font-mono font-bold text-amber-600 dark:text-amber-400">
+                                      Code: {ann.couponCode}
+                                    </span>
+                                  )}
+                                  {ann.relatedProductName && (
+                                    <span className="font-medium text-emerald-600 dark:text-emerald-400">
+                                      Item: {ann.relatedProductName.substring(0, 22)}...
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="font-mono text-neutral-400">{ann.branch}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </Card>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

@@ -134,6 +134,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const discountAmount = React.useMemo(() => {
     if (!appliedCoupon) return 0;
     const clean = appliedCoupon.toUpperCase();
+    if (clean === 'GOLDSECRET15') return Math.round(cartSubtotal * 0.15);
+    if (clean === 'VIPGIFT300') return Math.min(300, cartSubtotal);
+    if (clean === 'KATLA10') return Math.round(cartSubtotal * 0.1);
     if (clean === 'ECO10' || clean === 'GOLDVIP10') return Math.round(cartSubtotal * 0.1);
     if (clean === 'HARVEST15') return Math.round(cartSubtotal * 0.15);
     if (clean === 'DHAKA25' || clean === 'BEEF100') return Math.min(100, cartSubtotal);
@@ -142,14 +145,33 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const pts = parseInt(clean.replace('POINTS', ''), 10);
       if (!isNaN(pts)) return Math.min(pts, cartSubtotal);
     }
+    // General numeric pattern match (e.g. VIP20 -> 20%)
+    if (clean.includes('20')) return Math.round(cartSubtotal * 0.2);
+    if (clean.includes('15')) return Math.round(cartSubtotal * 0.15);
+    if (clean.includes('10')) return Math.round(cartSubtotal * 0.1);
     return 0;
   }, [appliedCoupon, cartSubtotal]);
 
-  const deliveryFee = cartSubtotal >= 1000 || appliedCoupon === 'FREESHIP' ? 0 : 50;
+  const deliveryFee = cartSubtotal >= 1000 || appliedCoupon === 'FREESHIP' || appliedCoupon === 'VIPFREESHIP' ? 0 : 50;
   const cartGrandTotal = Math.max(0, cartSubtotal - discountAmount + deliveryFee);
 
   const applyCoupon = (code: string): boolean => {
     const clean = code.trim().toUpperCase();
+    if (clean === 'GOLDSECRET15') {
+      setAppliedCoupon('GOLDSECRET15');
+      toast.success('Secret VIP Coupon Applied!', '15% Gold VIP exclusive discount deducted.');
+      return true;
+    }
+    if (clean === 'KATLA10') {
+      setAppliedCoupon('KATLA10');
+      toast.success('Fish Special Applied!', '10% discount on fresh catch applied.');
+      return true;
+    }
+    if (clean === 'VIPGIFT300') {
+      setAppliedCoupon('VIPGIFT300');
+      toast.success('VIP Milestone Gift Applied!', '৳300 flat credit deducted.');
+      return true;
+    }
     if (clean === 'ECO10' || clean === 'GOLDVIP10') {
       setAppliedCoupon(clean);
       toast.success('VIP Coupon Applied!', '10% discount applied to your order.');
@@ -160,8 +182,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       toast.success('Coupon Applied!', '15% Farm Harvest discount applied.');
       return true;
     }
-    if (clean === 'FREESHIP') {
-      setAppliedCoupon('FREESHIP');
+    if (clean === 'FREESHIP' || clean === 'VIPFREESHIP') {
+      setAppliedCoupon(clean);
       toast.success('Coupon Applied!', 'Free Express Delivery granted on this order.');
       return true;
     }
@@ -179,6 +201,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setAppliedCoupon(clean);
       const pts = parseInt(clean.replace('POINTS', ''), 10);
       toast.success('Points Voucher Applied!', `৳${pts} deducted from subtotal.`);
+      return true;
+    }
+    // Generic VIP or promotional code handler
+    if (clean.startsWith('VIP') || clean.startsWith('GOLD') || clean.startsWith('ECO')) {
+      setAppliedCoupon(clean);
+      toast.success('Promotional Code Applied!', 'Member special discount applied.');
       return true;
     }
     toast.error('Invalid Voucher', 'Code not recognized. Check your Profile for active vouchers.');

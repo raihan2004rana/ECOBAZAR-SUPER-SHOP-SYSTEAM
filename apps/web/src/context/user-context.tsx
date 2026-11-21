@@ -78,6 +78,29 @@ export interface CouponOffer {
   badge?: string;
 }
 
+export interface MemberAnnouncement {
+  id: string;
+  targetTier: 'ALL' | 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
+  targetCustomerId?: string | null;
+  targetCustomerName?: string;
+  type: 'VIP_REWARD' | 'RESTOCK_ALERT' | 'PROMO_COUPON' | 'MILESTONE_GIFT';
+  title: string;
+  titleBn: string;
+  message: string;
+  couponCode?: string;
+  discountPercent?: number;
+  discountFlat?: number;
+  minSpend?: number;
+  validUntil?: string;
+  relatedProductId?: string;
+  relatedProductName?: string;
+  relatedProductPrice?: number;
+  relatedProductImage?: string;
+  branch?: string;
+  priority?: 'HIGH' | 'MEDIUM' | 'LOW';
+  createdAt?: string;
+}
+
 export interface MembershipInfo {
   tier: MembershipTier;
   title: string;
@@ -103,6 +126,10 @@ interface UserContextType {
   lifetimeSpend: number;
   totalSaved: number;
   availableCoupons: CouponOffer[];
+  announcements: MemberAnnouncement[];
+  unreadAnnouncementsCount: number;
+  dismissAnnouncement: (id: string) => void;
+  refreshAnnouncements: () => Promise<void>;
   login: (phone: string, name?: string) => void;
   logout: () => void;
   updateProfile: (data: Partial<UserProfile>) => void;
@@ -680,6 +707,16 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [orders, setOrders] = React.useState<CustomerOrder[]>(initialSampleOrders);
   const [selectedOrderForInvoice, setSelectedOrderForInvoice] = React.useState<CustomerOrder | null>(null);
   const [activeOrderToTrack, setActiveOrderToTrack] = React.useState<CustomerOrder | null>(null);
+  const [announcements, setAnnouncements] = React.useState<MemberAnnouncement[]>([]);
+  const [dismissedIds, setDismissedIds] = React.useState<string[]>([]);
+
+  // Load dismissed IDs
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem('ecobazar_dismissed_announcements');
+      if (saved) setDismissedIds(JSON.parse(saved));
+    } catch {}
+  }, []);
 
   // Load user & orders from localStorage on mount
   React.useEffect(() => {
@@ -801,6 +838,38 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     toast.info('Signed Out', 'You have been safely signed out of your account.');
   };
 
+  // Fetch announcements for this user's tier
+  const refreshAnnouncements = React.useCallback(async () => {
+    try {
+      const res = await fetch(`/api/member-announcements?tier=${membership.tier}&customerId=${user.id}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.announcements && Array.isArray(data.announcements)) {
+          setAnnouncements(data.announcements);
+        }
+      }
+    } catch (e) {
+      console.warn('Could not fetch member announcements:', e);
+    }
+  }, [membership.tier, user.id]);
+
+  React.useEffect(() => {
+    refreshAnnouncements();
+  }, [refreshAnnouncements]);
+
+  const activeAnnouncements = React.useMemo(() => {
+    return announcements.filter((a) => !dismissedIds.includes(a.id));
+  }, [announcements, dismissedIds]);
+
+  const dismissAnnouncement = (id: string) => {
+    const updated = [...dismissedIds, id];
+    setDismissedIds(updated);
+    try {
+      localStorage.setItem('ecobazar_dismissed_announcements', JSON.stringify(updated));
+    } catch {}
+    toast.info('Announcement Dismissed', 'You can review all store campaigns anytime in the Offers tab.');
+  };
+
   const updateProfile = (data: Partial<UserProfile>) => {
     const updated = { ...user, ...data };
     setUser(updated);
@@ -867,6 +936,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lifetimeSpend,
         totalSaved,
         availableCoupons: availableCouponsList,
+        announcements: activeAnnouncements,
+        unreadAnnouncementsCount: activeAnnouncements.length,
+        dismissAnnouncement,
+        refreshAnnouncements,
         login,
         logout,
         updateProfile,

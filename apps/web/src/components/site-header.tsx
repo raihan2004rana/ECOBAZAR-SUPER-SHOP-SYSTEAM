@@ -47,7 +47,7 @@ export const SiteHeader: React.FC = () => {
     setSelectedProductForModal,
     selectedBranch,
   } = useCart();
-  const { user, isLoggedIn, membership } = useUser();
+  const { user, isLoggedIn, membership, unreadAnnouncementsCount } = useUser();
   const { products: dynamicProducts, categories: dynamicCategories, topBanner } = useCatalog();
   const allProducts = dynamicProducts && dynamicProducts.length > 0 ? dynamicProducts : masterCatalogProducts;
   const categories = dynamicCategories && dynamicCategories.length > 0 ? dynamicCategories : categoryDefinitions;
@@ -325,8 +325,15 @@ export const SiteHeader: React.FC = () => {
                 href="/profile"
                 className="hidden xl:flex items-center gap-2.5 p-1.5 px-2.5 rounded-xl text-[#17251F] hover:text-[#21A366] hover:bg-[#F2FBF6] border border-transparent hover:border-[#21A366]/20 transition-all group"
               >
-                <div className="w-9 h-9 rounded-full bg-[#EBF7F0] border border-[#21A366]/30 flex items-center justify-center text-[#21A366] font-black text-xs shadow-2xs group-hover:scale-105 transition-transform">
-                  {user.name ? user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() : 'RA'}
+                <div className="relative">
+                  <div className="w-9 h-9 rounded-full bg-[#EBF7F0] border border-[#21A366]/30 flex items-center justify-center text-[#21A366] font-black text-xs shadow-2xs group-hover:scale-105 transition-transform">
+                    {user.name ? user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() : 'RA'}
+                  </div>
+                  {unreadAnnouncementsCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-500 text-white text-[9px] font-black flex items-center justify-center border-2 border-white shadow-xs">
+                      {unreadAnnouncementsCount}
+                    </span>
+                  )}
                 </div>
                 <div className="hidden xl:block text-left">
                   <div className="flex items-center gap-1.5">
