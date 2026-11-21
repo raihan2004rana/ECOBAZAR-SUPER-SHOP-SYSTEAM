@@ -90,21 +90,41 @@ export const HeroSlider: React.FC = () => {
   // Adapt dynamic slides or fall back to default bilingual slides
   const activeSlides: Slide[] = React.useMemo(() => {
     if (heroSlides && heroSlides.length > 0) {
-      return heroSlides.map((s, idx) => ({
-        id: s.id || `dyn-slide-${idx}`,
-        badge: s.badge || '100% Organic & Chemical-Free',
-        badgeBn: '১০০% অর্গানিক ও কেমিক্যালমুক্ত',
-        title: s.title || 'Fast Fresh Groceries Delivered Daily',
-        titleBn: 'প্রতিদিন তাজা গ্রোসারি দ্রুত ডেলিভারি',
-        subtitle: s.subtitle || 'Handpicked crisp fruits, daily greens, garden produce delivered with 30 minutes in Dhaka under cold storage.',
-        subtitleBn: 'বাছাইকৃত তাজা ফলমূল, সবুজ শাকসবজি এবং কোল্ড-স্টোরেজে সংরক্ষিত ফার্মের ফ্রেশ পণ্য ৩০ মিনিটে আপনার দরজায়।',
-        ctaText: s.ctaText || 'Shop Now',
-        ctaTextBn: 'অর্ডার করুন',
-        ctaLink: s.ctaLink || '/category/fresh-fruits-vegetables',
-        image: s.image || '/images/hero-fruits-veggies.jpg',
-        tag: s.tag || '30-Min Instant Delivery Across Dhaka',
-        tagBn: 'ঢাকা জুড়ে ৩০ মিনিটে এক্সপ্রেস ডেলিভারি',
-      }));
+      return heroSlides.map((s, idx) => {
+        if (idx === 0) {
+          // Slide 1 is ALWAYS the clean "Quality You Can Trust" banner with NO extra overlay text
+          return {
+            id: s.id || 'slide-1',
+            badge: '',
+            badgeBn: '',
+            title: '',
+            titleBn: '',
+            subtitle: '',
+            subtitleBn: '',
+            ctaText: s.ctaText || 'Shop Now',
+            ctaTextBn: (s as any).ctaTextBn || 'অর্ডার করুন',
+            ctaLink: s.ctaLink || '/deals',
+            image: '/images/hero-quality-trust.webp',
+            tag: '',
+            tagBn: '',
+          };
+        }
+        return {
+          id: s.id || `dyn-slide-${idx}`,
+          badge: s.badge || '',
+          badgeBn: (s as any).badgeBn || '',
+          title: s.title || '',
+          titleBn: (s as any).titleBn || '',
+          subtitle: s.subtitle || '',
+          subtitleBn: (s as any).subtitleBn || '',
+          ctaText: s.ctaText || 'Shop Now',
+          ctaTextBn: (s as any).ctaTextBn || 'অর্ডার করুন',
+          ctaLink: s.ctaLink || '/category/groceries-staples',
+          image: s.image || defaultSlides[idx % defaultSlides.length].image,
+          tag: s.tag || '',
+          tagBn: (s as any).tagBn || '',
+        };
+      });
     }
     return defaultSlides;
   }, [heroSlides]);

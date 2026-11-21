@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-20T05:14:44.777Z",
+  "lastUpdated": "2026-11-21T04:46:16.134Z",
   "topBanner": {
     "enabled": true,
     "badgeText": "VOUCHER SAVINGS",
@@ -14,14 +14,14 @@
   "heroSlides": [
     {
       "id": "slide-1",
-      "badge": "100% Organic & Chemical-Free",
-      "title": "Fast Fresh Groceries Delivered Daily",
-      "subtitle": "Handpicked crisp fruits, daily greens, and garden produce dispatched within 30 minutes in Dhaka under unbroken cold storage.",
-      "ctaText": "Shop Fresh Produce",
-      "ctaLink": "/category/fresh-fruits-vegetables",
-      "image": "/images/hero-fruits-veggies.jpg",
-      "bgGradient": "from-[#123C2D] via-[#123C2D]/95 to-[#1a4a38]",
-      "tag": "30-Min Instant Delivery Across Dhaka",
+      "badge": "",
+      "title": "",
+      "subtitle": "",
+      "ctaText": "Shop Now",
+      "ctaLink": "/deals",
+      "image": "/images/hero-quality-trust.webp",
+      "bgGradient": "",
+      "tag": "",
       "active": true
     },
     {
