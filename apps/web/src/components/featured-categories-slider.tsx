@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { useLanguage } from '../context/language-context';
 
 interface FeaturedCategory {
   id: string;
@@ -121,6 +122,7 @@ const featuredCategories: FeaturedCategory[] = [
 ];
 
 export const FeaturedCategoriesSlider: React.FC = () => {
+  const { language, t } = useLanguage();
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
@@ -182,11 +184,11 @@ export const FeaturedCategoriesSlider: React.FC = () => {
                 <Sparkles className="w-4 h-4" />
               </span>
               <h2 className="text-lg sm:text-2xl font-black text-[#17251F] tracking-tight">
-                Featured Categories
+                {t('Featured Categories', 'ফিচার্ড ক্যাটাগরি')}
               </h2>
             </div>
             <p className="text-[11px] sm:text-xs text-[#64736B] mt-0.5 line-clamp-1">
-              Explore 100% natural, lab-tested pantry staples and fresh organic harvest
+              {t('Explore 100% natural, lab-tested pantry staples and fresh organic harvest', 'বাছাইকৃত ১০০% প্রাকৃতিক ও ল্যাব-পরীক্ষিত তাজা পণ্যসামগ্রী')}
             </p>
           </div>
 
@@ -258,10 +260,7 @@ export const FeaturedCategoriesSlider: React.FC = () => {
 
                 {/* Category Name Underneath */}
                 <span className="mt-3 text-xs sm:text-sm font-extrabold text-[#17251F] group-hover:text-[#21A366] transition-colors text-center line-clamp-1">
-                  {cat.name}
-                </span>
-                <span className="text-[10px] text-[#64736B] font-medium mt-0.5 line-clamp-1">
-                  {cat.nameBn}
+                  {language === 'bn' ? cat.nameBn : cat.name}
                 </span>
               </Link>
             ))}

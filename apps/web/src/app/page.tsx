@@ -31,8 +31,10 @@ import {
   masterCatalogProducts,
 } from '../data/catalog';
 import { useCatalog } from '../context/catalog-context';
+import { useLanguage } from '../context/language-context';
 
 export default function HomePage() {
+  const { language, t } = useLanguage();
   // Deals countdown timer state
   const [timeLeft, setTimeLeft] = React.useState({
     hours: 5,
@@ -186,11 +188,8 @@ export default function HomePage() {
                       <div>
                         <div className="flex items-center gap-2">
                           <h2 className="text-xl sm:text-2xl font-black text-[#17251F]">
-                            {cat.name}
+                            {language === 'bn' ? cat.nameBn : cat.name}
                           </h2>
-                          <span className="text-xs bg-[#E5ECE7] text-[#17251F] font-bold px-2.5 py-0.5 rounded-full">
-                            {cat.nameBn}
-                          </span>
                         </div>
                         <p className="text-xs text-[#64736B] mt-0.5">{cat.tagline}</p>
                       </div>
@@ -215,7 +214,7 @@ export default function HomePage() {
                         href={`/category/${cat.slug}`}
                         className="inline-flex items-center gap-1.5 bg-[#21A366] hover:bg-[#123C2D] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs shrink-0"
                       >
-                        <span>View All {cat.name.split(' ')[0]}</span>
+                        <span>{t(`View All ${cat.name.split(' ')[0]}`, `${cat.nameBn} দেখুন`)}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>

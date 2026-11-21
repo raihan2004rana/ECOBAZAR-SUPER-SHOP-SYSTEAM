@@ -27,10 +27,12 @@ import { Logo } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
 import { categoryDefinitions, masterCatalogProducts, ProductItem } from '../data/catalog';
 import { useCatalog } from '../context/catalog-context';
+import { useLanguage } from '../context/language-context';
 
 export const SiteHeader: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { language, toggleLanguage, t } = useLanguage();
   const {
     totalCartCount,
     cartGrandTotal,
@@ -110,13 +112,13 @@ export const SiteHeader: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'Deals', href: '/deals', badge: 'HOT' },
-    { label: 'New Arrivals', href: '/new-arrivals' },
-    { label: 'Offers', href: '/offers', badge: '10%' },
-    { label: 'Branches', href: '/branches', badge: '3 Live' },
-    { label: 'About Us', href: '/about-us' },
-    { label: 'Contact', href: '/contact' },
+    { label: t('Home', 'হোম'), href: '/' },
+    { label: t('Deals', 'ডিলস'), href: '/deals', badge: 'HOT' },
+    { label: t('New Arrivals', 'নতুন পণ্য'), href: '/new-arrivals' },
+    { label: t('Offers', 'অফার'), href: '/offers', badge: '10%' },
+    { label: t('Branches', 'শাখা সমূহ'), href: '/branches', badge: t('3 Live', '৩ শাখা') },
+    { label: t('About Us', 'আমাদের সম্পর্কে'), href: '/about-us' },
+    { label: t('Contact', 'যোগাযোগ'), href: '/contact' },
   ];
 
   return (
@@ -128,7 +130,7 @@ export const SiteHeader: React.FC = () => {
           <div className="flex items-center gap-4 text-white/90">
             <div className="flex items-center gap-1.5 font-medium">
               <Phone className="w-3.5 h-3.5 text-[#2EBD70]" />
-              <span>Need Support? Call:</span>
+              <span>{t('Need Support? Call:', 'প্রয়োজনে কল করুন:')}</span>
               <a
                 href="tel:+8809612000000"
                 className="font-bold text-white hover:text-[#D8F3DC] transition-colors"
@@ -139,19 +141,32 @@ export const SiteHeader: React.FC = () => {
             <span className="hidden md:inline text-white/40">|</span>
             <div className="hidden md:flex items-center gap-1.5 text-white/90">
               <Sparkles className="w-3.5 h-3.5 text-[#F4A340]" />
-              <span>Free Express Delivery on orders over ৳1,000!</span>
+              <span>{t('Free Express Delivery on orders over ৳1,000!', '৳১,০০০ টাকার বেশি অর্ডারে ফ্রি এক্সপ্রেস ডেলিভারি!')}</span>
             </div>
           </div>
 
           {/* Right quick actions */}
           <div className="flex items-center gap-4">
+            {/* Top Language Toggle Switch */}
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="flex items-center gap-1.5 font-bold text-white hover:text-[#D8F3DC] transition-colors cursor-pointer bg-white/10 hover:bg-white/20 px-2.5 py-0.5 rounded-full border border-white/20"
+              title={language === 'en' ? 'বাংলা ভাষায় পরিবর্তন করুন' : 'Switch to English'}
+            >
+              <span>🌐</span>
+              <span>{language === 'en' ? 'বাংলা' : 'English'}</span>
+            </button>
+
+            <span className="text-white/40">|</span>
+
             <button
               type="button"
               onClick={() => setIsTrackingModalOpen(true)}
               className="flex items-center gap-1 font-bold text-[#F4A340] hover:text-white transition-colors"
             >
               <Truck className="w-3.5 h-3.5" />
-              <span>Track Order</span>
+              <span>{t('Track Order', 'অর্ডার ট্র্যাক')}</span>
             </button>
 
             <span className="text-white/40">|</span>
@@ -174,7 +189,7 @@ export const SiteHeader: React.FC = () => {
               href="/contact"
               className="hidden sm:inline text-white/90 hover:text-white transition-colors font-medium"
             >
-              Help & Contact
+              {t('Help & Contact', 'সাহায্য')}
             </Link>
           </div>
         </div>
@@ -204,7 +219,7 @@ export const SiteHeader: React.FC = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search fresh groceries, fruits, vegetables, dairy..."
+                placeholder={t('Search fresh groceries, fruits, vegetables, dairy...', 'তাজা ফল, শাকসবজি, দুধ, মুদি পণ্য সার্চ করুন...')}
                 value={searchQuery}
                 onFocus={() => setIsSearchFocused(true)}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -230,7 +245,7 @@ export const SiteHeader: React.FC = () => {
                 }}
                 className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 sm:px-4 py-1.5 bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold rounded-full transition-colors"
               >
-                Search
+                {t('Search', 'খুঁজুন')}
               </button>
             </div>
 
@@ -292,6 +307,20 @@ export const SiteHeader: React.FC = () => {
               </div>
             </button>
 
+            {/* Language Switcher Pill (1-Click Toggle for EN / বাংলা) */}
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl border border-[#E5ECE7] hover:border-[#21A366] bg-[#F7F9F5] hover:bg-white text-xs font-bold text-[#17251F] transition-all cursor-pointer shadow-2xs"
+              title={language === 'en' ? 'বাংলায় দেখতে ক্লিক করুন' : 'Switch to English'}
+              aria-label="Toggle language"
+            >
+              <span className="text-xs sm:text-sm">🌐</span>
+              <span className={language === 'en' ? 'text-[#21A366] font-black' : 'text-neutral-400 font-medium'}>EN</span>
+              <span className="text-neutral-300 font-normal">/</span>
+              <span className={language === 'bn' ? 'text-[#21A366] font-black font-bangla' : 'text-neutral-400 font-bangla font-medium'}>বাং</span>
+            </button>
+
             {/* Account / Login - Hidden on mobile & tablet header (moved to hamburger menu for tablet per request) */}
             <button
               type="button"
@@ -302,8 +331,8 @@ export const SiteHeader: React.FC = () => {
                 <User className="w-4 h-4" />
               </div>
               <div className="hidden xl:block text-left">
-                <p className="text-[10px] text-[#64736B] leading-none">Account</p>
-                <p className="text-xs font-bold leading-tight mt-0.5">Sign In</p>
+                <p className="text-[10px] text-[#64736B] leading-none">{t('Account', 'একাউন্ট')}</p>
+                <p className="text-xs font-bold leading-tight mt-0.5">{t('Sign In', 'লগইন')}</p>
               </div>
             </button>
 
@@ -432,7 +461,7 @@ export const SiteHeader: React.FC = () => {
                   className="flex items-center gap-2.5 bg-[#123C2D] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#21A366] transition-all duration-300 shadow-xs animate-in fade-in"
                 >
                   <Menu className="w-4 h-4" />
-                  <span>All Categories</span>
+                  <span>{t('All Categories', 'সকল ক্যাটাগরি')}</span>
                   <ChevronDown
                     className={`w-3.5 h-3.5 transition-transform duration-200 ${
                       isCategoryDropdownOpen ? 'rotate-180' : ''
@@ -443,7 +472,7 @@ export const SiteHeader: React.FC = () => {
                 /* Elegant indicator on HomePage top to keep spacing consistent */
                 <div className="hidden lg:flex items-center gap-2 text-xs font-bold text-[#123C2D] bg-[#EBF7F0] px-3.5 py-1.5 rounded-xl border border-[#21A366]/20">
                   <Sparkles className="w-3.5 h-3.5 text-[#21A366]" />
-                  <span>Fresh Express Supermarket</span>
+                  <span>{t('Fresh Express Supermarket', 'তাজা এক্সপ্রেস সুপারশপ')}</span>
                 </div>
               )}
 
@@ -454,7 +483,7 @@ export const SiteHeader: React.FC = () => {
                   className="absolute left-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-xl border border-[#E5ECE7] py-2 z-50 max-h-[480px] overflow-y-auto"
                 >
                   <div className="px-4 py-2 text-[11px] font-bold text-[#64736B] uppercase tracking-wider border-b border-[#E5ECE7]/60">
-                    Explore 11 Departments
+                    {t('Explore 11 Departments', '১১ টি বিভাগ দেখুন')}
                   </div>
                   {categories.map((cat) => (
                     <Link
@@ -466,8 +495,7 @@ export const SiteHeader: React.FC = () => {
                       <div className="flex items-center gap-2.5">
                         <span className="text-base">{cat.icon}</span>
                         <div>
-                          <p className="font-bold leading-tight">{cat.name}</p>
-                          <p className="text-[10px] text-[#64736B]">{cat.nameBn}</p>
+                          <p className="font-bold leading-tight">{language === 'bn' ? cat.nameBn : cat.name}</p>
                         </div>
                       </div>
                       <span className="text-[10px] text-gray-400">→</span>
@@ -531,15 +559,35 @@ export const SiteHeader: React.FC = () => {
                 </button>
               </div>
 
+              {/* Mobile Language Switcher Card */}
+              <div className="my-3 p-3 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] flex items-center justify-between gap-2 shadow-2xs">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">🌐</span>
+                  <div>
+                    <p className="text-xs font-bold text-[#17251F]">Language / ভাষা</p>
+                    <p className="text-[10px] text-[#64736B]">
+                      {language === 'en' ? 'Currently in English' : 'বাংলায় প্রদর্শিত হচ্ছে'}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={toggleLanguage}
+                  className="bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs active:scale-95 transition-all"
+                >
+                  {language === 'en' ? 'বাংলায় দেখুন' : 'Switch to EN'}
+                </button>
+              </div>
+
               {/* Login / User Profile Info inside Hamburger Menu (Tablet & Mobile) */}
-              <div className="my-3.5 p-3.5 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] flex items-center justify-between gap-3 shadow-xs">
+              <div className="my-3 p-3.5 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] flex items-center justify-between gap-3 shadow-xs">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-10 h-10 rounded-full bg-white border border-[#E5ECE7] flex items-center justify-center text-[#21A366] shrink-0 shadow-xs">
                     <User className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-black text-[#17251F] truncate">My Account</p>
-                    <p className="text-[10px] text-[#64736B] truncate">Sign in for exclusive perks</p>
+                    <p className="text-xs font-black text-[#17251F] truncate">{t('My Account', 'আমার একাউন্ট')}</p>
+                    <p className="text-[10px] text-[#64736B] truncate">{t('Sign in for exclusive perks', 'অফারের জন্য লগইন করুন')}</p>
                   </div>
                 </div>
                 <button
@@ -550,14 +598,14 @@ export const SiteHeader: React.FC = () => {
                   }}
                   className="bg-[#21A366] hover:bg-[#123C2D] text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors shadow-xs shrink-0"
                 >
-                  Sign In
+                  {t('Sign In', 'লগইন')}
                 </button>
               </div>
 
               {/* Mobile Links */}
               <div className="py-4 space-y-1 border-b border-[#E5ECE7]">
                 <p className="text-[10px] font-bold text-[#64736B] uppercase tracking-wider mb-2">
-                  Navigation
+                  {t('Navigation', 'নেভিগেশন')}
                 </p>
                 {navLinks.map((link) => (
                   <Link
@@ -579,7 +627,7 @@ export const SiteHeader: React.FC = () => {
               {/* Categories */}
               <div className="py-4 space-y-2">
                 <p className="text-[10px] font-bold text-[#64736B] uppercase tracking-wider mb-2">
-                  11 Categories
+                  {t('11 Categories', '১১ টি ক্যাটাগরি')}
                 </p>
                 {categories.map((cat) => (
                   <Link
@@ -589,7 +637,7 @@ export const SiteHeader: React.FC = () => {
                     className="flex items-center gap-2 py-1.5 text-xs text-[#17251F] hover:text-[#21A366] font-medium"
                   >
                     <span>{cat.icon}</span>
-                    <span>{cat.name}</span>
+                    <span>{language === 'bn' ? cat.nameBn : cat.name}</span>
                   </Link>
                 ))}
               </div>

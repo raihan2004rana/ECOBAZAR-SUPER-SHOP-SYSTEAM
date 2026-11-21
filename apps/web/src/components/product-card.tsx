@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Heart, Eye, Plus, Minus, Check, ShoppingBag, Star } from 'lucide-react';
 import { ProductItem } from '../data/catalog';
 import { useCart } from '../context/cart-context';
+import { useLanguage } from '../context/language-context';
 import { Badge } from '@ecobazar/ui';
 
 interface ProductCardProps {
@@ -19,6 +20,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   className = '',
   compact = false,
 }) => {
+  const { language, t } = useLanguage();
   const {
     addToCart,
     updateQuantity,
@@ -119,9 +121,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <Link href={`/products/${product.id}`} className="block">
             <h3
               className="font-bold text-[#17251F] text-xs sm:text-sm md:text-base leading-snug line-clamp-2 hover:text-[#21A366] cursor-pointer transition-colors"
-              title={product.name}
+              title={language === 'bn' && product.nameBn ? product.nameBn : product.name}
             >
-              {product.name}
+              {language === 'bn' && product.nameBn ? product.nameBn : product.name}
             </h3>
           </Link>
 
@@ -150,11 +152,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {product.originalPrice && product.originalPrice > product.price ? (
             <div className="mt-1">
               <span className="inline-block bg-[#EBF7F0] text-[#21A366] text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded-md whitespace-nowrap">
-                Save ৳{product.originalPrice - product.price}
+                {t('Save', 'ছাড়')} ৳{product.originalPrice - product.price}
               </span>
             </div>
           ) : (
-            <span className="text-[10px] text-[#64736B] block mt-1 whitespace-nowrap">Fresh harvest</span>
+            <span className="text-[10px] text-[#64736B] block mt-1 whitespace-nowrap">
+              {t('Fresh harvest', 'তাজা ফসল')}
+            </span>
           )}
         </div>
 
@@ -174,7 +178,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 <Minus className="w-3.5 h-3.5 shrink-0" />
               </button>
               <span className="text-xs sm:text-sm font-extrabold text-[#123C2D] whitespace-nowrap px-1 text-center truncate">
-                {cartQuantity} in Cart
+                {cartQuantity} {t('in Cart', 'টি কার্টে')}
               </span>
               <button
                 type="button"
@@ -201,12 +205,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               {isJustAdded ? (
                 <>
                   <Check className="w-4 h-4 shrink-0" />
-                  <span className="whitespace-nowrap">Added</span>
+                  <span className="whitespace-nowrap">{t('Added', 'যুক্ত হয়েছে')}</span>
                 </>
               ) : (
                 <>
                   <ShoppingBag className="w-4 h-4 shrink-0" />
-                  <span className="whitespace-nowrap">Add To Cart</span>
+                  <span className="whitespace-nowrap">{t('Add To Cart', 'কার্টে যোগ করুন')}</span>
                 </>
               )}
             </button>

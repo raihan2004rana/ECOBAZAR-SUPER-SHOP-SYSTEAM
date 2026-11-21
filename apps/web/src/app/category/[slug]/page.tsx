@@ -30,6 +30,7 @@ import {
   ProductItem,
 } from '../../../data/catalog';
 import { useCatalog } from '../../../context/catalog-context';
+import { useLanguage } from '../../../context/language-context';
 
 interface CategoryPageProps {
   params: {
@@ -270,6 +271,7 @@ const defaultRibbonPoints: RibbonPoint[] = [
 
 export default function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const { getProductsByCategory, categories } = useCatalog();
+  const { language, t } = useLanguage();
   const category = (categories && categories.find((c) => c.slug === params.slug)) || getCategoryBySlug(params.slug);
 
   if (!category) {
@@ -374,24 +376,24 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-xs text-white/80 mb-6">
               <Link href="/" className="hover:text-white transition-colors">
-                Home
+                {t('Home', 'হোম')}
               </Link>
               <ChevronRight className="w-3.5 h-3.5" />
-              <span>Categories</span>
+              <span>{t('Categories', 'ক্যাটাগরি')}</span>
               <ChevronRight className="w-3.5 h-3.5" />
-              <span className="text-[#2EBD70] font-bold">{category.name}</span>
+              <span className="text-[#2EBD70] font-bold">{language === 'bn' ? category.nameBn : category.name}</span>
             </nav>
 
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
                 <div className="inline-flex items-center gap-2 bg-[#2EBD70] text-[#071F15] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-3 shadow-md">
                   <span className="text-base">{category.icon}</span>
-                  <span>{category.nameBn}</span>
+                  <span>{language === 'bn' ? 'ক্যাটাগরি কালেকশন' : 'Category Collection'}</span>
                   <span className="text-[#071F15]/50">•</span>
-                  <span>{allCategoryProducts.length} Items Available</span>
+                  <span>{allCategoryProducts.length} {t('Items Available', 'টি পণ্য')}</span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight drop-shadow-md">
-                  {category.name}
+                  {language === 'bn' ? category.nameBn : category.name}
                 </h1>
                 <p className="text-sm sm:text-base text-emerald-50/90 mt-2 max-w-xl font-medium leading-relaxed drop-shadow-sm">
                   {category.tagline}
@@ -655,7 +657,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
                       {/* Text with Generous Leading and Spacing */}
                       <div className="flex-1 min-w-0 space-y-1.5 pt-0.5">
                         <h4 className="font-black text-sm sm:text-base text-[#17251F] group-hover:text-[#21A366] transition-colors leading-snug">
-                          {rc.name}
+                          {language === 'bn' ? rc.nameBn : rc.name}
                         </h4>
                         <p className="text-xs sm:text-[13px] text-[#64736B] leading-relaxed line-clamp-3 font-normal">
                           {rc.tagline}
