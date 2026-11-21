@@ -155,18 +155,21 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const promoSlides = [
     {
       image: '/images/details-slider1.jpg',
-      href: '/deals',
-      alt: 'প্রমোশনাল অফার ব্যানার ১',
+      href: '/offers',
+      alt: 'বক্সিং ডে সেল - ৫০% স্পেশাল অফার (Offers)',
+      title: 'Boxing Day Sale - Up to 50% Off',
     },
     {
       image: '/images/details-slider2.avif',
-      href: '/offers',
-      alt: 'প্রমোশনাল অফার ব্যানার ২',
+      href: '/deals',
+      alt: 'সিজনাল হট ডিল - ৭০% পর্যন্ত ছাড় (Hot Deals)',
+      title: 'Seasonal Sale - Up to 70% Off Hot Deals',
     },
     {
       image: '/images/details-slider3.avif',
-      href: '/category/organic-wellness',
-      alt: 'প্রমোশনাল অফার ব্যানার ৩',
+      href: '/category/fresh-fruits-vegetables',
+      alt: 'সুপারমার্কেট ফ্রেশ ভেজিটেবলস ও গ্রোসারি ২০% ছাড় (Fresh Produce)',
+      title: 'Supermarket Fresh Harvest & Vegetables - 20% Off',
     },
   ];
 
@@ -649,32 +652,34 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
               {/* Bottom 2 Cards Side-by-Side: Clean High-Resolution Offer Banners (No text overlays) */}
               <div className="flex-1 min-h-[200px] sm:min-h-[220px] grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
-                {/* Card 1: Details Mini Promo 1 */}
+                {/* Card 1: Special Offer Big Sale (Links to /deals) */}
                 <Link
-                  href="/category/meat-fish"
-                  className="group relative rounded-2xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full block bg-[#F0F9FF]"
+                  href="/deals"
+                  title="Special Offer Big Sale - Up to 50% Off"
+                  className="group relative rounded-2xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full block bg-[#FFF5F2]"
                 >
                   <img
                     src="/images/details-mini1.jpg"
-                    alt="Special Offer Banner 1"
+                    alt="Special Offer Big Sale - Up to 50% Off"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/images/banner-seafood-clean.jpg';
+                      (e.target as HTMLImageElement).src = '/images/banner-staples-deals.jpg';
                     }}
                   />
                 </Link>
 
-                {/* Card 2: Details Mini Promo 2 */}
+                {/* Card 2: Mystery Deal Surprise (Links to /offers) */}
                 <Link
-                  href="/category/spices-oils"
-                  className="group relative rounded-2xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full block bg-[#FFFDF5]"
+                  href="/offers"
+                  title="Mystery Deal Surprise - Up to 50% Off"
+                  className="group relative rounded-2xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full block bg-[#FFF0F0]"
                 >
                   <img
                     src="/images/details-mini2.avif"
-                    alt="Special Offer Banner 2"
+                    alt="Mystery Deal Surprise - Up to 50% Off"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/images/banner-oil-clean.jpg';
+                      (e.target as HTMLImageElement).src = '/images/banner-hot-deals.jpg';
                     }}
                   />
                 </Link>
