@@ -307,65 +307,85 @@ export const HeroSlider: React.FC = () => {
           {/* ROW 2: 3 PROMOTIONAL CARDS (Reference Design)     */}
           {/* ------------------------------------------------ */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-4">
-            {/* CARD 1: SEAFOOD & MEAT */}
+            {/* CARD 1: SEAFOOD & FRESH CATCH */}
             <Link
               href="/category/meat-fish"
-              className="group relative rounded-3xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[190px] sm:min-h-[205px] flex flex-col justify-end p-5"
+              className="group relative rounded-3xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#0284C7]/50 transition-all duration-300 min-h-[190px] sm:min-h-[205px] flex flex-col justify-between p-5 bg-[#F0F9FF]"
             >
               <div className="absolute inset-0 z-0 overflow-hidden">
                 <img
-                  src="/images/banner-seafood.jpg"
+                  src="/images/banner-seafood-clean.jpg"
                   alt="Tasty Seafood & Fresh Catch"
-                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover object-right group-hover:scale-106 transition-transform duration-700 ease-out"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/banner-seafood.jpg';
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#092B21]/95 via-[#092B21]/45 to-transparent" />
+                {/* Gradient to ensure crisp readability on left */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#F0F9FF]/95 via-[#F0F9FF]/85 to-transparent w-[70%]" />
               </div>
 
-              {/* Top Circular Stamp Badge */}
-              <div className="absolute top-3.5 right-3.5 z-10 w-12 h-12 rounded-full border-2 border-emerald-300/60 bg-emerald-950/40 backdrop-blur-xs flex flex-col items-center justify-center text-center text-emerald-200 text-[8px] font-black leading-tight uppercase transform rotate-[-8deg] shadow-xs">
-                <span>{t('Fresh', 'তাজা')}</span>
-                <span>{t('Every Day', 'প্রতিদিন')}</span>
-              </div>
-
-              {/* Text content */}
-              <div className="relative z-10 text-white">
-                <span className="text-[9px] font-black tracking-widest uppercase text-emerald-300 block mb-0.5">
-                  {t('RE-IMAGINED SEAFOOD & MEAT', 'তাজা মাছ ও মাংস')}
-                </span>
-                <h3 className="text-base sm:text-lg font-black text-white leading-tight mb-1 group-hover:text-[#D8F3DC] transition-colors">
-                  {t('Tasty Seafood & Fresh Catch', 'স্বাদ ও পুষ্টিতে সেরা সামুদ্রিক মাছ')}
+              {/* Top Title & Discount */}
+              <div className="relative z-10">
+                <h3 className="text-base sm:text-lg font-black text-[#0C4A6E] leading-tight">
+                  {t('Fresh Seafood & Fish', 'তাজা মাছ ও সামুদ্রিক স্বাদ')}
                 </h3>
-                <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2EBD70] group-hover:text-white transition-colors mt-0.5">
-                  <span>{t('Explore Meat & Fish', 'মাছ ও মাংস দেখুন')}</span>
-                  <span className="text-xs">↗</span>
+                <div className="mt-1">
+                  <span className="text-xl sm:text-2xl font-black text-[#0284C7] tracking-tight block leading-none">
+                    {t('UPTO 28% OFF', 'সর্বোচ্চ ২৮% ছাড়')}
+                  </span>
+                  <p className="text-[10px] text-[#0369A1]/80 font-semibold mt-0.5 leading-tight max-w-[130px]">
+                    {t('River Ilish & Giant Prawns!', 'পদ্মার ইলিশ ও গলদা চিংড়ি!')}
+                  </p>
                 </div>
+              </div>
+
+              {/* Bottom Action Pill */}
+              <div className="relative z-10 mt-2">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#0369A1] group-hover:bg-[#0284C7] text-white px-3 py-1 rounded-full shadow-xs transition-colors">
+                  <span>{t('Shop Fresh Catch', 'তাজা মাছ দেখুন')}</span>
+                  <span className="text-xs">→</span>
+                </span>
               </div>
             </Link>
 
             {/* CARD 2: PURE COLD-PRESSED MUSTARD OIL */}
             <Link
               href="/category/spices-oils"
-              className="group relative rounded-3xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#F4A340]/50 transition-all duration-300 min-h-[190px] sm:min-h-[205px] flex flex-col justify-end p-5"
+              className="group relative rounded-3xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#D97706]/50 transition-all duration-300 min-h-[190px] sm:min-h-[205px] flex flex-col justify-between p-5 bg-[#FFFDF5]"
             >
               <div className="absolute inset-0 z-0 overflow-hidden">
                 <img
-                  src="/images/banner-mustard-oil.jpg"
-                  alt="কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল"
-                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
+                  src="/images/banner-oil-clean.jpg"
+                  alt="Pure Cold-Pressed Mustard Oil"
+                  className="w-full h-full object-cover object-right group-hover:scale-106 transition-transform duration-700 ease-out"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/banner-mustard-oil.jpg';
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1F1805]/95 via-[#1F1805]/40 to-transparent" />
+                {/* Gradient to ensure crisp readability on left */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FFFDF5]/95 via-[#FFFDF5]/85 to-transparent w-[70%]" />
               </div>
 
-              {/* Text content */}
-              <div className="relative z-10 text-white">
-                <span className="text-[9px] font-black tracking-wider uppercase text-amber-300 block mb-0.5">
-                  {t('100% PURE & ORGANIC', '১০০% খাঁটি ও প্রাকৃতিক')}
-                </span>
-                <h3 className="text-base sm:text-lg font-black text-white leading-tight mb-2 group-hover:text-amber-200 transition-colors">
-                  {t('Pure Cold-Pressed Mustard Oil', 'কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল')}
+              {/* Top Title & Discount */}
+              <div className="relative z-10">
+                <h3 className="text-base sm:text-lg font-black text-[#713F12] leading-tight">
+                  {t('Organic Oils & Pure Ghee', 'খাঁটি ঘানির তেল ও ঘি')}
                 </h3>
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#F4A340] hover:bg-amber-400 text-[#17251F] px-3 py-1 rounded-full shadow-xs transition-colors">
-                  <span>{t('Shop Cold-Pressed', 'ঘানির তেল কিনুন')}</span>
+                <div className="mt-1">
+                  <span className="text-xl sm:text-2xl font-black text-[#D97706] tracking-tight block leading-none">
+                    {t('FLAT 25% OFF', 'ফ্ল্যাট ২৫% ছাড়')}
+                  </span>
+                  <p className="text-[10px] text-[#854D0E]/80 font-semibold mt-0.5 leading-tight max-w-[130px]">
+                    {t('Wood-Pressed & 100% Pure!', 'কাঠের ঘানিতে ভাঙা খাঁটি পুষ্টি!')}
+                  </p>
+                </div>
+              </div>
+
+              {/* Bottom Action Pill */}
+              <div className="relative z-10 mt-2">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#B45309] group-hover:bg-[#D97706] text-white px-3 py-1 rounded-full shadow-xs transition-colors">
+                  <span>{t('Shop Pure Oils', 'ঘানির তেল কিনুন')}</span>
                   <span className="text-xs">→</span>
                 </span>
               </div>
