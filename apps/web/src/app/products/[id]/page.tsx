@@ -151,17 +151,35 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const [uploadedFiles, setUploadedFiles] = React.useState<string[]>([]);
   const [isSubmittingReview, setIsSubmittingReview] = React.useState(false);
 
-  // Top promotional slider in product details page
+  // Top promotional slider in product details page (Clean offer banners with NO text overlay)
+  const promoSlides = [
+    {
+      image: '/images/hero-december-deals.jpg',
+      href: '/deals',
+      alt: 'ডিসেম্বর মেগা ডিল ও অফার',
+    },
+    {
+      image: '/images/banner-staples-deals.jpg',
+      href: '/offers',
+      alt: 'সেরা ডিল ও নিত্যপণ্য অফার',
+    },
+    {
+      image: '/images/hero-nature-bites.webp',
+      href: '/category/organic-wellness',
+      alt: 'প্রাকৃতিক ও অর্গানিক অফার',
+    },
+  ];
+
   const [activePromoSlide, setActivePromoSlide] = React.useState(0);
   const [isPromoPaused, setIsPromoPaused] = React.useState(false);
 
   React.useEffect(() => {
     if (isPromoPaused) return;
     const timer = setInterval(() => {
-      setActivePromoSlide((prev) => (prev === 0 ? 1 : 0));
+      setActivePromoSlide((prev) => (prev + 1) % promoSlides.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, [isPromoPaused]);
+  }, [isPromoPaused, promoSlides.length]);
 
   // Related products (from same category)
   const relatedProducts = React.useMemo(() => {
@@ -567,84 +585,46 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
             {/* Right 4 Columns: High-Impact Promotional Banners */}
             <div className="lg:col-span-4 flex flex-col gap-4 h-auto lg:h-full">
-              {/* Top Card: 2-Slide Banner Slider (Expands to fill top portion) */}
+              {/* Top Card: 3-Slide Banner Slider (Clean offer banners with NO text overlay) */}
               <div
-                className="group relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-[#E5ECE7] flex-1 min-h-[230px] sm:min-h-[260px] flex flex-col justify-between"
+                className="group relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/40 transition-all duration-300 flex-1 min-h-[230px] sm:min-h-[260px] bg-neutral-900"
                 onMouseEnter={() => setIsPromoPaused(true)}
                 onMouseLeave={() => setIsPromoPaused(false)}
               >
-                {/* Slide 1 */}
-                <div
-                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                    activePromoSlide === 0 ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'
-                  }`}
-                >
-                  <img
-                    src="/images/banner-farm-to-table.jpg"
-                    alt="Direct Farm Harvest"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/80 via-transparent to-black/20" />
-                </div>
+                {promoSlides.map((slide, idx) => (
+                  <Link
+                    key={idx}
+                    href={slide.href}
+                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                      activePromoSlide === idx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                    }`}
+                  >
+                    <img
+                      src={slide.image}
+                      alt={slide.alt}
+                      className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-700 ease-out"
+                    />
+                  </Link>
+                ))}
 
-                {/* Slide 2 */}
-                <div
-                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                    activePromoSlide === 1 ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'
-                  }`}
-                >
-                  <img
-                    src="/images/banner-mustard-oil.jpg"
-                    alt="Cold Pressed Mustard Oil"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#071F15]/95 via-[#0A261B]/85 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/80 via-transparent to-black/20" />
-                </div>
-
-                {/* Slide Content */}
-                <div className="relative z-10 p-5 sm:p-6 text-white space-y-2">
-                  <span className="inline-block text-[10px] font-black tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-[#2EBD70] text-[#071F15] shadow-xs">
-                    {activePromoSlide === 0
-                      ? 'FARMER CO-OP • FORMALIN FREE'
-                      : 'COLD-PRESSED • PURE GHANI'}
-                  </span>
-                  <h2 className="text-lg sm:text-xl font-black leading-snug drop-shadow-md">
-                    {activePromoSlide === 0
-                      ? 'সরাসরি কৃষকের ক্ষেত থেকে নিরাপদ খাবার'
-                      : 'কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল ও মশলা'}
-                  </h2>
-                  <p className="text-xs text-emerald-100/90 font-medium leading-relaxed line-clamp-2">
-                    {activePromoSlide === 0
-                      ? '১২০+ সার্টিফাইড অর্গানিক খামার থেকে ভোরে সংগৃহীত সতেজ ফসল।'
-                      : 'প্রাকৃতিক ঘ্রাণ ও পুষ্টিতে ভরপুর কোনো কেমিক্যাল ছাড়া দেশি খাঁটি তেল।'}
-                  </p>
-                  <div className="pt-1.5">
-                    <Link
-                      href={activePromoSlide === 0 ? '/category/fresh-fruits-vegetables' : '/category/spices-oils'}
-                      className="inline-flex items-center gap-1.5 bg-[#21A366] hover:bg-[#123C2D] text-white px-4 py-2 rounded-xl text-xs font-black shadow-md hover:shadow-lg transition-all active:scale-95"
-                    >
-                      <span>{activePromoSlide === 0 ? 'Explore Harvest' : 'Shop Oils'}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Slider Navigation Controls */}
-                <div className="absolute inset-y-0 left-2 right-2 flex items-center justify-between pointer-events-none z-20">
+                {/* Slider Navigation Controls (hover-visible) */}
+                <div className="absolute inset-y-0 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-20">
                   <button
                     type="button"
-                    onClick={() => setActivePromoSlide((prev) => (prev === 0 ? 1 : 0))}
-                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                    onClick={() =>
+                      setActivePromoSlide((prev) => (prev === 0 ? promoSlides.length - 1 : prev - 1))
+                    }
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/85 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 cursor-pointer"
                     aria-label="Previous Slide"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
-                    onClick={() => setActivePromoSlide((prev) => (prev === 0 ? 1 : 0))}
-                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                    onClick={() =>
+                      setActivePromoSlide((prev) => (prev + 1) % promoSlides.length)
+                    }
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/85 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md backdrop-blur-sm transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 cursor-pointer"
                     aria-label="Next Slide"
                   >
                     <ChevronRight className="w-4 h-4" />
@@ -652,86 +632,51 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </div>
 
                 {/* Pagination Dots */}
-                <div className="absolute bottom-3 right-4 z-20 flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => setActivePromoSlide(0)}
-                    className={`transition-all duration-300 rounded-full ${
-                      activePromoSlide === 0 ? 'w-5 h-1.5 bg-[#2EBD70]' : 'w-1.5 h-1.5 bg-white/50 hover:bg-white/80'
-                    }`}
-                    aria-label="Slide 1"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setActivePromoSlide(1)}
-                    className={`transition-all duration-300 rounded-full ${
-                      activePromoSlide === 1 ? 'w-5 h-1.5 bg-[#2EBD70]' : 'w-1.5 h-1.5 bg-white/50 hover:bg-white/80'
-                    }`}
-                    aria-label="Slide 2"
-                  />
+                <div className="absolute bottom-3 right-4 z-20 flex items-center gap-1.5 bg-black/30 backdrop-blur-xs px-2.5 py-1 rounded-full">
+                  {promoSlides.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setActivePromoSlide(idx)}
+                      className={`transition-all duration-300 rounded-full cursor-pointer ${
+                        activePromoSlide === idx ? 'w-5 h-1.5 bg-[#2EBD70]' : 'w-1.5 h-1.5 bg-white/60 hover:bg-white'
+                      }`}
+                      aria-label={`Slide ${idx + 1}`}
+                    />
+                  ))}
                 </div>
               </div>
 
-              {/* Bottom 2 Cards Side-by-Side: Full Card Background as Banner Image (Expands to fill remaining bottom portion) */}
+              {/* Bottom 2 Cards Side-by-Side: Clean High-Resolution Offer Banners (No text overlays) */}
               <div className="flex-1 min-h-[200px] sm:min-h-[220px] grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
-                {/* Card 1: Tasty Seafood Daily Series */}
+                {/* Card 1: Fresh Catch & Seafood Daily Offer Banner */}
                 <Link
                   href="/category/meat-fish"
-                  className="group relative rounded-2xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full flex flex-col justify-end p-4"
+                  className="group relative rounded-2xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full block bg-[#F0F9FF]"
                 >
-                  <div className="absolute inset-0 z-0">
-                    <img
-                      src="/images/banner-seafood.jpg"
-                      alt="Tasty Seafood Daily Series"
-                      className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/95 via-[#0A261B]/60 to-transparent" />
-                  </div>
-                  <div className="relative z-10 text-white space-y-1">
-                    <span className="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#F4A340] text-[#17251F] shadow-xs">
-                      FRESH CATCH
-                    </span>
-                    <h3 className="text-xs sm:text-sm font-black text-white leading-snug group-hover:text-[#D8F3DC] transition-colors drop-shadow-sm">
-                      Tasty Seafood Series
-                    </h3>
-                    <p className="text-[10px] text-white/80 font-medium line-clamp-1">
-                      Padma Hilsha & King Prawns
-                    </p>
-                    <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2EBD70] group-hover:text-white pt-0.5 transition-colors">
-                      <span>Explore</span>
-                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                  </div>
+                  <img
+                    src="/images/banner-seafood-clean.jpg"
+                    alt="Fresh Catch Seafood Offer"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/banner-seafood.jpg';
+                    }}
+                  />
                 </Link>
 
-                {/* Card 2: Traditional Bogura Doi & Dairy */}
+                {/* Card 2: Pure Cold-Pressed Mustard Oil & Spices Offer Banner */}
                 <Link
-                  href="/category/dairy-eggs"
-                  className="group relative rounded-2xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full flex flex-col justify-end p-4"
+                  href="/category/spices-oils"
+                  className="group relative rounded-2xl overflow-hidden shadow-xs hover:shadow-lg border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 h-full block bg-[#FFFDF5]"
                 >
-                  <div className="absolute inset-0 z-0">
-                    <img
-                      src="/images/banner-bogura-doi.jpg"
-                      alt="ঐতিহ্যবাহী বগুড়ার দই"
-                      className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#071F15]/95 via-[#0A261B]/60 to-transparent" />
-                  </div>
-                  <div className="relative z-10 text-white space-y-1">
-                    <span className="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#21A366] text-white shadow-xs">
-                      SWEET DAIRY
-                    </span>
-                    <h3 className="text-xs sm:text-sm font-black text-white leading-snug group-hover:text-[#D8F3DC] transition-colors drop-shadow-sm">
-                      বগুড়ার স্পেশাল দই
-                    </h3>
-                    <p className="text-[10px] text-white/80 font-medium line-clamp-1">
-                      Pure clay-pot curd & milk
-                    </p>
-                    <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#F4A340] group-hover:text-white pt-0.5 transition-colors">
-                      <span>Order Now</span>
-                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                  </div>
+                  <img
+                    src="/images/banner-oil-clean.jpg"
+                    alt="Pure Cold Pressed Mustard Oil Offer"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/banner-mustard-oil.jpg';
+                    }}
+                  />
                 </Link>
               </div>
             </div>
