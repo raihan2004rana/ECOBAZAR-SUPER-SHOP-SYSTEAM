@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-21T05:21:46.421Z",
+  "lastUpdated": "2026-11-21T06:57:31.440Z",
   "topBanner": {
     "enabled": true,
     "badgeText": "VOUCHER SAVINGS",
@@ -418,7 +418,7 @@
       "price": 90,
       "originalPrice": 100,
       "unit": "1 kg pack",
-      "stock": 50,
+      "stock": 48,
       "badge": "15% OFF",
       "badgeColor": "green",
       "image": "/uploads/fresh-guava-mwohtea2.jpg",
@@ -453,7 +453,9 @@
       "includeBenefits": true,
       "includeHowToUse": false,
       "includeStorage": true,
-      "howToUse": ""
+      "howToUse": "",
+      "totalSold": 2,
+      "totalRevenue": 180
     },
     {
       "id": "fv-1",
@@ -553,7 +555,7 @@
       "unit": "1 kg pack",
       "rating": 4.9,
       "reviews": 210,
-      "stock": 45,
+      "stock": 44,
       "isHotDeal": true,
       "badge": "25% OFF",
       "badgeColor": "red",
@@ -579,7 +581,9 @@
       ],
       "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
       "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
-      "countryOfOrigin": "Imported Grade A"
+      "countryOfOrigin": "Imported Grade A",
+      "totalSold": 1,
+      "totalRevenue": 90
     },
     {
       "id": "fv-4",
@@ -1831,7 +1835,7 @@
       "unit": "1 kg pack",
       "rating": 4.8,
       "reviews": 80,
-      "stock": 30,
+      "stock": 29,
       "badge": "RIVER FRESH",
       "badgeColor": "green",
       "image": "/images/products/katla-fish.avif",
@@ -1856,7 +1860,9 @@
       ],
       "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
       "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
-      "countryOfOrigin": "Padma River, Bangladesh"
+      "countryOfOrigin": "Padma River, Bangladesh",
+      "totalSold": 1,
+      "totalRevenue": 450
     },
     {
       "id": "mf-8",
@@ -2695,7 +2701,7 @@
       "unit": "400g loaf",
       "rating": 4.8,
       "reviews": 88,
-      "stock": 40,
+      "stock": 39,
       "badge": "FRESH BAKE",
       "badgeColor": "orange",
       "image": "/images/products/artisan-baker.jpg",
@@ -2720,7 +2726,9 @@
       ],
       "howToUse": "Incorporate into your daily meals, breakfast recipes, or balanced diet for wholesome nutrition.",
       "storageInstructions": "Store in a cool, dry place away from direct sunlight. Refrigerate after opening if perishable.",
-      "countryOfOrigin": "Dhaka Bakery Hub"
+      "countryOfOrigin": "Dhaka Bakery Hub",
+      "totalSold": 1,
+      "totalRevenue": 160
     },
     {
       "id": "bk-2",

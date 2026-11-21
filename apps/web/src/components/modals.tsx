@@ -132,7 +132,7 @@ export const Modals: React.FC = () => {
   // Checkout local state
   const [customerName, setCustomerName] = React.useState('Raihan Ahmed');
   const [customerPhone, setCustomerPhone] = React.useState('1712-345678');
-  const [customerEmail, setCustomerEmail] = React.useState('raihan.ahmed@gmail.com');
+  const [customerEmail, setCustomerEmail] = React.useState('raihan2004rana@gmail.com');
   const [deliveryAddress, setDeliveryAddress] = React.useState('Flat 4B, House 12, Road 7/A, Dhanmondi');
   const [deliveryTimeSlot, setDeliveryTimeSlot] = React.useState('Express Delivery (25-30 Mins)');
   const [paymentMethod, setPaymentMethod] = React.useState<'cod' | 'bkash' | 'nagad' | 'card'>('cod');

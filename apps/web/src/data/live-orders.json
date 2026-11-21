@@ -1,7 +1,99 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-11-20T11:45:00.000Z",
+  "lastUpdated": "2026-11-21T06:57:31.439Z",
   "orders": [
+    {
+      "id": "ECO-DH-916615",
+      "placedAt": "2026-11-21T06:57:31.439Z",
+      "formattedTime": "12:57 PM",
+      "formattedDate": "Today, 21 Nov 2026",
+      "customerName": "Raihan Ahmed",
+      "customerEmail": "raihan.ahmed@gmail.com",
+      "customerPhone": "+880 1712-345678",
+      "deliveryAddress": "Flat 4B, House 12, Road 7/A, Dhanmondi",
+      "deliveryTimeSlot": "Express Delivery (25-30 Mins)",
+      "paymentMethod": "bkash",
+      "branch": "Uttara Express Mega Hub #03",
+      "status": "PROCESSING",
+      "subtotal": 90,
+      "deliveryFee": 50,
+      "discountAmount": 0,
+      "grandTotal": 140,
+      "trackingId": "ECO-DH-916615",
+      "items": [
+        {
+          "productId": "fre-mwohx1p0",
+          "name": "Fresh Guava 1kg",
+          "nameBn": "তাজা পেয়ারা ১ কেজি",
+          "price": 90,
+          "quantity": 1,
+          "unit": "1 kg pack",
+          "total": 90,
+          "image": "/uploads/fresh-guava-mwohtea2.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ECO-DH-772018",
+      "placedAt": "2026-11-21T06:48:27.840Z",
+      "formattedTime": "12:48 PM",
+      "formattedDate": "Today, 21 Nov 2026",
+      "customerName": "Raihan Ahmed",
+      "customerEmail": "raihan.ahmed@gmail.com",
+      "customerPhone": "+880 1712-345678",
+      "deliveryAddress": "Flat 4B, House 12, Road 7/A, Dhanmondi",
+      "deliveryTimeSlot": "Express Delivery (25-30 Mins)",
+      "paymentMethod": "cod",
+      "branch": "Gulshan-2 Superstore #02",
+      "status": "PROCESSING",
+      "subtotal": 790,
+      "deliveryFee": 50,
+      "discountAmount": 0,
+      "grandTotal": 840,
+      "trackingId": "ECO-DH-772018",
+      "items": [
+        {
+          "productId": "mf-7",
+          "name": "Fresh River Katla Fish Head & Steaks (1kg)",
+          "nameBn": "তাজা কাতলা মাছ (১ কেজি)",
+          "price": 450,
+          "quantity": 1,
+          "unit": "1 kg pack",
+          "total": 450,
+          "image": "/images/products/katla-fish.avif"
+        },
+        {
+          "productId": "bk-1",
+          "name": "Artisan Multi-Grain Sourdough Loaf (400g)",
+          "nameBn": "মাল্টি-গ্রেইন সোরডো পাউরুটি",
+          "price": 160,
+          "quantity": 1,
+          "unit": "400g loaf",
+          "total": 160,
+          "image": "/images/products/artisan-baker.jpg"
+        },
+        {
+          "productId": "fv-3",
+          "name": "Crisp Red Gala Apples",
+          "nameBn": "আমদানিকৃত লাল গালা আপেল",
+          "price": 90,
+          "quantity": 1,
+          "unit": "1 kg pack",
+          "total": 90,
+          "image": "/images/products/red-apple.webp"
+        },
+        {
+          "productId": "fre-mwohx1p0",
+          "name": "Fresh Guava 1kg",
+          "nameBn": "তাজা পেয়ারা ১ কেজি",
+          "price": 90,
+          "quantity": 1,
+          "unit": "1 kg pack",
+          "total": 90,
+          "image": "/uploads/fresh-guava-mwohtea2.jpg"
+        }
+      ]
+    },
     {
       "id": "ECO-DH-901842",
       "placedAt": "2026-11-20T10:45:12.000Z",

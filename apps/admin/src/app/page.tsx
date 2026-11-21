@@ -264,6 +264,7 @@ const navigationSections: NavSection[] = [
       { id: 'settings', label: 'Settings', icon: Settings },
       { id: 'roles', label: 'Roles & Permissions', icon: ShieldCheck },
       { id: 'audit-logs', label: 'Audit Logs', icon: History },
+      { id: 'emails', label: 'Email Outbox & SMTP', icon: Mail, badge: 'Outbox', badgeVariant: 'warning' },
     ],
   },
 ];
@@ -652,6 +653,27 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
     requirements: '',
     benefits: 'Festival Bonus (2x), Health Coverage, Daily Meal Subsidy, Staff Purchase 15% Discount',
   });
+
+  // ==========================================
+  // EMAIL OUTBOX & SMTP STATE
+  // ==========================================
+  const [emailSettings, setEmailSettings] = React.useState<any>({
+    smtpHost: 'smtp.gmail.com',
+    smtpPort: 465,
+    smtpUser: '',
+    smtpPass: '',
+    senderName: 'ECOBAZAR Supermarket',
+    senderEmail: '',
+    isActive: false,
+    hasPassword: false,
+  });
+  const [sentEmailsList, setSentEmailsList] = React.useState<any[]>([]);
+  const [isEmailLoading, setIsEmailLoading] = React.useState(false);
+  const [isSavingEmailConfig, setIsSavingEmailConfig] = React.useState(false);
+  const [isTestingSmtp, setIsTestingSmtp] = React.useState(false);
+  const [testRecipient, setTestRecipient] = React.useState('raihan2004rana@gmail.com');
+  const [previewEmail, setPreviewEmail] = React.useState<any | null>(null);
+  const [resendingEmailId, setResendingEmailId] = React.useState<string | null>(null);
 
   // Product Form Model & Types
   interface ProductFormData {
@@ -1123,6 +1145,94 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
     } catch {
       toast.error('Delete Failed', 'Could not delete applicant.');
       fetchCareers();
+    }
+  };
+
+  // ==========================================
+  // EMAIL & SMTP API HANDLERS
+  // ==========================================
+  const fetchEmailData = React.useCallback(async () => {
+    try {
+      setIsEmailLoading(true);
+      const res = await fetch('/api/emails', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.config) setEmailSettings(data.config);
+        if (data.emails && Array.isArray(data.emails)) setSentEmailsList(data.emails);
+      }
+    } catch (err) {
+      console.error('Failed to load email settings & outbox:', err);
+    } finally {
+      setIsEmailLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (activeRouteId === 'emails') {
+      fetchEmailData();
+    }
+  }, [activeRouteId, fetchEmailData]);
+
+  const handleSaveEmailConfig = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingEmailConfig(true);
+    try {
+      const res = await fetch('/api/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save-config', config: emailSettings }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to save settings');
+      toast.success('SMTP Configured!', 'Email dispatcher settings saved successfully.');
+      if (data.config) setEmailSettings(data.config);
+      fetchEmailData();
+    } catch (err: any) {
+      toast.error('Save Failed', err.message);
+    } finally {
+      setIsSavingEmailConfig(false);
+    }
+  };
+
+  const handleTestSmtp = async () => {
+    if (!testRecipient || !testRecipient.includes('@')) {
+      toast.error('Invalid Email', 'Please enter a valid recipient email address.');
+      return;
+    }
+    setIsTestingSmtp(true);
+    try {
+      const res = await fetch('/api/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'test-smtp', testEmail: testRecipient }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'SMTP Test failed');
+      toast.success('Email Delivered! 🎉', `Test email sent to ${testRecipient}. Check your inbox or spam folder.`);
+      fetchEmailData();
+    } catch (err: any) {
+      toast.error('SMTP Connection Failed', err.message || 'Could not send test email.');
+    } finally {
+      setIsTestingSmtp(false);
+    }
+  };
+
+  const handleResendEmail = async (emailId: string) => {
+    setResendingEmailId(emailId);
+    try {
+      const res = await fetch('/api/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'resend', emailId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to resend');
+      toast.success('Dispatched to Inbox! 🚀', data.message || 'Email sent successfully.');
+      fetchEmailData();
+    } catch (err: any) {
+      toast.error('Dispatch Failed', err.message);
+    } finally {
+      setResendingEmailId(null);
     }
   };
 
@@ -6183,6 +6293,322 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </div>
             </div>
           )}
+
+          {/* ========================================== */}
+          {/* VIEW: EMAIL OUTBOX & SMTP DISPATCH */}
+          {/* ========================================== */}
+          {activeRouteId === 'emails' && (
+            <div className="space-y-6 text-left">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                    <Mail className="h-7 w-7 text-primary-green" />
+                    <span>Email Outbox & Live SMTP Dispatch</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+                    Manage real-time email delivery (Gmail, Outlook, Brevo) for customer order invoices and job applicant confirmation letters.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<RefreshCw className={`h-3.5 w-3.5 ${isEmailLoading ? 'animate-spin' : ''}`} />}
+                    onClick={fetchEmailData}
+                    className="text-xs font-semibold"
+                  >
+                    Refresh Outbox
+                  </Button>
+                </div>
+              </div>
+
+              {/* Status Alert Banner */}
+              {emailSettings.isActive && emailSettings.hasPassword ? (
+                <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5 shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-bold text-emerald-950 dark:text-emerald-200">
+                      Live SMTP Dispatch is Active & Operational
+                    </h4>
+                    <p className="text-xs text-emerald-800 dark:text-emerald-300 mt-0.5">
+                      Emails are being sent across the internet to real inboxes via <strong>{emailSettings.smtpHost}</strong> (Sender: {emailSettings.senderName} &lt;{emailSettings.senderEmail || emailSettings.smtpUser}&gt;).
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50 flex items-start gap-3">
+                  <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-bold text-amber-950 dark:text-amber-200">
+                      Live Email Dispatch is in Simulation / Pending Setup
+                    </h4>
+                    <p className="text-xs text-amber-800 dark:text-amber-300 mt-0.5 leading-relaxed">
+                      All customer order invoices and job application letters are currently generated and stored in the <strong>Outbox below</strong>. To deliver them directly to real recipient inboxes (@gmail.com, etc.), enter your Gmail address and 16-character <strong>App Password</strong> in the form below.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* SMTP Configuration Card */}
+                <div className="lg:col-span-5 space-y-4">
+                  <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
+                      <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                        <Settings className="h-4 w-4 text-primary-green" />
+                        <span>SMTP Dispatch Settings</span>
+                      </h3>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                        emailSettings.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-100 text-neutral-500'
+                      }`}>
+                        {emailSettings.isActive ? 'Enabled' : 'Disabled'}
+                      </span>
+                    </div>
+
+                    <form onSubmit={handleSaveEmailConfig} className="space-y-3.5 pt-4">
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                          Preset Provider
+                        </label>
+                        <select
+                          value={emailSettings.smtpHost === 'smtp.gmail.com' ? 'gmail' : 'custom'}
+                          onChange={(e) => {
+                            if (e.target.value === 'gmail') {
+                              setEmailSettings({
+                                ...emailSettings,
+                                smtpHost: 'smtp.gmail.com',
+                                smtpPort: 465,
+                                secure: true,
+                              });
+                            }
+                          }}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                        >
+                          <option value="gmail">Google Gmail (smtp.gmail.com)</option>
+                          <option value="custom">Custom SMTP Server</option>
+                        </select>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="col-span-2">
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            SMTP Host
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={emailSettings.smtpHost}
+                            onChange={(e) => setEmailSettings({ ...emailSettings, smtpHost: e.target.value })}
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green font-mono"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                            Port
+                          </label>
+                          <input
+                            type="number"
+                            required
+                            value={emailSettings.smtpPort}
+                            onChange={(e) => setEmailSettings({ ...emailSettings, smtpPort: parseInt(e.target.value) || 465 })}
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green font-mono"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                          Sender Gmail / Email Address *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          placeholder="e.g. your-email@gmail.com"
+                          value={emailSettings.smtpUser}
+                          onChange={(e) => setEmailSettings({ ...emailSettings, smtpUser: e.target.value, senderEmail: e.target.value })}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                            Gmail App Password (16 chars) *
+                          </label>
+                          <span className="text-[10px] text-primary-green font-bold">Requires 2-Step Auth</span>
+                        </div>
+                        <input
+                          type="password"
+                          placeholder={emailSettings.hasPassword ? '•••••••••••••••• (Saved)' : 'xxxx xxxx xxxx xxxx'}
+                          value={emailSettings.smtpPass}
+                          onChange={(e) => setEmailSettings({ ...emailSettings, smtpPass: e.target.value })}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green font-mono"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                          Sender Display Name
+                        </label>
+                        <input
+                          type="text"
+                          value={emailSettings.senderName}
+                          onChange={(e) => setEmailSettings({ ...emailSettings, senderName: e.target.value })}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-1">
+                        <input
+                          type="checkbox"
+                          id="enableSmtpToggle"
+                          checked={emailSettings.isActive}
+                          onChange={(e) => setEmailSettings({ ...emailSettings, isActive: e.target.checked })}
+                          className="h-4 w-4 rounded accent-primary-green"
+                        />
+                        <label htmlFor="enableSmtpToggle" className="text-xs font-semibold text-neutral-800 dark:text-neutral-200 cursor-pointer">
+                          Enable Live Dispatch (send real emails over internet)
+                        </label>
+                      </div>
+
+                      <Button
+                        variant="forest"
+                        size="sm"
+                        type="submit"
+                        disabled={isSavingEmailConfig}
+                        className="w-full font-bold text-xs mt-2"
+                      >
+                        {isSavingEmailConfig ? 'Saving...' : 'Save SMTP Configuration'}
+                      </Button>
+                    </form>
+
+                    {/* How to get Gmail App Password guide */}
+                    <div className="mt-4 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/60 text-[11px] text-neutral-600 dark:text-neutral-400 space-y-1">
+                      <p className="font-bold text-neutral-800 dark:text-neutral-200 flex items-center gap-1">
+                        💡 How to get a free Gmail App Password:
+                      </p>
+                      <ol className="list-decimal pl-4 space-y-0.5 leading-relaxed">
+                        <li>Visit <strong>myaccount.google.com/security</strong></li>
+                        <li>Turn on <strong>2-Step Verification</strong> (if not already on)</li>
+                        <li>Search <strong>"App passwords"</strong> in the top search bar</li>
+                        <li>Type App name: <code>ECOBAZAR</code> ➔ Click <strong>Create</strong></li>
+                        <li>Copy the 16-character code and paste above!</li>
+                      </ol>
+                    </div>
+
+                    {/* Live Test Dispatch */}
+                    <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800 space-y-2">
+                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                        Test Real Email Dispatch
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="email"
+                          placeholder="Your email (e.g. raihan2004rana@gmail.com)"
+                          value={testRecipient}
+                          onChange={(e) => setTestRecipient(e.target.value)}
+                          className="flex-1 px-3 py-2 text-xs rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
+                        />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={isTestingSmtp}
+                          onClick={handleTestSmtp}
+                          className="font-bold text-xs shrink-0"
+                        >
+                          {isTestingSmtp ? 'Sending...' : 'Send Test'}
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+
+                {/* Live Sent Records & Outbox Card */}
+                <div className="lg:col-span-7 space-y-4">
+                  <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
+                      <div>
+                        <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                          <History className="h-4 w-4 text-primary-green" />
+                          <span>Sent Emails & Live Outbox History</span>
+                        </h3>
+                        <p className="text-[11px] text-neutral-500 mt-0.5">
+                          {sentEmailsList.length} total notifications generated (Orders & Career Applications)
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 divide-y divide-neutral-100 dark:divide-neutral-800 max-h-[640px] overflow-y-auto">
+                      {sentEmailsList.length === 0 ? (
+                        <div className="py-12 text-center text-xs text-neutral-400">
+                          No emails recorded yet. Place an order or apply for a job to trigger notifications.
+                        </div>
+                      ) : (
+                        sentEmailsList.map((mail) => (
+                          <div key={mail.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-neutral-50 dark:hover:bg-neutral-800/40 p-2.5 rounded-xl transition">
+                            <div className="space-y-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                                  mail.type === 'ORDER_CONFIRMATION'
+                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                    : 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300'
+                                }`}>
+                                  {mail.type === 'ORDER_CONFIRMATION' ? 'Order Invoice' : 'Career Letter'}
+                                </span>
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                  mail.status === 'DELIVERED'
+                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-300'
+                                    : mail.status === 'FAILED'
+                                    ? 'bg-rose-50 text-rose-700 border border-rose-300'
+                                    : 'bg-amber-50 text-amber-700 border border-amber-300'
+                                }`}>
+                                  ● {mail.status}
+                                </span>
+                                <span className="text-[10px] text-neutral-400 font-mono">
+                                  {new Date(mail.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                              </div>
+                              <h4 className="text-xs font-bold text-neutral-900 dark:text-white truncate">
+                                {mail.subject}
+                              </h4>
+                              <p className="text-[11px] text-neutral-500 font-mono truncate">
+                                To: <strong>{mail.to}</strong> {mail.customerName ? `(${mail.customerName})` : mail.applicantName ? `(${mail.applicantName})` : ''}
+                              </p>
+                              {mail.error && (
+                                <p className="text-[10px] text-red-500">Error: {mail.error}</p>
+                              )}
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setPreviewEmail(mail)}
+                                className="text-[11px] h-7 px-2.5"
+                              >
+                                Preview HTML
+                              </Button>
+                              <Button
+                                variant="forest"
+                                size="sm"
+                                disabled={resendingEmailId === mail.id}
+                                onClick={() => handleResendEmail(mail.id)}
+                                leftIcon={<Send className="h-3 w-3" />}
+                                className="text-[11px] h-7 px-2.5 font-bold"
+                              >
+                                {resendingEmailId === mail.id ? 'Sending...' : 'Send to Inbox'}
+                              </Button>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       </div>
 
@@ -7996,6 +8422,51 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               }}
             >
               Save Notes & Close
+            </Button>
+          </DialogFooter>
+        </Dialog>
+      )}
+
+      {/* ========================================================= */}
+      {/* EMAIL PREVIEW MODAL */}
+      {/* ========================================================= */}
+      {previewEmail && (
+        <Dialog open={!!previewEmail} onOpenChange={() => setPreviewEmail(null)} size="lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Mail className="h-5 w-5 text-primary-green" />
+              <span>Email Preview: {previewEmail.subject}</span>
+            </DialogTitle>
+            <DialogDescription>
+              To: {previewEmail.to} • Sent: {new Date(previewEmail.sentAt).toLocaleString()} • Status: {previewEmail.status}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogBody className="space-y-4 max-h-[75vh] overflow-y-auto">
+            <div className="p-2 border rounded-xl bg-neutral-50 dark:bg-neutral-900 overflow-hidden">
+              <iframe
+                title="Email Preview"
+                srcDoc={previewEmail.htmlContent || `<p style="padding:20px; font-family:sans-serif;">${previewEmail.previewSnippet}</p>`}
+                className="w-full h-[520px] rounded-lg border-0 bg-white"
+              />
+            </div>
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPreviewEmail(null)}
+            >
+              Close
+            </Button>
+            <Button
+              variant="forest"
+              size="sm"
+              disabled={resendingEmailId === previewEmail.id}
+              onClick={() => handleResendEmail(previewEmail.id)}
+              leftIcon={<Send className="h-3.5 w-3.5" />}
+              className="font-bold"
+            >
+              {resendingEmailId === previewEmail.id ? 'Sending...' : 'Send to Live Inbox'}
             </Button>
           </DialogFooter>
         </Dialog>

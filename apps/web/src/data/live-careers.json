@@ -1,7 +1,32 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-11-21T06:32:03.889Z",
+  "lastUpdated": "2026-11-21T06:47:41.477Z",
   "jobs": [
+    {
+      "id": "job-eco-mwq1kkmo",
+      "title": "Business Development",
+      "titleBn": "Gulshan-2",
+      "department": "Quality & Farm Sourcing",
+      "branch": "Gulshan Superstore",
+      "location": "Gulshan-2 Circle, Dhaka",
+      "type": "Full-time",
+      "salary": "৳25,000 - ৳35,000 / month",
+      "experience": "1-2 years preferred",
+      "deadline": "2026-12-15",
+      "vacancies": 2,
+      "status": "ACTIVE",
+      "description": "Must responsible and obident.",
+      "responsibilities": [
+        "gfsdhbfdh"
+      ],
+      "requirements": [
+        "dsfgsdhh"
+      ],
+      "benefits": [
+        "Festival Bonus (2x), Health Coverage, Daily Meal Subsidy, Staff Purchase 15% Discount"
+      ],
+      "postedAt": "2026-11-21T06:43:24.912Z"
+    },
     {
       "id": "job-eco-01",
       "title": "Branch Manager (গুলশান-২ ফ্ল্যাগশিপ সুপারস্টোর)",
@@ -164,6 +189,42 @@
     }
   ],
   "applicants": [
+    {
+      "id": "ECO-APP-2026-8094",
+      "jobId": "job-eco-mwq1kkmo",
+      "jobTitle": "Business Development",
+      "applicantName": "Raihan Hasan",
+      "email": "raihan2004rana@gmail.com",
+      "phone": "+8804703655242",
+      "branchPreference": "Gulshan Superstore",
+      "experience": "1",
+      "expectedSalary": "20500",
+      "resumeUrl": "Uploaded to System",
+      "coverLetter": "gyukg",
+      "appliedAt": "2026-11-21T06:44:00.150Z",
+      "formattedDate": "21 Nov 2026",
+      "status": "REVIEWED",
+      "notes": "",
+      "emailNotificationSent": true
+    },
+    {
+      "id": "ECO-APP-2026-2043",
+      "jobId": "job-eco-01",
+      "jobTitle": "Branch Manager (গুলশান-২ ফ্ল্যাগশিপ সুপারস্টোর)",
+      "applicantName": "Raihan Hasan",
+      "email": "raihan2004rana@gmail.com",
+      "phone": "+8804703655242",
+      "branchPreference": "Gulshan-2 Superstore #02",
+      "experience": "2",
+      "expectedSalary": "28000",
+      "resumeUrl": "Uploaded to System",
+      "coverLetter": "hkg",
+      "appliedAt": "2026-11-21T06:36:55.261Z",
+      "formattedDate": "21 Nov 2026",
+      "status": "PENDING",
+      "notes": "",
+      "emailNotificationSent": true
+    },
     {
       "id": "ECO-APP-2026-5657",
       "jobId": "job-eco-05",

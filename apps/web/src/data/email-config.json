@@ -1,0 +1,11 @@
+{
+  "smtpHost": "smtp.gmail.com",
+  "smtpPort": 465,
+  "secure": true,
+  "smtpUser": "",
+  "smtpPass": "",
+  "senderName": "ECOBAZAR Supermarket",
+  "senderEmail": "",
+  "isActive": false,
+  "lastUpdated": "2026-11-21T06:55:00.000Z"
+}
