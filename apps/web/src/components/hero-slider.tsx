@@ -33,20 +33,18 @@ interface Slide {
 const defaultSlides: Slide[] = [
   {
     id: 'slide-1',
-    badge: '100% Organic & Chemical-Free',
-    badgeBn: '১০০% অর্গানিক ও কেমিক্যালমুক্ত',
-    title: 'Fast Fresh Groceries Delivered Daily',
-    titleBn: 'প্রতিদিন তাজা গ্রোসারি দ্রুত ডেলিভারি',
-    subtitle:
-      'Handpicked crisp fruits, daily greens, garden produce delivered with 30 minutes in Dhaka under cold storage.',
-    subtitleBn:
-      'বাছাইকৃত তাজা ফলমূল, সবুজ শাকসবজি এবং কোল্ড-স্টোরেজে সংরক্ষিত ফার্মের ফ্রেশ পণ্য ৩০ মিনিটে আপনার দরজায়।',
+    badge: '',
+    badgeBn: '',
+    title: '',
+    titleBn: '',
+    subtitle: '',
+    subtitleBn: '',
     ctaText: 'Shop Now',
     ctaTextBn: 'অর্ডার করুন',
-    ctaLink: '/category/fresh-fruits-vegetables',
-    image: '/images/hero-fruits-veggies.jpg',
-    tag: '30-Min Instant Delivery Across Dhaka',
-    tagBn: 'ঢাকা জুড়ে ৩০ মিনিটে এক্সপ্রেস ডেলিভারি',
+    ctaLink: '/deals',
+    image: '/images/hero-quality-trust.webp',
+    tag: '',
+    tagBn: '',
   },
   {
     id: 'slide-2',
@@ -213,57 +211,82 @@ export const HeroSlider: React.FC = () => {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Visual: Image with smooth left gradient mask */}
+            {/* Visual: Image with smooth left gradient mask only if slide has title text */}
             <div className="absolute inset-0 z-0">
-              <img
-                src={slide.image}
-                alt={t(slide.title, slide.titleBn)}
-                className="w-full h-full object-cover object-right sm:object-center transition-all duration-700 ease-out transform scale-100 group-hover:scale-102"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/images/hero-fruits-veggies.jpg';
-                }}
-              />
-              {/* Dark forest green backdrop gradient for crystal-clear readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#08301E] via-[#08301E]/95 sm:via-[#08301E]/85 to-transparent sm:w-[70%]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#08301E] via-transparent to-transparent md:hidden" />
+              <Link href={slide.ctaLink} className="block w-full h-full cursor-pointer">
+                <img
+                  src={slide.image}
+                  alt={slide.title ? t(slide.title, slide.titleBn) : 'Quality You Can Trust'}
+                  className="w-full h-full object-cover object-center transition-all duration-700 ease-out transform scale-100 group-hover:scale-102"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/hero-quality-trust.webp';
+                  }}
+                />
+              </Link>
+              {/* Only apply dark backdrop gradient if slide has title text */}
+              {Boolean(slide.title) && (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#08301E] via-[#08301E]/95 sm:via-[#08301E]/85 to-transparent sm:w-[70%]" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#08301E] via-transparent to-transparent md:hidden" />
+                </>
+              )}
             </div>
 
             {/* Slide Text Content */}
-            <div className="relative z-10 p-6 sm:p-9 lg:p-10 max-w-xl flex-1 flex flex-col justify-between">
-              <div>
-                {/* Campaign badge */}
-                <div className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold shadow-xs mb-3">
-                  <Sparkles className="w-3.5 h-3.5 text-[#F4A340]" />
-                  <span>{t(slide.badge, slide.badgeBn)}</span>
+            {Boolean(slide.title) ? (
+              <div className="relative z-10 p-6 sm:p-9 lg:p-10 max-w-xl flex-1 flex flex-col justify-between">
+                <div>
+                  {/* Campaign badge */}
+                  {slide.badge && (
+                    <div className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold shadow-xs mb-3">
+                      <Sparkles className="w-3.5 h-3.5 text-[#F4A340]" />
+                      <span>{t(slide.badge, slide.badgeBn)}</span>
+                    </div>
+                  )}
+
+                  {/* Heading */}
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black text-white leading-[1.15] tracking-tight mb-3 drop-shadow-sm">
+                    {t(slide.title, slide.titleBn)}
+                  </h1>
+
+                  {/* Subtitle */}
+                  {slide.subtitle && (
+                    <p className="text-xs sm:text-sm text-white/90 leading-relaxed max-w-md font-medium mb-5 drop-shadow-2xs">
+                      {t(slide.subtitle, slide.subtitleBn)}
+                    </p>
+                  )}
                 </div>
 
-                {/* Heading */}
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black text-white leading-[1.15] tracking-tight mb-3 drop-shadow-sm">
-                  {t(slide.title, slide.titleBn)}
-                </h1>
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link
+                    href={slide.ctaLink}
+                    className="inline-flex items-center gap-1.5 bg-[#21A366] hover:bg-[#2EBD70] text-white px-6 py-2.5 rounded-full font-black text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95"
+                  >
+                    <span>{t(slide.ctaText, slide.ctaTextBn)}</span>
+                    <span className="text-sm font-normal">↗</span>
+                  </Link>
 
-                {/* Subtitle */}
-                <p className="text-xs sm:text-sm text-white/90 leading-relaxed max-w-md font-medium mb-5 drop-shadow-2xs">
-                  {t(slide.subtitle, slide.subtitleBn)}
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3">
-                <Link
-                  href={slide.ctaLink}
-                  className="inline-flex items-center gap-1.5 bg-[#21A366] hover:bg-[#2EBD70] text-white px-6 py-2.5 rounded-full font-black text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95"
-                >
-                  <span>{t(slide.ctaText, slide.ctaTextBn)}</span>
-                  <span className="text-sm font-normal">↗</span>
-                </Link>
-
-                <div className="flex items-center gap-2 text-white/95 text-xs font-semibold bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-full border border-white/15">
-                  <Truck className="w-3.5 h-3.5 text-[#2EBD70]" />
-                  <span>{t('30-Min Fast Delivery', '৩০ মিনিটে দ্রুত ডেলিভারি')}</span>
+                  <div className="flex items-center gap-2 text-white/95 text-xs font-semibold bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-full border border-white/15">
+                    <Truck className="w-3.5 h-3.5 text-[#2EBD70]" />
+                    <span>{t('30-Min Fast Delivery', '৩০ মিনিটে দ্রুত ডেলিভারি')}</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              /* When no extra text is specified (like Slide 1), show just the clean action button */
+              <div className="relative z-10 p-5 sm:p-7 lg:p-8 flex-1 flex flex-col justify-end pointer-events-none">
+                <div className="pointer-events-auto">
+                  <Link
+                    href={slide.ctaLink}
+                    className="inline-flex items-center gap-2 bg-[#123C2D] hover:bg-[#21A366] text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-black text-xs sm:text-sm shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 border border-white/20 backdrop-blur-xs"
+                  >
+                    <span>{language === 'bn' ? slide.ctaTextBn : slide.ctaText}</span>
+                    <span className="text-xs sm:text-sm font-bold">↗</span>
+                  </Link>
+                </div>
+              </div>
+            )}
 
             {/* Navigation Arrows */}
             <div className="absolute inset-y-0 left-3 right-3 flex items-center justify-between pointer-events-none z-20">
