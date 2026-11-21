@@ -5,7 +5,6 @@ import Link from 'next/link';
 import {
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   ArrowRight,
   Truck,
   Menu,
@@ -16,71 +15,33 @@ import { useLanguage } from '../context/language-context';
 
 interface Slide {
   id: string;
-  badge: string;
-  badgeBn: string;
-  title: string;
-  titleBn: string;
-  subtitle: string;
-  subtitleBn: string;
   ctaText: string;
   ctaTextBn: string;
   ctaLink: string;
   image: string;
-  tag: string;
-  tagBn: string;
 }
 
 const defaultSlides: Slide[] = [
   {
-    id: 'slide-1',
-    badge: '100% Organic & Chemical-Free',
-    badgeBn: '১০০% অর্গানিক ও কেমিক্যালমুক্ত',
-    title: 'Fast Fresh Groceries Delivered Daily',
-    titleBn: 'প্রতিদিন তাজা গ্রোসারি দ্রুত ডেলিভারি',
-    subtitle:
-      'Handpicked crisp fruits, daily greens, garden produce delivered with 30 minutes in Dhaka under cold storage.',
-    subtitleBn:
-      'বাছাইকৃত তাজা ফলমূল, সবুজ শাকসবজি এবং কোল্ড-স্টোরেজে সংরক্ষিত ফার্মের ফ্রেশ পণ্য ৩০ মিনিটে আপনার দরজায়।',
+    id: 'hero-1',
     ctaText: 'Shop Now',
     ctaTextBn: 'অর্ডার করুন',
-    ctaLink: '/category/fresh-fruits-vegetables',
-    image: '/images/hero-fruits-veggies.jpg',
-    tag: '30-Min Instant Delivery Across Dhaka',
-    tagBn: 'ঢাকা জুড়ে ৩০ মিনিটে এক্সপ্রেস ডেলিভারি',
+    ctaLink: '/deals',
+    image: '/images/hero-1.jpg',
   },
   {
-    id: 'slide-2',
-    badge: 'Up to 25% Off Daily Essentials',
-    badgeBn: 'দৈনন্দিন নিত্যপণ্যে সর্বোচ্চ ২৫% ছাড়',
-    title: 'Wholesale Kitchen Staples & Pantry Care',
-    titleBn: 'পাইকারি মূল্যে খাঁটি চাল, ডাল ও নিত্যপণ্য',
-    subtitle:
-      'Unpolished Miniket rice, premium lentils, and pantry essentials sourced directly from rural farming cooperatives at fair prices.',
-    subtitleBn:
-      'সরাসরি কৃষকদের থেকে সংগৃহীত পুষ্টিকর মিনিকেট চাল, দেশি মসুর ডাল ও তেল ন্যায্য মূল্যে।',
-    ctaText: 'Explore Groceries',
-    ctaTextBn: 'মুদি পণ্য দেখুন',
+    id: 'hero-2',
+    ctaText: 'Shop Now',
+    ctaTextBn: 'অর্ডার করুন',
     ctaLink: '/category/groceries-staples',
-    image: '/images/banner-staples-deals.jpg',
-    tag: '100% Pure & Laboratory Tested Quality',
-    tagBn: '১০০% খাঁটি ও ল্যাব-পরীক্ষিত মান',
+    image: '/images/hero-2.webp',
   },
   {
-    id: 'slide-3',
-    badge: 'Chilled Under 4°C Cold Chain',
-    badgeBn: '৪° সে. কোল্ড-চেইনে সংরক্ষিত',
-    title: 'Natural Farm Milk & Free-Range Dairy',
-    titleBn: 'প্রাকৃতিক গরুর দুধ ও ফ্রেশ ডেইরি',
-    subtitle:
-      'Pasteurized pure cow milk, country brown eggs, and pure artisanal butter delivered refrigerated to your doorstep.',
-    subtitleBn:
-      'পাস্তুরিত খাঁটি তরল দুধ, দেশি ডিম ও খাঁটি মাখন রেফ্রিজারেটেড ভ্যানে আপনার দরজায়।',
-    ctaText: 'Shop Dairy & Eggs',
-    ctaTextBn: 'ডেইরি ও ডিম দেখুন',
+    id: 'hero-3',
+    ctaText: 'Shop Now',
+    ctaTextBn: 'অর্ডার করুন',
     ctaLink: '/category/dairy-eggs',
-    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1200&auto=format&fit=crop&q=80',
-    tag: 'Zero Formalin • Guaranteed Freshness',
-    tagBn: 'ফরমালিনমুক্ত • শতভাগ সতেজতার নিশ্চয়তা',
+    image: '/images/hero-3.webp',
   },
 ];
 
@@ -89,23 +50,15 @@ export const HeroSlider: React.FC = () => {
   const { heroSlides, categories: dynamicCategories } = useCatalog();
   const categories = dynamicCategories && dynamicCategories.length > 0 ? dynamicCategories : categoryDefinitions;
 
-  // Adapt dynamic slides or fall back to default bilingual slides
+  // Adapt dynamic slides or fall back to user hero images
   const activeSlides: Slide[] = React.useMemo(() => {
     if (heroSlides && heroSlides.length > 0) {
       return heroSlides.map((s, idx) => ({
         id: s.id || `dyn-slide-${idx}`,
-        badge: s.badge || '100% Organic & Chemical-Free',
-        badgeBn: '১০০% অর্গানিক ও কেমিক্যালমুক্ত',
-        title: s.title || 'Fast Fresh Groceries Delivered Daily',
-        titleBn: 'প্রতিদিন তাজা গ্রোসারি দ্রুত ডেলিভারি',
-        subtitle: s.subtitle || 'Handpicked crisp fruits, daily greens, garden produce delivered with 30 minutes in Dhaka under cold storage.',
-        subtitleBn: 'বাছাইকৃত তাজা ফলমূল, সবুজ শাকসবজি এবং কোল্ড-স্টোরেজে সংরক্ষিত ফার্মের ফ্রেশ পণ্য ৩০ মিনিটে আপনার দরজায়।',
         ctaText: s.ctaText || 'Shop Now',
-        ctaTextBn: 'অর্ডার করুন',
-        ctaLink: s.ctaLink || '/category/fresh-fruits-vegetables',
-        image: s.image || '/images/hero-fruits-veggies.jpg',
-        tag: s.tag || '30-Min Instant Delivery Across Dhaka',
-        tagBn: 'ঢাকা জুড়ে ৩০ মিনিটে এক্সপ্রেস ডেলিভারি',
+        ctaTextBn: (s as any).ctaTextBn || 'অর্ডার করুন',
+        ctaLink: s.ctaLink || '/deals',
+        image: s.image || defaultSlides[idx % defaultSlides.length].image,
       }));
     }
     return defaultSlides;
@@ -169,7 +122,7 @@ export const HeroSlider: React.FC = () => {
             </span>
           </div>
 
-          {/* Department Items (Single Language clean typography - no bilingual clutter) */}
+          {/* Department Items (Single Language clean typography) */}
           <div className="flex-1 flex flex-col justify-between py-1.5 divide-y divide-neutral-100">
             {categories.slice(0, 11).map((cat) => (
               <Link
@@ -199,69 +152,44 @@ export const HeroSlider: React.FC = () => {
 
         {/* ==================================================== */}
         {/* 2. RIGHT CONTAINER: 2-TIER HERO SECTION             */}
-        {/*    TOP ROW: Large Wide Banner                        */}
-        {/*    BOTTOM ROW: 3 Promo Cards                         */}
+        {/*    TOP ROW: Large Wide Banner (hero-1, hero-2, hero-3) */}
+        {/*    BOTTOM ROW: 2 Promo Cards (promotion-1, promotion-2) */}
         {/* ==================================================== */}
         <div className="flex-1 min-w-0 flex flex-col justify-between gap-4 lg:gap-5">
           {/* ------------------------------------------------ */}
           {/* ROW 1: LARGE WIDE HERO CAROUSEL BANNER           */}
           {/* ------------------------------------------------ */}
           <div
-            className="relative rounded-3xl overflow-hidden shadow-lg border border-[#E5ECE7] min-h-[300px] sm:min-h-[330px] lg:min-h-[350px] flex flex-col justify-between group bg-[#093522]"
+            className="relative rounded-3xl overflow-hidden shadow-lg border border-[#E5ECE7] aspect-[2.4/1] min-h-[220px] sm:min-h-[280px] lg:min-h-[320px] xl:min-h-[350px] flex flex-col justify-between group bg-[#111827]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Visual: Image with smooth left gradient mask */}
+            {/* Visual: Full Banner Image, no extra overlay text */}
             <div className="absolute inset-0 z-0">
-              <img
-                src={slide.image}
-                alt={t(slide.title, slide.titleBn)}
-                className="w-full h-full object-cover object-right sm:object-center transition-all duration-700 ease-out transform scale-100 group-hover:scale-102"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/images/hero-fruits-veggies.jpg';
-                }}
-              />
-              {/* Dark forest green backdrop gradient for crystal-clear readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#08301E] via-[#08301E]/95 sm:via-[#08301E]/85 to-transparent sm:w-[70%]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#08301E] via-transparent to-transparent md:hidden" />
+              <Link href={slide.ctaLink} className="block w-full h-full cursor-pointer">
+                <img
+                  src={slide.image}
+                  alt="Hero Banner"
+                  className="w-full h-full object-cover object-center transition-all duration-700 ease-out transform group-hover:scale-102"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/hero-1.jpg';
+                  }}
+                />
+              </Link>
             </div>
 
-            {/* Slide Text Content */}
-            <div className="relative z-10 p-6 sm:p-9 lg:p-10 max-w-xl flex-1 flex flex-col justify-between">
-              <div>
-                {/* Campaign badge */}
-                <div className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-white text-xs font-bold shadow-xs mb-3">
-                  <Sparkles className="w-3.5 h-3.5 text-[#F4A340]" />
-                  <span>{t(slide.badge, slide.badgeBn)}</span>
-                </div>
-
-                {/* Heading */}
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black text-white leading-[1.15] tracking-tight mb-3 drop-shadow-sm">
-                  {t(slide.title, slide.titleBn)}
-                </h1>
-
-                {/* Subtitle */}
-                <p className="text-xs sm:text-sm text-white/90 leading-relaxed max-w-md font-medium mb-5 drop-shadow-2xs">
-                  {t(slide.subtitle, slide.subtitleBn)}
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3">
+            {/* CTA Button: Just the button per user requirement */}
+            <div className="relative z-10 p-4 sm:p-6 lg:p-7 flex-1 flex flex-col justify-end pointer-events-none">
+              <div className="pointer-events-auto">
                 <Link
                   href={slide.ctaLink}
-                  className="inline-flex items-center gap-1.5 bg-[#21A366] hover:bg-[#2EBD70] text-white px-6 py-2.5 rounded-full font-black text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95"
+                  className="inline-flex items-center gap-2 bg-[#123C2D] hover:bg-[#21A366] text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-black text-xs sm:text-sm shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 border border-white/20 backdrop-blur-xs"
                 >
-                  <span>{t(slide.ctaText, slide.ctaTextBn)}</span>
-                  <span className="text-sm font-normal">↗</span>
+                  <span>{language === 'bn' ? slide.ctaTextBn : slide.ctaText}</span>
+                  <span className="text-xs sm:text-sm font-bold">↗</span>
                 </Link>
-
-                <div className="flex items-center gap-2 text-white/95 text-xs font-semibold bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-full border border-white/15">
-                  <Truck className="w-3.5 h-3.5 text-[#2EBD70]" />
-                  <span>{t('30-Min Fast Delivery', '৩০ মিনিটে দ্রুত ডেলিভারি')}</span>
-                </div>
               </div>
             </div>
 
@@ -270,23 +198,23 @@ export const HeroSlider: React.FC = () => {
               <button
                 type="button"
                 onClick={prevSlide}
-                className="pointer-events-auto w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 hover:scale-105"
+                className="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-lg backdrop-blur-xs transition-all opacity-0 group-hover:opacity-100 hover:scale-105"
                 aria-label="Previous Slide"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 type="button"
                 onClick={nextSlide}
-                className="pointer-events-auto w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 hover:scale-105"
+                className="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-lg backdrop-blur-xs transition-all opacity-0 group-hover:opacity-100 hover:scale-105"
                 aria-label="Next Slide"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
 
             {/* Pagination Dots */}
-            <div className="relative z-20 pb-4 flex items-center justify-center gap-1.5">
+            <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20 flex items-center gap-1.5 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
               {activeSlides.map((s, index) => (
                 <button
                   key={s.id}
@@ -295,8 +223,8 @@ export const HeroSlider: React.FC = () => {
                   aria-label={`Go to slide ${index + 1}`}
                   className={`transition-all duration-300 rounded-full ${
                     currentSlide === index
-                      ? 'w-7 h-2 bg-[#2EBD70]'
-                      : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                      ? 'w-6 h-2 bg-[#2EBD70]'
+                      : 'w-2 h-2 bg-white/60 hover:bg-white'
                   }`}
                 />
               ))}
@@ -304,113 +232,37 @@ export const HeroSlider: React.FC = () => {
           </div>
 
           {/* ------------------------------------------------ */}
-          {/* ROW 2: 3 PROMOTIONAL CARDS (Reference Design)     */}
+          {/* ROW 2: 2 PROMOTIONAL CARDS (promotion-1, promotion-2) */}
           {/* ------------------------------------------------ */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-4">
-            {/* CARD 1: SEAFOOD & MEAT */}
-            <Link
-              href="/category/meat-fish"
-              className="group relative rounded-3xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#21A366]/50 transition-all duration-300 min-h-[190px] sm:min-h-[205px] flex flex-col justify-end p-5"
-            >
-              <div className="absolute inset-0 z-0 overflow-hidden">
-                <img
-                  src="/images/banner-seafood.jpg"
-                  alt="Tasty Seafood & Fresh Catch"
-                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#092B21]/95 via-[#092B21]/45 to-transparent" />
-              </div>
-
-              {/* Top Circular Stamp Badge */}
-              <div className="absolute top-3.5 right-3.5 z-10 w-12 h-12 rounded-full border-2 border-emerald-300/60 bg-emerald-950/40 backdrop-blur-xs flex flex-col items-center justify-center text-center text-emerald-200 text-[8px] font-black leading-tight uppercase transform rotate-[-8deg] shadow-xs">
-                <span>{t('Fresh', 'তাজা')}</span>
-                <span>{t('Every Day', 'প্রতিদিন')}</span>
-              </div>
-
-              {/* Text content */}
-              <div className="relative z-10 text-white">
-                <span className="text-[9px] font-black tracking-widest uppercase text-emerald-300 block mb-0.5">
-                  {t('RE-IMAGINED SEAFOOD & MEAT', 'তাজা মাছ ও মাংস')}
-                </span>
-                <h3 className="text-base sm:text-lg font-black text-white leading-tight mb-1 group-hover:text-[#D8F3DC] transition-colors">
-                  {t('Tasty Seafood & Fresh Catch', 'স্বাদ ও পুষ্টিতে সেরা সামুদ্রিক মাছ')}
-                </h3>
-                <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2EBD70] group-hover:text-white transition-colors mt-0.5">
-                  <span>{t('Explore Meat & Fish', 'মাছ ও মাংস দেখুন')}</span>
-                  <span className="text-xs">↗</span>
-                </div>
-              </div>
-            </Link>
-
-            {/* CARD 2: PURE COLD-PRESSED MUSTARD OIL */}
-            <Link
-              href="/category/spices-oils"
-              className="group relative rounded-3xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#F4A340]/50 transition-all duration-300 min-h-[190px] sm:min-h-[205px] flex flex-col justify-end p-5"
-            >
-              <div className="absolute inset-0 z-0 overflow-hidden">
-                <img
-                  src="/images/banner-mustard-oil.jpg"
-                  alt="কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল"
-                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1F1805]/95 via-[#1F1805]/40 to-transparent" />
-              </div>
-
-              {/* Text content */}
-              <div className="relative z-10 text-white">
-                <span className="text-[9px] font-black tracking-wider uppercase text-amber-300 block mb-0.5">
-                  {t('100% PURE & ORGANIC', '১০০% খাঁটি ও প্রাকৃতিক')}
-                </span>
-                <h3 className="text-base sm:text-lg font-black text-white leading-tight mb-2 group-hover:text-amber-200 transition-colors">
-                  {t('Pure Cold-Pressed Mustard Oil', 'কাঠের ঘানি ভাঙা খাঁটি সরিষার তেল')}
-                </h3>
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#F4A340] hover:bg-amber-400 text-[#17251F] px-3 py-1 rounded-full shadow-xs transition-colors">
-                  <span>{t('Shop Cold-Pressed', 'ঘানির তেল কিনুন')}</span>
-                  <span className="text-xs">→</span>
-                </span>
-              </div>
-            </Link>
-
-            {/* CARD 3: BEST DEALS & STAPLES */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+            {/* CARD 1: PROMOTION 1 (Desi Mart Grand Offer) */}
             <Link
               href="/deals"
-              className="group relative rounded-3xl overflow-hidden shadow-sm border border-[#E5ECE7] hover:border-[#E8590C]/50 transition-all duration-300 min-h-[190px] sm:min-h-[205px] flex flex-col justify-between p-5 bg-[#FAF6F0]"
+              className="group relative rounded-3xl overflow-hidden shadow-xs border border-[#E5ECE7] hover:border-[#21A366]/50 hover:shadow-lg transition-all duration-300 bg-[#FAF4EA] flex items-center justify-center min-h-[190px] sm:min-h-[220px] lg:min-h-[240px]"
             >
-              <div className="absolute inset-0 z-0 overflow-hidden">
-                <img
-                  src="/images/banner-staples-deals.jpg"
-                  alt="Best Deals & Staples"
-                  className="w-full h-full object-cover object-right group-hover:scale-106 transition-transform duration-700 ease-out"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/images/banner-hot-deals.jpg';
-                  }}
-                />
-                {/* Gradient to ensure crisp readability on left */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FFFBF5]/95 via-[#FFFBF5]/85 to-transparent w-[70%]" />
-              </div>
+              <img
+                src="/images/promotion-1.jpg"
+                alt="Desi Mart Grand Offer"
+                className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/banner-staples-deals.jpg';
+                }}
+              />
+            </Link>
 
-              {/* Top Title & Discount */}
-              <div className="relative z-10">
-                <h3 className="text-base sm:text-lg font-black text-[#17251F] leading-tight">
-                  {t('Best Deals & Staples', 'সেরা ডিল ও নিত্যপণ্য')}
-                </h3>
-                <div className="mt-1">
-                  <span className="text-xl sm:text-2xl font-black text-[#E8590C] tracking-tight block leading-none">
-                    {t('UPTO 42% OFF', 'সর্বোচ্চ ৪২% ছাড়')}
-                  </span>
-                  <p className="text-[10px] text-[#64736B] font-semibold mt-0.5 leading-tight max-w-[130px]">
-                    {t('On Pantry Essentials & Staples!', 'নিত্যপ্রয়োজনীয় চাল, ডাল ও তেল সামগ্রীতে!')}
-                  </p>
-                </div>
-              </div>
-
-              {/* Bottom Action Pill */}
-              <div className="relative z-10 mt-2">
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#78350F] group-hover:bg-[#92400E] text-white px-3 py-1 rounded-full shadow-xs transition-colors">
-                  <span>{t('Best Deals Only', 'সেরা ডিল দেখুন')}</span>
-                  <span className="text-xs">→</span>
-                </span>
-              </div>
+            {/* CARD 2: PROMOTION 2 (bKash Grocery Cashback) */}
+            <Link
+              href="/offers"
+              className="group relative rounded-3xl overflow-hidden shadow-xs border border-[#E5ECE7] hover:border-[#21A366]/50 hover:shadow-lg transition-all duration-300 bg-white flex items-center justify-center min-h-[190px] sm:min-h-[220px] lg:min-h-[240px]"
+            >
+              <img
+                src="/images/promotion-2.jpg"
+                alt="Online Grocery Cashback Offer"
+                className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/banner-farm-grocery.jpg';
+                }}
+              />
             </Link>
           </div>
         </div>
