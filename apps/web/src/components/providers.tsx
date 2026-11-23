@@ -6,6 +6,7 @@ import { CatalogProvider } from '../context/catalog-context';
 import { CartProvider } from '../context/cart-context';
 import { LanguageProvider } from '../context/language-context';
 import { UserProvider } from '../context/user-context';
+import { PWAInstaller } from './pwa-installer';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,7 +14,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <LanguageProvider>
         <CatalogProvider>
           <UserProvider>
-            <CartProvider>{children}</CartProvider>
+            <CartProvider>
+              {children}
+              <PWAInstaller />
+            </CartProvider>
           </UserProvider>
         </CatalogProvider>
       </LanguageProvider>

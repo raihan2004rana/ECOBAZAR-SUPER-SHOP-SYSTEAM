@@ -1,0 +1,73 @@
+{
+  "name": "ECOBAZAR Supermarket & Grocery",
+  "short_name": "ECOBAZAR",
+  "description": "Online supermarket and fresh grocery shopping in Bangladesh. 100% formaline-free organic food, farm-to-table delivery within 30 minutes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#123C2D",
+  "theme_color": "#123C2D",
+  "orientation": "portrait-primary",
+  "dir": "ltr",
+  "lang": "bn-BD",
+  "categories": [
+    "shopping",
+    "food",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today's Best Deals",
+      "short_name": "Deals",
+      "url": "/deals",
+      "icons": [
+        {
+          "src": "/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Fresh Fruits & Vegetables",
+      "short_name": "Vegetables",
+      "url": "/category/fresh-fruits-vegetables",
+      "icons": [
+        {
+          "src": "/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Store Outlets & Delivery Hubs",
+      "short_name": "Branches",
+      "url": "/branches",
+      "icons": [
+        {
+          "src": "/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}

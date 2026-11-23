@@ -1,0 +1,72 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- App Background with elegant rounded corner container -->
+  <rect width="512" height="512" rx="112" fill="#123C2D" />
+  <rect x="12" y="12" width="488" height="488" rx="100" stroke="#2EBD70" stroke-width="6" stroke-opacity="0.35" />
+
+  <!-- Inner Soft Radial Glow -->
+  <circle cx="256" cy="240" r="180" fill="#2EBD70" fill-opacity="0.12" />
+
+  <!-- Shopping Basket with Produce Group -->
+  <g transform="translate(68, 60) scale(3.76)">
+    <defs>
+      <linearGradient id="pwaBasketGrad" x1="10" y1="45" x2="90" y2="85" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#2EBD70" />
+        <stop offset="1" stop-color="#0E3024" />
+      </linearGradient>
+      <linearGradient id="pwaCarrotGrad" x1="30" y1="20" x2="45" y2="45" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#F97316" />
+        <stop offset="1" stop-color="#EA580C" />
+      </linearGradient>
+      <linearGradient id="pwaTomatoGrad" x1="18" y1="22" x2="38" y2="42" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#EF4444" />
+        <stop offset="1" stop-color="#B91C1C" />
+      </linearGradient>
+      <linearGradient id="pwaAppleGrad" x1="62" y1="20" x2="82" y2="40" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#DC2626" />
+        <stop offset="1" stop-color="#991B1B" />
+      </linearGradient>
+    </defs>
+
+    <!-- Veggies & Fruits popping from basket -->
+    <path d="M42 16C42 16 48 8 56 14C64 20 54 28 54 28" fill="#22C55E" />
+    <path d="M50 20C50 20 60 12 68 18C76 24 64 32 64 32" fill="#16A34A" />
+
+    <!-- Tomato Left -->
+    <circle cx="28" cy="34" r="14" fill="url(#pwaTomatoGrad)" />
+    <path d="M28 20C28 20 26 15 28 12C30 15 28 20 28 20Z" fill="#15803D" stroke="#15803D" stroke-width="2" stroke-linecap="round" />
+    <path d="M25 18C25 18 20 17 18 19C21 20 25 18 25 18Z" fill="#15803D" />
+    <path d="M31 18C31 18 36 17 38 19C35 20 31 18 31 18Z" fill="#15803D" />
+
+    <!-- Carrot Center -->
+    <path d="M46 18C44 14 42 8 38 6C42 10 46 14 46 18Z" fill="#22C55E" />
+    <path d="M48 18C50 14 54 8 58 6C54 10 50 14 48 18Z" fill="#16A34A" />
+    <path d="M38 24L56 22L50 48L44 48Z" fill="url(#pwaCarrotGrad)" />
+
+    <!-- Red Apple Right -->
+    <circle cx="72" cy="34" r="13" fill="url(#pwaAppleGrad)" />
+    <path d="M72 21C74 17 78 15 80 16C78 19 75 22 72 21Z" fill="#15803D" />
+
+    <!-- Citrus -->
+    <ellipse cx="46" cy="38" rx="10" ry="8" fill="#FACC15" />
+
+    <!-- Shopping Basket Body -->
+    <path
+      d="M12 44C12 40.6863 14.6863 38 18 38H82C85.3137 38 88 40.6863 88 44L80 78C79.2 81.5 76.2 84 72.6 84H27.4C23.8 84 20.8 81.5 20 78L12 44Z"
+      fill="url(#pwaBasketGrad)"
+    />
+
+    <!-- Basket Rim -->
+    <rect x="10" y="38" width="80" height="7" rx="3.5" fill="#0C251C" />
+
+    <!-- Basket Slits -->
+    <rect x="25" y="52" width="6" height="18" rx="3" fill="#D8F3DC" opacity="0.9" />
+    <rect x="37" y="52" width="6" height="20" rx="3" fill="#D8F3DC" opacity="0.9" />
+    <rect x="49" y="52" width="6" height="20" rx="3" fill="#D8F3DC" opacity="0.9" />
+    <rect x="61" y="52" width="6" height="20" rx="3" fill="#D8F3DC" opacity="0.9" />
+    <rect x="73" y="52" width="6" height="18" rx="3" fill="#D8F3DC" opacity="0.9" />
+
+    <!-- Wheels -->
+    <circle cx="34" cy="89" r="6" fill="#0C251C" stroke="#D8F3DC" stroke-width="2" />
+    <circle cx="66" cy="89" r="6" fill="#0C251C" stroke="#D8F3DC" stroke-width="2" />
+  </g>
+</svg>
