@@ -2700,7 +2700,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
               {/* Summary Metrics Bar */}
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                <div className="p-3.5 rounded-2xl bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 shadow-xs">
+                <div className="p-3.5 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xs">
                   <span className="text-[11px] font-semibold text-neutral-400 block">{t('Total Catalog', 'মোট ক্যাটালগ')}</span>
                   <strong className="text-xl font-black text-neutral-900 dark:text-white">{products.length} {t('Items', 'টি পণ্য')}</strong>
                 </div>
@@ -2745,7 +2745,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </div>
 
               {/* Toolbar: Search, Category Filter, and Flag Pills */}
-              <Card className="p-4 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 space-y-3">
+              <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                   {/* Search Input */}
                   <div className="relative flex-1">
@@ -2819,7 +2819,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </Card>
 
               {/* Master Products Table */}
-              <Card className="p-0 overflow-hidden bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20">
+              <Card className="p-0 overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left border-collapse">
                     <thead className="bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 dark:text-neutral-400 uppercase font-bold border-b border-neutral-200 dark:border-neutral-800">
@@ -3069,7 +3069,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </div>
 
               {/* 1. TOP ANNOUNCEMENT & VOUCHER BAR CONTROLLER */}
-              <Card className="p-5 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 space-y-4">
+              <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4">
                 <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
                   <div>
                     <h3 className="text-base font-black text-neutral-900 dark:text-white flex items-center gap-2">
@@ -3189,7 +3189,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   {heroSlides.map((slide, idx) => (
                     <Card
                       key={slide.id || idx}
-                      className="p-4 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 space-y-3 flex flex-col justify-between"
+                      className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3 flex flex-col justify-between"
                     >
                       <div>
                         <div className="h-32 w-full rounded-xl overflow-hidden bg-neutral-100 relative mb-3 border border-neutral-200 dark:border-neutral-700">
@@ -3265,7 +3265,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   {promoBanners.map((promo, idx) => (
                     <Card
                       key={promo.id || idx}
-                      className="p-4 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 flex flex-col sm:flex-row gap-4 items-center"
+                      className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row gap-4 items-center"
                     >
                       <div className="h-28 w-28 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200 dark:border-neutral-700">
                         <img
@@ -3320,7 +3320,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   return (
                     <Card
                       key={cat.id}
-                      className="p-5 bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 space-y-3 flex flex-col justify-between hover:shadow-md transition"
+                      className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3 flex flex-col justify-between hover:shadow-md transition"
                     >
                       <div>
                         <div className="flex items-start justify-between gap-3">
@@ -3538,50 +3538,46 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
           {(activeRouteId === 'dashboard' || activeRouteId === 'analytics') && (
             <div className="space-y-6 text-left">
               {/* ========================================================= */}
-              {/* 1. MISSION-CONTROL TELEMETRY HUD BAR */}
+              {/* 1. MISSION-CONTROL TELEMETRY HEADER BAR */}
               {/* ========================================================= */}
-              <div className="rounded-2xl p-4 sm:p-5 bg-gradient-to-r from-emerald-950 via-neutral-900 to-[#071F15] text-white shadow-xl border border-emerald-500/30 relative overflow-hidden">
-                {/* Background futuristic tech glow accents */}
-                <div className="absolute -right-20 -top-20 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-                <div className="absolute -left-20 -bottom-20 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-
-                <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div className="rounded-2xl p-4 sm:p-5 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-xs border border-neutral-200/90 dark:border-neutral-800 relative">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                   {/* Left: Live Node & Status */}
                   <div className="space-y-1.5">
                     <div className="flex flex-wrap items-center gap-2.5">
-                      <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[11px] font-black text-emerald-300">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[11px] font-bold text-[#16A36A] dark:text-emerald-400">
                         <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#16A36A] opacity-75" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#16A36A]" />
                         </span>
                         LIVE TELEMETRY ACTIVE
                       </div>
-                      <span className="text-xs text-neutral-400 font-medium hidden sm:inline">•</span>
-                      <div className="inline-flex items-center gap-1.5 text-xs text-emerald-200/90 font-mono">
-                        <Server className="h-3.5 w-3.5 text-emerald-400" />
+                      <span className="text-xs text-neutral-300 dark:text-neutral-700 font-medium hidden sm:inline">•</span>
+                      <div className="inline-flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 font-mono">
+                        <Server className="h-3.5 w-3.5 text-neutral-400" />
                         <span>CLOUD RUN DHAKA CLUSTER-01</span>
                       </div>
-                      <span className="text-xs text-neutral-400 font-medium hidden sm:inline">•</span>
-                      <div className="inline-flex items-center gap-1.5 text-xs text-cyan-300 font-mono">
-                        <Zap className="h-3.5 w-3.5 text-cyan-400" />
+                      <span className="text-xs text-neutral-300 dark:text-neutral-700 font-medium hidden sm:inline">•</span>
+                      <div className="inline-flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 font-mono">
+                        <Zap className="h-3.5 w-3.5 text-amber-500" />
                         <span>14ms BDIX</span>
                       </div>
                     </div>
 
                     <div className="flex flex-col sm:flex-row sm:items-baseline gap-2">
-                      <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
+                      <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#124432] dark:text-white flex items-center gap-2">
                         {adminLang === 'bn' ? 'এক্সিকিউটিভ মিশন কন্ট্রোল' : 'Executive Mission Control'}
                       </h1>
-                      <span className="text-xs sm:text-sm text-neutral-300 font-medium">
-                        {adminLang === 'bn' ? 'বর্তমান শাখা:' : 'Active Scope:'} <strong className="text-emerald-400 font-bold">{selectedBranch.name}</strong>
+                      <span className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                        {adminLang === 'bn' ? 'বর্তমান শাখা:' : 'Active Scope:'} <strong className="text-[#16A36A] font-bold">{selectedBranch.name}</strong>
                       </span>
                     </div>
 
-                    <p className="text-xs text-neutral-400 flex items-center gap-2">
-                      <Clock className="h-3.5 w-3.5 text-emerald-400" />
-                      <span>{adminLang === 'bn' ? 'ঢাকা সময় (BST):' : 'Dhaka BST Clock:'} <strong className="text-white font-mono">{liveDhakaClock || '10:48:30 AM'}</strong></span>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 flex flex-wrap items-center gap-2">
+                      <Clock className="h-3.5 w-3.5 text-neutral-400" />
+                      <span>{adminLang === 'bn' ? 'ঢাকা সময় (BST):' : 'Dhaka BST Clock:'} <strong className="text-neutral-700 dark:text-neutral-200 font-mono font-semibold">{liveDhakaClock || '10:48:30 AM'}</strong></span>
                       <span>•</span>
-                      <span>{adminLang === 'bn' ? 'সিস্টেম হেলথ:' : 'Health:'} <strong className="text-emerald-300">{adminLang === 'bn' ? '৯৯.৯৮% এসএলএ স্বাভাবিক' : '99.98% SLA Normal'}</strong></span>
+                      <span>{adminLang === 'bn' ? 'সিস্টেম হেলথ:' : 'Health:'} <strong className="text-[#16A36A] font-semibold">{adminLang === 'bn' ? '৯৯.৯৮% স্বাভাবিক' : '99.98% SLA Normal'}</strong></span>
                       <span>•</span>
                       <span>{adminLang === 'bn' ? 'আপডেট হয়েছে' : 'Updated'} {lastRefreshedText}</span>
                     </p>
@@ -3592,12 +3588,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <Button
                       variant="forest"
                       size="sm"
-                      leftIcon={<Store className="h-3.5 w-3.5 text-emerald-300" />}
+                      leftIcon={<Store className="h-3.5 w-3.5" />}
                       onClick={() => {
                         setActiveRouteId('pos');
                         toast.info('POS Terminal Activated', 'Switched to Rapid Checkout Console');
                       }}
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-900/40 border border-emerald-400/40 text-xs"
+                      className="bg-[#16A36A] hover:bg-[#128855] text-white font-bold shadow-xs text-xs px-3.5 py-2 cursor-pointer"
                     >
                       {adminLang === 'bn' ? 'কুইক পিওএস (F2)' : 'Quick POS (F2)'}
                     </Button>
@@ -3605,9 +3601,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <Button
                       variant="outline"
                       size="sm"
-                      leftIcon={<Plus className="h-3.5 w-3.5 text-white" />}
+                      leftIcon={<Plus className="h-3.5 w-3.5 text-neutral-600 dark:text-neutral-300" />}
                       onClick={handleOpenAddProduct}
-                      className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-bold"
+                      className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700/60 text-neutral-700 dark:text-neutral-200 text-xs font-semibold cursor-pointer"
                     >
                       {t('Inward Stock', 'স্টক এন্ট্রি')}
                     </Button>
@@ -3615,9 +3611,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <Button
                       variant="outline"
                       size="sm"
-                      leftIcon={<Download className="h-3.5 w-3.5 text-white" />}
+                      leftIcon={<Download className="h-3.5 w-3.5 text-neutral-600 dark:text-neutral-300" />}
                       onClick={handleExportCSV}
-                      className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-bold"
+                      className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700/60 text-neutral-700 dark:text-neutral-200 text-xs font-semibold cursor-pointer"
                     >
                       {adminLang === 'bn' ? 'অডিট সিএসভি' : 'Audit CSV'}
                     </Button>
@@ -3625,9 +3621,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <Button
                       variant="outline"
                       size="sm"
-                      leftIcon={<RefreshCw className={`h-3.5 w-3.5 text-emerald-300 ${isRefreshing ? 'animate-spin' : ''}`} />}
+                      leftIcon={<RefreshCw className={`h-3.5 w-3.5 text-[#16A36A] ${isRefreshing ? 'animate-spin' : ''}`} />}
                       onClick={handleRefreshTelemetry}
-                      className="bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-200 border-emerald-500/40 text-xs font-bold"
+                      className="bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100/60 text-[#124432] dark:text-emerald-300 text-xs font-semibold cursor-pointer"
                     >
                       {adminLang === 'bn' ? 'লাইভ সিঙ্ক' : 'Live Sync'}
                     </Button>
@@ -3635,96 +3631,143 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
               </div>
 
-              {/* REAL-TIME STOREFRONT SALES TELEMETRY BANNER - ULTRA-HIGH CONTRAST */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#082819] text-white border-2 border-emerald-400 shadow-xl text-left relative overflow-hidden">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 relative z-10">
-                  <div className="space-y-1.5 max-w-xl">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-400 text-neutral-950 font-black text-[11px] uppercase tracking-wider shadow-sm">
-                        ⚡ {adminLang === 'bn' ? 'রিয়েল-টাইম স্টোর সেলস' : 'Real-Time Store Sales'}
+              {/* REAL-TIME STOREFRONT SALES TELEMETRY - CLEAN METRIC PANEL */}
+              <div className="space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[#16A36A] dark:text-emerald-400 font-bold text-xs">
+                      ⚡ {adminLang === 'bn' ? 'রিয়েল-টাইম স্টোর সেলস' : 'Real-Time Store Sales'}
+                    </span>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium hidden sm:inline">
+                      {adminLang === 'bn'
+                        ? 'লাইভ বিক্রয় ও প্রোডাক্ট পারফরম্যান্স'
+                        : 'Live sales & product performance across online storefront and retail counters.'}
+                    </span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<BarChart3 className="h-3.5 w-3.5 text-[#16A36A]" />}
+                    onClick={() => setActiveRouteId('orders')}
+                    className="self-start sm:self-auto text-xs font-bold text-[#124432] dark:text-emerald-300 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700/60 cursor-pointer"
+                  >
+                    {adminLang === 'bn' ? 'সম্পূর্ণ লাইভ রিপোর্ট ও এক্সপোর্ট 📊' : 'View Full Live Report & Export 📊'}
+                  </Button>
+                </div>
+
+                {/* 4 Individual White Metric Cards with subtle borders */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 text-left">
+                  {/* Card 1: Total Sales */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 shadow-xs flex items-center justify-between">
+                    <div>
+                      <span className="text-[11px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">
+                        {adminLang === 'bn' ? 'মোট বিক্রয়' : 'Total Sales'}
                       </span>
-                      <span className="text-sm text-emerald-200 font-bold">
-                        {adminLang === 'bn' ? 'লাইভ বিক্রয় ও প্রোডাক্ট পারফরম্যান্স' : 'Live Sales & Product Performance'}
+                      <strong className="text-xl font-black text-neutral-900 dark:text-white mt-0.5 block tracking-tight">
+                        ৳{liveGrandRevenue.toLocaleString()}
+                      </strong>
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+                        {adminLang === 'bn' ? 'লাইভ স্বয়ংক্রিয় সিঙ্ক' : 'Live synced'}
                       </span>
                     </div>
-                    <p className="text-xs text-emerald-100/90 font-medium leading-relaxed">
-                      {adminLang === 'bn'
-                        ? 'অনলাইন স্টোর থেকে গ্রাহক অর্ডার করার সাথে সাথেই বিক্রিত পণ্যের পরিমাণ (যেমন: ১ কেজি + ২ কেজি = ৩ কেজি) এবং মোট টাকা স্বয়ংক্রিয়ভাবে লাইভ আপডেট হচ্ছে।'
-                        : 'Product sold volume (e.g. 1kg + 2kg = 3kg) and total gross revenue automatically update in real-time as shoppers place orders on the storefront.'}
-                    </p>
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-800/60 text-[#16A36A] flex items-center justify-center font-bold text-base shrink-0">
+                      ৳
+                    </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-emerald-400/50 text-xs shadow-inner">
-                      <span className="text-emerald-300 block text-[10px] font-bold tracking-wide uppercase">
-                        {adminLang === 'bn' ? 'মোট বিক্রয়:' : 'Total Sales:'}
+                  {/* Card 2: Total Volume Sold */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 shadow-xs flex items-center justify-between">
+                    <div>
+                      <span className="text-[11px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">
+                        {adminLang === 'bn' ? 'মোট বিক্রিত পরিমাণ' : 'Total Volume Sold'}
                       </span>
-                      <strong className="text-emerald-300 font-black text-base">৳{liveGrandRevenue.toLocaleString()}</strong>
+                      <strong className="text-xl font-black text-neutral-900 dark:text-white mt-0.5 block tracking-tight">
+                        {liveGrandUnits} <span className="text-xs font-normal text-neutral-500">kg/units</span>
+                      </strong>
+                      <span className="text-[10px] text-cyan-600 dark:text-cyan-400 font-medium">
+                        {adminLang === 'bn' ? 'ওজন ও ইউনিট সংকলন' : 'Aggregated orders'}
+                      </span>
                     </div>
-                    <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-cyan-400/50 text-xs shadow-inner">
-                      <span className="text-cyan-300 block text-[10px] font-bold tracking-wide uppercase">
-                        {adminLang === 'bn' ? 'মোট বিক্রিত পরিমাণ:' : 'Total Volume Sold:'}
-                      </span>
-                      <strong className="text-cyan-300 font-black text-base">{liveGrandUnits} kg/units</strong>
+                    <div className="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-100 dark:border-cyan-800/60 text-cyan-600 flex items-center justify-center font-bold text-base shrink-0">
+                      <Package className="w-5 h-5" />
                     </div>
-                    <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-amber-400/50 text-xs shadow-inner">
-                      <span className="text-amber-300 block text-[10px] font-bold tracking-wide uppercase">
-                        {adminLang === 'bn' ? 'আজকের সেরা পণ্য:' : "Today's Best Item:"}
+                  </div>
+
+                  {/* Card 3: Today's Best Item */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 shadow-xs flex items-center justify-between">
+                    <div className="truncate pr-2">
+                      <span className="text-[11px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">
+                        {adminLang === 'bn' ? 'আজকের সেরা পণ্য' : "Today's Best Item"}
                       </span>
-                      <strong className="text-amber-300 font-black text-base">
+                      <strong className="text-sm font-black text-neutral-900 dark:text-white mt-0.5 block truncate">
                         {adminLang === 'bn' ? (topSellingProduct?.nameBn || topSellingProduct?.name || 'তাজা পেয়ারা ১ কেজি') : (topSellingProduct?.name || 'Fresh Guava 1kg')}
                       </strong>
+                      <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
+                        {adminLang === 'bn' ? 'সর্বোচ্চ অর্ডারের আইটেম' : 'Top velocity SKU'}
+                      </span>
                     </div>
-                    {badReviewsCount > 0 && (
-                      <div className="px-3.5 py-2 rounded-xl bg-[#2C0B0E] border border-rose-400 text-xs shadow-inner">
-                        <span className="text-rose-300 block text-[10px] font-bold tracking-wide uppercase">
-                          {adminLang === 'bn' ? 'খারাপ রিভিউ অ্যালার্ট:' : 'Review Alerts:'}
-                        </span>
-                        <strong className="text-rose-300 font-black text-base">{badReviewsCount} Flagged</strong>
-                      </div>
-                    )}
-                    <Button
-                      variant="forest"
-                      size="sm"
-                      leftIcon={<BarChart3 className="h-4 w-4" />}
-                      onClick={() => setActiveRouteId('orders')}
-                      className="font-black text-xs bg-emerald-500 hover:bg-emerald-400 text-neutral-950 shadow-md ml-auto lg:ml-0 h-10 px-4"
-                    >
-                      {adminLang === 'bn' ? 'সম্পূর্ণ লাইভ রিপোর্ট ও এক্সপোর্ট 📊' : 'View Full Live Report & Export 📊'}
-                    </Button>
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-100 dark:border-amber-800/60 text-amber-600 flex items-center justify-center font-bold shrink-0">
+                      <Sparkles className="w-5 h-5" />
+                    </div>
+                  </div>
+
+                  {/* Card 4: Review Alerts */}
+                  <div className={`p-4 rounded-xl bg-white dark:bg-neutral-900 border shadow-xs flex items-center justify-between ${
+                    badReviewsCount > 0 ? 'border-rose-200 dark:border-rose-900/60' : 'border-neutral-200/90 dark:border-neutral-800'
+                  }`}>
+                    <div>
+                      <span className="text-[11px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">
+                        {adminLang === 'bn' ? 'রিভিউ পর্যালোচনা' : 'Review Alerts'}
+                      </span>
+                      <strong className={`text-xl font-black mt-0.5 block tracking-tight ${
+                        badReviewsCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-neutral-900 dark:text-white'
+                      }`}>
+                        {badReviewsCount > 0 ? `${badReviewsCount} Flagged` : (adminLang === 'bn' ? '০ সমস্যা' : '0 Flagged')}
+                      </strong>
+                      <span className={`text-[10px] font-medium ${
+                        badReviewsCount > 0 ? 'text-rose-500' : 'text-emerald-600 dark:text-emerald-400'
+                      }`}>
+                        {badReviewsCount > 0 ? (adminLang === 'bn' ? 'মনোযোগ প্রয়োজন' : 'Needs attention') : (adminLang === 'bn' ? 'সব গ্রাহক সন্তুষ্ট' : '100% Satisfaction')}
+                      </span>
+                    </div>
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0 ${
+                      badReviewsCount > 0
+                        ? 'bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 text-rose-600'
+                        : 'bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-800/60 text-[#16A36A]'
+                    }`}>
+                      {badReviewsCount > 0 ? <AlertTriangle className="w-5 h-5" /> : <CheckCircle2 className="w-5 h-5" />}
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* ========================================================= */}
-              {/* 2. 4 HOLOGRAPHIC CYBERNETIC KPI CARDS */}
+              {/* 2. 4 EXECUTIVE KPI CARDS */}
               {/* ========================================================= */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
                 {/* 1. Total Gross Revenue */}
-                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md hover:shadow-xl hover:border-emerald-400/60 transition-all duration-300 group">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
-                  
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs hover:shadow-md hover:border-emerald-400/50 transition-all duration-200 group">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
                       {adminLang === 'bn' ? 'দৈনিক মোট বিক্রয়' : 'Daily Gross Revenue'}
                     </span>
-                    <span className="h-8 w-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-base shadow-xs">
+                    <span className="h-8 w-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-[#16A36A] dark:text-emerald-400 flex items-center justify-center font-bold text-base shadow-xs">
                       ৳
                     </span>
                   </div>
 
                   <div className="mt-3">
                     <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
-                      <PriceDisplay amount={metrics.revenue} size="xl" className="font-black text-forest-900 dark:text-emerald-300" />
+                      <PriceDisplay amount={metrics.revenue} size="xl" className="font-black text-[#124432] dark:text-emerald-400" />
                     </div>
 
-                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-[#16A36A] dark:text-emerald-400 font-bold">
                       <TrendingUp className="h-3.5 w-3.5" />
                       <span>{metrics.revenueChange}</span>
                     </div>
 
                     {/* Channel Breakdown pills */}
-                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 flex items-center justify-between text-[11px]">
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between text-[11px]">
                       <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'কাউন্টার বিক্রয়:' : 'POS Walk-in:'}</span>
                       <strong className="text-neutral-900 dark:text-neutral-200 font-bold">৳{Math.round(metrics.revenue * 0.805).toLocaleString()} (80%)</strong>
                     </div>
@@ -3740,21 +3783,19 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         <span>{adminLang === 'bn' ? 'লক্ষ্যমাত্রা ৳২,৫০,০০০' : '৳250,000 Target'}</span>
                       </div>
                       <div className="h-1.5 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style={{ width: '74%' }} />
+                        <div className="h-full bg-[#16A36A] rounded-full" style={{ width: '74%' }} />
                       </div>
                     </div>
                   </div>
                 </Card>
 
                 {/* 2. Total Order Throughput */}
-                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md hover:shadow-xl hover:border-blue-400/60 transition-all duration-300 group">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
-                  
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs hover:shadow-md hover:border-blue-400/50 transition-all duration-200 group">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
                       {adminLang === 'bn' ? 'অর্ডারের সংখ্যা ও ডেলিভারি' : 'Order Throughput'}
                     </span>
-                    <span className="h-8 w-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-base shadow-xs">
+                    <span className="h-8 w-8 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-base shadow-xs">
                       <ShoppingCart className="h-4 w-4" />
                     </span>
                   </div>
@@ -3764,13 +3805,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {metrics.orders.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">{adminLang === 'bn' ? 'অর্ডার' : 'Orders'}</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-[#16A36A] dark:text-emerald-400 font-bold">
                       <Activity className="h-3.5 w-3.5" />
                       <span>{adminLang === 'bn' ? 'গড় ডেলিভারি: ৬.২ মিনিট' : 'Avg Dispatch: 6.2 mins'}</span>
                     </div>
 
                     {/* Breakdown sub-grid */}
-                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 grid grid-cols-3 gap-1 text-center">
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800 grid grid-cols-3 gap-1 text-center">
                       <div className="bg-neutral-50 dark:bg-neutral-800/60 rounded-lg p-1.5">
                         <span className="text-[10px] text-neutral-400 block font-semibold">{adminLang === 'bn' ? 'সম্পন্ন' : 'Done'}</span>
                         <strong className="text-xs font-black text-emerald-600 dark:text-emerald-400">312</strong>
@@ -3787,20 +3828,18 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                     <div className="mt-2.5 flex items-center justify-between text-[10px] text-neutral-400 font-medium">
                       <span>{adminLang === 'bn' ? 'ডেলিভারি বহর:' : 'Express Courier Fleet:'}</span>
-                      <span className="text-emerald-500 font-bold">{adminLang === 'bn' ? '২৬টি সক্রিয় ই-বাইক' : '26 E-Bikes Active'}</span>
+                      <span className="text-[#16A36A] font-bold">{adminLang === 'bn' ? '২৬টি সক্রিয় ই-বাইক' : '26 E-Bikes Active'}</span>
                     </div>
                   </div>
                 </Card>
 
                 {/* 3. Active SKUs & Inventory Asset */}
-                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md hover:shadow-xl hover:border-amber-400/60 transition-all duration-300 group">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 dark:bg-amber-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
-                  
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs hover:shadow-md hover:border-amber-400/50 transition-all duration-200 group">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
                       {adminLang === 'bn' ? 'সক্রিয় ইনভেন্টরি এসকেইউ' : 'Active Inventory SKUs'}
                     </span>
-                    <span className="h-8 w-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-base shadow-xs">
+                    <span className="h-8 w-8 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-base shadow-xs">
                       <Package className="h-4 w-4" />
                     </span>
                   </div>
@@ -3810,19 +3849,19 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {metrics.activeProducts.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">{adminLang === 'bn' ? 'আইটেম' : 'SKUs'}</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
+                    <div className="flex items-center gap-1.5 mt-1 text-[11px] text-[#16A36A] dark:text-emerald-400 font-bold">
                       <TrendingUp className="h-3.5 w-3.5" />
                       <span>{adminLang === 'bn' ? '৯৮.৪% স্টক প্রাপ্যতা' : '98.4% Shelf Availability'}</span>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 space-y-1 text-[11px]">
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800 space-y-1 text-[11px]">
                       <div className="flex items-center justify-between">
                         <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'মোট পণ্যের মূল্য:' : 'Asset Valuation:'}</span>
                         <strong className="text-neutral-900 dark:text-neutral-200 font-bold">{adminLang === 'bn' ? '৳৪৮.২ লাখ' : '৳4.82M Total'}</strong>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'কোল্ড চেইন চিলার:' : 'Cold Chain Chillers:'}</span>
-                        <span className="inline-flex items-center gap-1 text-emerald-500 font-bold">
+                        <span className="inline-flex items-center gap-1 text-[#16A36A] font-bold">
                           <Thermometer className="h-3 w-3" />
                           <span>{adminLang === 'bn' ? '৪° সে. এর নিচে (স্বাভাবিক)' : 'Sub-4°C OK'}</span>
                         </span>
@@ -3838,14 +3877,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </Card>
 
                 {/* 4. Telemetry & Risk Matrix */}
-                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-rose-200/80 dark:border-rose-900/50 backdrop-blur-md hover:shadow-xl hover:border-rose-400/60 transition-all duration-300 group">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 dark:bg-rose-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
-                  
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-rose-200/90 dark:border-rose-900/50 rounded-2xl shadow-xs hover:shadow-md hover:border-rose-400/50 transition-all duration-200 group">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-rose-600 dark:text-rose-400 uppercase">
                       {adminLang === 'bn' ? 'ঝুঁকি ও মেয়াদ সতর্কতা' : 'Risk & Expiry Matrix'}
                     </span>
-                    <span className="h-8 w-8 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-base shadow-xs">
+                    <span className="h-8 w-8 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-base shadow-xs">
                       <AlertTriangle className="h-4 w-4" />
                     </span>
                   </div>
@@ -3860,10 +3897,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <span>{metrics.lowStockCount} {adminLang === 'bn' ? 'স্বল্প স্টক পণ্য' : 'Low Stock Triggered'}</span>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 space-y-1 text-[11px]">
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800 space-y-1 text-[11px]">
                       <div className="flex items-center justify-between">
                         <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'বিদ্যুৎ ব্যাকআপ:' : 'Power & Backup:'}</span>
-                        <strong className="text-emerald-500 font-bold">{adminLang === 'bn' ? 'গ্রিড + জেনারেটর সচল' : 'Grid + Generator OK'}</strong>
+                        <strong className="text-[#16A36A] font-bold">{adminLang === 'bn' ? 'গ্রিড + জেনারেটর সচল' : 'Grid + Generator OK'}</strong>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'পিওএস কাউন্টার:' : 'POS Lane Integrity:'}</span>
@@ -3877,7 +3914,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         setActiveRouteId('expiry');
                         toast.info('Expiry Console', 'Navigated to FEFO Batch Clearance');
                       }}
-                      className="mt-2 text-[11px] font-black text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1"
+                      className="mt-2 text-[11px] font-black text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       {adminLang === 'bn' ? 'মেয়াদ উত্তীর্ণ ব্যাচ সমাধান →' : 'Resolve Expiry Batches →'}
                     </button>
@@ -3886,11 +3923,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </div>
 
               {/* ========================================================= */}
-              {/* 3. FUTURISTIC DUAL-CURVE SPLINE SALES CHART & LIVE MATRIX */}
+              {/* 3. DUAL-CURVE SPLINE SALES CHART & LIVE MATRIX */}
               {/* ========================================================= */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
                 {/* Left 8 Cols: High-Tech Spline Chart */}
-                <Card className="lg:col-span-8 p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                <Card className="lg:col-span-8 p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                     <div>
                       <div className="flex items-center gap-2">
@@ -4062,7 +4099,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </Card>
 
                 {/* Right 4 Cols: Multi-Hub Real-Time Operations Matrix */}
-                <Card className="lg:col-span-4 p-5 flex flex-col justify-between bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                <Card className="lg:col-span-4 p-5 flex flex-col justify-between bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <div>
@@ -4186,24 +4223,22 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               {/* ========================================================= */}
               {/* 4. ECOBAZAR AI NEURAL HUB (PREDICTIVE INTELLIGENCE) */}
               {/* ========================================================= */}
-              <div className="rounded-2xl p-5 bg-gradient-to-br from-[#041E15] via-neutral-900 to-[#022C22] text-white border border-emerald-500/40 shadow-xl relative overflow-hidden">
-                <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
+              <div className="rounded-2xl p-5 sm:p-6 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-emerald-500/30 dark:border-emerald-500/20 shadow-xs relative overflow-hidden">
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex items-start gap-3.5">
-                    <div className="h-12 w-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0 shadow-lg text-emerald-300">
-                      <BrainCircuit className="h-6 w-6 animate-pulse" />
+                    <div className="h-11 w-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[#16A36A] flex items-center justify-center shrink-0">
+                      <BrainCircuit className="h-5 w-5" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
+                        <h3 className="text-base font-black tracking-tight text-[#124432] dark:text-white">
                           ECOBAZAR AI Neural Hub
                         </h3>
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[10px] font-black text-emerald-300">
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold text-[#16A36A] dark:text-emerald-400">
                           AUTONOMOUS V2.4
                         </span>
                       </div>
-                      <p className="text-xs text-neutral-300 font-medium mt-0.5">
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium mt-0.5">
                         Real-time algorithmic demand forecasting, FEFO markdown automation, and inter-hub load balancing.
                       </p>
                     </div>
@@ -4225,7 +4260,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         }, 800);
                       }}
                       disabled={isAiOptimizing}
-                      className="bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-black shadow-lg shadow-emerald-500/25 border border-emerald-300 text-xs px-4 py-2"
+                      className="bg-[#16A36A] hover:bg-[#128855] text-white font-bold shadow-xs text-xs px-4 py-2 cursor-pointer"
                     >
                       {isAiOptimizing ? (
                         <span className="flex items-center gap-2">
@@ -4233,8 +4268,8 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           Executing Optimization...
                         </span>
                       ) : aiPlanExecuted ? (
-                        <span className="flex items-center gap-1.5 text-neutral-950 font-bold">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-neutral-950" />
+                        <span className="flex items-center gap-1.5 text-white font-bold">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-white" />
                           Plan Executed & Synchronized
                         </span>
                       ) : (
@@ -4247,46 +4282,52 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   </div>
                 </div>
 
-                {/* 3 AI Recommendations Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-5 pt-4 border-t border-emerald-500/20 text-xs">
+                {/* 3 AI Recommendations Grid: Clean white/light cards with subtle borders */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-5 pt-4 border-t border-neutral-100 dark:border-neutral-800 text-xs">
                   {/* Rec 1 */}
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/10 transition">
-                    <div className="flex items-center justify-between font-bold text-emerald-300">
+                  <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200/80 dark:border-neutral-700/60 space-y-1.5">
+                    <div className="flex items-center justify-between font-bold text-neutral-900 dark:text-white">
                       <span className="flex items-center gap-1.5">
-                        <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+                        <TrendingUp className="h-3.5 w-3.5 text-[#16A36A]" />
                         Weather Rain Demand Surge
                       </span>
-                      <span className="text-[10px] bg-emerald-500/20 px-1.5 py-0.5 rounded text-emerald-200">+35% Surge</span>
+                      <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-1.5 py-0.5 rounded text-[#16A36A] dark:text-emerald-400 font-bold">
+                        +35% Surge
+                      </span>
                     </div>
-                    <p className="text-neutral-300 leading-relaxed text-[11px]">
+                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed text-[11px]">
                       Evening showers expected in Gulshan & Uttara corridor. Demand for ginger tea, eggs, and khichuri staples predicted to peak.
                     </p>
                   </div>
 
                   {/* Rec 2 */}
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/10 transition">
-                    <div className="flex items-center justify-between font-bold text-amber-300">
+                  <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200/80 dark:border-neutral-700/60 space-y-1.5">
+                    <div className="flex items-center justify-between font-bold text-neutral-900 dark:text-white">
                       <span className="flex items-center gap-1.5">
-                        <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
+                        <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
                         FEFO Milk Markdown Trigger
                       </span>
-                      <span className="text-[10px] bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-200">20% Flash</span>
+                      <span className="text-[10px] bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 px-1.5 py-0.5 rounded text-amber-700 dark:text-amber-400 font-bold">
+                        20% Flash
+                      </span>
                     </div>
-                    <p className="text-neutral-300 leading-relaxed text-[11px]">
+                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed text-[11px]">
                       14 packs of Whole Milk expiring within 48h at Dhanmondi. 20% price markdown queued on POS & web app to prevent write-off.
                     </p>
                   </div>
 
                   {/* Rec 3 */}
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/10 transition">
-                    <div className="flex items-center justify-between font-bold text-cyan-300">
+                  <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200/80 dark:border-neutral-700/60 space-y-1.5">
+                    <div className="flex items-center justify-between font-bold text-neutral-900 dark:text-white">
                       <span className="flex items-center gap-1.5">
-                        <ArrowLeftRight className="h-3.5 w-3.5 text-cyan-400" />
+                        <ArrowLeftRight className="h-3.5 w-3.5 text-cyan-500" />
                         Inter-Hub Transit Rebalance
                       </span>
-                      <span className="text-[10px] bg-cyan-500/20 px-1.5 py-0.5 rounded text-cyan-200">Auto Route</span>
+                      <span className="text-[10px] bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200 dark:border-cyan-800 px-1.5 py-0.5 rounded text-cyan-700 dark:text-cyan-400 font-bold">
+                        Auto Route
+                      </span>
                     </div>
-                    <p className="text-neutral-300 leading-relaxed text-[11px]">
+                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed text-[11px]">
                       Uttara rice inventory at 14 bags. Dhanmondi has 80 units buffer. Automated inter-hub stock transfer draft TR-2026-092 prepared.
                     </p>
                   </div>
@@ -4298,7 +4339,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               {/* ========================================================= */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
                 {/* Col 1 (5 Cols): Live Omnichannel Orders Stream */}
-                <Card className="lg:col-span-5 p-5 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                <Card className="lg:col-span-5 p-5 bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <h3 className="text-base font-black text-neutral-900 dark:text-white tracking-tight">
@@ -4365,7 +4406,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </Card>
 
                 {/* Col 2 (4 Cols): Top Velocity Fast-Moving SKUs */}
-                <Card className="lg:col-span-4 p-5 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                <Card className="lg:col-span-4 p-5 bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-base font-black text-neutral-900 dark:text-white tracking-tight">
                       Top Velocity SKUs
@@ -4416,7 +4457,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </Card>
 
                 {/* Col 3 (3 Cols): Mission Control Operational Checklist */}
-                <Card className="lg:col-span-3 p-5 flex flex-col justify-between bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                <Card className="lg:col-span-3 p-5 flex flex-col justify-between bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <h4 className="text-sm font-black text-neutral-900 dark:text-white tracking-tight">
@@ -4582,7 +4623,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               {/* 4 Holographic KPI Metric Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
                 {/* 1. Total Store Revenue */}
-                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
                       {t('Total Sales Revenue', 'মোট বিক্রয় রাজস্ব')}
@@ -4603,7 +4644,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </Card>
 
                 {/* 2. Total Volume Sold */}
-                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
                       {t('Total Volume Sold', 'মোট বিক্রয় পরিমাণ')}
@@ -4624,7 +4665,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </Card>
 
                 {/* 3. Today's Top Selling Product */}
-                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
+                <Card className="p-4 sm:p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
                       {t('Today Top Seller', 'আজকের সেরা বিক্রিত পণ্য')}
@@ -4658,7 +4699,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 {/* 4. Bad Reviews Watchlist */}
                 <Card
                   onClick={() => setSalesReportTab('bad-reviews')}
-                  className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-rose-500/30 backdrop-blur-md cursor-pointer hover:border-rose-400 transition"
+                  className="p-4 sm:p-5 relative overflow-hidden bg-white dark:bg-neutral-900 border border-rose-200 dark:border-rose-900/50 rounded-2xl shadow-xs cursor-pointer hover:border-rose-400 transition"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
@@ -4797,12 +4838,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     {/* Right: Quick Insights & Summary */}
                     <div className="lg:col-span-4 space-y-4">
                       {/* Top Product Highlight Card */}
-                      <Card className="p-5 bg-gradient-to-br from-emerald-950 via-neutral-900 to-[#071F15] text-white border border-emerald-500/30">
-                        <span className="text-[10px] font-black uppercase text-amber-400 tracking-wider">
+                      <Card className="p-5 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
+                        <span className="text-[10px] font-black uppercase text-amber-600 dark:text-amber-400 tracking-wider">
                           {t('🥇 #1 BESTSELLER OF THE DAY', '🥇 আজকের #১ শীর্ষ বিক্রিত পণ্য')}
                         </span>
                         <div className="mt-3 flex items-center gap-3.5">
-                          <div className="h-16 w-16 rounded-2xl overflow-hidden bg-white/10 shrink-0 border border-emerald-400/40">
+                          <div className="h-16 w-16 rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 shrink-0 border border-neutral-200 dark:border-neutral-700">
                             <img
                               src={topSellingProduct?.image || '/uploads/fresh-guava-mwohtea2.jpg'}
                               alt={topSellingProduct?.name}
@@ -4810,20 +4851,20 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             />
                           </div>
                           <div>
-                            <h4 className="font-black text-sm leading-snug line-clamp-2 text-white">
+                            <h4 className="font-black text-sm leading-snug line-clamp-2 text-neutral-900 dark:text-white">
                               {topSellingProduct?.name || 'Fresh Guava 1kg'}
                             </h4>
-                            <p className="text-xs text-emerald-300 font-bold mt-1">
+                            <p className="text-xs text-[#16A36A] font-bold mt-1">
                               {topSellingProduct?.totalSold || 3} kg Sold Today
                             </p>
-                            <p className="text-xs text-neutral-300 font-mono">
+                            <p className="text-xs text-neutral-500 dark:text-neutral-400 font-mono">
                               Total: ৳{(topSellingProduct?.totalRevenue || 270).toLocaleString()}
                             </p>
                           </div>
                         </div>
-                        <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-neutral-300">
+                        <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400">
                           <span>Stock Remaining:</span>
-                          <span className="font-bold text-emerald-400">{topSellingProduct?.stock || 47} units</span>
+                          <span className="font-bold text-[#16A36A]">{topSellingProduct?.stock || 47} units</span>
                         </div>
                       </Card>
 
@@ -5290,24 +5331,24 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
               {/* Inventory Metric Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-emerald-500/20">
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Total Inventory Valuation', 'মোট ইনভেন্টরি সম্পদ মূল্য')}</span>
-                  <div className="text-2xl font-black text-forest-900 dark:text-emerald-300 mt-2">৳2,840,500</div>
+                  <div className="text-2xl font-black text-[#124432] dark:text-emerald-400 mt-2">৳2,840,500</div>
                   <span className="text-[10px] text-emerald-600 font-bold mt-1 block">{t('✓ Fully Insured & Refrigerated', '✓ সম্পূর্ণ বীমাকৃত ও নিয়ন্ত্রিত কোল্ড চেইন')}</span>
                 </Card>
-                <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-emerald-500/20">
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Active Catalog SKUs', 'সক্রিয় ক্যাটালগ এসকেইউ')}</span>
                   <div className="text-2xl font-black text-neutral-900 dark:text-white mt-2">1,420 Items</div>
                   <span className="text-[10px] text-neutral-400 font-medium mt-1 block">Across 6 Store Departments</span>
                 </Card>
-                <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-rose-500/30">
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-rose-200 dark:border-rose-900/50 rounded-2xl shadow-xs">
                   <span className="text-[11px] font-bold text-rose-500 uppercase">{t('Low Stock Alerts', 'স্বল্প স্টক সতর্কতা')}</span>
                   <div className="text-2xl font-black text-rose-600 mt-2">14 Items</div>
                   <span className="text-[10px] text-rose-500 font-bold mt-1 block">{t('⚠️ Below Safety Threshold (5 units)', '⚠️ সেফটি থ্রেশহোল্ডের নিচে (৫টি)')}</span>
                 </Card>
-                <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-cyan-500/20">
+                <Card className="p-4 bg-white dark:bg-neutral-900 border border-cyan-200 dark:border-cyan-900/50 rounded-2xl shadow-xs">
                   <span className="text-[11px] font-bold text-cyan-600 uppercase">{t('Optimal Buffer Stock', 'পর্যাপ্ত বাফার স্টক')}</span>
-                  <div className="text-2xl font-black text-cyan-700 dark:text-cyan-300 mt-2">1,406 Items</div>
+                  <div className="text-2xl font-black text-cyan-700 dark:text-cyan-400 mt-2">1,406 Items</div>
                   <span className="text-[10px] text-cyan-600 font-bold mt-1 block">{t('Sufficient for 14 Days', '১৪ দিনের চাহিদার জন্য পর্যাপ্ত')}</span>
                 </Card>
               </div>

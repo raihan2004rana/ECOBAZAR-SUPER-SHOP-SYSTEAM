@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import {
-  ShieldCheck,
   Lock,
   KeyRound,
   Eye,
@@ -10,11 +9,13 @@ import {
   AlertTriangle,
   Clock,
   ArrowRight,
-  Server,
+  ShieldCheck,
   User,
   ShieldAlert,
-  Cpu,
+  Sparkles,
+  CheckCircle2,
 } from 'lucide-react';
+import { Logo } from '@ecobazar/ui';
 
 interface AdminSecurityGateProps {
   children: (props: {
@@ -203,17 +204,17 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
           setLockoutUntil(lockTime);
           localStorage.setItem('ecobazar_admin_lockout', lockTime.toString());
           setErrorMessage(
-            'SECURITY LOCKOUT: 5 consecutive invalid login attempts detected. Terminal temporarily locked for 15 minutes.'
+            'Security Lockout: 5 consecutive invalid login attempts. Terminal access is temporarily suspended for 15 minutes.'
           );
         } else {
           setErrorMessage(
-            `Access Denied: Invalid credentials. (${MAX_FAILED_ATTEMPTS - nextAttempts} attempts remaining before system lockout)`
+            `Access Denied: Invalid email, password, or security PIN. (${MAX_FAILED_ATTEMPTS - nextAttempts} attempt${MAX_FAILED_ATTEMPTS - nextAttempts === 1 ? '' : 's'} remaining)`
           );
         }
       }
 
       setIsSubmitting(false);
-    }, 450);
+    }, 400);
   };
 
   const handleLogout = (message?: string) => {
@@ -227,13 +228,24 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
     }
   };
 
+  // Quick fill helper for testing/administrators
+  const handleQuickFill = (accIndex: number) => {
+    const acc = AUTHORIZED_ACCOUNTS[accIndex];
+    if (acc) {
+      setEmail(acc.email);
+      setPassword(acc.password);
+      setPin(acc.pin);
+      setErrorMessage('');
+    }
+  };
+
   if (!isHydrated) {
     return (
-      <div className="min-h-screen bg-[#071710] flex items-center justify-center text-white">
+      <div className="min-h-screen bg-[#F8FAFC] dark:bg-neutral-950 flex items-center justify-center text-neutral-600 dark:text-neutral-400">
         <div className="flex items-center gap-3">
-          <div className="w-5 h-5 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
-          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">
-            Verifying Terminal Security...
+          <div className="w-5 h-5 rounded-full border-2 border-[#16A36A] border-t-transparent animate-spin" />
+          <span className="text-xs font-semibold tracking-wide text-neutral-600 dark:text-neutral-400">
+            Initializing ECOBAZAR Admin Portal...
           </span>
         </div>
       </div>
@@ -246,58 +258,49 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
       <>
         {children({
           adminUser: currentAdmin,
-          onLogout: () => handleLogout('Terminal session securely locked and signed out.'),
+          onLogout: () => handleLogout('Signed out successfully. Session ended.'),
         })}
       </>
     );
   }
 
-  // Otherwise, render the High-Security Gate Portal
+  // Otherwise, render the Modern, Clean Enterprise Login Screen
   const isLocked = !!(lockoutUntil && Date.now() < lockoutUntil);
   const lockMinutes = Math.floor(remainingSeconds / 60);
   const lockSecs = remainingSeconds % 60;
 
   return (
-    <div className="min-h-screen bg-[#071610] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0E2F22] via-[#071610] to-[#040C08] flex flex-col items-center justify-center p-4 sm:p-6 text-white relative overflow-hidden select-none">
-      {/* Background Cyber-Grid & Ambient Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(#21A366_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.07] pointer-events-none" />
-      <div className="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/15 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-teal-500/15 rounded-full blur-[100px] pointer-events-none" />
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-neutral-950 flex flex-col items-center justify-center p-4 sm:p-6 text-neutral-900 dark:text-neutral-100 relative overflow-hidden select-none transition-colors">
+      {/* Soft Background Radial Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(#16A36A_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.035] pointer-events-none" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-emerald-100/40 dark:bg-emerald-950/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-teal-100/40 dark:bg-teal-950/20 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Main Security Box */}
-      <div className="w-full max-w-md bg-[#0C2219]/90 backdrop-blur-2xl border border-emerald-500/25 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/80 relative z-10 transition-all">
-        {/* Top Security Emblem & Branding */}
+      {/* Main Elevated Enterprise Login Card */}
+      <div className="w-full max-w-md bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 rounded-3xl p-7 sm:p-9 shadow-xl shadow-neutral-900/5 relative z-10 transition-all">
+        {/* Top Branding with Official Logo */}
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="relative mb-3">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-950 to-[#0A1F16] border border-emerald-400/40 flex items-center justify-center shadow-lg shadow-emerald-500/20 group">
-              <ShieldCheck className="w-8 h-8 text-emerald-400 group-hover:scale-105 transition-transform" />
-            </div>
-            <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#0C2219] flex items-center justify-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            </span>
+          <div className="mb-4">
+            <Logo size="lg" showTagline={true} />
           </div>
-
-          <div className="inline-flex items-center gap-1.5 bg-emerald-950/80 border border-emerald-500/30 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest text-emerald-400 mb-2 shadow-xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-            <span>Restricted Admin Gateway</span>
-          </div>
-
-          <h1 className="text-2xl font-black text-white tracking-tight">ECOBAZAR Control OS</h1>
-          <p className="text-xs text-emerald-100/70 mt-1 max-w-xs">
-            Central Administration, Multi-Store POS & Operations Hub
+          <h1 className="text-2xl font-black text-[#124432] dark:text-white tracking-tight">
+            Welcome Back!
+          </h1>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            Sign in to your ECOBAZAR Admin Dashboard.
           </p>
         </div>
 
         {/* Lockout Warning Box */}
         {isLocked && (
-          <div className="mb-5 p-4 rounded-2xl bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs flex items-start gap-3 animate-in fade-in">
-            <ShieldAlert className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
-            <div>
-              <p className="font-extrabold text-white text-sm">Security Lockdown Activated</p>
-              <p className="text-[11px] text-rose-300 mt-0.5 leading-relaxed">
+          <div className="mb-5 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-800 dark:text-rose-200 text-xs flex items-start gap-3 animate-in fade-in">
+            <ShieldAlert className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="font-bold text-rose-900 dark:text-white text-xs">Security Lockdown Active</p>
+              <p className="text-[11px] text-rose-700 dark:text-rose-300 leading-relaxed">
                 Too many incorrect login attempts detected. Terminal access is temporarily frozen.
               </p>
-              <p className="font-mono font-bold text-xs text-rose-400 mt-2 flex items-center gap-1.5 bg-rose-950 px-2.5 py-1 rounded-lg border border-rose-800/60 inline-flex">
+              <p className="font-mono font-bold text-xs text-rose-700 dark:text-rose-400 inline-flex items-center gap-1.5 pt-1">
                 <Clock className="w-3.5 h-3.5" />
                 <span>
                   Unlocks in {lockMinutes}:{lockSecs < 10 ? `0${lockSecs}` : lockSecs} min
@@ -309,8 +312,8 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
 
         {/* Error Alert Box */}
         {!isLocked && errorMessage && (
-          <div className="mb-5 p-3.5 rounded-2xl bg-amber-950/80 border border-amber-500/40 text-amber-200 text-xs flex items-start gap-2.5 animate-in fade-in">
-            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          <div className="mb-5 p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-amber-900 dark:text-amber-200 text-xs flex items-start gap-2.5 animate-in fade-in">
+            <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
             <p className="font-medium leading-snug">{errorMessage}</p>
           </div>
         )}
@@ -319,30 +322,41 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
         <form onSubmit={handleLogin} className="space-y-4">
           {/* Email / Admin ID */}
           <div>
-            <label className="block text-xs font-bold text-emerald-100/90 mb-1.5 flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Administrator Email / ID</span>
+            <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1.5">
+              Administrator Email / ID
             </label>
-            <input
-              type="email"
-              required
-              disabled={isLocked || isSubmitting}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@ecobazar.com"
-              className="w-full px-4 py-2.5 bg-[#061810]/80 border border-emerald-800/60 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 rounded-xl text-sm text-white placeholder-emerald-100/30 transition-all font-medium disabled:opacity-50"
-            />
+            <div className="relative">
+              <User className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="email"
+                required
+                disabled={isLocked || isSubmitting}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@ecobazar.com"
+                className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 focus:border-[#16A36A] focus:ring-2 focus:ring-[#16A36A]/20 rounded-xl text-sm text-neutral-900 dark:text-white placeholder-neutral-400 transition-all font-medium disabled:opacity-50 outline-hidden"
+              />
+            </div>
           </div>
 
           {/* Master Password */}
           <div>
-            <label className="block text-xs font-bold text-emerald-100/90 mb-1.5 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Master Password</span>
-              </span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                Password
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  setErrorMessage('Please contact your System Administrator to reset executive credentials.');
+                }}
+                className="text-[11px] font-semibold text-[#16A36A] hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
             <div className="relative">
+              <Lock className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
@@ -350,12 +364,12 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full px-4 py-2.5 pr-11 bg-[#061810]/80 border border-emerald-800/60 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 rounded-xl text-sm text-white placeholder-emerald-100/30 transition-all disabled:opacity-50"
+                className="w-full pl-10 pr-11 py-2.5 bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 focus:border-[#16A36A] focus:ring-2 focus:ring-[#16A36A]/20 rounded-xl text-sm text-neutral-900 dark:text-white placeholder-neutral-400 transition-all disabled:opacity-50 outline-hidden"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-100/50 hover:text-white transition-colors"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors cursor-pointer"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -363,39 +377,69 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
             </div>
           </div>
 
-          {/* Security Access PIN (4-Digits, strictly masked) */}
+          {/* Security Access PIN (4-Digits) */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-bold text-emerald-100/90 flex items-center gap-1.5">
-                <KeyRound className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Executive Security PIN</span>
+              <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                Executive Security PIN
               </label>
-              <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40">
-                Confidential
+              <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">
+                4-Digit Key
               </span>
             </div>
-            <input
-              type="password"
-              maxLength={6}
-              required
-              disabled={isLocked || isSubmitting}
-              value={pin}
-              onChange={(e) => setPin(e.target.value)}
-              placeholder="••••"
-              className="w-full px-4 py-2.5 bg-[#061810]/80 border border-emerald-800/60 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 rounded-xl text-base text-emerald-300 placeholder-emerald-100/30 transition-all tracking-[0.6em] text-center font-mono font-bold disabled:opacity-50"
-            />
+            <div className="relative">
+              <KeyRound className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="password"
+                maxLength={6}
+                required
+                disabled={isLocked || isSubmitting}
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+                placeholder="••••"
+                className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 focus:border-[#16A36A] focus:ring-2 focus:ring-[#16A36A]/20 rounded-xl text-sm text-neutral-900 dark:text-white placeholder-neutral-400 transition-all tracking-[0.4em] text-center font-mono font-bold disabled:opacity-50 outline-hidden"
+              />
+            </div>
+          </div>
+
+          {/* Quick Demo Credentials Pill Selector */}
+          <div className="pt-1">
+            <div className="flex items-center justify-between text-[11px] text-neutral-500 mb-1.5">
+              <span className="flex items-center gap-1 font-medium">
+                <Sparkles className="w-3 h-3 text-[#16A36A]" />
+                Demo Credentials:
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => handleQuickFill(0)}
+                className="px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/60 hover:border-[#16A36A] hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 text-left transition text-[11px] text-neutral-700 dark:text-neutral-300 cursor-pointer"
+              >
+                <span className="font-bold text-neutral-900 dark:text-white block">Super Admin</span>
+                <span className="text-[10px] text-neutral-400">admin@ecobazar.com</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickFill(1)}
+                className="px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/60 hover:border-[#16A36A] hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 text-left transition text-[11px] text-neutral-700 dark:text-neutral-300 cursor-pointer"
+              >
+                <span className="font-bold text-neutral-900 dark:text-white block">Branch Manager</span>
+                <span className="text-[10px] text-neutral-400">manager@ecobazar.com</span>
+              </button>
+            </div>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
             disabled={isLocked || isSubmitting}
-            className="w-full mt-2 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-neutral-950 font-black py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full mt-2 bg-[#16A36A] hover:bg-[#128855] text-white font-bold py-3 px-4 rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-md shadow-emerald-700/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <>
-                <div className="w-4 h-4 rounded-full border-2 border-neutral-950 border-t-transparent animate-spin" />
-                <span>Verifying Security Token...</span>
+                <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                <span>Verifying Credentials...</span>
               </>
             ) : isLocked ? (
               <>
@@ -404,38 +448,28 @@ export const AdminSecurityGate: React.FC<AdminSecurityGateProps> = ({ children }
               </>
             ) : (
               <>
-                <ShieldCheck className="w-4 h-4" />
-                <span>Authenticate & Unlock Terminal</span>
+                <span>Sign In</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
         </form>
 
-        {/* Security Compliance Badges (No PINs or demo credentials displayed) */}
-        <div className="mt-6 pt-5 border-t border-emerald-800/40">
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <div className="p-2 rounded-xl bg-[#081C13]/60 border border-emerald-900/50">
-              <Server className="w-3.5 h-3.5 text-emerald-400 mx-auto mb-1" />
-              <p className="text-[10px] font-bold text-white">TLS 1.3</p>
-              <p className="text-[9px] text-emerald-400/70">Encrypted</p>
-            </div>
-            <div className="p-2 rounded-xl bg-[#081C13]/60 border border-emerald-900/50">
-              <Lock className="w-3.5 h-3.5 text-emerald-400 mx-auto mb-1" />
-              <p className="text-[10px] font-bold text-white">Anti-Brute</p>
-              <p className="text-[9px] text-emerald-400/70">5 Attempts</p>
-            </div>
-            <div className="p-2 rounded-xl bg-[#081C13]/60 border border-emerald-900/50">
-              <Cpu className="w-3.5 h-3.5 text-emerald-400 mx-auto mb-1" />
-              <p className="text-[10px] font-bold text-white">Auto-Lock</p>
-              <p className="text-[9px] text-emerald-400/70">15m Inactive</p>
-            </div>
+        {/* Secondary Security Information Footer */}
+        <div className="mt-6 pt-5 border-t border-neutral-100 dark:border-neutral-800 text-center">
+          <div className="flex items-center justify-center gap-3 text-[11px] text-neutral-500 dark:text-neutral-400">
+            <span className="flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#16A36A]" />
+              TLS 1.3
+            </span>
+            <span>•</span>
+            <span>Anti-Brute Protected</span>
+            <span>•</span>
+            <span>15m Session Security</span>
           </div>
-        </div>
-
-        {/* Terminal Disclaimers */}
-        <div className="mt-5 text-center text-[10px] text-emerald-100/50">
-          <p>© 2026 ECOBAZAR Enterprise Security System. Unauthorized access is strictly logged and audited.</p>
+          <p className="mt-3 text-[10px] text-neutral-400 dark:text-neutral-500">
+            © 2026 ECOBAZAR Enterprise Supermarket Management. Authorized personnel only.
+          </p>
         </div>
       </div>
     </div>
