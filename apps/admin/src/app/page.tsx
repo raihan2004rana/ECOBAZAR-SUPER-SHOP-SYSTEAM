@@ -2882,10 +2882,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                   </div>
                                   <div>
                                     <p className="font-bold text-neutral-900 dark:text-white line-clamp-1">
-                                      {p.name}
-                                    </p>
-                                    <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-                                      {p.nameBn || '—'}
+                                      {adminLang === 'bn' ? (p.nameBn || p.name) : p.name}
                                     </p>
                                     <div className="flex items-center gap-2 mt-0.5 text-[10px] text-neutral-400 font-mono">
                                       <span>ID: {p.id}</span>
@@ -3331,15 +3328,14 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             {cat.icon}
                           </div>
                           <span className="px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-xs font-black text-neutral-700 dark:text-neutral-200">
-                            {prodCount} Products
+                            {prodCount} {t('Products', 'টি পণ্য')}
                           </span>
                         </div>
 
                         <div className="mt-3">
-                          <h3 className="font-black text-base text-neutral-900 dark:text-white">{cat.name}</h3>
-                          <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
-                            {cat.nameBn}
-                          </p>
+                          <h3 className="font-black text-base text-neutral-900 dark:text-white">
+                            {adminLang === 'bn' ? (cat.nameBn || cat.name) : cat.name}
+                          </h3>
                           <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 line-clamp-2">
                             {cat.tagline}
                           </p>
@@ -3378,7 +3374,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           }}
                           leftIcon={<Pencil className="h-3 w-3" />}
                         >
-                          Edit Department
+                          {t('Edit Department', 'বিভাগ সম্পাদনা')}
                         </Button>
                       </div>
                     </Card>
@@ -4761,10 +4757,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     </div>
                                     <div>
                                       <p className="font-bold text-neutral-900 dark:text-white line-clamp-1">
-                                        {prod.name}
+                                        {adminLang === 'bn' ? (prod.nameBn || prod.name) : prod.name}
                                       </p>
                                       <p className="text-[11px] text-neutral-500">
-                                        {prod.nameBn ? `${prod.nameBn} • ` : ''}{prod.unit}
+                                        {prod.unit}
                                       </p>
                                     </div>
                                   </div>
@@ -4963,10 +4959,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                       </div>
                                       <div>
                                         <p className="font-bold text-neutral-900 dark:text-white line-clamp-1">
-                                          {p.name}
+                                          {adminLang === 'bn' ? (p.nameBn || p.name) : p.name}
                                         </p>
-                                        <p className="text-[11px] text-neutral-500">
-                                          {p.nameBn || p.id}
+                                        <p className="text-[10px] font-mono text-neutral-400">
+                                          {p.sku || p.id}
                                         </p>
                                       </div>
                                     </div>
@@ -7589,7 +7585,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       >
                         {categories.map((c) => (
                           <option key={c.id} value={c.slug}>
-                            {c.icon || '📦'} {c.name} ({c.nameBn})
+                            {c.icon || '📦'} {adminLang === 'bn' ? (c.nameBn || c.name) : c.name}
                           </option>
                         ))}
                       </select>
@@ -8346,13 +8342,8 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                 {/* Title */}
                 <h4 className="font-black text-sm text-neutral-900 dark:text-white line-clamp-1">
-                  {productForm.name || 'Untitled Product'}
+                  {adminLang === 'bn' ? (productForm.nameBn || productForm.name || 'নামহীন পণ্য') : (productForm.name || 'Untitled Product')}
                 </h4>
-                {productForm.nameBn && (
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-1 mb-1 font-medium">
-                    {productForm.nameBn}
-                  </p>
-                )}
 
                 {/* Star Rating & Unit */}
                 <div className="flex items-center justify-between mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-800">
