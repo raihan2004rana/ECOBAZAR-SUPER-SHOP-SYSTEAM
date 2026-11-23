@@ -352,10 +352,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   )}
 
                   {/* Main Large Image Display */}
-                  <div className="flex-1 min-w-0 relative w-full rounded-2xl bg-[#F7F9F5] border border-[#E5ECE7] p-4 sm:p-6 flex items-center justify-center overflow-hidden min-h-[320px] sm:min-h-[380px] group">
+                  <div className="flex-1 min-w-0 relative w-full aspect-square rounded-2xl sm:rounded-3xl bg-[#F7F9F5] border border-[#E5ECE7] overflow-hidden flex items-center justify-center group shadow-xs">
                     {/* Badge */}
                     {product.badge && (
-                      <span className="absolute top-3 left-3 z-10 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#21A366] text-white shadow-md">
+                      <span className="absolute top-3.5 left-3.5 z-10 text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 sm:px-3 py-1 rounded-full bg-[#21A366] text-white shadow-md">
                         {product.badge}
                       </span>
                     )}
@@ -365,16 +365,16 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                       type="button"
                       onClick={(e) => toggleWishlist(product, e)}
                       aria-label="Wishlist"
-                      className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                      className={`absolute top-3.5 right-3.5 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all ${
                         isWishlisted
-                          ? 'bg-rose-50 text-rose-500 shadow-md'
-                          : 'bg-white/90 backdrop-blur-sm text-gray-500 hover:text-rose-500 hover:bg-white shadow-sm'
+                          ? 'bg-rose-50 text-rose-500 shadow-md ring-1 ring-rose-200'
+                          : 'bg-white/90 backdrop-blur-sm text-gray-600 hover:text-rose-500 hover:bg-white shadow-md'
                       }`}
                     >
-                      <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
+                      <Heart className={`w-4 h-4 sm:w-5 sm:h-5 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
                     </button>
 
-                    {/* Main Product Image with subtle hover zoom */}
+                    {/* Main Product Image with subtle hover zoom - Full card fit with rounded radius */}
                     <img
                       key={selectedImage}
                       src={selectedImage}
@@ -387,7 +387,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                           target.src = '/images/products/sundarban-honey.webp';
                         }
                       }}
-                      className="w-full h-auto max-h-[320px] sm:max-h-[360px] object-contain transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover rounded-2xl sm:rounded-3xl transition-transform duration-500 group-hover:scale-105"
                     />
 
                     {/* Prev/Next Image Navigation Arrows (only if multi-image) */}
@@ -402,7 +402,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                             setSelectedImage(galleryImages[prevIdx]);
                           }}
                           aria-label="Previous image"
-                          className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute left-2.5 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/85 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <ChevronLeft className="w-4 h-4" />
                         </button>
@@ -416,7 +416,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                             setSelectedImage(galleryImages[nextIdx]);
                           }}
                           aria-label="Next image"
-                          className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/85 hover:bg-white text-[#123C2D] flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <ChevronRight className="w-4 h-4" />
                         </button>
