@@ -67,7 +67,7 @@ export default function HomePage() {
         {/* 2. FEATURED CATEGORIES SLIDER / QUICK DEPARTMENT EXPLORER */}
         <FeaturedCategoriesSlider />
 
-        {/* 4. TODAY'S BEST DEALS 🔥 (With Countdown & High Savings) */}
+        {/* 4. TODAY'S BEST DEALS (With Countdown & High Savings) */}
         <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="bg-white rounded-3xl border border-[#E5ECE7] p-5 sm:p-7 shadow-xs">
             {/* Header with Countdown */}

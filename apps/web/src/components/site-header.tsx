@@ -22,6 +22,7 @@ import {
   Tag,
   Home,
   LayoutGrid,
+  Globe,
 } from 'lucide-react';
 import { Logo } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
@@ -152,7 +153,7 @@ export const SiteHeader: React.FC = () => {
               className="flex items-center gap-1.5 font-bold text-white hover:text-[#D8F3DC] transition-colors cursor-pointer bg-white/10 hover:bg-white/20 px-2.5 py-0.5 rounded-full border border-white/20"
               title={language === 'en' ? 'বাংলা ভাষায় পরিবর্তন করুন' : 'Switch to English'}
             >
-              <span>🌐</span>
+              <Globe className="w-3.5 h-3.5" />
               <span>{language === 'en' ? 'বাংলা' : 'English'}</span>
             </button>
 
@@ -313,7 +314,7 @@ export const SiteHeader: React.FC = () => {
               title={language === 'en' ? 'বাংলায় দেখতে ক্লিক করুন' : 'Switch to English'}
               aria-label="Toggle language"
             >
-              <span className="text-xs sm:text-sm">🌐</span>
+              <Globe className="w-3.5 h-3.5 text-[#21A366]" />
               <span className={language === 'en' ? 'text-[#21A366] font-black' : 'text-neutral-400 font-medium'}>EN</span>
               <span className="text-neutral-300 font-normal">/</span>
               <span className={language === 'bn' ? 'text-[#21A366] font-black font-bangla' : 'text-neutral-400 font-bangla font-medium'}>বাং</span>
@@ -594,7 +595,9 @@ export const SiteHeader: React.FC = () => {
               {/* Mobile Language Switcher Card */}
               <div className="my-3 p-3 bg-[#F7F9F5] rounded-2xl border border-[#E5ECE7] flex items-center justify-between gap-2 shadow-2xs">
                 <div className="flex items-center gap-2">
-                  <span className="text-base">🌐</span>
+                  <div className="w-7 h-7 rounded-lg bg-white border border-[#E5ECE7] flex items-center justify-center text-[#21A366]">
+                    <Globe className="w-4 h-4" />
+                  </div>
                   <div>
                     <p className="text-xs font-bold text-[#17251F]">Language / ভাষা</p>
                     <p className="text-[10px] text-[#64736B]">

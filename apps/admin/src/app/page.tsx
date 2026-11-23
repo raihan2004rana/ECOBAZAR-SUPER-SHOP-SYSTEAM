@@ -47,6 +47,7 @@ import {
   TrendingDown,
   AlertTriangle,
   AlertCircle,
+  Info,
   CheckCircle2,
   Clock,
   MonitorCheck,
@@ -803,7 +804,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
   const quickPresets: (Omit<ProductFormData, 'id'> & { label: string })[] = [
     {
-      label: '🍯 Pure Sundarban Honey',
+      label: 'Pure Sundarban Honey',
       name: 'Sundarban Raw Wild Honey 1kg',
       nameBn: 'সুন্দরবন খাঁটি প্রাকৃতিক চাকের মধু ১ কেজি',
       category: 'Honey & Natural Spreads',
@@ -836,7 +837,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       countryOfOrigin: 'Bangladesh',
     },
     {
-      label: '🌾 Miniket Rice',
+      label: 'Miniket Rice',
       name: 'Premium Miniket Rice (Special Cleaned)',
       nameBn: 'প্রিমিয়াম মিনিকেট চাল (স্পেশাল বাছাইকৃত)',
       category: 'Rice, Flour & Grains',
@@ -869,7 +870,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       countryOfOrigin: 'Bangladesh',
     },
     {
-      label: '🍅 Farm Red Tomato',
+      label: 'Farm Red Tomato',
       name: 'Farm Fresh Red Salad Tomatoes',
       nameBn: 'ক্ষেতের তাজা লাল টমেটো',
       category: 'Fresh Fruits & Vegetables',
@@ -902,7 +903,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       countryOfOrigin: 'Bangladesh',
     },
     {
-      label: '🧈 Pure Deshi Ghee',
+      label: 'Pure Deshi Ghee',
       name: 'Pure Deshi Cow Milk Ghee (Bilona Churned)',
       nameBn: 'খাঁটি দেশি গাভীর বিলোনা ঘি',
       category: 'Dairy, Eggs & Butter',
@@ -935,7 +936,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       countryOfOrigin: 'Bangladesh',
     },
     {
-      label: '🥚 Organic Brown Eggs',
+      label: 'Organic Brown Eggs',
       name: 'Fresh Organic Brown Farm Eggs',
       nameBn: 'ফার্মের তাজা লাল ডিম (১২ পিস)',
       category: 'Dairy, Eggs & Butter',
@@ -1359,7 +1360,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'SMTP Test failed');
-      toast.success('Email Delivered! 🎉', `Test email sent to ${testRecipient}. Check your inbox or spam folder.`);
+      toast.success('Email Delivered Successfully', `Test email sent to ${testRecipient}. Check your inbox or spam folder.`);
       fetchEmailData();
     } catch (err: any) {
       toast.error('SMTP Connection Failed', err.message || 'Could not send test email.');
@@ -1378,7 +1379,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to resend');
-      toast.success('Dispatched to Inbox! 🚀', data.message || 'Email sent successfully.');
+      toast.success('Dispatched to Inbox', data.message || 'Email sent successfully.');
       fetchEmailData();
     } catch (err: any) {
       toast.error('Dispatch Failed', err.message);
@@ -2790,17 +2791,17 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <span className="text-[11px] font-bold text-neutral-400">{t('Filter By Status:', 'স্ট্যাটাস ফিল্টার:')}</span>
                   {[
                     { id: 'all', label: `${t('All', 'সব')} (${products.length})` },
-                    { id: 'hot-deal', label: `🔥 ${t('Best Deals', 'হট ডিলস')} (${products.filter((p) => p.isHotDeal).length})` },
-                    { id: 'new-arrival', label: `✨ ${t('New Arrivals', 'নতুন আগমন')} (${products.filter((p) => p.isNewArrival).length})` },
+                    { id: 'hot-deal', label: `${t('Best Deals', 'হট ডিলস')} (${products.filter((p) => p.isHotDeal).length})` },
+                    { id: 'new-arrival', label: `${t('New Arrivals', 'নতুন আগমন')} (${products.filter((p) => p.isNewArrival).length})` },
                     {
                       id: 'offer',
-                      label: `🏷️ Offers & Discounts (${products.filter((p) => p.isOffer || (p.badge && p.badge.includes('OFF'))).length})`,
+                      label: `${t('Offers & Discounts', 'অফার ও ছাড়')} (${products.filter((p) => p.isOffer || (p.badge && p.badge.includes('OFF'))).length})`,
                     },
                     {
                       id: 'ad',
-                      label: `📢 Advertisements (${products.filter((p) => p.isAdvertisement || p.isFeatured).length})`,
+                      label: `${t('Advertisements', 'বিজ্ঞাপন')} (${products.filter((p) => p.isAdvertisement || p.isFeatured).length})`,
                     },
-                    { id: 'low-stock', label: `⚠️ ${t('Low Stock', 'স্বল্প স্টক')} (${products.filter((p) => p.stock < 20).length})` },
+                    { id: 'low-stock', label: `${t('Low Stock', 'স্বল্প স্টক')} (${products.filter((p) => p.stock < 20).length})` },
                   ].map((flag) => (
                     <button
                       key={flag.id}
@@ -3636,7 +3637,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[#16A36A] dark:text-emerald-400 font-bold text-xs">
-                      ⚡ {adminLang === 'bn' ? 'রিয়েল-টাইম স্টোর সেলস' : 'Real-Time Store Sales'}
+                      {adminLang === 'bn' ? 'রিয়েল-টাইম স্টোর সেলস' : 'Real-Time Store Sales'}
                     </span>
                     <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium hidden sm:inline">
                       {adminLang === 'bn'
@@ -3651,7 +3652,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={() => setActiveRouteId('orders')}
                     className="self-start sm:self-auto text-xs font-bold text-[#124432] dark:text-emerald-300 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700/60 cursor-pointer"
                   >
-                    {adminLang === 'bn' ? 'সম্পূর্ণ লাইভ রিপোর্ট ও এক্সপোর্ট 📊' : 'View Full Live Report & Export 📊'}
+                    {adminLang === 'bn' ? 'সম্পূর্ণ লাইভ রিপোর্ট ও এক্সপোর্ট' : 'View Full Live Report & Export'}
                   </Button>
                 </div>
 
@@ -4650,7 +4651,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {t('Total Volume Sold', 'মোট বিক্রয় পরিমাণ')}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm shadow-xs">
-                      📦
+                      <Package className="h-4 w-4" />
                     </span>
                   </div>
                   <div className="mt-3">
@@ -4671,7 +4672,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {t('Today Top Seller', 'আজকের সেরা বিক্রিত পণ্য')}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm shadow-xs">
-                      🏆
+                      <Award className="h-4 w-4" />
                     </span>
                   </div>
                   <div className="mt-2.5 flex items-center gap-3">
@@ -4706,7 +4707,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {t('Review Quality Alert', 'রিভিউ কোয়ালিটি সতর্কতা')}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-sm shadow-xs">
-                      ⚠️
+                      <AlertTriangle className="h-4 w-4" />
                     </span>
                   </div>
                   <div className="mt-3">
@@ -4724,10 +4725,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               {/* Internal Tab Navigation */}
               <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-neutral-800 pb-2">
                 {[
-                  { id: 'overview', label: t('📊 Sales Leaderboard', '📊 বিক্রয় লিডারবোর্ড'), icon: BarChart3 },
-                  { id: 'products', label: t('📦 Product Sales Master Table', '📦 পণ্য বিক্রয় মাস্টার টেবিল'), icon: Package },
-                  { id: 'orders', label: `${t('🛒 Storefront Orders Stream', '🛒 কাস্টমার অর্ডার সমূহ')} (${liveOrders.length})`, icon: ShoppingCart },
-                  { id: 'bad-reviews', label: `${t('⚠️ Bad Reviews Watchlist', '⚠️ কম রেটিং রিভিউ তালিকা')} (${badReviewsCount})`, icon: AlertTriangle, badge: badReviewsCount > 0 ? `${badReviewsCount}` : undefined },
+                  { id: 'overview', label: t('Sales Leaderboard', 'বিক্রয় লিডারবোর্ড'), icon: BarChart3 },
+                  { id: 'products', label: t('Product Sales Master Table', 'পণ্য বিক্রয় মাস্টার টেবিল'), icon: Package },
+                  { id: 'orders', label: `${t('Storefront Orders Stream', 'কাস্টমার অর্ডার সমূহ')} (${liveOrders.length})`, icon: ShoppingCart },
+                  { id: 'bad-reviews', label: `${t('Bad Reviews Watchlist', 'কম রেটিং রিভিউ তালিকা')} (${badReviewsCount})`, icon: AlertTriangle, badge: badReviewsCount > 0 ? `${badReviewsCount}` : undefined },
                 ].map((t) => (
                   <button
                     key={t.id}
@@ -4753,7 +4754,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <div className="flex items-center justify-between mb-5">
                         <div>
                           <h3 className="text-base font-black text-neutral-900 dark:text-white flex items-center gap-2">
-                            <span>{t('🏆 Top Selling Products Leaderboard', '🏆 শীর্ষ বিক্রিত পণ্যের লিডারবোর্ড')}</span>
+                            <span>{t('Top Selling Products Leaderboard', 'শীর্ষ বিক্রিত পণ্যের লিডারবোর্ড')}</span>
                             <span className="text-xs font-bold text-primary-green bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
                               {t('Real-Time Ranking', 'রিয়েল-টাইম র‍্যাংকিং')}
                             </span>
@@ -4840,7 +4841,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {/* Top Product Highlight Card */}
                       <Card className="p-5 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-200/90 dark:border-neutral-800 rounded-2xl shadow-xs">
                         <span className="text-[10px] font-black uppercase text-amber-600 dark:text-amber-400 tracking-wider">
-                          {t('🥇 #1 BESTSELLER OF THE DAY', '🥇 আজকের #১ শীর্ষ বিক্রিত পণ্য')}
+                          {t('#1 BESTSELLER OF THE DAY', 'আজকের #১ শীর্ষ বিক্রিত পণ্য')}
                         </span>
                         <div className="mt-3 flex items-center gap-3.5">
                           <div className="h-16 w-16 rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 shrink-0 border border-neutral-200 dark:border-neutral-700">
@@ -5044,7 +5045,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                   <td className="py-3 px-4">
                                     {isTop ? (
                                       <span className="px-2 py-0.5 rounded-full bg-amber-400 text-neutral-900 text-[10px] font-black uppercase">
-                                        {t('🏆 #1 Top Seller', '🏆 #১ সেরা বিক্রিত')}
+                                        {t('#1 Top Seller', '#১ সেরা বিক্রিত')}
                                       </span>
                                     ) : (p.totalSold || 0) > 0 ? (
                                       <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
@@ -5202,7 +5203,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         ✓
                       </div>
                       <h4 className="font-black text-sm text-neutral-900 dark:text-white">
-                        {t('No Bad Reviews Today! 🎉', 'আজকে কোনো খারাপ রিভিউ নেই! 🎉')}
+                        {t('No Bad Reviews Today', 'আজকে কোনো খারাপ রিভিউ নেই')}
                       </h4>
                       <p className="text-xs text-neutral-500">
                         {t('All customer ratings today are 4 or 5 stars with high satisfaction.', 'আজকের সব কাস্টমার রেটিং সন্তোষজনক (৪ বা ৫ স্টার)।')}
@@ -5334,7 +5335,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Total Inventory Valuation', 'মোট ইনভেন্টরি সম্পদ মূল্য')}</span>
                   <div className="text-2xl font-black text-[#124432] dark:text-emerald-400 mt-2">৳2,840,500</div>
-                  <span className="text-[10px] text-emerald-600 font-bold mt-1 block">{t('✓ Fully Insured & Refrigerated', '✓ সম্পূর্ণ বীমাকৃত ও নিয়ন্ত্রিত কোল্ড চেইন')}</span>
+                  <span className="text-[10px] text-emerald-600 font-bold mt-1 block">{t('Fully Insured & Refrigerated', 'সম্পূর্ণ বীমাকৃত ও নিয়ন্ত্রিত কোল্ড চেইন')}</span>
                 </Card>
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-xs">
                   <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Active Catalog SKUs', 'সক্রিয় ক্যাটালগ এসকেইউ')}</span>
@@ -5344,7 +5345,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-rose-200 dark:border-rose-900/50 rounded-2xl shadow-xs">
                   <span className="text-[11px] font-bold text-rose-500 uppercase">{t('Low Stock Alerts', 'স্বল্প স্টক সতর্কতা')}</span>
                   <div className="text-2xl font-black text-rose-600 mt-2">14 Items</div>
-                  <span className="text-[10px] text-rose-500 font-bold mt-1 block">{t('⚠️ Below Safety Threshold (5 units)', '⚠️ সেফটি থ্রেশহোল্ডের নিচে (৫টি)')}</span>
+                  <span className="text-[10px] text-rose-500 font-bold mt-1 block">{t('Below Safety Threshold (5 units)', 'সেফটি থ্রেশহোল্ডের নিচে (৫টি)')}</span>
                 </Card>
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-cyan-200 dark:border-cyan-900/50 rounded-2xl shadow-xs">
                   <span className="text-[11px] font-bold text-cyan-600 uppercase">{t('Optimal Buffer Stock', 'পর্যাপ্ত বাফার স্টক')}</span>
@@ -5584,7 +5585,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           <td className="py-3 px-3 text-neutral-500 font-medium">{cust.zone}</td>
                           <td className="py-3 px-3 text-center font-bold">{cust.orders}</td>
                           <td className="py-3 px-3 text-right font-black text-emerald-600">৳{cust.spend.toLocaleString()}</td>
-                          <td className="py-3 px-3 text-center font-bold text-amber-500">🌟 {cust.points}</td>
+                          <td className="py-3 px-3 text-center font-bold text-amber-500">{cust.points}</td>
                           <td className="py-3 px-4 text-center">
                             <span className="px-2 py-0.5 rounded-full bg-amber-400 text-neutral-950 text-[10px] font-black uppercase">
                               {cust.tier.replace('_', ' ')}
@@ -5658,9 +5659,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             setBroadcastDiscount('15');
                             setBroadcastMinSpend('1200');
                           }}
-                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 transition-colors"
+                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 transition-colors cursor-pointer"
                         >
-                          👑 Gold VIP 15% Reward
+                          Gold VIP 15% Reward
                         </button>
                         <button
                           type="button"
@@ -5675,9 +5676,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             setBroadcastMinSpend('450');
                             setBroadcastRelatedProduct('mf-7');
                           }}
-                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors"
+                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors cursor-pointer"
                         >
-                          🐟 Restock: Padma Katla Fish
+                          Restock: Padma Katla Fish
                         </button>
                         <button
                           type="button"
@@ -5691,9 +5692,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             setBroadcastDiscount('20');
                             setBroadcastMinSpend('2000');
                           }}
-                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 transition-colors"
+                          className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 transition-colors cursor-pointer"
                         >
-                          💎 Platinum Elite Bonus
+                          Platinum Elite Bonus
                         </button>
                       </div>
                     </div>
@@ -5710,10 +5711,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             onChange={(e: any) => setBroadcastTargetTier(e.target.value)}
                             className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2 font-bold text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none"
                           >
-                            <option value="GOLD">🥇 Gold VIP Members (৳15,000+ Spend)</option>
-                            <option value="PLATINUM">💎 Platinum Elite (৳35,000+ Spend)</option>
-                            <option value="SILVER">🥈 Silver Shoppers (৳5,000+ Spend)</option>
-                            <option value="ALL">🌐 All Registered Customers</option>
+                            <option value="GOLD">Gold VIP Members (৳15,000+ Spend)</option>
+                            <option value="PLATINUM">Platinum Elite (৳35,000+ Spend)</option>
+                            <option value="SILVER">Silver Shoppers (৳5,000+ Spend)</option>
+                            <option value="ALL">All Registered Customers</option>
                           </select>
                         </div>
 
@@ -5726,9 +5727,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             onChange={(e: any) => setBroadcastType(e.target.value)}
                             className="w-full text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2 font-bold text-neutral-800 dark:text-neutral-100 focus:ring-2 focus:ring-primary-green focus:outline-none"
                           >
-                            <option value="VIP_REWARD">👑 VIP Exclusive Tier Reward</option>
-                            <option value="RESTOCK_ALERT">🔔 Customer Favorite Restock Alert</option>
-                            <option value="PROMO_COUPON">🏷️ Seasonal Campaign Promo Code</option>
+                            <option value="VIP_REWARD">VIP Exclusive Tier Reward</option>
+                            <option value="RESTOCK_ALERT">Customer Favorite Restock Alert</option>
+                            <option value="PROMO_COUPON">Seasonal Campaign Promo Code</option>
                           </select>
                         </div>
                       </div>
@@ -5943,7 +5944,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             type="button"
                             className="px-3 py-1 bg-amber-500 text-neutral-950 font-black text-[11px] rounded-lg hover:bg-amber-400 transition-colors shadow-sm"
                           >
-                            {broadcastType === 'RESTOCK_ALERT' ? 'Add to Cart 🛒' : 'Apply Code 🎁'}
+                            {broadcastType === 'RESTOCK_ALERT' ? 'Add to Cart' : 'Apply Code'}
                           </button>
                         </div>
                       </div>
@@ -6673,7 +6674,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={() => handleAskAi(prompt)}
                     className="p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-xs text-neutral-700 dark:text-neutral-200 hover:bg-emerald-100 dark:hover:bg-emerald-950/60 font-semibold text-left transition border border-transparent hover:border-emerald-500/40"
                   >
-                    💡 {prompt}
+                    {prompt}
                   </button>
                 ))}
               </div>
@@ -7162,7 +7163,8 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     {/* How to get Gmail App Password guide */}
                     <div className="mt-4 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/60 text-[11px] text-neutral-600 dark:text-neutral-400 space-y-1">
                       <p className="font-bold text-neutral-800 dark:text-neutral-200 flex items-center gap-1">
-                        💡 How to get a free Gmail App Password:
+                        <Info className="h-3.5 w-3.5 text-emerald-600 inline" />
+                        <span>How to get a free Gmail App Password:</span>
                       </p>
                       <ol className="list-decimal pl-4 space-y-0.5 leading-relaxed">
                         <li>Visit <strong>myaccount.google.com/security</strong></li>
@@ -7449,16 +7451,16 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
         className="max-w-6xl w-full p-0 overflow-hidden rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 shadow-2xl flex flex-col max-h-[92vh]"
       >
         {/* Studio Top Header */}
-        <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border-b border-neutral-200 dark:border-neutral-800 px-6 py-4.5 flex flex-col gap-3">
+        <div className="bg-neutral-50/90 dark:bg-neutral-800/80 border-b border-neutral-200 dark:border-neutral-800 px-6 py-5 sm:py-6 flex flex-col gap-3.5">
           <div className="flex items-center justify-between pr-8">
             <div className="flex items-center gap-3.5">
-              <div className="h-11 w-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-600/25 shrink-0">
-                <Package className="h-6 w-6" />
+              <div className="h-11 w-11 rounded-2xl bg-[#16A36A] text-white flex items-center justify-center shadow-md shadow-emerald-700/20 shrink-0">
+                <Package className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-lg font-black text-neutral-900 dark:text-white flex items-center gap-2 tracking-tight">
+                <h3 className="text-lg font-black text-[#124432] dark:text-white flex items-center gap-2 tracking-tight">
                   <span>{editingProduct ? `Edit Live Product: ${editingProduct.name}` : 'Product Creation & Storefront Studio'}</span>
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
                     {editingProduct ? 'Update Mode' : 'Live Sync'}
                   </span>
                 </h3>
@@ -7470,7 +7472,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </div>
             </div>
 
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 shadow-2xs">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-2xs">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -7483,16 +7485,16 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
           {/* Quick Presets Bar */}
           {!editingProduct && (
-            <div className="flex items-center gap-2 pt-1 border-t border-neutral-200/60 dark:border-neutral-800/60 overflow-x-auto pb-1 text-xs">
-              <span className="text-[11px] font-black uppercase text-neutral-400 dark:text-neutral-500 shrink-0 flex items-center gap-1">
-                <Sparkles className="h-3 w-3 text-amber-500" /> 1-Click Presets:
+            <div className="flex items-center gap-2 pt-2 border-t border-neutral-200/80 dark:border-neutral-700/60 overflow-x-auto pb-0.5 text-xs">
+              <span className="text-[11px] font-bold uppercase text-neutral-500 dark:text-neutral-400 shrink-0 flex items-center gap-1.5">
+                Quick Presets:
               </span>
               {quickPresets.map((preset) => (
                 <button
                   key={preset.label}
                   type="button"
                   onClick={() => handleApplyPreset(preset)}
-                  className="px-2.5 py-1 rounded-lg font-bold text-[11px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950 dark:hover:text-emerald-300 border border-neutral-200/80 dark:border-neutral-700 transition shrink-0 flex items-center gap-1"
+                  className="px-2.5 py-1 rounded-lg font-bold text-[11px] bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950 dark:hover:text-emerald-300 border border-neutral-200 dark:border-neutral-700 transition shrink-0 flex items-center gap-1 cursor-pointer"
                 >
                   {preset.label}
                 </button>
@@ -7626,7 +7628,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       >
                         {categories.map((c) => (
                           <option key={c.id} value={c.slug}>
-                            {c.icon || '📦'} {adminLang === 'bn' ? (c.nameBn || c.name) : c.name}
+                            {adminLang === 'bn' ? (c.nameBn || c.name) : c.name}
                           </option>
                         ))}
                       </select>
@@ -8041,7 +8043,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <div>
                       <span className="font-black text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
                         <Flame className="h-4 w-4 fill-rose-500" />
-                        Today&apos;s Best Deals 🔥
+                        Today&apos;s Best Deals
                       </span>
                       <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
                         Displayed in the homepage countdown deals carousel and featured at <strong>/deals</strong>.
@@ -8064,7 +8066,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <div>
                       <span className="font-black text-cyan-600 dark:text-cyan-400 flex items-center gap-1.5">
                         <Sparkles className="h-4 w-4" />
-                        New Arrival Batch ✨
+                        New Arrival Batch
                       </span>
                       <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
                         Highlights fresh restocks on the homepage and at <strong>/new-arrivals</strong>.
@@ -8087,7 +8089,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <div>
                       <span className="font-black text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
                         <Percent className="h-4 w-4" />
-                        Special Discount Offer 🏷️
+                        Special Discount Offer
                       </span>
                       <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
                         Showcased in the discounted deals catalog and at <strong>/offers</strong>.
@@ -8110,7 +8112,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <div>
                       <span className="font-black text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
                         <Megaphone className="h-4 w-4" />
-                        Frontpage Advertisement 📢
+                        Frontpage Advertisement
                       </span>
                       <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
                         Spotlighted on hero banner carousel and given top search placement.
@@ -8124,8 +8126,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
             {/* TAB 5: STORY & SPECS (SELECTIVE DETAILS - CHOOSE WHAT TO SHOW) */}
             {productModalTab === 'details' && (
               <div className="space-y-4">
-                <div className="p-3.5 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 font-medium">
-                  💡 <strong>Custom Details Controls:</strong> Choose exactly which sections you want for this product. Unchecked or blank sections will be completely omitted from the customer-facing details page.
+                <div className="p-3.5 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 font-medium flex items-center gap-2">
+                  <Info className="h-4 w-4 shrink-0 text-emerald-600" />
+                  <span><strong>Custom Details Controls:</strong> Choose exactly which sections you want for this product. Unchecked or blank sections will be completely omitted from the customer-facing details page.</span>
                 </div>
 
                 {/* 1. Description Section */}
@@ -8227,7 +8230,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <div className="flex items-center justify-between">
                     <div>
                       <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
-                        <span>🥣 4. How to Use / Usage Guide</span>
+                        <span>4. How to Use / Usage Guide</span>
                         <span className="text-[9px] uppercase px-1.5 py-0.5 rounded-sm bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 font-bold">
                           Optional
                         </span>
@@ -8261,7 +8264,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3">
                   <div className="flex items-center justify-between">
                     <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
-                      <span>📦 5. Storage Instructions</span>
+                      <span>5. Storage Instructions</span>
                     </label>
                     <label className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 cursor-pointer">
                       <input
@@ -8290,7 +8293,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
           </div>
 
           {/* RIGHT COLUMN: Live Storefront Card Preview (5 cols) */}
-          <div className="lg:col-span-5 bg-gradient-to-b from-neutral-50 to-neutral-100/70 dark:from-neutral-900/90 dark:to-neutral-950 p-6 flex flex-col justify-between overflow-y-auto max-h-[calc(92vh-175px)] space-y-5 text-left">
+          <div className="lg:col-span-5 bg-neutral-50/80 dark:bg-neutral-900/60 p-6 flex flex-col justify-between overflow-y-auto max-h-[calc(92vh-175px)] space-y-5 text-left">
             <div>
               {/* Preview Header */}
               <div className="flex items-center justify-between pb-3 border-b border-neutral-200 dark:border-neutral-800">
@@ -8451,8 +8454,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <span className={productForm.includeStorage ? 'text-emerald-600' : 'text-neutral-400 line-through'}>
                     ✓ Storage Advice
                   </span>
-                  <span className="text-emerald-600">
-                    📸 {productForm.images.length || 1} Photo(s)
+                  <span className="text-emerald-600 flex items-center gap-1">
+                    <ImageIcon className="h-3 w-3 inline" />
+                    <span>{productForm.images.length || 1} Photo(s)</span>
                   </span>
                 </div>
               </div>
@@ -8531,7 +8535,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               size="sm"
               onClick={handleSaveProduct}
               disabled={isSavingProduct || !productForm.name.trim()}
-              className="font-black px-6 text-xs shadow-md shadow-emerald-600/25"
+              className="font-black px-6 text-xs shadow-md shadow-emerald-600/25 cursor-pointer"
             >
               {isSavingProduct ? (
                 <span className="flex items-center gap-1.5">
@@ -8540,7 +8544,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               ) : editingProduct ? (
                 'Save & Update Live Product'
               ) : (
-                'Create & Publish to Store 🚀'
+                'Create & Publish to Store'
               )}
             </Button>
           </div>

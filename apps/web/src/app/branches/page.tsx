@@ -19,6 +19,9 @@ import {
   Store,
   CheckCircle2,
   Award,
+  Leaf,
+  Droplets,
+  Car,
 } from 'lucide-react';
 import { SiteHeader } from '../../components/site-header';
 import { SiteFooter } from '../../components/site-footer';
@@ -167,7 +170,7 @@ export default function BranchesPage() {
                       {/* Top Badges */}
                       <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between">
                         <span className="bg-[#2EBD70] text-[#071F15] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
-                          ⚡ {branch.deliveryTime} EXPRESS ETA
+                          {branch.deliveryTime} EXPRESS ETA
                         </span>
 
                         {isCurrent ? (
@@ -214,7 +217,7 @@ export default function BranchesPage() {
                           <div>
                             <span className="text-[#17251F] font-bold block">{branch.address}</span>
                             <span className="text-[11px] text-[#21A366] font-semibold mt-0.5 block">
-                              📍 কভারেজ: {branch.coverage}
+                              কভারেজ: {branch.coverage}
                             </span>
                           </div>
                         </div>
@@ -312,7 +315,7 @@ export default function BranchesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="bg-[#F7F9F5] p-5 rounded-3xl border border-[#E5ECE7] space-y-2.5">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#E5ECE7] text-[#21A366] flex items-center justify-center font-bold shadow-xs">
-                  🌿
+                  <Leaf className="w-5 h-5" />
                 </div>
                 <h4 className="font-extrabold text-sm text-[#17251F]">লাইভ ফ্রেশ ভেজিটেবল বার</h4>
                 <p className="text-xs text-[#64736B] leading-relaxed">
@@ -322,7 +325,7 @@ export default function BranchesPage() {
 
               <div className="bg-[#F7F9F5] p-5 rounded-3xl border border-[#E5ECE7] space-y-2.5">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#E5ECE7] text-[#21A366] flex items-center justify-center font-bold shadow-xs">
-                  🛡️
+                  <ShieldCheck className="w-5 h-5" />
                 </div>
                 <h4 className="font-extrabold text-sm text-[#17251F]">ফরমালিন ও কোয়ালিটি টেস্ট</h4>
                 <p className="text-xs text-[#64736B] leading-relaxed">
@@ -332,7 +335,7 @@ export default function BranchesPage() {
 
               <div className="bg-[#F7F9F5] p-5 rounded-3xl border border-[#E5ECE7] space-y-2.5">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#E5ECE7] text-[#21A366] flex items-center justify-center font-bold shadow-xs">
-                  🛢️
+                  <Droplets className="w-5 h-5" />
                 </div>
                 <h4 className="font-extrabold text-sm text-[#17251F]">কাঠের ঘানি ভাঙা খাঁটি তেল</h4>
                 <p className="text-xs text-[#64736B] leading-relaxed">
@@ -342,7 +345,7 @@ export default function BranchesPage() {
 
               <div className="bg-[#F7F9F5] p-5 rounded-3xl border border-[#E5ECE7] space-y-2.5">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#E5ECE7] text-[#21A366] flex items-center justify-center font-bold shadow-xs">
-                  🚗
+                  <Car className="w-5 h-5" />
                 </div>
                 <h4 className="font-extrabold text-sm text-[#17251F]">কার্বসাইড এক্সপ্রেস পিকআপ</h4>
                 <p className="text-xs text-[#64736B] leading-relaxed">

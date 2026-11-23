@@ -35,6 +35,8 @@ import {
   User,
   Mail,
   Banknote,
+  Smartphone,
+  Zap,
 } from 'lucide-react';
 
 const BkashLogo: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
@@ -311,7 +313,7 @@ export const Modals: React.FC = () => {
         );
       } else {
         toast.success(
-          'Order Placed Successfully! 🎉',
+          'Order Placed Successfully',
           `Order #${orderId} confirmed. Estimated delivery in ${selectedBranch.deliveryTime || '25-30 mins'}.`
         );
       }
@@ -680,11 +682,11 @@ export const Modals: React.FC = () => {
               <div className="pt-2 border-t border-neutral-100">
                 <div className="grid grid-cols-2 gap-2 text-[10px] text-neutral-500 font-medium text-center">
                   <div className="p-2 rounded-lg bg-neutral-50 border border-neutral-100">
-                    <p className="font-bold text-emerald-700">🚀 30-Min Fast</p>
+                    <p className="font-bold text-emerald-700">30-Min Fast</p>
                     <p>Express Delivery</p>
                   </div>
                   <div className="p-2 rounded-lg bg-neutral-50 border border-neutral-100">
-                    <p className="font-bold text-emerald-700">🥬 100% Organic</p>
+                    <p className="font-bold text-emerald-700">100% Organic</p>
                     <p>Formalin-Free Farm</p>
                   </div>
                 </div>
@@ -752,11 +754,11 @@ export const Modals: React.FC = () => {
                       </span>
                     </div>
                     <p className="text-xs text-neutral-600 mt-1 flex items-center gap-1.5 flex-wrap">
-                      <span className="font-semibold text-neutral-700">⚡ Hub:</span>
+                      <span className="font-semibold text-neutral-700">Hub:</span>
                       <span className="font-extrabold text-emerald-700">{selectedBranch.name}</span>
                       <span className="text-neutral-300">•</span>
                       <span className="text-emerald-800 font-bold bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded text-[11px] shadow-2xs">
-                        🚀 Express Delivery {selectedBranch.deliveryTime || '25-30 Mins'}
+                        Express Delivery {selectedBranch.deliveryTime || '25-30 Mins'}
                       </span>
                     </p>
                   </div>
@@ -864,7 +866,7 @@ export const Modals: React.FC = () => {
                       onChange={(e) => setDeliveryTimeSlot(e.target.value)}
                       className="w-full pl-9 pr-8 py-2.5 text-xs rounded-xl border border-neutral-300 bg-white text-neutral-900 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium"
                     >
-                      <option value="Express Delivery (25-30 Mins)">🚀 Express Delivery (~25-30 Mins)</option>
+                      <option value="Express Delivery (25-30 Mins)">Express Delivery (~25-30 Mins)</option>
                       <option value="Today Afternoon (2:00 PM - 5:00 PM)">Today Afternoon (2:00 PM - 5:00 PM)</option>
                       <option value="Today Evening (6:00 PM - 9:00 PM)">Today Evening (6:00 PM - 9:00 PM)</option>
                       <option value="Tomorrow Morning (8:00 AM - 11:00 AM)">Tomorrow Morning (8:00 AM - 11:00 AM)</option>
@@ -1015,7 +1017,7 @@ export const Modals: React.FC = () => {
                   <div className="mt-3">
                     {paymentMethod === 'cod' && (
                       <div className="bg-emerald-50 border border-emerald-200/80 rounded-xl p-3 text-xs text-emerald-950 flex items-start gap-2.5">
-                        <span className="text-base shrink-0 mt-0.5">💵</span>
+                        <Banknote className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                         <div className="leading-relaxed">
                           <strong className="font-bold text-emerald-900">Cash on Delivery (ক্যাশ অন ডেলিভারি):</strong>{' '}
                           পণ্য আপনার দরজায় পৌঁছালে ভালো করে দেখে ডেলিভারি রাইডারকে ক্যাশে অথবা রাইডারের বিকাশ/নগদ কিউআর কোডে টাকা দিতে পারবেন। কোনো অগ্রিম পেমেন্টের প্রয়োজন নেই।
@@ -1025,7 +1027,7 @@ export const Modals: React.FC = () => {
 
                     {paymentMethod === 'bkash' && (
                       <div className="bg-pink-50 border border-pink-200/80 rounded-xl p-3 text-xs text-pink-950 flex items-start gap-2.5">
-                        <span className="text-base shrink-0 mt-0.5">📱</span>
+                        <Smartphone className="w-5 h-5 text-pink-600 shrink-0 mt-0.5" />
                         <div className="leading-relaxed">
                           <strong className="font-bold text-pink-900">bKash Direct Checkout (বিকাশ পেমেন্ট):</strong>{' '}
                           বিকাশ নিরাপদ পেমেন্ট গেটওয়ের মাধ্যমে সরাসরি আপনার একাউন্ট থেকে পেমেন্ট সম্পন্ন করতে পারবেন। ০% অতিরিক্ত চার্জ, সম্পূর্ণ সুরক্ষিত ও ইন্সট্যান্ট কনফার্মেশন।
@@ -1035,7 +1037,7 @@ export const Modals: React.FC = () => {
 
                     {paymentMethod === 'nagad' && (
                       <div className="bg-orange-50 border border-orange-200/80 rounded-xl p-3 text-xs text-orange-950 flex items-start gap-2.5">
-                        <span className="text-base shrink-0 mt-0.5">🔥</span>
+                        <Zap className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
                         <div className="leading-relaxed">
                           <strong className="font-bold text-orange-900">Nagad Instant Pay (নগদ পেমেন্ট):</strong>{' '}
                           আপনার নগদ ওয়ালেট থেকে সহজে ও দ্রুত পেমেন্ট করুন। শূন্য শতাংশ ফি, কোনো হিডেন চার্জ নেই।
@@ -1045,7 +1047,7 @@ export const Modals: React.FC = () => {
 
                     {paymentMethod === 'card' && (
                       <div className="bg-blue-50 border border-blue-200/80 rounded-xl p-3 text-xs text-blue-950 flex items-start gap-2.5">
-                        <span className="text-base shrink-0 mt-0.5">💳</span>
+                        <CreditCard className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                         <div className="leading-relaxed">
                           <strong className="font-bold text-blue-900">Visa / Mastercard / Amex / NexusPay:</strong>{' '}
                           SSLCommerz 256-bit ব্যাংকিং সিকিউরিটি এনক্রিপ্টেশনের মাধ্যমে যেকোনো ব্যাংক কার্ড দিয়ে নিশ্চিন্তে নিরাপদ পেমেন্ট করুন।
@@ -1109,7 +1111,7 @@ export const Modals: React.FC = () => {
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 leading-tight">
-                    🎉 Order Placed Successfully!
+                    Order Placed Successfully!
                   </h2>
                   <p className="text-xs sm:text-sm text-[#21A366] font-extrabold mt-1">
                     ধন্যবাদ! আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে এবং প্রসেসিং শুরু হয়েছে
@@ -1120,7 +1122,7 @@ export const Modals: React.FC = () => {
                 {placedOrderInfo.paymentMethod === 'cod' ? (
                   <div className="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 text-xs text-emerald-950 flex items-start gap-3 shadow-xs">
                     <div className="w-10 h-10 rounded-xl bg-[#21A366] text-white flex items-center justify-center shrink-0 shadow-sm text-lg font-bold">
-                      💵
+                      <Banknote className="w-5 h-5 text-white" />
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -1143,7 +1145,7 @@ export const Modals: React.FC = () => {
                 ) : placedOrderInfo.paymentMethod === 'bkash' ? (
                   <div className="bg-pink-50 border-2 border-pink-300 rounded-2xl p-4 text-xs text-pink-950 flex items-start gap-3 shadow-xs">
                     <div className="w-10 h-10 rounded-xl bg-[#E2136E] text-white flex items-center justify-center shrink-0 shadow-sm text-lg font-bold">
-                      📱
+                      <Smartphone className="w-5 h-5 text-white" />
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -1162,7 +1164,7 @@ export const Modals: React.FC = () => {
                 ) : placedOrderInfo.paymentMethod === 'nagad' ? (
                   <div className="bg-orange-50 border-2 border-orange-300 rounded-2xl p-4 text-xs text-orange-950 flex items-start gap-3 shadow-xs">
                     <div className="w-10 h-10 rounded-xl bg-[#F7941D] text-white flex items-center justify-center shrink-0 shadow-sm text-lg font-bold">
-                      🔥
+                      <Zap className="w-5 h-5 text-white" />
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -1181,7 +1183,7 @@ export const Modals: React.FC = () => {
                 ) : (
                   <div className="bg-blue-50 border-2 border-blue-300 rounded-2xl p-4 text-xs text-blue-950 flex items-start gap-3 shadow-xs">
                     <div className="w-10 h-10 rounded-xl bg-[#1A1F71] text-white flex items-center justify-center shrink-0 shadow-sm text-lg font-bold">
-                      💳
+                      <CreditCard className="w-5 h-5 text-white" />
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -1267,7 +1269,7 @@ export const Modals: React.FC = () => {
                         <span className="text-white/60 text-[10px] block">পণ্য এখন কোথায় আছে (Current Location)</span>
                         <span className="font-extrabold text-white text-xs">{placedOrderInfo.branch}</span>
                         <span className="text-emerald-400 font-bold block text-[11px]">
-                          📍 ~{placedOrderInfo.distance} দূরে (আপনার ঠিকানা থেকে)
+                          ~{placedOrderInfo.distance} দূরে (আপনার ঠিকানা থেকে)
                         </span>
                       </div>
                     </div>

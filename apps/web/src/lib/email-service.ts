@@ -222,7 +222,7 @@ export async function sendOrderConfirmationEmail(order: OrderEmailData) {
       <!-- Brand Header -->
       <div style="background: #123C2D; padding: 28px 24px; text-align: center; color: #ffffff;">
         <h1 style="margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; color: #ffffff;">
-          🌿 ECOBAZAR SUPERMARKET
+          ECOBAZAR SUPERMARKET
         </h1>
         <p style="margin: 6px 0 0; font-size: 13px; color: #2EBD70; font-weight: 600;">
           Freshness in Every Choice • ১০০% প্রিমিয়াম ও ফ্রেশ গ্রোসারি
@@ -483,7 +483,7 @@ export async function sendTestEmail(toEmail: string) {
   <html>
   <body style="font-family: sans-serif; background: #F7F9F5; padding: 24px;">
     <div style="max-width: 500px; margin: 0 auto; background: #fff; padding: 24px; border-radius: 16px; border: 1px solid #C4EED6;">
-      <h2 style="color: #123C2D; margin-top: 0;">🎉 ECOBAZAR SMTP Connection Test Successful!</h2>
+      <h2 style="color: #123C2D; margin-top: 0;">ECOBAZAR SMTP Connection Test Successful</h2>
       <p style="font-size: 14px; color: #374151; line-height: 1.5;">
         Congratulations! Your ECOBAZAR Supermarket email dispatch system is now live and working seamlessly.
       </p>
@@ -504,7 +504,7 @@ export async function sendTestEmail(toEmail: string) {
   await transporter.sendMail({
     from: `"${config.senderName}" <${config.senderEmail || config.smtpUser}>`,
     to: toEmail,
-    subject: '🎉 ECOBAZAR SMTP Test Email - Connection Verified',
+    subject: 'ECOBAZAR SMTP Test Email - Connection Verified',
     html: htmlContent,
   });
 

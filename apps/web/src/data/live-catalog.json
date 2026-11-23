@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-21T06:57:31.440Z",
+  "lastUpdated": "2026-11-23T05:25:54.326Z",
   "topBanner": {
     "enabled": true,
     "badgeText": "VOUCHER SAVINGS",
@@ -406,6 +406,66 @@
     }
   ],
   "products": [
+    {
+      "id": "fre-mwstoljq",
+      "name": "Fresh Carrot (1kg)",
+      "nameBn": "তাজা গাজর (১ কেজি)",
+      "category": "Fresh Fruits & Vegetables",
+      "categorySlug": "fresh-fruits-vegetables",
+      "subcategory": "Fresh Vegetables",
+      "brand": "ECOBAZAR Organic",
+      "origin": "Bangladesh",
+      "price": 120,
+      "originalPrice": 130,
+      "unit": "1 kg pack",
+      "stock": 120,
+      "badge": "",
+      "badgeColor": "green",
+      "image": "/uploads/carrot-gajor-kg-1-mwsthgwl.jpg",
+      "images": [
+        "/uploads/carrot-gajor-kg-1-mwsthgwl.jpg",
+        "/uploads/carrot-2-mwsthj60.jpg",
+        "/uploads/carrot-3-mwsthlkf.webp"
+      ],
+      "isHotDeal": true,
+      "isNewArrival": false,
+      "isOffer": false,
+      "isAdvertisement": false,
+      "includeDescription": true,
+      "includeFeatures": true,
+      "includeBenefits": true,
+      "includeHowToUse": false,
+      "includeStorage": true,
+      "description": "The carrot (scientific name: *Daucus carota*) is a type of root vegetable. The carrot plant belongs to the Apiaceae family. It is native to southwestern Asia and Europe. A significant portion of the world's carrots is produced in China. Carrots are included in diets and are particularly used in salads. They are commonly grown as a vegetable in home gardens.",
+      "keyFeaturesText": "1. The beta-carotene in carrots is converted into vitamin A, which helps maintain good vision. It also acts as an antioxidant.\n2. Research has shown that compounds found in carrots—falcarinol and falcarindiol—help prevent various types of cancer, including lung and intestinal cancer.\n3. Alpha-carotene and lutein, present in carrots, play a significant role in preventing heart disease.\n4. Vitamin A derived from carrots helps eliminate harmful toxic substances from the bloodstream.\n5. Carrots help heal inflammation in the respiratory tract.\n6. Carrots contribute to the health of teeth and gums.",
+      "healthBenefitsText": "Carrots are considered a \"superfood.\" They are an excellent vegetable for warding off common winter ailments. The vitamins and minerals found in carrots boost the body's immune system, helping to protect against colds, flu, and coughs. Some of their key benefits are discussed below:\n\nSource of Vitamins:\nCarrots are rich in Vitamin A. They contain beta-carotene, which helps improve vision and protects against various eye-related issues, including vision loss.\n\nAntioxidant Support:\nCarrots contain carotenoid antioxidants, which help prevent cancer and purify the blood. Additionally, carrot juice can help fade blemishes and reduce signs of aging.\n\nCancer Prevention:\nDuring digestion, the body produces byproducts known as \"free radicals,\" which can damage cells. Antioxidant-rich foods help combat these free radicals, thereby reducing the development of cancer cells in the body.\n\nHeart Health:\nMaintaining physical activity, getting adequate sleep, and managing stress are essential for a healthy heart. Carrots are packed with dietary fiber and antioxidants; these components prevent the buildup of deposits in the arteries, ensuring healthy blood circulation and supporting heart health.\n\nRadiant Skin:\nCarrots contain antioxidants and minerals like potassium. These nutrients keep the skin healthy and refreshed, helping to prevent dryness, improve skin tone, and protect against the appearance of blemishes.",
+      "howToUse": "",
+      "storageInstructions": "Grow carrots by direct-sowing seeds about 1/4 to 1/2 inch deep in loose, stone-free soil, keeping the surface moist until germination, thinning seedlings to 2–3 inches apart, and harvesting around 55–100 days depending on the variety",
+      "countryOfOrigin": "Bangladesh",
+      "keyFeatures": [
+        "1. The beta-carotene in carrots is converted into vitamin A, which helps maintain good vision. It also acts as an antioxidant.",
+        "2. Research has shown that compounds found in carrots—falcarinol and falcarindiol—help prevent various types of cancer, including lung and intestinal cancer.",
+        "3. Alpha-carotene and lutein, present in carrots, play a significant role in preventing heart disease.",
+        "4. Vitamin A derived from carrots helps eliminate harmful toxic substances from the bloodstream.",
+        "5. Carrots help heal inflammation in the respiratory tract.",
+        "6. Carrots contribute to the health of teeth and gums."
+      ],
+      "healthBenefits": [
+        "Carrots are considered a \"superfood.\" They are an excellent vegetable for warding off common winter ailments. The vitamins and minerals found in carrots boost the body's immune system, helping to protect against colds, flu, and coughs. Some of their key benefits are discussed below:",
+        "Source of Vitamins:",
+        "Carrots are rich in Vitamin A. They contain beta-carotene, which helps improve vision and protects against various eye-related issues, including vision loss.",
+        "Antioxidant Support:",
+        "Carrots contain carotenoid antioxidants, which help prevent cancer and purify the blood. Additionally, carrot juice can help fade blemishes and reduce signs of aging.",
+        "Cancer Prevention:",
+        "During digestion, the body produces byproducts known as \"free radicals,\" which can damage cells. Antioxidant-rich foods help combat these free radicals, thereby reducing the development of cancer cells in the body.",
+        "Heart Health:",
+        "Maintaining physical activity, getting adequate sleep, and managing stress are essential for a healthy heart. Carrots are packed with dietary fiber and antioxidants; these components prevent the buildup of deposits in the arteries, ensuring healthy blood circulation and supporting heart health.",
+        "Radiant Skin:",
+        "Carrots contain antioxidants and minerals like potassium. These nutrients keep the skin healthy and refreshed, helping to prevent dryness, improve skin tone, and protect against the appearance of blemishes."
+      ],
+      "rating": 5,
+      "reviews": 1
+    },
     {
       "id": "fre-mwohx1p0",
       "name": "Fresh Guava 1kg",

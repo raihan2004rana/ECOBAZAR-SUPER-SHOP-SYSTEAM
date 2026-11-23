@@ -420,7 +420,7 @@ export default function AboutUsPage() {
                         <div>
                           <p className="font-extrabold text-[#17251F]">{loc.address}</p>
                           <p className="text-[#64736B] text-[11px] mt-0.5">
-                            ⚡ Coverage: {loc.coverage}
+                            Coverage: {loc.coverage}
                           </p>
                         </div>
                       </div>
