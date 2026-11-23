@@ -99,7 +99,7 @@ export const DialogTitle: React.FC<{ children: React.ReactNode; className?: stri
   children,
   className,
 }) => (
-  <h3 className={cn('text-lg font-semibold text-neutral-900 leading-tight', className)}>
+  <h3 className={cn('text-lg font-semibold text-neutral-900 dark:text-white leading-tight', className)}>
     {children}
   </h3>
 );
@@ -107,18 +107,18 @@ export const DialogTitle: React.FC<{ children: React.ReactNode; className?: stri
 export const DialogDescription: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className,
-}) => <p className={cn('text-sm text-neutral-500 leading-relaxed', className)}>{children}</p>;
+}) => <p className={cn('text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed', className)}>{children}</p>;
 
 export const DialogBody: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className,
-}) => <div className={cn('py-2 text-neutral-700', className)}>{children}</div>;
+}) => <div className={cn('py-2 text-neutral-700 dark:text-neutral-200', className)}>{children}</div>;
 
 export const DialogFooter: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className,
 }) => (
-  <div className={cn('flex items-center justify-end gap-3 mt-6 pt-4 border-t border-neutral-100', className)}>
+  <div className={cn('flex items-center justify-end gap-3 mt-6 pt-4 border-t border-neutral-100 dark:border-neutral-800', className)}>
     {children}
   </div>
 );

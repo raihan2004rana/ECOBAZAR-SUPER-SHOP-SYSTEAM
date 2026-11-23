@@ -41,14 +41,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-xs font-semibold text-slate-700 tracking-tight"
+            className="block text-xs font-semibold text-slate-700 dark:text-neutral-300 tracking-tight"
           >
             {label}
           </label>
         )}
         <div className="relative flex items-center">
           {leftIcon && (
-            <div className="absolute left-3 flex items-center pointer-events-none text-slate-400">
+            <div className="absolute left-3 flex items-center pointer-events-none text-slate-400 dark:text-neutral-500">
               {leftIcon}
             </div>
           )}
@@ -56,10 +56,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             type={type}
             className={cn(
-              'w-full border bg-white text-slate-900 transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-400 focus-visible:outline-none focus:ring-2 focus:border-transparent disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400',
+              'w-full border bg-white dark:bg-neutral-800 text-slate-900 dark:text-neutral-100 placeholder:text-slate-400 dark:placeholder:text-neutral-500 transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus:ring-2 focus:border-transparent disabled:cursor-not-allowed disabled:bg-slate-100 dark:disabled:bg-neutral-900 disabled:text-slate-400 dark:disabled:text-neutral-600',
               error
-                ? 'border-red-400 focus:ring-red-400 text-red-900'
-                : 'border-slate-300 focus:ring-ecobazar-primary-green',
+                ? 'border-red-400 focus:ring-red-400 text-red-900 dark:text-red-200'
+                : 'border-slate-300 dark:border-neutral-700 focus:ring-ecobazar-primary-green',
               leftIcon && 'pl-9',
               rightIcon && 'pr-9',
               sizeClasses[inputSize],
@@ -72,18 +72,18 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {rightIcon && (
-            <div className="absolute right-3 flex items-center pointer-events-none text-slate-400">
+            <div className="absolute right-3 flex items-center pointer-events-none text-slate-400 dark:text-neutral-500">
               {rightIcon}
             </div>
           )}
         </div>
         {error && (
-          <p id={`${inputId}-error`} className="text-xs text-red-600 font-medium mt-1">
+          <p id={`${inputId}-error`} className="text-xs text-red-600 dark:text-red-400 font-medium mt-1">
             {error}
           </p>
         )}
         {!error && helperText && (
-          <p id={`${inputId}-help`} className="text-xs text-slate-500 mt-1">
+          <p id={`${inputId}-help`} className="text-xs text-slate-500 dark:text-neutral-400 mt-1">
             {helperText}
           </p>
         )}

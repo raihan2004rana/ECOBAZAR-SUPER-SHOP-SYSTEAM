@@ -129,13 +129,16 @@ interface BranchOption {
 interface NavItem {
   id: string;
   label: string;
+  labelBn?: string;
   icon: React.ElementType;
   badge?: string;
+  badgeBn?: string;
   badgeVariant?: 'default' | 'forest' | 'mint' | 'orange' | 'success' | 'warning' | 'danger' | 'info';
 }
 
 interface NavSection {
   title: string;
+  titleBn?: string;
   items: NavItem[];
 }
 
@@ -195,78 +198,87 @@ const branchOptions: BranchOption[] = [
 const navigationSections: NavSection[] = [
   {
     title: 'OVERVIEW',
+    titleBn: 'ওভারভিউ',
     items: [
-      { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-      { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+      { id: 'dashboard', label: 'Dashboard', labelBn: 'ড্যাশবোর্ড', icon: LayoutDashboard },
+      { id: 'analytics', label: 'Analytics', labelBn: 'অ্যানালিটিক্স', icon: BarChart3 },
     ],
   },
   {
     title: 'INVENTORY',
+    titleBn: 'ইনভেন্টরি ও স্টক',
     items: [
-      { id: 'products', label: 'Products', icon: Package, badge: '1,420' },
-      { id: 'categories', label: 'Categories', icon: FolderTree },
-      { id: 'inventory', label: 'Inventory', icon: Boxes },
-      { id: 'expiry', label: 'Expiry Management', icon: CalendarClock, badge: '8 Alert', badgeVariant: 'danger' },
-      { id: 'transfers', label: 'Stock Transfers', icon: ArrowLeftRight },
+      { id: 'products', label: 'Products', labelBn: 'প্রোডাক্ট তালিকা', icon: Package, badge: '1,420', badgeBn: '১,৪২০' },
+      { id: 'categories', label: 'Categories', labelBn: 'ক্যাটাগরি সমূহ', icon: FolderTree },
+      { id: 'inventory', label: 'Inventory', labelBn: 'স্টক ও ইনভেন্টরি', icon: Boxes },
+      { id: 'expiry', label: 'Expiry Management', labelBn: 'মেয়াদ উত্তীর্ণ সতর্কতা', icon: CalendarClock, badge: '8 Alert', badgeBn: '৮ সতর্ক', badgeVariant: 'danger' },
+      { id: 'transfers', label: 'Stock Transfers', labelBn: 'স্টক ট্রান্সফার', icon: ArrowLeftRight },
     ],
   },
   {
     title: 'PURCHASING',
+    titleBn: 'ক্রয় ও সংগ্রহ',
     items: [
-      { id: 'suppliers', label: 'Suppliers', icon: Truck },
-      { id: 'purchase-orders', label: 'Purchase Orders', icon: ClipboardList, badge: '3 Req', badgeVariant: 'warning' },
-      { id: 'goods-received', label: 'Goods Received', icon: PackageCheck },
+      { id: 'suppliers', label: 'Suppliers', labelBn: 'সরবরাহকারী', icon: Truck },
+      { id: 'purchase-orders', label: 'Purchase Orders', labelBn: 'পারচেজ অর্ডার (PO)', icon: ClipboardList, badge: '3 Req', badgeBn: '৩ রিকু', badgeVariant: 'warning' },
+      { id: 'goods-received', label: 'Goods Received', labelBn: 'পণ্য রিসিভ (GRN)', icon: PackageCheck },
     ],
   },
   {
     title: 'SALES',
+    titleBn: 'বিক্রয় ও কাউন্টার',
     items: [
-      { id: 'orders', label: 'Orders', icon: ShoppingCart },
-      { id: 'pos', label: 'POS Terminal', icon: Store, badge: 'Live', badgeVariant: 'success' },
-      { id: 'returns', label: 'Returns & Refunds', icon: RotateCcw },
+      { id: 'orders', label: 'Orders', labelBn: 'অর্ডার তালিকা', icon: ShoppingCart },
+      { id: 'pos', label: 'POS Terminal', labelBn: 'পিওএস (POS) কাউন্টার', icon: Store, badge: 'Live', badgeBn: 'লাইভ', badgeVariant: 'success' },
+      { id: 'returns', label: 'Returns & Refunds', labelBn: 'রিটার্ন ও রিফান্ড', icon: RotateCcw },
     ],
   },
   {
     title: 'MARKETING',
+    titleBn: 'মার্কেটিং ও অফার',
     items: [
-      { id: 'ads', label: 'Advertisements', icon: Megaphone },
-      { id: 'promotions', label: 'Promotions', icon: Percent },
-      { id: 'coupons', label: 'Coupons', icon: Tag },
-      { id: 'campaigns', label: 'Campaigns', icon: Flag },
+      { id: 'ads', label: 'Advertisements', labelBn: 'বিজ্ঞাপন ও ব্যানার', icon: Megaphone },
+      { id: 'promotions', label: 'Promotions', labelBn: 'প্রমোশন', icon: Percent },
+      { id: 'coupons', label: 'Coupons', labelBn: 'কুপন ও ছাড়', icon: Tag },
+      { id: 'campaigns', label: 'Campaigns', labelBn: 'ক্যাম্পেইন', icon: Flag },
     ],
   },
   {
     title: 'CUSTOMERS',
+    titleBn: 'কাস্টমার রিলেশনশিপ',
     items: [
-      { id: 'customers', label: 'Customer Management', icon: Users },
-      { id: 'loyalty', label: 'Loyalty Program', icon: Award },
+      { id: 'customers', label: 'Customer Management', labelBn: 'কাস্টমার ব্যবস্থাপনা', icon: Users },
+      { id: 'loyalty', label: 'Loyalty Program', labelBn: 'ইকোপয়েন্ট লয়্যালটি', icon: Award },
     ],
   },
   {
     title: 'BUSINESS',
+    titleBn: 'ব্যবসা ও প্রশাসন',
     items: [
-      { id: 'finance', label: 'Finance & Ledger', icon: CircleDollarSign },
-      { id: 'reports', label: 'Reports', icon: FileSpreadsheet },
-      { id: 'branches', label: 'Branch Management', icon: Building2 },
-      { id: 'employees', label: 'Employees & Staff', icon: Briefcase },
-      { id: 'careers', label: 'Careers & Recruitment', icon: UserCheck, badge: 'Hiring', badgeVariant: 'mint' },
+      { id: 'finance', label: 'Finance & Ledger', labelBn: 'আর্থিক হিসাব ও ভ্যাট', icon: CircleDollarSign },
+      { id: 'reports', label: 'Reports', labelBn: 'রিপোর্ট ও স্টেটমেন্ট', icon: FileSpreadsheet },
+      { id: 'branches', label: 'Branch Management', labelBn: 'শাখা ব্যবস্থাপনা', icon: Building2 },
+      { id: 'employees', label: 'Employees & Staff', labelBn: 'কর্মচারী ও স্টাফ', icon: Briefcase },
+      { id: 'careers', label: 'Careers & Recruitment', labelBn: 'চাকরি ও নিয়োগ', icon: UserCheck, badge: 'Hiring', badgeBn: 'নিয়োগ', badgeVariant: 'mint' },
     ],
   },
   {
     title: 'INTELLIGENCE',
+    titleBn: 'স্মার্ট ইন্টেলিজেন্স',
     items: [
-      { id: 'ai-assistant', label: 'AI Assistant', icon: Sparkles, badge: 'AI', badgeVariant: 'mint' },
-      { id: 'market-intel', label: 'Market Intelligence', icon: BrainCircuit },
-      { id: 'notifications', label: 'Notifications', icon: Bell, badge: '4 New' },
+      { id: 'ai-assistant', label: 'AI Assistant', labelBn: 'এআই সহকারী', icon: Sparkles, badge: 'AI', badgeBn: 'এআই', badgeVariant: 'mint' },
+      { id: 'market-intel', label: 'Market Intelligence', labelBn: 'মার্কেট ইন্টেলিজেন্স', icon: BrainCircuit },
+      { id: 'notifications', label: 'Notifications', labelBn: 'নোটিফিকেশন', icon: Bell, badge: '4 New', badgeBn: '৪ নতুন' },
     ],
   },
   {
     title: 'SYSTEM',
+    titleBn: 'সিস্টেম সেটিংস',
     items: [
-      { id: 'settings', label: 'Settings', icon: Settings },
-      { id: 'roles', label: 'Roles & Permissions', icon: ShieldCheck },
-      { id: 'audit-logs', label: 'Audit Logs', icon: History },
-      { id: 'emails', label: 'Email Outbox & SMTP', icon: Mail, badge: 'Outbox', badgeVariant: 'warning' },
+      { id: 'settings', label: 'Settings', labelBn: 'সেটিংস', icon: Settings },
+      { id: 'roles', label: 'Roles & Permissions', labelBn: 'রোল ও পারমিশন', icon: ShieldCheck },
+      { id: 'audit-logs', label: 'Audit Logs', labelBn: 'অডিট লগ', icon: History },
+      { id: 'emails', label: 'Email Outbox & SMTP', labelBn: 'ইমেইল আউটবক্স ও এসএমটিপি', icon: Mail, badge: 'Outbox', badgeBn: 'আউটবক্স', badgeVariant: 'warning' },
     ],
   },
 ];
@@ -475,8 +487,30 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
 
-  // Theme State (Light / Dark)
+  // Theme State (Light / Dark) & Language State (English / Bengali)
   const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [adminLang, setAdminLang] = React.useState<'en' | 'bn'>('en');
+
+  // Sync theme and language from localStorage on mount
+  React.useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('admin_theme');
+      if (savedTheme === 'dark' || (!savedTheme && document.documentElement.classList.contains('dark'))) {
+        setIsDarkMode(true);
+        document.documentElement.classList.add('dark');
+        document.body.classList.add('dark');
+      } else {
+        setIsDarkMode(false);
+        document.documentElement.classList.remove('dark');
+        document.body.classList.remove('dark');
+      }
+
+      const savedLang = localStorage.getItem('admin_lang');
+      if (savedLang === 'bn' || savedLang === 'en') {
+        setAdminLang(savedLang as 'en' | 'bn');
+      }
+    } catch {}
+  }, []);
 
   // Operational Checklist states
   const [taskVerificationStatus, setTaskVerificationStatus] = React.useState<'pending' | 'verified'>('pending');
@@ -1907,11 +1941,28 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       const next = !prev;
       if (next) {
         document.documentElement.classList.add('dark');
-        toast.info('Theme Changed', 'Switched to Dark Mode theme.');
+        document.body.classList.add('dark');
+        try { localStorage.setItem('admin_theme', 'dark'); } catch {}
+        toast.info(adminLang === 'bn' ? 'থিম পরিবর্তিত হয়েছে' : 'Theme Changed', adminLang === 'bn' ? 'ডার্ক মোড সক্রিয় করা হয়েছে।' : 'Switched to Dark Mode theme.');
       } else {
         document.documentElement.classList.remove('dark');
-        toast.info('Theme Changed', 'Switched to Light Mode theme.');
+        document.body.classList.remove('dark');
+        try { localStorage.setItem('admin_theme', 'light'); } catch {}
+        toast.info(adminLang === 'bn' ? 'থিম পরিবর্তিত হয়েছে' : 'Theme Changed', adminLang === 'bn' ? 'লাইট মোড সক্রিয় করা হয়েছে।' : 'Switched to Light Mode theme.');
       }
+      return next;
+    });
+  };
+
+  // Toggle Language Function
+  const toggleLanguage = () => {
+    setAdminLang((prev) => {
+      const next = prev === 'en' ? 'bn' : 'en';
+      try { localStorage.setItem('admin_lang', next); } catch {}
+      toast.success(
+        next === 'bn' ? 'ভাষা পরিবর্তন সফল' : 'Language Changed',
+        next === 'bn' ? 'ড্যাশবোর্ড সম্পূর্ণ বাংলায় প্রদর্শিত হচ্ছে।' : 'Dashboard switched to English.'
+      );
       return next;
     });
   };
@@ -2096,12 +2147,14 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
             <div key={section.title} className="space-y-1">
               {!isSidebarCollapsed && (
                 <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-emerald-400/80 mb-1.5">
-                  {section.title}
+                  {adminLang === 'bn' ? (section.titleBn || section.title) : section.title}
                 </p>
               )}
               {section.items.map((item) => {
                 const Icon = item.icon;
                 const isActive = activeRouteId === item.id;
+                const displayLabel = adminLang === 'bn' ? (item.labelBn || item.label) : item.label;
+                const displayBadge = adminLang === 'bn' ? (item.badgeBn || item.badge) : item.badge;
 
                 return (
                   <button
@@ -2115,14 +2168,14 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         ? 'bg-primary-green text-white font-black shadow-md shadow-emerald-950/40'
                         : 'text-emerald-100/90 hover:bg-emerald-800/40 hover:text-white'
                     }`}
-                    title={isSidebarCollapsed ? item.label : undefined}
+                    title={isSidebarCollapsed ? displayLabel : undefined}
                   >
                     <div className="flex items-center gap-3 truncate">
                       <Icon className={`h-4 w-4 shrink-0 transition-transform ${isActive ? 'scale-110' : 'group-hover:scale-105'}`} />
-                      {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                      {!isSidebarCollapsed && <span className="truncate">{displayLabel}</span>}
                     </div>
 
-                    {!isSidebarCollapsed && item.badge && (
+                    {!isSidebarCollapsed && displayBadge && (
                       <span
                         className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
                           item.badgeVariant === 'danger'
@@ -2134,7 +2187,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             : 'bg-emerald-800/80 text-emerald-200'
                         }`}
                       >
-                        {item.badge}
+                        {displayBadge}
                       </span>
                     )}
                   </button>
@@ -2156,7 +2209,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-neutral-950 font-black text-xs shadow-md transition"
             >
               <MonitorCheck className="h-4 w-4" />
-              <span>Launch POS Terminal</span>
+              <span>{adminLang === 'bn' ? 'পিওএস (POS) টার্মিনাল চালু' : 'Launch POS Terminal'}</span>
             </button>
           ) : (
             <button
@@ -2166,7 +2219,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 toast.success('POS Register Online', 'Switched to Dhanmondi Register #01');
               }}
               className="w-full p-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-neutral-950 flex items-center justify-center transition"
-              title="Launch POS Register"
+              title={adminLang === 'bn' ? 'পিওএস টার্মিনাল' : 'Launch POS Register'}
             >
               <MonitorCheck className="h-5 w-5" />
             </button>
@@ -2209,14 +2262,14 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               className="w-full max-w-sm flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 cursor-pointer border border-transparent hover:border-neutral-300 dark:hover:border-neutral-700 transition"
             >
               <Search className="h-4 w-4" />
-              <span className="text-xs font-medium flex-1 text-left">Search SKU, orders, modules...</span>
+              <span className="text-xs font-medium flex-1 text-left">{adminLang === 'bn' ? 'এসকেইউ, অর্ডার, মডিউল খুঁজুন...' : 'Search SKU, orders, modules...'}</span>
               <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono font-bold bg-white dark:bg-neutral-700 rounded shadow-xs border border-neutral-200 dark:border-neutral-600">
                 ⌘K
               </kbd>
             </div>
           </div>
 
-          {/* Right: Branch Selector, Notifications, Theme & Profile */}
+          {/* Right: Branch Selector, Language, Theme, Notifications & Profile */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Branch Selector Dropdown */}
             <div className="relative">
@@ -2235,7 +2288,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
                 }`}>
                   <p className="px-3 py-2 text-[10px] font-extrabold uppercase tracking-wider text-neutral-400">
-                    Switch Operating Branch Scope
+                    {adminLang === 'bn' ? 'অপারেটিং শাখা পরিবর্তন করুন' : 'Switch Operating Branch Scope'}
                   </p>
                   <div className="space-y-1">
                     {branchOptions.map((b) => (
@@ -2259,6 +2312,18 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
               )}
             </div>
+
+            {/* Language Switcher (Bangla / English) */}
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-100/90 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-100 hover:border-primary-green dark:hover:border-primary-green transition text-xs font-black shadow-2xs"
+              aria-label="Toggle Dashboard Language"
+              title={adminLang === 'bn' ? 'Switch to English' : 'বাংলা ভাষায় পরিবর্তন করুন'}
+            >
+              <Globe className="h-3.5 w-3.5 text-primary-green" />
+              <span>{adminLang === 'bn' ? 'বাংলা' : 'EN'}</span>
+            </button>
 
             {/* Dark / Light Mode Switcher */}
             <button
@@ -2290,15 +2355,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 }`}>
                   <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Live System Alerts</h4>
-                      <Badge variant="forest" size="sm">{unreadCount} New</Badge>
+                      <h4 className="text-sm font-bold text-neutral-900 dark:text-white">{adminLang === 'bn' ? 'লাইভ সিস্টেম সতর্কতা' : 'Live System Alerts'}</h4>
+                      <Badge variant="forest" size="sm">{unreadCount} {adminLang === 'bn' ? 'নতুন' : 'New'}</Badge>
                     </div>
                     <button
                       type="button"
                       onClick={markAllNotificationsAsRead}
                       className="text-[11px] font-semibold text-primary-green hover:underline"
                     >
-                      Mark all read
+                      {adminLang === 'bn' ? 'সব পঠিত চিহ্নিত করুন' : 'Mark all read'}
                     </button>
                   </div>
                   <div className="max-h-80 overflow-y-auto py-2 space-y-2">
@@ -2338,7 +2403,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-600 dark:bg-rose-950/60 dark:text-rose-300 dark:hover:bg-rose-600 dark:hover:text-white border border-rose-200 dark:border-rose-800 text-xs font-bold transition-all shadow-xs"
             >
               <Lock className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Lock Terminal</span>
+              <span className="hidden sm:inline">{adminLang === 'bn' ? 'লক টার্মিনাল' : 'Lock Terminal'}</span>
             </button>
 
             {/* Profile Menu Popover */}
@@ -2384,7 +2449,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       className="w-full px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-800 flex items-center gap-2 text-neutral-700 dark:text-neutral-300"
                     >
                       <Settings className="h-3.5 w-3.5 text-neutral-400" />
-                      <span>Profile & Security</span>
+                      <span>{adminLang === 'bn' ? 'প্রোফাইল ও নিরাপত্তা' : 'Profile & Security'}</span>
                     </button>
                     <button
                       type="button"
@@ -2392,7 +2457,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       className="w-full px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-800 flex items-center gap-2 text-neutral-700 dark:text-neutral-300"
                     >
                       <History className="h-3.5 w-3.5 text-neutral-400" />
-                      <span>My Audit Trail</span>
+                      <span>{adminLang === 'bn' ? 'আমার অডিট হিস্ট্রি' : 'My Audit Trail'}</span>
                     </button>
                     <div className="my-1 border-t border-neutral-100 dark:border-neutral-800" />
                     <button
@@ -2409,7 +2474,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       className="w-full px-4 py-2 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2 text-rose-600 font-bold"
                     >
                       <Lock className="h-3.5 w-3.5" />
-                      <span>Lock & Sign Out</span>
+                      <span>{adminLang === 'bn' ? 'লক ও সাইন আউট' : 'Lock & Sign Out'}</span>
                     </button>
                   </div>
                 </div>
@@ -2426,9 +2491,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
           <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-amber-900 dark:text-amber-200 text-xs shadow-xs">
             <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
             <div className="flex-1">
-              <strong>DEMONSTRATION RUNTIME:</strong> Showing simulated multi-branch retail telemetry, POS transactions, and automated FEFO expiry alerts for development evaluation.
+              <strong>{adminLang === 'bn' ? 'সিমুলেশন রানটাইম:' : 'DEMONSTRATION RUNTIME:'}</strong> {adminLang === 'bn' ? 'মাল্টি-ব্রাঞ্চ রিটেল টেলিম্যাট্রি, পিওএস ট্রানজ্যাকশন এবং স্বয়ংক্রিয় এফইএফও মেয়াদ সতর্কতা প্রদর্শিত হচ্ছে।' : 'Showing simulated multi-branch retail telemetry, POS transactions, and automated FEFO expiry alerts for development evaluation.'}
             </div>
-            <Badge variant="warning" size="sm">Dev Data Mode</Badge>
+            <Badge variant="warning" size="sm">{adminLang === 'bn' ? 'ডেমো ডাটা মোড' : 'Dev Data Mode'}</Badge>
           </div>
 
           {/* ========================================== */}
@@ -3503,20 +3568,20 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                     <div className="flex flex-col sm:flex-row sm:items-baseline gap-2">
                       <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
-                        Executive Mission Control
+                        {adminLang === 'bn' ? 'এক্সিকিউটিভ মিশন কন্ট্রোল' : 'Executive Mission Control'}
                       </h1>
                       <span className="text-xs sm:text-sm text-neutral-300 font-medium">
-                        Active Scope: <strong className="text-emerald-400 font-bold">{selectedBranch.name}</strong>
+                        {adminLang === 'bn' ? 'বর্তমান শাখা:' : 'Active Scope:'} <strong className="text-emerald-400 font-bold">{selectedBranch.name}</strong>
                       </span>
                     </div>
 
                     <p className="text-xs text-neutral-400 flex items-center gap-2">
                       <Clock className="h-3.5 w-3.5 text-emerald-400" />
-                      <span>Dhaka BST Clock: <strong className="text-white font-mono">{liveDhakaClock || '10:48:30 AM'}</strong></span>
+                      <span>{adminLang === 'bn' ? 'ঢাকা সময় (BST):' : 'Dhaka BST Clock:'} <strong className="text-white font-mono">{liveDhakaClock || '10:48:30 AM'}</strong></span>
                       <span>•</span>
-                      <span>Health: <strong className="text-emerald-300">99.98% SLA Normal</strong></span>
+                      <span>{adminLang === 'bn' ? 'সিস্টেম হেলথ:' : 'Health:'} <strong className="text-emerald-300">{adminLang === 'bn' ? '৯৯.৯৮% এসএলএ স্বাভাবিক' : '99.98% SLA Normal'}</strong></span>
                       <span>•</span>
-                      <span>Updated {lastRefreshedText}</span>
+                      <span>{adminLang === 'bn' ? 'আপডেট হয়েছে' : 'Updated'} {lastRefreshedText}</span>
                     </p>
                   </div>
 
@@ -3532,7 +3597,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       }}
                       className="bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-900/40 border border-emerald-400/40 text-xs"
                     >
-                      Quick POS (F2)
+                      {adminLang === 'bn' ? 'কুইক পিওএস (F2)' : 'Quick POS (F2)'}
                     </Button>
 
                     <Button
@@ -3542,7 +3607,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       onClick={handleOpenAddProduct}
                       className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-bold"
                     >
-                      Inward Stock
+                      {adminLang === 'bn' ? 'স্টক এন্ট্রি' : 'Inward Stock'}
                     </Button>
 
                     <Button
@@ -3552,7 +3617,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       onClick={handleExportCSV}
                       className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-bold"
                     >
-                      Audit CSV
+                      {adminLang === 'bn' ? 'অডিট সিএসভি' : 'Audit CSV'}
                     </Button>
 
                     <Button
@@ -3562,7 +3627,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       onClick={handleRefreshTelemetry}
                       className="bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-200 border-emerald-500/40 text-xs font-bold"
                     >
-                      Live Sync
+                      {adminLang === 'bn' ? 'লাইভ সিঙ্ক' : 'Live Sync'}
                     </Button>
                   </div>
                 </div>
@@ -3574,33 +3639,45 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <div className="space-y-1.5 max-w-xl">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="px-2.5 py-0.5 rounded-full bg-emerald-400 text-neutral-950 font-black text-[11px] uppercase tracking-wider shadow-sm">
-                        ⚡ Real-Time Store Sales
+                        ⚡ {adminLang === 'bn' ? 'রিয়েল-টাইম স্টোর সেলস' : 'Real-Time Store Sales'}
                       </span>
                       <span className="text-sm text-emerald-200 font-bold">
-                        লাইভ বিক্রয় ও প্রোডাক্ট পারফরম্যান্স
+                        {adminLang === 'bn' ? 'লাইভ বিক্রয় ও প্রোডাক্ট পারফরম্যান্স' : 'Live Sales & Product Performance'}
                       </span>
                     </div>
                     <p className="text-xs text-emerald-100/90 font-medium leading-relaxed">
-                      ফ্রন্টএন্ড স্টোর থেকে বিক্রি হওয়া মাত্র পণ্যের বিক্রিত পরিমাণ (যেমন: ১ কেজি + ২ কেজি = ৩ কেজি) ও মোট টাকা স্বয়ংক্রিয়ভাবে আপডেট হচ্ছে।
+                      {adminLang === 'bn'
+                        ? 'অনলাইন স্টোর থেকে গ্রাহক অর্ডার করার সাথে সাথেই বিক্রিত পণ্যের পরিমাণ (যেমন: ১ কেজি + ২ কেজি = ৩ কেজি) এবং মোট টাকা স্বয়ংক্রিয়ভাবে লাইভ আপডেট হচ্ছে।'
+                        : 'Product sold volume (e.g. 1kg + 2kg = 3kg) and total gross revenue automatically update in real-time as shoppers place orders on the storefront.'}
                     </p>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3">
                     <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-emerald-400/50 text-xs shadow-inner">
-                      <span className="text-emerald-300 block text-[10px] font-bold tracking-wide uppercase">মোট বিক্রয়:</span>
+                      <span className="text-emerald-300 block text-[10px] font-bold tracking-wide uppercase">
+                        {adminLang === 'bn' ? 'মোট বিক্রয়:' : 'Total Sales:'}
+                      </span>
                       <strong className="text-emerald-300 font-black text-base">৳{liveGrandRevenue.toLocaleString()}</strong>
                     </div>
                     <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-cyan-400/50 text-xs shadow-inner">
-                      <span className="text-cyan-300 block text-[10px] font-bold tracking-wide uppercase">মোট বিক্রিত পরিমাণ:</span>
+                      <span className="text-cyan-300 block text-[10px] font-bold tracking-wide uppercase">
+                        {adminLang === 'bn' ? 'মোট বিক্রিত পরিমাণ:' : 'Total Volume Sold:'}
+                      </span>
                       <strong className="text-cyan-300 font-black text-base">{liveGrandUnits} kg/units</strong>
                     </div>
                     <div className="px-3.5 py-2 rounded-xl bg-[#04160E] border border-amber-400/50 text-xs shadow-inner">
-                      <span className="text-amber-300 block text-[10px] font-bold tracking-wide uppercase">আজকের সেরা পণ্য:</span>
-                      <strong className="text-amber-300 font-black text-base">{topSellingProduct?.name || 'Fresh Guava 1kg'}</strong>
+                      <span className="text-amber-300 block text-[10px] font-bold tracking-wide uppercase">
+                        {adminLang === 'bn' ? 'আজকের সেরা পণ্য:' : "Today's Best Item:"}
+                      </span>
+                      <strong className="text-amber-300 font-black text-base">
+                        {adminLang === 'bn' ? (topSellingProduct?.nameBn || topSellingProduct?.name || 'তাজা পেয়ারা ১ কেজি') : (topSellingProduct?.name || 'Fresh Guava 1kg')}
+                      </strong>
                     </div>
                     {badReviewsCount > 0 && (
                       <div className="px-3.5 py-2 rounded-xl bg-[#2C0B0E] border border-rose-400 text-xs shadow-inner">
-                        <span className="text-rose-300 block text-[10px] font-bold tracking-wide uppercase">খারাপ রিভিউ এলার্ট:</span>
+                        <span className="text-rose-300 block text-[10px] font-bold tracking-wide uppercase">
+                          {adminLang === 'bn' ? 'খারাপ রিভিউ অ্যালার্ট:' : 'Review Alerts:'}
+                        </span>
                         <strong className="text-rose-300 font-black text-base">{badReviewsCount} Flagged</strong>
                       </div>
                     )}
@@ -3611,7 +3688,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       onClick={() => setActiveRouteId('orders')}
                       className="font-black text-xs bg-emerald-500 hover:bg-emerald-400 text-neutral-950 shadow-md ml-auto lg:ml-0 h-10 px-4"
                     >
-                      View Full Live Report & Export 📊
+                      {adminLang === 'bn' ? 'সম্পূর্ণ লাইভ রিপোর্ট ও এক্সপোর্ট 📊' : 'View Full Live Report & Export 📊'}
                     </Button>
                   </div>
                 </div>
@@ -3627,7 +3704,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
-                      Daily Gross Revenue
+                      {adminLang === 'bn' ? 'দৈনিক মোট বিক্রয়' : 'Daily Gross Revenue'}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-base shadow-xs">
                       ৳
@@ -3646,19 +3723,19 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                     {/* Channel Breakdown pills */}
                     <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 flex items-center justify-between text-[11px]">
-                      <span className="text-neutral-500 dark:text-neutral-400">POS Walk-in:</span>
+                      <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'কাউন্টার বিক্রয়:' : 'POS Walk-in:'}</span>
                       <strong className="text-neutral-900 dark:text-neutral-200 font-bold">৳{Math.round(metrics.revenue * 0.805).toLocaleString()} (80%)</strong>
                     </div>
                     <div className="flex items-center justify-between text-[11px] mt-0.5">
-                      <span className="text-neutral-500 dark:text-neutral-400">Online Express:</span>
+                      <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'অনলাইন ডেলিভারি:' : 'Online Express:'}</span>
                       <strong className="text-cyan-600 dark:text-cyan-400 font-bold">৳{Math.round(metrics.revenue * 0.195).toLocaleString()} (20%)</strong>
                     </div>
 
                     {/* Pacing bar */}
                     <div className="mt-2.5">
                       <div className="flex items-center justify-between text-[10px] text-neutral-400 font-semibold mb-1">
-                        <span>Pacing: 74% of ৳250k Quota</span>
-                        <span>৳250,000 Target</span>
+                        <span>{adminLang === 'bn' ? 'টার্গেট পূরণ: ৭৪%' : 'Pacing: 74% of ৳250k Quota'}</span>
+                        <span>{adminLang === 'bn' ? 'লক্ষ্যমাত্রা ৳২,৫০,০০০' : '৳250,000 Target'}</span>
                       </div>
                       <div className="h-1.5 w-full rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style={{ width: '74%' }} />
@@ -3673,7 +3750,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
-                      Order Throughput
+                      {adminLang === 'bn' ? 'অর্ডারের সংখ্যা ও ডেলিভারি' : 'Order Throughput'}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-base shadow-xs">
                       <ShoppingCart className="h-4 w-4" />
@@ -3682,33 +3759,33 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                   <div className="mt-3">
                     <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
-                      {metrics.orders.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">Orders</span>
+                      {metrics.orders.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">{adminLang === 'bn' ? 'অর্ডার' : 'Orders'}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
                       <Activity className="h-3.5 w-3.5" />
-                      <span>Avg Dispatch: 6.2 mins</span>
+                      <span>{adminLang === 'bn' ? 'গড় ডেলিভারি: ৬.২ মিনিট' : 'Avg Dispatch: 6.2 mins'}</span>
                     </div>
 
                     {/* Breakdown sub-grid */}
                     <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 grid grid-cols-3 gap-1 text-center">
                       <div className="bg-neutral-50 dark:bg-neutral-800/60 rounded-lg p-1.5">
-                        <span className="text-[10px] text-neutral-400 block font-semibold">Done</span>
+                        <span className="text-[10px] text-neutral-400 block font-semibold">{adminLang === 'bn' ? 'সম্পন্ন' : 'Done'}</span>
                         <strong className="text-xs font-black text-emerald-600 dark:text-emerald-400">312</strong>
                       </div>
                       <div className="bg-neutral-50 dark:bg-neutral-800/60 rounded-lg p-1.5">
-                        <span className="text-[10px] text-neutral-400 block font-semibold">In Transit</span>
+                        <span className="text-[10px] text-neutral-400 block font-semibold">{adminLang === 'bn' ? 'চলমান' : 'In Transit'}</span>
                         <strong className="text-xs font-black text-cyan-600 dark:text-cyan-400">24</strong>
                       </div>
                       <div className="bg-neutral-50 dark:bg-neutral-800/60 rounded-lg p-1.5">
-                        <span className="text-[10px] text-neutral-400 block font-semibold">Packing</span>
+                        <span className="text-[10px] text-neutral-400 block font-semibold">{adminLang === 'bn' ? 'প্যাকিং' : 'Packing'}</span>
                         <strong className="text-xs font-black text-amber-600 dark:text-amber-400">6</strong>
                       </div>
                     </div>
 
                     <div className="mt-2.5 flex items-center justify-between text-[10px] text-neutral-400 font-medium">
-                      <span>Express Courier Fleet:</span>
-                      <span className="text-emerald-500 font-bold">26 E-Bikes Active</span>
+                      <span>{adminLang === 'bn' ? 'ডেলিভারি বহর:' : 'Express Courier Fleet:'}</span>
+                      <span className="text-emerald-500 font-bold">{adminLang === 'bn' ? '২৬টি সক্রিয় ই-বাইক' : '26 E-Bikes Active'}</span>
                     </div>
                   </div>
                 </Card>
@@ -3719,7 +3796,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
-                      Active Inventory SKUs
+                      {adminLang === 'bn' ? 'সক্রিয় ইনভেন্টরি এসকেইউ' : 'Active Inventory SKUs'}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-base shadow-xs">
                       <Package className="h-4 w-4" />
@@ -3728,24 +3805,24 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                   <div className="mt-3">
                     <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
-                      {metrics.activeProducts.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">SKUs</span>
+                      {metrics.activeProducts.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">{adminLang === 'bn' ? 'আইটেম' : 'SKUs'}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
                       <TrendingUp className="h-3.5 w-3.5" />
-                      <span>98.4% Shelf Availability</span>
+                      <span>{adminLang === 'bn' ? '৯৮.৪% স্টক প্রাপ্যতা' : '98.4% Shelf Availability'}</span>
                     </div>
 
                     <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 space-y-1 text-[11px]">
                       <div className="flex items-center justify-between">
-                        <span className="text-neutral-500 dark:text-neutral-400">Asset Valuation:</span>
-                        <strong className="text-neutral-900 dark:text-neutral-200 font-bold">৳4.82M Total</strong>
+                        <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'মোট পণ্যের মূল্য:' : 'Asset Valuation:'}</span>
+                        <strong className="text-neutral-900 dark:text-neutral-200 font-bold">{adminLang === 'bn' ? '৳৪৮.২ লাখ' : '৳4.82M Total'}</strong>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-neutral-500 dark:text-neutral-400">Cold Chain Chillers:</span>
+                        <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'কোল্ড চেইন চিলার:' : 'Cold Chain Chillers:'}</span>
                         <span className="inline-flex items-center gap-1 text-emerald-500 font-bold">
                           <Thermometer className="h-3 w-3" />
-                          <span>Sub-4°C OK</span>
+                          <span>{adminLang === 'bn' ? '৪° সে. এর নিচে (স্বাভাবিক)' : 'Sub-4°C OK'}</span>
                         </span>
                       </div>
                     </div>
@@ -3764,7 +3841,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-rose-600 dark:text-rose-400 uppercase">
-                      Risk & Expiry Matrix
+                      {adminLang === 'bn' ? 'ঝুঁকি ও মেয়াদ সতর্কতা' : 'Risk & Expiry Matrix'}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-base shadow-xs">
                       <AlertTriangle className="h-4 w-4" />
@@ -3773,22 +3850,22 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                   <div className="mt-3">
                     <div className="text-2xl sm:text-3xl font-black text-rose-900 dark:text-rose-300 tracking-tight">
-                      {metrics.expiryAlertsCount} <span className="text-sm font-semibold text-rose-500">FEFO Alerts</span>
+                      {metrics.expiryAlertsCount} <span className="text-sm font-semibold text-rose-500">{adminLang === 'bn' ? 'এফইএফও সতর্কতা' : 'FEFO Alerts'}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5 mt-1 text-[11px] text-amber-600 dark:text-amber-400 font-bold">
                       <Radio className="h-3.5 w-3.5 animate-pulse" />
-                      <span>{metrics.lowStockCount} Low Stock Triggered</span>
+                      <span>{metrics.lowStockCount} {adminLang === 'bn' ? 'স্বল্প স্টক পণ্য' : 'Low Stock Triggered'}</span>
                     </div>
 
                     <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 space-y-1 text-[11px]">
                       <div className="flex items-center justify-between">
-                        <span className="text-neutral-500 dark:text-neutral-400">Power & Backup:</span>
-                        <strong className="text-emerald-500 font-bold">Grid + Generator OK</strong>
+                        <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'বিদ্যুৎ ব্যাকআপ:' : 'Power & Backup:'}</span>
+                        <strong className="text-emerald-500 font-bold">{adminLang === 'bn' ? 'গ্রিড + জেনারেটর সচল' : 'Grid + Generator OK'}</strong>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-neutral-500 dark:text-neutral-400">POS Lane Integrity:</span>
-                        <strong className="text-neutral-900 dark:text-neutral-200 font-bold">14/14 Syncing</strong>
+                        <span className="text-neutral-500 dark:text-neutral-400">{adminLang === 'bn' ? 'পিওএস কাউন্টার:' : 'POS Lane Integrity:'}</span>
+                        <strong className="text-neutral-900 dark:text-neutral-200 font-bold">{adminLang === 'bn' ? '১৪/১৪ সচল' : '14/14 Syncing'}</strong>
                       </div>
                     </div>
 
@@ -3800,7 +3877,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       }}
                       className="mt-2 text-[11px] font-black text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1"
                     >
-                      Resolve Expiry Batches →
+                      {adminLang === 'bn' ? 'মেয়াদ উত্তীর্ণ ব্যাচ সমাধান →' : 'Resolve Expiry Batches →'}
                     </button>
                   </div>
                 </Card>
@@ -4154,8 +4231,8 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           Executing Optimization...
                         </span>
                       ) : aiPlanExecuted ? (
-                        <span className="flex items-center gap-1.5 text-emerald-950">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-900" />
+                        <span className="flex items-center gap-1.5 text-neutral-950 font-bold">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-neutral-950" />
                           Plan Executed & Synchronized
                         </span>
                       ) : (
@@ -4794,7 +4871,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         placeholder="Search product by name or category..."
                         value={salesSearchQuery}
                         onChange={(e) => setSalesSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 focus:outline-none focus:border-primary-green"
+                        className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
                       />
                     </div>
 
@@ -4802,7 +4879,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <select
                         value={salesCategoryFilter}
                         onChange={(e) => setSalesCategoryFilter(e.target.value)}
-                        className="text-xs py-1.5 px-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 font-medium"
+                        className="text-xs py-1.5 px-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
                       >
                         <option value="all">All Categories</option>
                         {categories.map((c) => (
@@ -4815,7 +4892,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <select
                         value={salesSortBy}
                         onChange={(e) => setSalesSortBy(e.target.value as any)}
-                        className="text-xs py-1.5 px-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 font-bold"
+                        className="text-xs py-1.5 px-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
                       >
                         <option value="volume">Sort by Volume Sold (High to Low)</option>
                         <option value="revenue">Sort by Revenue (High to Low)</option>
@@ -6619,7 +6696,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         type="text"
                         value={storeSettings.storeName}
                         onChange={(e) => setStoreSettings({ ...storeSettings, storeName: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800"
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
                       />
                     </div>
                     <div>
@@ -6628,7 +6705,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         type="text"
                         value={storeSettings.binNumber}
                         onChange={(e) => setStoreSettings({ ...storeSettings, binNumber: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 font-mono"
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono"
                       />
                     </div>
                     <div>
@@ -6637,7 +6714,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         type="number"
                         value={storeSettings.vatPercent}
                         onChange={(e) => setStoreSettings({ ...storeSettings, vatPercent: Number(e.target.value) })}
-                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800"
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
                       />
                     </div>
                   </div>
@@ -6652,7 +6729,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         type="text"
                         value={storeSettings.contactPhone}
                         onChange={(e) => setStoreSettings({ ...storeSettings, contactPhone: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 font-mono"
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-mono"
                       />
                     </div>
                     <div>
@@ -6661,7 +6738,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         type="email"
                         value={storeSettings.contactEmail}
                         onChange={(e) => setStoreSettings({ ...storeSettings, contactEmail: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800"
+                        className="w-full p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white"
                       />
                     </div>
                     <div className="pt-2">
@@ -7151,13 +7228,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
         <DialogHeader>
           <DialogTitle>Complete POS Sale & Tender</DialogTitle>
           <DialogDescription>
-            Grand Total to collect: <strong className="text-forest-900 font-black">৳{posTotal.toLocaleString()}</strong>
+            Grand Total to collect: <strong className="text-forest-900 dark:text-emerald-400 font-black">৳{posTotal.toLocaleString()}</strong>
           </DialogDescription>
         </DialogHeader>
         <DialogBody>
           <div className="space-y-4 text-left">
             <div>
-              <label className="text-xs font-bold text-neutral-700 mb-1.5 block">Select Payment Channel</label>
+              <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1.5 block">Select Payment Channel</label>
               <div className="grid grid-cols-3 gap-2">
                 {(['CASH', 'BKASH', 'CARD'] as const).map((method) => (
                   <button
@@ -7166,8 +7243,8 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={() => setPosPaymentMethod(method)}
                     className={`py-2 px-3 rounded-xl text-xs font-bold border transition ${
                       posPaymentMethod === method
-                        ? 'bg-forest-900 text-white border-forest-900 shadow-xs'
-                        : 'border-neutral-200 text-neutral-700 hover:bg-neutral-50'
+                        ? 'bg-forest-900 dark:bg-emerald-600 text-white border-forest-900 dark:border-emerald-600 shadow-xs'
+                        : 'border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800'
                     }`}
                   >
                     {method}
@@ -7178,12 +7255,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
             {posPaymentMethod === 'CASH' && (
               <div>
-                <label className="text-xs font-bold text-neutral-700 mb-1.5 block">Cash Received from Customer (৳)</label>
+                <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1.5 block">Cash Received from Customer (৳)</label>
                 <input
                   type="number"
                   value={cashTendered}
                   onChange={(e) => setCashTendered(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-neutral-200 outline-hidden font-mono font-bold"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white outline-hidden font-mono font-bold"
                 />
                 <div className="mt-2 text-xs flex justify-between font-bold">
                   <span className="text-neutral-500">Change Due:</span>
@@ -7228,8 +7305,8 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
             <DialogDescription>Dhanmondi Flagship Superstore #01</DialogDescription>
           </DialogHeader>
           <DialogBody>
-            <div className="p-4 bg-neutral-50 border border-dashed border-neutral-300 rounded-xl font-mono text-[11px] text-neutral-800 space-y-2">
-              <div className="text-center border-b border-dashed border-neutral-300 pb-2">
+            <div className="p-4 bg-neutral-50 dark:bg-neutral-900 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl font-mono text-[11px] text-neutral-800 dark:text-neutral-200 space-y-2">
+              <div className="text-center border-b border-dashed border-neutral-300 dark:border-neutral-700 pb-2">
                 <p className="font-bold text-sm">ECOBAZAR RETAIL</p>
                 <p className="text-[10px]">House 42, Road 27, Dhanmondi, Dhaka</p>
                 <p className="text-[10px]">BIN: 001928471-0101 • Mushak 6.3</p>
@@ -7393,7 +7470,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
             {/* TAB 1: IDENTITY & DEPARTMENT */}
             {productModalTab === 'general' && (
               <div className="space-y-4">
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3.5">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3.5">
                   <h4 className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
                     <Package className="h-4 w-4 text-emerald-600" />
                     <span>Product Names & Branding</span>
@@ -7456,7 +7533,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3.5">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3.5">
                   <h4 className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
                     <FolderTree className="h-4 w-4 text-emerald-600" />
                     <span>Category Hierarchy & Packaging</span>
@@ -7566,7 +7643,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
             {/* TAB 2: PRICING & SAVINGS */}
             {productModalTab === 'pricing' && (
               <div className="space-y-4">
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3.5">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3.5">
                   <h4 className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
                     <DollarSign className="h-4 w-4 text-emerald-600" />
                     <span>Price Formulation & Value</span>
@@ -7638,7 +7715,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   )}
                 </div>
 
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3.5">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3.5">
                   <h4 className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
                     <Tag className="h-4 w-4 text-emerald-600" />
                     <span>Storefront Promotional Badges</span>
@@ -7750,7 +7827,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                 {/* 2. Uploaded Product Gallery Cards */}
                 {productForm.images.length > 0 && (
-                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 space-y-3">
+                  <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="font-black text-xs text-neutral-900 dark:text-white flex items-center gap-2">
                         <ImageIcon className="h-4 w-4 text-emerald-600" />
@@ -7806,7 +7883,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 )}
 
                 {/* 3. Add Image via Direct URL */}
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-2">
                   <label className="font-bold text-neutral-700 dark:text-neutral-200 block">
                     Or Add Image via URL / Public Path
                   </label>
@@ -7829,7 +7906,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
 
                 {/* 4. Preset Produce Gallery (Click adds to images list) */}
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-2.5">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-2.5">
                   <label className="font-bold text-neutral-700 dark:text-neutral-200 block">
                     Or Pick from Authentic Supermarket Library:
                   </label>
@@ -7886,7 +7963,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
                     productForm.isHotDeal
                       ? 'border-rose-400 bg-rose-50/40 dark:bg-rose-950/30 shadow-xs'
-                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
                   }`}>
                     <input
                       type="checkbox"
@@ -7909,7 +7986,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
                     productForm.isNewArrival
                       ? 'border-cyan-400 bg-cyan-50/40 dark:bg-cyan-950/30 shadow-xs'
-                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
                   }`}>
                     <input
                       type="checkbox"
@@ -7932,7 +8009,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
                     productForm.isOffer
                       ? 'border-amber-400 bg-amber-50/40 dark:bg-amber-950/30 shadow-xs'
-                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
                   }`}>
                     <input
                       type="checkbox"
@@ -7955,7 +8032,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
                     productForm.isAdvertisement
                       ? 'border-purple-400 bg-purple-50/40 dark:bg-purple-950/30 shadow-xs'
-                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
                   }`}>
                     <input
                       type="checkbox"
@@ -7985,7 +8062,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
 
                 {/* 1. Description Section */}
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3">
                   <div className="flex items-center justify-between">
                     <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
                       <Layers className="h-4 w-4 text-emerald-600" />
@@ -8013,7 +8090,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
 
                 {/* 2. Key Features Section */}
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
@@ -8044,7 +8121,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
 
                 {/* 3. Health Benefits Section */}
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
@@ -8078,7 +8155,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div className={`p-4 rounded-2xl border transition ${
                   productForm.includeHowToUse
                     ? 'border-emerald-500/50 bg-emerald-50/30 dark:bg-emerald-950/20'
-                    : 'border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50'
                 } space-y-3`}>
                   <div className="flex items-center justify-between">
                     <div>
@@ -8114,7 +8191,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
 
                 {/* 5. Storage Instructions Section */}
-                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-850/50 space-y-3">
+                <div className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 space-y-3">
                   <div className="flex items-center justify-between">
                     <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
                       <span>📦 5. Storage Instructions</span>
@@ -8162,7 +8239,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </div>
 
               {/* Realistic Customer Store Product Card */}
-              <div className="mt-4 mx-auto max-w-sm rounded-3xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white dark:bg-neutral-850 p-4 shadow-xl relative overflow-hidden transition-all">
+              <div className="mt-4 mx-auto max-w-sm rounded-3xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white dark:bg-neutral-800 p-4 shadow-xl relative overflow-hidden transition-all">
                 {/* Promo Badge on Card */}
                 {(productForm.badge || Number(productForm.originalPrice) > Number(productForm.price)) && (
                   <div
@@ -8292,7 +8369,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </div>
 
               {/* Active Placement Checklist & Enabled Details */}
-              <div className="mt-4 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 space-y-2">
+              <div className="mt-4 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 space-y-2">
                 <span className="text-[10px] uppercase font-black tracking-wider text-neutral-400 block">
                   Storefront Details Visibility
                 </span>

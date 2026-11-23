@@ -1,7 +1,24 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-11-21T10:00:00.000Z",
+  "lastUpdated": "2026-11-21T10:49:20.457Z",
   "announcements": [
+    {
+      "id": "ann-1795258160457-gj2w",
+      "targetTier": "GOLD",
+      "targetCustomerId": null,
+      "targetCustomerName": "Gold VIP Members",
+      "type": "VIP_REWARD",
+      "title": "Exclusive Gold VIP 15% Weekend Treat",
+      "titleBn": "গোল্ড ভিআইপি মেম্বারদের জন্য বিশেষ ১৫% উইকেন্ড ছাড়",
+      "message": "As a valued Gold VIP member, enjoy an exclusive 15% discount on all organic fruits & fresh beef this weekend! Apply code at checkout.",
+      "couponCode": "GOLDSECRET15",
+      "discountPercent": 15,
+      "minSpend": 1200,
+      "validUntil": "7 Days",
+      "branch": "All Branches",
+      "priority": "HIGH",
+      "createdAt": "2026-11-21T10:49:20.457Z"
+    },
     {
       "id": "ann-gold-01",
       "targetTier": "GOLD",
