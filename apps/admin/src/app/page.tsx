@@ -491,6 +491,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
   const [isDarkMode, setIsDarkMode] = React.useState(false);
   const [adminLang, setAdminLang] = React.useState<'en' | 'bn'>('en');
 
+  // Translation Helper for clean, non-mixed English & Bengali UI
+  const t = React.useCallback(
+    (en: string, bn: string) => (adminLang === 'bn' ? bn : en),
+    [adminLang]
+  );
+
   // Sync theme and language from localStorage on mount
   React.useEffect(() => {
     try {
@@ -2505,15 +2511,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-3">
                     <Store className="h-7 w-7 text-primary-green" />
-                    Point of Sale (POS) Register
+                    {t('Point of Sale (POS) Register', 'পয়েন্ট অব সেল (পিওএস) রেজিস্টার')}
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium">
-                    Terminal #01 • Dhanmondi Flagship Store • Cashier: Mohammad Karim
+                    {t('Terminal #01 • Dhanmondi Flagship Store • Cashier: Mohammad Karim', 'টার্মিনাল #০১ • ধানমন্ডি ফ্ল্যাগশিপ স্টোর • ক্যাশিয়ার: মোহাম্মদ করিম')}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm" onClick={() => setActiveRouteId('dashboard')}>
-                    ← Back to Dashboard
+                    {t('← Back to Dashboard', '← ড্যাশবোর্ডে ফিরে যান')}
                   </Button>
                 </div>
               </div>
@@ -2525,7 +2531,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <Search className="h-4 w-4 text-neutral-400" />
                     <input
                       type="text"
-                      placeholder="Scan Barcode or Search SKU (e.g. ECO-GR-0021)..."
+                      placeholder={t('Scan Barcode or Search SKU (e.g. ECO-GR-0021)...', 'বারকোড স্ক্যান করুন বা এসকেইউ খুঁজুন...')}
                       value={posBarcodeQuery}
                       onChange={(e) => setPosBarcodeQuery(e.target.value)}
                       className="w-full text-sm bg-transparent outline-hidden text-neutral-900 dark:text-white placeholder:text-neutral-400"
@@ -2556,7 +2562,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           <div className="mt-2 flex items-center justify-between pt-2 border-t border-neutral-100 dark:border-neutral-800">
                             <span className="font-black text-sm text-forest-900 dark:text-emerald-400">৳{prod.price}</span>
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950 text-primary-green">
-                              + Add
+                              {t('+ Add', '+ যোগ করুন')}
                             </span>
                           </div>
                         </div>
@@ -2571,15 +2577,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <div className="flex items-center justify-between pb-3 border-b border-neutral-200 dark:border-neutral-800">
                         <div className="flex items-center gap-2">
                           <Receipt className="h-4 w-4 text-neutral-500" />
-                          <h3 className="font-bold text-sm text-neutral-900 dark:text-white">Active Order Tally</h3>
+                          <h3 className="font-bold text-sm text-neutral-900 dark:text-white">{t('Active Order Tally', 'চলমান অর্ডার হিসাব')}</h3>
                         </div>
-                        <span className="text-xs font-bold text-neutral-400">{posCart.length} Items</span>
+                        <span className="text-xs font-bold text-neutral-400">{posCart.length} {t('Items', 'টি আইটেম')}</span>
                       </div>
 
                       <div className="max-h-72 overflow-y-auto divide-y divide-neutral-100 dark:divide-neutral-800 my-3">
                         {posCart.length === 0 ? (
                           <div className="py-8 text-center text-xs text-neutral-400">
-                            Scan a barcode or click items on the left to add.
+                            {t('Scan a barcode or click items on the left to add.', 'আইটেম যোগ করতে বারকোড স্ক্যান করুন বা বাম দিক থেকে ক্লিক করুন।')}
                           </div>
                         ) : (
                           posCart.map((item) => (
@@ -2625,15 +2631,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                     <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
                       <div className="flex items-center justify-between text-xs text-neutral-500">
-                        <span>Subtotal</span>
+                        <span>{t('Subtotal', 'সাবটোটাল')}</span>
                         <span>৳{posSubtotal.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center justify-between text-xs text-neutral-500">
-                        <span>Retail VAT (5%)</span>
+                        <span>{t('Retail VAT (5%)', 'খুচরা ভ্যাট (৫%)')}</span>
                         <span>৳{posVat.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center justify-between text-base font-black text-neutral-900 dark:text-white pt-2 border-t border-neutral-200 dark:border-neutral-800">
-                        <span>Grand Total</span>
+                        <span>{t('Grand Total', 'সর্বমোট মূল্য')}</span>
                         <span className="text-xl text-forest-900 dark:text-emerald-400">৳{posTotal.toLocaleString()}</span>
                       </div>
 
@@ -2662,9 +2668,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
-                    <span>Product Master & Store Manager</span>
+                    <span>{t('Product Master & Store Manager', 'প্রোডাক্ট মাস্টার ও স্টোর ম্যানেজার')}</span>
                     <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-black border border-emerald-500/20">
-                      LIVE SYNC
+                      {t('LIVE SYNC', 'লাইভ সিঙ্ক')}
                     </span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
@@ -2678,7 +2684,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     leftIcon={<RefreshCw className={`h-3.5 w-3.5 ${isCatalogLoading ? 'animate-spin' : ''}`} />}
                     onClick={fetchCatalog}
                   >
-                    Sync Live Store
+                    {t('Sync Live Store', 'লাইভ স্টোর সিঙ্ক')}
                   </Button>
                   <Button
                     variant="forest"
@@ -2687,7 +2693,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={handleOpenAddProduct}
                     className="font-bold shadow-md shadow-emerald-900/20"
                   >
-                    Add New Product
+                    {t('Add New Product', 'নতুন পণ্য যোগ করুন')}
                   </Button>
                 </div>
               </div>
@@ -2695,12 +2701,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               {/* Summary Metrics Bar */}
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 <div className="p-3.5 rounded-2xl bg-white dark:bg-[#071F15] border border-neutral-200 dark:border-emerald-500/20 shadow-xs">
-                  <span className="text-[11px] font-semibold text-neutral-400 block">Total Catalog</span>
-                  <strong className="text-xl font-black text-neutral-900 dark:text-white">{products.length} Items</strong>
+                  <span className="text-[11px] font-semibold text-neutral-400 block">{t('Total Catalog', 'মোট ক্যাটালগ')}</span>
+                  <strong className="text-xl font-black text-neutral-900 dark:text-white">{products.length} {t('Items', 'টি পণ্য')}</strong>
                 </div>
                 <div className="p-3.5 rounded-2xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 shadow-xs">
                   <span className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 block flex items-center gap-1">
-                    <Flame className="h-3 w-3 fill-rose-500 text-rose-500" /> Best Deals
+                    <Flame className="h-3 w-3 fill-rose-500 text-rose-500" /> {t('Best Deals', 'হট ডিলস')}
                   </span>
                   <strong className="text-xl font-black text-rose-950 dark:text-rose-200">
                     {products.filter((p) => p.isHotDeal).length} Active
@@ -2708,7 +2714,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
                 <div className="p-3.5 rounded-2xl bg-cyan-50/60 dark:bg-cyan-950/20 border border-cyan-200 dark:border-cyan-900/40 shadow-xs">
                   <span className="text-[11px] font-semibold text-cyan-600 dark:text-cyan-400 block flex items-center gap-1">
-                    <Sparkles className="h-3 w-3 text-cyan-500" /> New Arrivals
+                    <Sparkles className="h-3 w-3 text-cyan-500" /> {t('New Arrivals', 'নতুন আগমন')}
                   </span>
                   <strong className="text-xl font-black text-cyan-950 dark:text-cyan-200">
                     {products.filter((p) => p.isNewArrival).length} Active
@@ -2716,7 +2722,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
                 <div className="p-3.5 rounded-2xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 shadow-xs">
                   <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 block flex items-center gap-1">
-                    <Percent className="h-3 w-3 text-amber-500" /> Special Offers
+                    <Percent className="h-3 w-3 text-amber-500" /> {t('Special Offers', 'বিশেষ অফার')}
                   </span>
                   <strong className="text-xl font-black text-amber-950 dark:text-amber-200">
                     {products.filter((p) => p.isOffer || (p.badge && p.badge.includes('OFF'))).length} Active
@@ -2724,14 +2730,14 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
                 <div className="p-3.5 rounded-2xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900/40 shadow-xs">
                   <span className="text-[11px] font-semibold text-purple-600 dark:text-purple-400 block flex items-center gap-1">
-                    <Megaphone className="h-3 w-3 text-purple-500" /> Frontpage Ads
+                    <Megaphone className="h-3 w-3 text-purple-500" /> {t('Frontpage Ads', 'বিজ্ঞাপন ব্যানার')}
                   </span>
                   <strong className="text-xl font-black text-purple-950 dark:text-purple-200">
                     {products.filter((p) => p.isAdvertisement || p.isFeatured).length} Active
                   </strong>
                 </div>
                 <div className="p-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 shadow-xs">
-                  <span className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 block">Low Stock (&lt;20)</span>
+                  <span className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 block">{t('Low Stock (<20)', 'স্বল্প স্টক (<২০)')}</span>
                   <strong className="text-xl font-black text-amber-600 dark:text-amber-400">
                     {products.filter((p) => p.stock < 20).length} SKUs
                   </strong>
@@ -2746,7 +2752,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
                     <input
                       type="text"
-                      placeholder="Search products by English or Bangla name, SKU, or brand..."
+                      placeholder={t('Search products by English or Bangla name, SKU, or brand...', 'ইংরেজি বা বাংলা নাম, এসকেইউ বা ব্র্যান্ড দিয়ে খুঁজুন...')}
                       value={productSearchQuery}
                       onChange={(e) => setProductSearchQuery(e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/80 text-neutral-900 dark:text-white outline-hidden focus:border-emerald-500 transition"
@@ -2769,7 +2775,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       onChange={(e) => setSelectedProductCategory(e.target.value)}
                       className="text-xs font-bold rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/80 px-3 py-2.5 outline-hidden text-neutral-900 dark:text-white"
                     >
-                      <option value="all">All Departments ({products.length})</option>
+                      <option value="all">{t('All Departments', 'সকল বিভাগ')} ({products.length})</option>
                       {categories.map((c) => (
                         <option key={c.id} value={c.slug}>
                           {c.name} ({products.filter((p) => p.categorySlug === c.slug).length})
@@ -2781,11 +2787,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                 {/* Flag Pills */}
                 <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-neutral-100 dark:border-neutral-800 text-xs">
-                  <span className="text-[11px] font-bold text-neutral-400">Filter By Status:</span>
+                  <span className="text-[11px] font-bold text-neutral-400">{t('Filter By Status:', 'স্ট্যাটাস ফিল্টার:')}</span>
                   {[
-                    { id: 'all', label: `All (${products.length})` },
-                    { id: 'hot-deal', label: `🔥 Best Deals (${products.filter((p) => p.isHotDeal).length})` },
-                    { id: 'new-arrival', label: `✨ New Arrivals (${products.filter((p) => p.isNewArrival).length})` },
+                    { id: 'all', label: `${t('All', 'সব')} (${products.length})` },
+                    { id: 'hot-deal', label: `🔥 ${t('Best Deals', 'হট ডিলস')} (${products.filter((p) => p.isHotDeal).length})` },
+                    { id: 'new-arrival', label: `✨ ${t('New Arrivals', 'নতুন আগমন')} (${products.filter((p) => p.isNewArrival).length})` },
                     {
                       id: 'offer',
                       label: `🏷️ Offers & Discounts (${products.filter((p) => p.isOffer || (p.badge && p.badge.includes('OFF'))).length})`,
@@ -2794,7 +2800,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       id: 'ad',
                       label: `📢 Advertisements (${products.filter((p) => p.isAdvertisement || p.isFeatured).length})`,
                     },
-                    { id: 'low-stock', label: `⚠️ Low Stock (${products.filter((p) => p.stock < 20).length})` },
+                    { id: 'low-stock', label: `⚠️ ${t('Low Stock', 'স্বল্প স্টক')} (${products.filter((p) => p.stock < 20).length})` },
                   ].map((flag) => (
                     <button
                       key={flag.id}
@@ -2818,14 +2824,14 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <table className="w-full text-xs text-left border-collapse">
                     <thead className="bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 dark:text-neutral-400 uppercase font-bold border-b border-neutral-200 dark:border-neutral-800">
                       <tr>
-                        <th className="py-3.5 px-4">Item & Details</th>
-                        <th className="py-3.5 px-3">Department</th>
-                        <th className="py-3.5 px-3 text-right">Price (৳)</th>
-                        <th className="py-3.5 px-3 text-center">Stock</th>
+                        <th className="py-3.5 px-4">{t('Item & Details', 'পণ্য ও বিবরণ')}</th>
+                        <th className="py-3.5 px-3">{t('Department', 'ক্যাটাগরি/বিভাগ')}</th>
+                        <th className="py-3.5 px-3 text-right">{t('Price (৳)', 'মূল্য (৳)')}</th>
+                        <th className="py-3.5 px-3 text-center">{t('Stock', 'স্টক')}</th>
                         <th className="py-3.5 px-4 text-center">
-                          Frontpage Placements & Toggles (1-Click)
+                          {t('Frontpage Placements & Toggles (1-Click)', 'ফ্রন্টপেজ প্লেসমেন্ট ও টগল')}
                         </th>
-                        <th className="py-3.5 px-4 text-right">Actions</th>
+                        <th className="py-3.5 px-4 text-right">{t('Actions', 'অ্যাকশন')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
@@ -2952,7 +2958,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     }`}
                                   >
                                     <Flame className={`h-3 w-3 ${p.isHotDeal ? 'fill-white' : ''}`} />
-                                    <span>Best Deal</span>
+                                    <span>{t('Best Deal', 'হট ডিল')}</span>
                                   </button>
 
                                   {/* New Arrival Toggle */}
@@ -2967,7 +2973,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     }`}
                                   >
                                     <Sparkles className="h-3 w-3" />
-                                    <span>New</span>
+                                    <span>{t('New', 'নতুন')}</span>
                                   </button>
 
                                   {/* Offer / Discount Toggle */}
@@ -2982,7 +2988,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     }`}
                                   >
                                     <Percent className="h-3 w-3" />
-                                    <span>Offer</span>
+                                    <span>{t('Offer', 'অফার')}</span>
                                   </button>
 
                                   {/* Advertisement Banner Toggle */}
@@ -2999,7 +3005,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     }`}
                                   >
                                     <Megaphone className="h-3 w-3" />
-                                    <span>Ad</span>
+                                    <span>{t('Ad', 'বিজ্ঞাপন')}</span>
                                   </button>
                                 </div>
                               </td>
@@ -3014,7 +3020,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     className="h-8 px-2.5 text-xs font-bold"
                                     leftIcon={<Pencil className="h-3 w-3 text-neutral-500" />}
                                   >
-                                    Edit
+                                    {t('Edit', 'সম্পাদনা')}
                                   </Button>
                                   <button
                                     type="button"
@@ -3046,10 +3052,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
                     <Megaphone className="h-7 w-7 text-primary-green" />
-                    <span>Frontpage Advertisements & Banners</span>
+                    <span>{t('Frontpage Advertisements & Banners', 'হোমপেজ বিজ্ঞাপন ও ব্যানার ব্যবস্থাপনা')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
-                    Configure the top voucher announcement bar, hero slider carousels, and promotional banner cards live on the store.
+                    {t('Configure the top voucher announcement bar, hero slider carousels, and promotional banner cards live on the store.', 'শীর্ষ ভাউচার বার, হিরো স্লাইডার এবং প্রমোশনাল ব্যানার সরাসরি পরিচালনা করুন।')}
                   </p>
                 </div>
                 <div>
@@ -3060,7 +3066,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={handleSaveTopBanner}
                     className="font-bold shadow-md shadow-emerald-900/20"
                   >
-                    Save & Publish to Store
+                    {t('Save & Publish to Store', 'সংরক্ষণ ও স্টোরে প্রকাশ করুন')}
                   </Button>
                 </div>
               </div>
@@ -3070,9 +3076,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
                   <div>
                     <h3 className="text-base font-black text-neutral-900 dark:text-white flex items-center gap-2">
-                      <span>Top Announcement & Voucher Banner Bar</span>
+                      <span>{t('Top Announcement & Voucher Banner Bar', 'শীর্ষ ঘোষণা ও ভাউচার ব্যানার বার')}</span>
                       <span className="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
-                        Header Sticky
+                        {t('Header Sticky', 'হেডারে স্থির')}
                       </span>
                     </h3>
                     <p className="text-xs text-neutral-400">
@@ -3301,7 +3307,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
                     <FolderTree className="h-7 w-7 text-primary-green" />
-                    <span>Categories & Department Master</span>
+                    <span>{t('Categories & Department Master', 'ক্যাটাগরি ও বিভাগ মাস্টার')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
                     Manage all {categories.length} superstore departments, icons, banner images, and subcategories live on the store.
@@ -3451,27 +3457,27 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-3">
                     <CalendarClock className="h-7 w-7 text-rose-500" />
-                    FEFO Expiry & Markdown Management
+                    {t('FEFO Expiry & Markdown Management', 'এফইএফও মেয়াদ ও ছাড় ব্যবস্থাপনা')}
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium">
-                    First-Expired, First-Out intelligence to eliminate supermarket shrinkage & food waste
+                    {t('First-Expired, First-Out intelligence to eliminate supermarket shrinkage & food waste', 'অপচয় রোধ ও পণ্যের সতেজতা বজায় রাখতে ফার্স্ট-এক্সপায়ারড, ফার্স্ট-আউট সিস্টেম')}
                   </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card className="p-4 bg-rose-50/40 border-rose-200 dark:bg-rose-950/20 dark:border-rose-900">
-                  <p className="text-xs font-semibold text-rose-600">Urgent: Expiring &lt; 48 Hours</p>
+                  <p className="text-xs font-semibold text-rose-600">{t('Urgent: Expiring < 48 Hours', 'জরুরি: ৪৮ ঘণ্টার কম মেয়াদ')}</p>
                   <p className="text-2xl font-black text-rose-950 dark:text-rose-100 mt-2">14 Batches</p>
                   <p className="text-[11px] text-rose-500 mt-1">Immediate markdown required</p>
                 </Card>
                 <Card className="p-4 bg-amber-50/40 border-amber-200 dark:bg-amber-950/20 dark:border-amber-900">
-                  <p className="text-xs font-semibold text-amber-600">Warning: Expiring in 7 Days</p>
+                  <p className="text-xs font-semibold text-amber-600">{t('Warning: Expiring in 7 Days', 'সতর্কতা: ৭ দিনের মধ্যে মেয়াদ উত্তীর্ণ')}</p>
                   <p className="text-2xl font-black text-amber-950 dark:text-amber-100 mt-2">32 Batches</p>
                   <p className="text-[11px] text-amber-500 mt-1">Priority placement on shelf</p>
                 </Card>
                 <Card className="p-4 bg-emerald-50/40 border-emerald-200 dark:bg-emerald-950/20 dark:border-emerald-900">
-                  <p className="text-xs font-semibold text-primary-green">Estimated Revenue Saved</p>
+                  <p className="text-xs font-semibold text-primary-green">{t('Estimated Revenue Saved', 'সম্ভাব্য সংরক্ষিত রাজস্ব')}</p>
                   <p className="text-2xl font-black text-emerald-950 dark:text-emerald-100 mt-2">৳ 48,200</p>
                   <p className="text-[11px] text-emerald-600 mt-1">Recovered via proactive markdowns</p>
                 </Card>
@@ -3482,12 +3488,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <table className="w-full text-xs text-left border-collapse">
                     <thead className="bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 uppercase font-bold border-b border-neutral-200 dark:border-neutral-800">
                       <tr>
-                        <th className="py-3 px-4">Batch Code</th>
-                        <th className="py-3 px-4">Product</th>
+                        <th className="py-3 px-4">{t('Batch Code', 'ব্যাচ কোড')}</th>
+                        <th className="py-3 px-4">{t('Product', 'পণ্য')}</th>
                         <th className="py-3 px-4">Branch</th>
                         <th className="py-3 px-4 text-center">Remaining Units</th>
-                        <th className="py-3 px-4 text-center">Expiry Date</th>
-                        <th className="py-3 px-4 text-right">Suggested Action</th>
+                        <th className="py-3 px-4 text-center">{t('Expiry Date', 'মেয়াদ উত্তীর্ণের তারিখ')}</th>
+                        <th className="py-3 px-4 text-right">{t('Suggested Action', 'প্রস্তাবিত পদক্ষেপ')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
@@ -3503,7 +3509,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             size="sm"
                             onClick={() => toast.success('Flash Markdown Applied', '20% discount activated on POS & Web for Milk BTC-202611-09')}
                           >
-                            Apply 20% Markdown
+                            {t('Apply 20% Markdown', '২০% মূল্যছাড় প্রয়োগ')}
                           </Button>
                         </td>
                       </tr>
@@ -3519,7 +3525,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             size="sm"
                             onClick={() => toast.info('Promoted on Shelf', 'Yogurt batch moved to front of chilling cabinet.')}
                           >
-                            Prioritize Front Shelf
+                            {t('Prioritize Front Shelf', 'সামনের তাকে প্রদর্শন')}
                           </Button>
                         </td>
                       </tr>
@@ -3607,7 +3613,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       onClick={handleOpenAddProduct}
                       className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-bold"
                     >
-                      {adminLang === 'bn' ? 'স্টক এন্ট্রি' : 'Inward Stock'}
+                      {t('Inward Stock', 'স্টক এন্ট্রি')}
                     </Button>
 
                     <Button
@@ -4521,18 +4527,18 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <div className="flex items-center gap-2.5 flex-wrap">
                     <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                       <BarChart3 className="h-7 w-7 text-primary-green" />
-                      <span>Live Sales & Product Intelligence Center</span>
+                      <span>{t('Live Sales & Product Intelligence Center', 'লাইভ বিক্রয় ও পণ্য ইন্টেলিজেন্স সেন্টার')}</span>
                     </h1>
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-black border border-emerald-500/20">
                       <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                       </span>
-                      LIVE STOREFRONT SYNC
+                      {t('LIVE STOREFRONT SYNC', 'লাইভ স্টোরফ্রন্ট সিঙ্ক')}
                     </span>
                   </div>
                   <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1 font-medium">
-                    লাইভ সেলস ট্র্যাকিং: ফ্রন্টএন্ড থেকে পণ্য বিক্রি হওয়া মাত্র পণ্যের বিক্রিত পরিমাণ (কেজি/ইউনিট) ও মোট টাকার হিসাব স্বয়ংক্রিয়ভাবে আপডেট হচ্ছে।
+                    {t('Live sales tracking: Quantities sold and revenues update in real-time as soon as customers checkout.', 'লাইভ সেলস ট্র্যাকিং: ফ্রন্টএন্ড থেকে পণ্য বিক্রি হওয়া মাত্র পণ্যের বিক্রিত পরিমাণ (কেজি/ইউনিট) ও মোট টাকার হিসাব স্বয়ংক্রিয়ভাবে আপডেট হচ্ছে।')}
                   </p>
                 </div>
 
@@ -4545,7 +4551,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={handleExportSalesReportCSV}
                     className="font-bold text-xs shadow-md shadow-emerald-600/20"
                   >
-                    Export Product Sales (CSV)
+                    {t('Export Product Sales (CSV)', 'পণ্য বিক্রয় বিবরণী (CSV) এক্সপোর্ট')}
                   </Button>
                   <Button
                     variant="outline"
@@ -4554,7 +4560,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={handleExportOrdersCSV}
                     className="font-bold text-xs"
                   >
-                    Export Orders Sheet (CSV)
+                    {t('Export Orders Sheet (CSV)', 'অর্ডার শিট (CSV) এক্সপোর্ট')}
                   </Button>
                   <Button
                     variant="outline"
@@ -4563,7 +4569,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={handlePrintExecutiveReport}
                     className="font-bold text-xs"
                   >
-                    Print Summary
+                    {t('Print Summary', 'প্রিন্ট সামারি')}
                   </Button>
                   <Button
                     variant="outline"
@@ -4583,7 +4589,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
-                      Total Sales Revenue (মোট বিক্রয়)
+                      {t('Total Sales Revenue', 'মোট বিক্রয় রাজস্ব')}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-base shadow-xs">
                       ৳
@@ -4595,7 +4601,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     </div>
                     <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
                       <TrendingUp className="h-3.5 w-3.5" />
-                      <span>Live from {liveOrders.length} customer orders</span>
+                      <span>{t('Live from ' + liveOrders.length + ' customer orders', liveOrders.length + 'টি কাস্টমার অর্ডার থেকে লাইভ')}</span>
                     </div>
                   </div>
                 </Card>
@@ -4604,7 +4610,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
-                      Total Volume Sold (মোট বিক্রি)
+                      {t('Total Volume Sold', 'মোট বিক্রয় পরিমাণ')}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm shadow-xs">
                       📦
@@ -4612,11 +4618,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   </div>
                   <div className="mt-3">
                     <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
-                      {liveGrandUnits} <span className="text-sm font-bold text-neutral-400">kg/units</span>
+                      {liveGrandUnits} <span className="text-sm font-bold text-neutral-400">{t('kg/units', 'কেজি/ইউনিট')}</span>
                     </div>
                     <div className="flex items-center gap-1.5 mt-1 text-[11px] text-cyan-600 dark:text-cyan-400 font-bold">
                       <CheckCircle2 className="h-3.5 w-3.5" />
-                      <span>Auto-Accumulated live per sale</span>
+                      <span>{t('Auto-Accumulated live per sale', 'প্রতি বিক্রিতে স্বয়ংক্রিয় হিসাব')}</span>
                     </div>
                   </div>
                 </Card>
@@ -4625,7 +4631,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <Card className="p-4 sm:p-5 relative overflow-hidden bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200/80 dark:border-emerald-500/20 backdrop-blur-md">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
-                      Top Seller Today (আজকের সেরা)
+                      {t('Today Top Seller', 'আজকের সেরা বিক্রিত পণ্য')}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm shadow-xs">
                       🏆
@@ -4660,7 +4666,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
-                      Review Quality Alert (খারাপ রিভিউ)
+                      {t('Review Quality Alert', 'রিভিউ কোয়ালিটি সতর্কতা')}
                     </span>
                     <span className="h-8 w-8 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-sm shadow-xs">
                       ⚠️
@@ -4681,10 +4687,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               {/* Internal Tab Navigation */}
               <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-neutral-800 pb-2">
                 {[
-                  { id: 'overview', label: '📊 Graphic Leaderboard (গ্রাফে এগিয়ে)', icon: BarChart3 },
-                  { id: 'products', label: '📦 Product Sales Master Table (সব প্রোডাক্টের হিসাব)', icon: Package },
-                  { id: 'orders', label: `🛒 Storefront Orders Stream (${liveOrders.length})`, icon: ShoppingCart },
-                  { id: 'bad-reviews', label: `⚠️ Bad Reviews Watchlist (${badReviewsCount})`, icon: AlertTriangle, badge: badReviewsCount > 0 ? `${badReviewsCount}` : undefined },
+                  { id: 'overview', label: t('📊 Sales Leaderboard', '📊 বিক্রয় লিডারবোর্ড'), icon: BarChart3 },
+                  { id: 'products', label: t('📦 Product Sales Master Table', '📦 পণ্য বিক্রয় মাস্টার টেবিল'), icon: Package },
+                  { id: 'orders', label: `${t('🛒 Storefront Orders Stream', '🛒 কাস্টমার অর্ডার সমূহ')} (${liveOrders.length})`, icon: ShoppingCart },
+                  { id: 'bad-reviews', label: `${t('⚠️ Bad Reviews Watchlist', '⚠️ কম রেটিং রিভিউ তালিকা')} (${badReviewsCount})`, icon: AlertTriangle, badge: badReviewsCount > 0 ? `${badReviewsCount}` : undefined },
                 ].map((t) => (
                   <button
                     key={t.id}
@@ -4710,13 +4716,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <div className="flex items-center justify-between mb-5">
                         <div>
                           <h3 className="text-base font-black text-neutral-900 dark:text-white flex items-center gap-2">
-                            <span>🏆 Top Selling Products Leaderboard</span>
+                            <span>{t('🏆 Top Selling Products Leaderboard', '🏆 শীর্ষ বিক্রিত পণ্যের লিডারবোর্ড')}</span>
                             <span className="text-xs font-bold text-primary-green bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
-                              গ্রাফে কে সবচেয়ে এগিয়ে
+                              {t('Real-Time Ranking', 'রিয়েল-টাইম র‍্যাংকিং')}
                             </span>
                           </h3>
                           <p className="text-xs text-neutral-500 mt-0.5">
-                            Ranked in real-time by total volume/quantity sold and generated revenue
+                            {t('Ranked in real-time by total volume/quantity sold and generated revenue', 'বিক্রিত মোট পরিমাণ এবং অর্জিত আয়ের ভিত্তিতে রিয়েল-টাইমে সাজানো')}
                           </p>
                         </div>
                       </div>
@@ -4797,7 +4803,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {/* Top Product Highlight Card */}
                       <Card className="p-5 bg-gradient-to-br from-emerald-950 via-neutral-900 to-[#071F15] text-white border border-emerald-500/30">
                         <span className="text-[10px] font-black uppercase text-amber-400 tracking-wider">
-                          🥇 #1 BESTSELLER OF THE DAY
+                          {t('🥇 #1 BESTSELLER OF THE DAY', '🥇 আজকের #১ শীর্ষ বিক্রিত পণ্য')}
                         </span>
                         <div className="mt-3 flex items-center gap-3.5">
                           <div className="h-16 w-16 rounded-2xl overflow-hidden bg-white/10 shrink-0 border border-emerald-400/40">
@@ -4828,10 +4834,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {/* Rapid Actions */}
                       <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3">
                         <h4 className="font-black text-sm text-neutral-900 dark:text-white">
-                          Report Actions & Downloads
+                          {t('Report Actions & Downloads', 'রিপোর্ট ডাউনলোড ও কার্যক্রম')}
                         </h4>
                         <p className="text-xs text-neutral-500">
-                          সম্পূর্ণ বিক্রয় বিবরণী এক্সেল বা সিএসভি ফাইল হিসেবে ডাউনলোড করুন।
+                          {t('Download complete product sales report as Excel or CSV file.', 'সম্পূর্ণ বিক্রয় বিবরণী এক্সেল বা সিএসভি ফাইল হিসেবে ডাউনলোড করুন।')}
                         </p>
                         <div className="space-y-2 pt-1">
                           <Button
@@ -4841,7 +4847,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             onClick={handleExportSalesReportCSV}
                             className="w-full font-bold text-xs"
                           >
-                            Download Product Sales CSV
+                            {t('Download Product Sales CSV', 'পণ্য বিক্রয় CSV ডাউনলোড')}
                           </Button>
                           <Button
                             variant="outline"
@@ -4850,7 +4856,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             onClick={handleExportOrdersCSV}
                             className="w-full font-bold text-xs"
                           >
-                            Download Customer Orders CSV
+                            {t('Download Customer Orders CSV', 'কাস্টমার অর্ডার CSV ডাউনলোড')}
                           </Button>
                         </div>
                       </Card>
@@ -4868,7 +4874,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <Search className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
                       <input
                         type="text"
-                        placeholder="Search product by name or category..."
+                        placeholder={t('Search product by name or category...', 'নাম বা ক্যাটাগরি দিয়ে খুঁজুন...')}
                         value={salesSearchQuery}
                         onChange={(e) => setSalesSearchQuery(e.target.value)}
                         className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:border-primary-green"
@@ -4881,7 +4887,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         onChange={(e) => setSalesCategoryFilter(e.target.value)}
                         className="text-xs py-1.5 px-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium"
                       >
-                        <option value="all">All Categories</option>
+                        <option value="all">{t('All Categories', 'সকল ক্যাটাগরি')}</option>
                         {categories.map((c) => (
                           <option key={c.id || c.slug} value={c.slug || c.name}>
                             {c.name}
@@ -4894,10 +4900,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         onChange={(e) => setSalesSortBy(e.target.value as any)}
                         className="text-xs py-1.5 px-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold"
                       >
-                        <option value="volume">Sort by Volume Sold (High to Low)</option>
-                        <option value="revenue">Sort by Revenue (High to Low)</option>
-                        <option value="stock">Sort by Lowest Stock First</option>
-                        <option value="rating">Sort by Rating</option>
+                        <option value="volume">{t('Sort by Volume Sold (High to Low)', 'বিক্রির পরিমাণ অনুযায়ী (বেশি থেকে কম)')}</option>
+                        <option value="revenue">{t('Sort by Revenue (High to Low)', 'বিক্রয় আয় অনুযায়ী (বেশি থেকে কম)')}</option>
+                        <option value="stock">{t('Sort by Lowest Stock First', 'কম স্টক আগে')}</option>
+                        <option value="rating">{t('Sort by Rating', 'রেটিং অনুযায়ী')}</option>
                       </select>
                     </div>
                   </div>
@@ -4908,15 +4914,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <table className="w-full text-xs text-left">
                         <thead className="bg-neutral-50 dark:bg-neutral-800/70 border-b border-neutral-200 dark:border-neutral-700 text-neutral-500 uppercase font-black text-[10px] tracking-wider">
                           <tr>
-                            <th className="py-3 px-4">Product</th>
-                            <th className="py-3 px-3">Category</th>
-                            <th className="py-3 px-3">Unit / Pack</th>
-                            <th className="py-3 px-3">Unit Price</th>
-                            <th className="py-3 px-3 text-center">কতটুকু বিক্রি হলো (Total Sold)</th>
-                            <th className="py-3 px-3 text-right">কত টাকার সেল (Revenue)</th>
-                            <th className="py-3 px-3 text-center">স্টক (Stock)</th>
-                            <th className="py-3 px-3">রিভিউ রেটিং</th>
-                            <th className="py-3 px-4">অবস্থা (Status)</th>
+                            <th className="py-3 px-4">{t('Product', 'পণ্য')}</th>
+                            <th className="py-3 px-3">{t('Category', 'ক্যাটাগরি')}</th>
+                            <th className="py-3 px-3">{t('Unit / Pack', 'প্যাক সাইজ')}</th>
+                            <th className="py-3 px-3">{t('Unit Price', 'একক মূল্য')}</th>
+                            <th className="py-3 px-3 text-center">{t('Total Sold', 'মোট বিক্রি')}</th>
+                            <th className="py-3 px-3 text-right">{t('Revenue', 'মোট বিক্রয় রাজস্ব')}</th>
+                            <th className="py-3 px-3 text-center">{t('Stock', 'স্টক')}</th>
+                            <th className="py-3 px-3">{t('Review Rating', 'রিভিউ রেটিং')}</th>
+                            <th className="py-3 px-4">{t('Status', 'অবস্থা')}</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-neutral-200/60 dark:divide-neutral-800">
@@ -5001,15 +5007,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                   <td className="py-3 px-4">
                                     {isTop ? (
                                       <span className="px-2 py-0.5 rounded-full bg-amber-400 text-neutral-900 text-[10px] font-black uppercase">
-                                        🏆 #1 Top Seller
+                                        {t('🏆 #1 Top Seller', '🏆 #১ সেরা বিক্রিত')}
                                       </span>
                                     ) : (p.totalSold || 0) > 0 ? (
                                       <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
-                                        Active Selling
+                                        {t('Active Selling', 'চলমান বিক্রি')}
                                       </span>
                                     ) : (
                                       <span className="text-[10px] text-neutral-400 font-medium">
-                                        Ready for sale
+                                        {t('Ready for sale', 'বিক্রির জন্য প্রস্তুত')}
                                       </span>
                                     )}
                                   </td>
@@ -5029,10 +5035,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-base font-black text-neutral-900 dark:text-white">
-                        Customer Orders Stream (লাইভ কাস্টমার অর্ডার সমূহ)
+                        {t('Customer Orders Stream', 'কাস্টমার অর্ডার সমূহ')}
                       </h3>
                       <p className="text-xs text-neutral-500">
-                        ওয়েবসাইট থেকে কাস্টমাররা যেসব অর্ডার দিচ্ছেন তা এখানে রিয়েল-টাইমে আসছে।
+                        {t('Real-time incoming orders placed by customers on the storefront.', 'ওয়েবসাইট থেকে কাস্টমাররা যেসব অর্ডার দিচ্ছেন তা এখানে রিয়েল-টাইমে আসছে।')}
                       </p>
                     </div>
                     <Button
@@ -5042,7 +5048,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       onClick={handleExportOrdersCSV}
                       className="font-bold text-xs"
                     >
-                      Export Orders CSV
+                      {t('Export Orders CSV', 'অর্ডার CSV এক্সপোর্ট')}
                     </Button>
                   </div>
 
@@ -5090,7 +5096,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                 onClick={() => handleUpdateOrderStatus(o.id, 'DELIVERED')}
                                 className="text-[11px] font-bold py-1 h-7"
                               >
-                                Mark Delivered
+                                {t('Mark Delivered', 'ডেলিভারি সম্পন্ন')}
                               </Button>
                             )}
                           </div>
@@ -5145,10 +5151,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <AlertTriangle className="h-5 w-5 text-rose-500 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-black text-sm text-rose-700 dark:text-rose-400">
-                        Customer Quality Watchdog (আজকে কোন প্রোডাক্টে খারাপ রিভিউ আসছে)
+                        {t('Customer Quality Watchdog', 'কাস্টমার কোয়ালিটি ওয়াচডগ (রিভিউ মনিটরিং)')}
                       </h4>
                       <p className="text-xs text-rose-600 dark:text-rose-300 mt-0.5 leading-relaxed font-medium">
-                        কাস্টমারদের যেসব রিভিউ ৩ স্টার বা তার কম আসছে, তা এখানে তাৎক্ষণিক সতর্কতা হিসেবে প্রদর্শন করা হচ্ছে। যাতে দ্রুত কাস্টমারের সাথে যোগাযোগ করে কোয়ালিটি বা প্যাকেজিং সমস্যা সমাধান করা যায়।
+                        {t('Immediate alert for customer reviews with 3 stars or lower, allowing rapid QA and follow-up.', 'কাস্টমারদের যেসব রিভিউ ৩ স্টার বা তার কম আসছে, তা এখানে তাৎক্ষণিক সতর্কতা হিসেবে প্রদর্শন করা হচ্ছে যাতে দ্রুত সমাধান করা যায়।')}
                       </p>
                     </div>
                   </div>
@@ -5159,10 +5165,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         ✓
                       </div>
                       <h4 className="font-black text-sm text-neutral-900 dark:text-white">
-                        No Bad Reviews Today! 🎉
+                        {t('No Bad Reviews Today! 🎉', 'আজকে কোনো খারাপ রিভিউ নেই! 🎉')}
                       </h4>
                       <p className="text-xs text-neutral-500">
-                        All customer ratings today are 4 or 5 stars with high satisfaction.
+                        {t('All customer ratings today are 4 or 5 stars with high satisfaction.', 'আজকের সব কাস্টমার রেটিং সন্তোষজনক (৪ বা ৫ স্টার)।')}
                       </p>
                     </Card>
                   ) : (
@@ -5258,10 +5264,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <Boxes className="h-7 w-7 text-primary-green" />
-                    <span>Warehouse & Stock Inventory Management</span>
+                    <span>{t('Warehouse & Stock Inventory Management', 'ওয়্যারহাউস ও স্টক ইনভেন্টরি ব্যবস্থাপনা')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Multi-branch stock monitoring across Dhanmondi, Gulshan-2, and Uttara hubs with automated reorder thresholds.
+                    {t('Multi-branch stock monitoring across Dhanmondi, Gulshan-2, and Uttara hubs with automated reorder thresholds.', 'ধানমন্ডি, গুলশান-২ ও উত্তরা শাখার স্বয়ংক্রিয় স্টক মনিটরিং ও রি-অর্ডার থ্রেশহোল্ড।')}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -5272,7 +5278,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={handleOpenAddProduct}
                     className="font-bold text-xs"
                   >
-                    Inward Stock
+                    {t('Inward Stock', 'নতুন স্টক এন্ট্রি')}
                   </Button>
                   <Button
                     variant="outline"
@@ -5281,7 +5287,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={handleExportSalesReportCSV}
                     className="font-bold text-xs"
                   >
-                    Stock Audit CSV
+                    {t('Stock Audit CSV', 'স্টক অডিট CSV')}
                   </Button>
                 </div>
               </div>
@@ -5289,49 +5295,49 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               {/* Inventory Metric Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-emerald-500/20">
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Total Inventory Valuation</span>
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Total Inventory Valuation', 'মোট ইনভেন্টরি সম্পদ মূল্য')}</span>
                   <div className="text-2xl font-black text-forest-900 dark:text-emerald-300 mt-2">৳2,840,500</div>
-                  <span className="text-[10px] text-emerald-600 font-bold mt-1 block">✓ Fully Insured & Refrigerated</span>
+                  <span className="text-[10px] text-emerald-600 font-bold mt-1 block">{t('✓ Fully Insured & Refrigerated', '✓ সম্পূর্ণ বীমাকৃত ও নিয়ন্ত্রিত কোল্ড চেইন')}</span>
                 </Card>
                 <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-emerald-500/20">
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Active Catalog SKUs</span>
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Active Catalog SKUs', 'সক্রিয় ক্যাটালগ এসকেইউ')}</span>
                   <div className="text-2xl font-black text-neutral-900 dark:text-white mt-2">1,420 Items</div>
                   <span className="text-[10px] text-neutral-400 font-medium mt-1 block">Across 6 Store Departments</span>
                 </Card>
                 <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-rose-500/30">
-                  <span className="text-[11px] font-bold text-rose-500 uppercase">Low Stock Alerts</span>
+                  <span className="text-[11px] font-bold text-rose-500 uppercase">{t('Low Stock Alerts', 'স্বল্প স্টক সতর্কতা')}</span>
                   <div className="text-2xl font-black text-rose-600 mt-2">14 Items</div>
-                  <span className="text-[10px] text-rose-500 font-bold mt-1 block">⚠️ Below Safety Threshold (5 units)</span>
+                  <span className="text-[10px] text-rose-500 font-bold mt-1 block">{t('⚠️ Below Safety Threshold (5 units)', '⚠️ সেফটি থ্রেশহোল্ডের নিচে (৫টি)')}</span>
                 </Card>
                 <Card className="p-4 bg-white/95 dark:bg-[#071F15]/90 border border-neutral-200 dark:border-cyan-500/20">
-                  <span className="text-[11px] font-bold text-cyan-600 uppercase">Optimal Buffer Stock</span>
+                  <span className="text-[11px] font-bold text-cyan-600 uppercase">{t('Optimal Buffer Stock', 'পর্যাপ্ত বাফার স্টক')}</span>
                   <div className="text-2xl font-black text-cyan-700 dark:text-cyan-300 mt-2">1,406 Items</div>
-                  <span className="text-[10px] text-cyan-600 font-bold mt-1 block">Sufficient for 14 Days</span>
+                  <span className="text-[10px] text-cyan-600 font-bold mt-1 block">{t('Sufficient for 14 Days', '১৪ দিনের চাহিদার জন্য পর্যাপ্ত')}</span>
                 </Card>
               </div>
 
               {/* Inventory Table */}
               <Card className="overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
                 <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
-                  <h3 className="font-black text-sm text-neutral-900 dark:text-white">Active Stock Level Audit</h3>
+                  <h3 className="font-black text-sm text-neutral-900 dark:text-white">{t('Active Stock Level Audit', 'সক্রিয় স্টক অডিট')}</h3>
                   <span className="text-xs text-neutral-500 font-medium">Consolidated Dhaka Region</span>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left">
                     <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-500 uppercase font-black text-[10px]">
                       <tr>
-                        <th className="py-3 px-4">SKU / Item</th>
-                        <th className="py-3 px-3">Category</th>
-                        <th className="py-3 px-3 text-center">Current Stock</th>
-                        <th className="py-3 px-3 text-center">Safety Buffer</th>
-                        <th className="py-3 px-3 text-right">Unit Value</th>
-                        <th className="py-3 px-3 text-right">Total Valuation</th>
-                        <th className="py-3 px-4 text-center">Status & Action</th>
+                        <th className="py-3 px-4">{t('SKU / Item', 'এসকেইউ / পণ্য')}</th>
+                        <th className="py-3 px-3">{t('Category', 'ক্যাটাগরি')}</th>
+                        <th className="py-3 px-3 text-center">{t('Current Stock', 'বর্তমান স্টক')}</th>
+                        <th className="py-3 px-3 text-center">{t('Safety Buffer', 'সেফটি বাফার')}</th>
+                        <th className="py-3 px-3 text-right">{t('Unit Value', 'একক মূল্য')}</th>
+                        <th className="py-3 px-3 text-right">{t('Total Valuation', 'মোট মূল্য')}</th>
+                        <th className="py-3 px-4 text-center">{t('Status & Action', 'স্ট্যাটাস ও অ্যাকশন')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
                       {[
-                        { sku: 'ECO-FR-0012', name: 'Fresh Guava 1kg (তাজা পেয়ারা)', cat: 'Fresh Fruits', stock: 47, safety: 15, price: 90, status: 'OPTIMAL' },
+                        { sku: 'ECO-FR-0012', name: t('Fresh Guava 1kg', 'তাজা পেয়ারা ১ কেজি'), cat: t('Fresh Fruits', 'তাজা ফলমূল'), stock: 47, safety: 15, price: 90, status: 'OPTIMAL' },
                         { sku: 'ECO-VG-0003', name: 'Fresh Organic Red Vine Tomatoes', cat: 'Fresh Produce', stock: 84, safety: 20, price: 80, status: 'OPTIMAL' },
                         { sku: 'ECO-GR-0021', name: 'Aromatic Chinigura Rice 2kg', cat: 'Groceries', stock: 12, safety: 10, price: 290, status: 'REORDER_SOON' },
                         { sku: 'ECO-DR-0001', name: 'Farm Fresh Pure Cow Milk 1L', cat: 'Dairy & Eggs', stock: 4, safety: 15, price: 95, status: 'CRITICAL_LOW' },
@@ -5380,10 +5386,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <ArrowLeftRight className="h-7 w-7 text-primary-green" />
-                    <span>Inter-Branch Stock Transfers & Logistics</span>
+                    <span>{t('Inter-Branch Stock Transfers & Logistics', 'আন্তঃশাখা স্টক স্থানান্তর ও লজিস্টিকস')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Multi-hub rebalancing between Dhanmondi Flagship, Gulshan-2 Superstore, and Uttara Express corridor.
+                    {t('Multi-hub rebalancing between Dhanmondi Flagship, Gulshan-2 Superstore, and Uttara Express corridor.', 'ধানমন্ডি, গুলশান-২ ও উত্তরা শাখার মধ্যে স্বয়ংক্রিয় স্টক ভারসাম্য ও স্থানান্তর।')}
                   </p>
                 </div>
                 <Button
@@ -5393,7 +5399,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('Transfer Ticket Created', 'Draft TR-2026-104 initiated.')}
                   className="font-bold text-xs"
                 >
-                  Create Transfer
+                  {t('Create Transfer', 'নতুন স্থানান্তর তৈরি')}
                 </Button>
               </div>
 
@@ -5441,10 +5447,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <Truck className="h-7 w-7 text-primary-green" />
-                    <span>Procurement, Farm Cooperatives & POs</span>
+                    <span>{t('Procurement, Farm Cooperatives & POs', 'পণ্য সংগ্রহ, খামার সমবায় ও পারচেজ অর্ডার')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Direct rural sourcing from Bogura, Rajshahi, Sirajganj, and Sylhet organic farmer partners.
+                    {t('Direct rural sourcing from Bogura, Rajshahi, Sirajganj, and Sylhet organic farmer partners.', 'বগুড়া, রাজশাহী, সিরাজগঞ্জ ও সিলেট থেকে সরাসরি অর্গানিক ফসল সংগ্রহ।')}
                   </p>
                 </div>
                 <Button
@@ -5454,7 +5460,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('New PO Created', 'Draft Purchase Order PO-2026-118 initiated.')}
                   className="font-bold text-xs"
                 >
-                  Create Purchase Order
+                  {t('Create Purchase Order', 'নতুন পারচেজ অর্ডার তৈরি')}
                 </Button>
               </div>
 
@@ -5496,10 +5502,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <Users className="h-7 w-7 text-primary-green" />
-                    <span>Customer Relationship & EcoPoints Loyalty</span>
+                    <span>{t('Customer Relationship & EcoPoints Loyalty', 'কাস্টমার রিলেশনশিপ ও ইকোপয়েন্টস লয়্যালটি')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Manage 14,800+ registered retail shoppers, VIP tier progression, and automated SMS marketing.
+                    {t('Manage 14,800+ registered retail shoppers, VIP tier progression, and automated SMS marketing.', '১৪,৮০০+ নিবন্ধিত খুচরা গ্রাহক, ভিআইপি টায়ার ও প্রচার ব্যবস্থাপনা।')}
                   </p>
                 </div>
                 <Button
@@ -5509,7 +5515,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('Customer Profile Added', 'New VIP customer record initiated.')}
                   className="font-bold text-xs"
                 >
-                  Add Customer
+                  {t('Add Customer', 'নতুন কাস্টমার যোগ')}
                 </Button>
               </div>
 
@@ -5518,13 +5524,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <table className="w-full text-xs text-left">
                     <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-500 uppercase font-black text-[10px]">
                       <tr>
-                        <th className="py-3 px-4">Customer Name</th>
-                        <th className="py-3 px-3">Phone</th>
-                        <th className="py-3 px-3">Delivery Zone</th>
-                        <th className="py-3 px-3 text-center">Total Orders</th>
-                        <th className="py-3 px-3 text-right">Lifetime Spend</th>
-                        <th className="py-3 px-3 text-center">EcoPoints</th>
-                        <th className="py-3 px-4 text-center">VIP Tier</th>
+                        <th className="py-3 px-4">{t('Customer Name', 'কাস্টমারের নাম')}</th>
+                        <th className="py-3 px-3">{t('Phone', 'মোবাইল নম্বর')}</th>
+                        <th className="py-3 px-3">{t('Delivery Zone', 'ডেলিভারি এলাকা')}</th>
+                        <th className="py-3 px-3 text-center">{t('Total Orders', 'মোট অর্ডার')}</th>
+                        <th className="py-3 px-3 text-right">{t('Lifetime Spend', 'সর্বমোট কেনাকাটা')}</th>
+                        <th className="py-3 px-3 text-center">{t('EcoPoints', 'ইকোপয়েন্ট')}</th>
+                        <th className="py-3 px-4 text-center">{t('VIP Tier', 'ভিআইপি টায়ার')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
@@ -5563,13 +5569,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     </div>
                     <div>
                       <h3 className="text-base font-black text-neutral-900 dark:text-white flex items-center gap-2">
-                        <span>Targeted VIP Promotions & Restock Broadcaster</span>
+                        <span>{t('Targeted VIP Promotions & Restock Broadcaster', 'টার্গেটেড ভিআইপি প্রমোশন ও রিস্টক ব্রডকাস্টার')}</span>
                         <Badge variant="warning" className="text-[10px] uppercase font-black tracking-wider">
                           Live CRM Push
                         </Badge>
                       </h3>
                       <p className="text-xs text-neutral-500 font-medium">
-                        Broadcast exclusive discounts, secret coupon codes, and restock alerts directly into customer profiles based on membership tier and past purchase habits.
+                        {t('Broadcast exclusive discounts, secret coupon codes, and restock alerts directly into customer profiles based on membership tier and past purchase habits.', 'মেম্বারশিপ টায়ার এবং পছন্দের পণ্যের ওপর নির্ভর করে কাস্টমার প্রোফাইলে সরাসরি বিশেষ ছাড়, গোপন কুপন এবং রিস্টক বার্তা পাঠান।')}
                       </p>
                     </div>
                   </div>
@@ -5581,7 +5587,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
                       className="text-xs font-bold"
                     >
-                      Refresh Feed
+                      {t('Refresh Feed', 'ফিড রিফ্রেশ')}
                     </Button>
                   </div>
                 </div>
@@ -5592,7 +5598,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
                       <h4 className="text-sm font-black text-neutral-900 dark:text-white flex items-center gap-2">
                         <Gift className="w-4 h-4 text-emerald-600" />
-                        <span>Compose Member Offer / Announcement</span>
+                        <span>{t('Compose Member Offer / Announcement', 'মেম্বার অফার বা ঘোষণা তৈরি করুন')}</span>
                       </h4>
                       <span className="text-[11px] font-bold text-neutral-400">Direct-to-Profile Sync</span>
                     </div>
@@ -5600,7 +5606,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     {/* Quick Preset Buttons */}
                     <div>
                       <label className="block text-[11px] font-black uppercase text-neutral-400 mb-1.5">
-                        Quick Preset Templates
+                        {t('Quick Preset Templates', 'দ্রুত প্রিসেট টেমপ্লেট')}
                       </label>
                       <div className="flex flex-wrap gap-2">
                         <button
@@ -5660,7 +5666,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                           <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
-                            Target Membership Tier <span className="text-red-500">*</span>
+                            {t('Target Membership Tier', 'উদ্দিষ্ট মেম্বারশিপ টায়ার')} <span className="text-red-500">*</span>
                           </label>
                           <select
                             value={broadcastTargetTier}
@@ -5676,7 +5682,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                         <div>
                           <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
-                            Announcement Type <span className="text-red-500">*</span>
+                            {t('Announcement Type', 'ঘোষণার ধরন')} <span className="text-red-500">*</span>
                           </label>
                           <select
                             value={broadcastType}
@@ -5694,7 +5700,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                           <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
-                            Offer Title (English) <span className="text-red-500">*</span>
+                            {t('Offer Title (English)', 'অফার শিরোনাম (ইংরেজি)')} <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="text"
@@ -5707,7 +5713,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         </div>
                         <div>
                           <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
-                            Offer Title (Bengali)
+                            {t('Offer Title (Bengali)', 'অফার শিরোনাম (বাংলা)')}
                           </label>
                           <input
                             type="text"
@@ -5722,7 +5728,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {/* Message Content */}
                       <div>
                         <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
-                          Personalized Announcement Message
+                          {t('Personalized Announcement Message', 'ব্যক্তিগত বার্তা / বিস্তারিত')}
                         </label>
                         <textarea
                           rows={2}
@@ -5737,7 +5743,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
                           <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
-                            Exclusive Coupon Code
+                            {t('Exclusive Coupon Code', 'বিশেষ কুপন কোড')}
                           </label>
                           <div className="relative">
                             <Tag className="w-3.5 h-3.5 absolute left-3 top-2.5 text-neutral-400" />
@@ -5985,10 +5991,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <CircleDollarSign className="h-7 w-7 text-primary-green" />
-                    <span>Financial Ledger, Operating P&L & NBR VAT</span>
+                    <span>{t('Financial Ledger, Operating P&L & NBR VAT', 'আর্থিক হিসাব, পিঅ্যান্ডএল ও এনবিআর ভ্যাট')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Daily cash drawer reconciliation, bKash/Card settlement, and 5% NBR supermarket VAT compliance.
+                    {t('Daily cash drawer reconciliation, bKash/Card settlement, and 5% NBR supermarket VAT compliance.', 'ক্যাশ ড্রয়ার হিসাব, বিকাশ/কার্ড নিষ্পত্তি ও ৫% এনবিআর সুপারমার্কেট ভ্যাট কমপ্লায়েন্স।')}
                   </p>
                 </div>
                 <Button
@@ -5998,29 +6004,29 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('Financial Audit Exported', 'P&L statement downloaded.')}
                   className="font-bold text-xs"
                 >
-                  Export P&L (CSV)
+                  {t('Export P&L (CSV)', 'পিঅ্যান্ডএল (CSV) এক্সপোর্ট')}
                 </Button>
               </div>
 
               {/* Finance Metrics */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Gross Sales Revenue</span>
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Gross Sales Revenue', 'মোট বিক্রয় রাজস্ব')}</span>
                   <div className="text-2xl font-black text-forest-900 dark:text-emerald-400 mt-2">৳148,920</div>
                   <span className="text-[10px] text-emerald-600 font-bold mt-1 block">+12.4% vs Yesterday</span>
                 </Card>
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Cost of Goods Sold (COGS)</span>
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Cost of Goods Sold (COGS)', 'পণ্য ক্রয় ব্যয় (COGS)')}</span>
                   <div className="text-2xl font-black text-neutral-900 dark:text-white mt-2">৳108,400</div>
                   <span className="text-[10px] text-neutral-400 font-medium mt-1 block">Gross Margin: 27.2%</span>
                 </Card>
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase">Net Operating Profit</span>
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('Net Operating Profit', 'নিট পরিচালন মুনাফা')}</span>
                   <div className="text-2xl font-black text-emerald-600 mt-2">৳28,520</div>
                   <span className="text-[10px] text-emerald-600 font-bold mt-1 block">Net Margin: 19.1%</span>
                 </Card>
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase">NBR 5% VAT Collected</span>
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase">{t('NBR 5% VAT Collected', 'আদায়কৃত ৫% এনবিআর ভ্যাট')}</span>
                   <div className="text-2xl font-black text-amber-500 mt-2">৳7,446</div>
                   <span className="text-[10px] text-amber-500 font-bold mt-1 block">NBR BIN: 003891048-0101</span>
                 </Card>
@@ -6037,10 +6043,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <Building2 className="h-7 w-7 text-primary-green" />
-                    <span>Multi-Branch Hubs & Store Operations</span>
+                    <span>{t('Multi-Branch Hubs & Store Operations', 'বহু-শাখা হাব ও স্টোর পরিচালনা')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Live operational telemetry from Dhanmondi #01, Gulshan-2 #02, and Uttara #03 superstores.
+                    {t('Live operational telemetry from Dhanmondi #01, Gulshan-2 #02, and Uttara #03 superstores.', 'ধানমন্ডি #০১, গুলশান-২ #০২ এবং উত্তরা #০৩ শাখার লাইভ অপারেশনাল তথ্য।')}
                   </p>
                 </div>
                 <Button
@@ -6050,7 +6056,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('New Branch Form', 'Ready to add new Dhaka location.')}
                   className="font-bold text-xs"
                 >
-                  Add Branch Hub
+                  {t('Add Branch Hub', 'নতুন শাখা হাব যোগ')}
                 </Button>
               </div>
 
@@ -6089,10 +6095,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <Briefcase className="h-7 w-7 text-primary-green" />
-                    <span>Employee Directory, Shifts & Attendance</span>
+                    <span>{t('Employee Directory, Shifts & Attendance', 'কর্মচারী ডিরেক্টরি, শিফট ও উপস্থিতি')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Store managers, POS cashiers, warehouse inventory keepers, and cold-chain express riders.
+                    {t('Store managers, POS cashiers, warehouse inventory keepers, and cold-chain express riders.', 'স্টোর ম্যানেজার, ক্যাশিয়ার, ওয়্যারহাউস কিপার এবং কোল্ড-চেইন রাইডারদের বিবরণী।')}
                   </p>
                 </div>
                 <Button
@@ -6102,7 +6108,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('Staff Onboarding', 'New employee creation form opened.')}
                   className="font-bold text-xs"
                 >
-                  Onboard Staff
+                  {t('Onboard Staff', 'নতুন কর্মী নিয়োগ')}
                 </Button>
               </div>
 
@@ -6111,12 +6117,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <table className="w-full text-xs text-left">
                     <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-500 uppercase font-black text-[10px]">
                       <tr>
-                        <th className="py-3 px-4">Employee</th>
-                        <th className="py-3 px-3">Role</th>
-                        <th className="py-3 px-3">Assigned Branch</th>
-                        <th className="py-3 px-3">Shift Timing</th>
-                        <th className="py-3 px-3">Contact</th>
-                        <th className="py-3 px-4 text-center">Status</th>
+                        <th className="py-3 px-4">{t('Employee', 'কর্মচারী')}</th>
+                        <th className="py-3 px-3">{t('Role', 'পদবী')}</th>
+                        <th className="py-3 px-3">{t('Assigned Branch', 'নির্ধারিত শাখা')}</th>
+                        <th className="py-3 px-3">{t('Shift Timing', 'শিফটের সময়')}</th>
+                        <th className="py-3 px-3">{t('Contact', 'যোগাযোগ')}</th>
+                        <th className="py-3 px-4 text-center">{t('Status', 'স্ট্যাটাস')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
@@ -6156,10 +6162,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <UserCheck className="h-7 w-7 text-primary-green" />
-                    <span>Careers & Recruitment Management</span>
+                    <span>{t('Careers & Recruitment Management', 'ক্যারিয়ার ও নিয়োগ ব্যবস্থাপনা')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Superstore branch vacancies, job postings, candidate applications screening, and automatic email dispatch.
+                    {t('Superstore branch vacancies, job postings, candidate applications screening, and automatic email dispatch.', 'সুপারশপ শাখার শূন্যপদ, চাকরির বিজ্ঞপ্তি, আবেদন যাচাই ও স্বয়ংক্রিয় ইমেইল নোটিফিকেশন।')}
                   </p>
                 </div>
                 <div className="flex items-center gap-2.5">
@@ -6179,7 +6185,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={() => setIsCreateJobOpen(true)}
                     className="font-bold text-xs shadow-md shadow-emerald-900/20"
                   >
-                    Post New Job
+                    {t('Post New Job', 'নতুন চাকরির বিজ্ঞপ্তি')}
                   </Button>
                 </div>
               </div>
@@ -6188,7 +6194,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Total Postings</p>
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{t('Total Postings', 'মোট নিয়োগ বিজ্ঞপ্তি')}</p>
                     <Briefcase className="h-4 w-4 text-primary-green" />
                   </div>
                   <div className="mt-2 flex items-baseline gap-2">
@@ -6201,7 +6207,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Total Candidates</p>
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{t('Total Candidates', 'মোট আবেদনকারী')}</p>
                     <Users className="h-4 w-4 text-blue-500" />
                   </div>
                   <div className="mt-2 flex items-baseline gap-2">
@@ -6212,7 +6218,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Pending Review</p>
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{t('Pending Review', 'পর্যালোচনা বাকি')}</p>
                     <Clock className="h-4 w-4 text-amber-500" />
                   </div>
                   <div className="mt-2 flex items-baseline gap-2">
@@ -6225,7 +6231,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                 <Card className="p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Shortlisted / Hired</p>
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{t('Shortlisted / Hired', 'বাছাইকৃত / চূড়ান্ত')}</p>
                     <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                   </div>
                   <div className="mt-2 flex items-baseline gap-2">
@@ -6590,24 +6596,39 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <Sparkles className="h-7 w-7 text-primary-green animate-pulse" />
-                    <span>ECOBAZAR AI Operations Copilot</span>
+                    <span>{t('ECOBAZAR AI Operations Copilot', 'ইকোবাজার এআই অপারেশনস কোপাইলট')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Autonomous neural agent for retail demand forecasting, dynamic pricing, and inventory optimization.
+                    {t(
+                      'Autonomous neural agent for retail demand forecasting, dynamic pricing, and inventory optimization.',
+                      'রিটেইল চাহিদা পূর্বাভাস, গতিশীল মূল্য নির্ধারণ ও ইনভেন্টরি অপটিমাইজেশনের জন্য এআই সহকারী।'
+                    )}
                   </p>
                 </div>
                 <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-black text-xs border border-emerald-500/40">
-                  AI MODEL GEMINI-2.0 LIVE
+                  {t('AI MODEL GEMINI-2.0 LIVE', 'এআই মডেল জেমিনি-২.০ লাইভ')}
                 </span>
               </div>
 
               {/* Quick AI Prompts */}
               <div className="flex flex-wrap gap-2">
                 {[
-                  'Gulshan-2 ব্রাঞ্চের জন্য আগামী শুক্রবারের ফ্রেশ মিল্ক ও মিষ্টি পেয়ারা ডিমান্ড প্রেডিকশন কী?',
-                  'কোন কোন পণ্যের স্টক দ্রুত শেষ হয়ে যাওয়ার ঝুঁকিতে রয়েছে?',
-                  'ধামন্ডি স্টোরে যেসব পণ্যের মেয়াদ ৪৮ ঘণ্টার মধ্যে শেষ হবে তাদের ডিসকাউন্ট দিন',
-                  'আজকের ঢাকা বৃষ্টির কারণে কোন কোন গ্রোসারি আইটেম সবচেয়ে বেশি বিক্রি হবে?',
+                  t(
+                    'What is the demand prediction for fresh milk & guava at Gulshan-2 branch next Friday?',
+                    'গুলশান-২ ব্রাঞ্চের জন্য আগামী শুক্রবারের ফ্রেশ মিল্ক ও মিষ্টি পেয়ারা ডিমান্ড প্রেডিকশন কী?'
+                  ),
+                  t(
+                    'Which products are at risk of running out of stock soon?',
+                    'কোন কোন পণ্যের স্টক দ্রুত শেষ হয়ে যাওয়ার ঝুঁকিতে রয়েছে?'
+                  ),
+                  t(
+                    'Apply flash discount to items at Dhanmondi expiring within 48 hours',
+                    'ধানমন্ডি স্টোরে যেসব পণ্যের মেয়াদ ৪৮ ঘণ্টার মধ্যে শেষ হবে তাদের ডিসকাউন্ট দিন'
+                  ),
+                  t(
+                    'Which grocery items will sell the most today due to Dhaka rain?',
+                    'আজকের ঢাকা বৃষ্টির কারণে কোন কোন গ্রোসারি আইটেম সবচেয়ে বেশি বিক্রি হবে?'
+                  ),
                 ].map((prompt, idx) => (
                   <button
                     key={idx}
@@ -6624,7 +6645,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               <div className="p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex gap-2">
                 <input
                   type="text"
-                  placeholder="Ask ECOBAZAR AI Copilot anything about sales, stock, forecasting, or Dhaka market rates..."
+                  placeholder={t(
+                    'Ask ECOBAZAR AI Copilot anything about sales, stock, forecasting, or Dhaka market rates...',
+                    'বিক্রি, স্টক, পূর্বাভাস বা বাজারদর সংক্রান্ত যেকোনো প্রশ্ন এআই কোপাইলটকে করুন...'
+                  )}
                   value={aiPromptInput}
                   onChange={(e) => setAiPromptInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleAskAi()}
@@ -6637,7 +6661,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => handleAskAi()}
                   className="font-black text-xs px-5"
                 >
-                  {isAiThinking ? 'Analyzing...' : 'Ask AI'}
+                  {isAiThinking ? t('Analyzing...', 'বিশ্লেষণ চলছে...') : t('Ask AI', 'এআই-কে জিজ্ঞেস করুন')}
                 </Button>
               </div>
 
@@ -6670,10 +6694,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <Settings className="h-7 w-7 text-primary-green" />
-                    <span>Supermarket Configuration & NBR VAT Settings</span>
+                    <span>{t('Supermarket Configuration & NBR VAT Settings', 'সুপারশপ কনফিগারেশন ও এনবিআর ভ্যাট সেটিংস')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Store identification, thermal receipt headers, tax brackets, and SMS notification gateways.
+                    {t('Store identification, thermal receipt headers, tax brackets, and SMS notification gateways.', 'দোকানের পরিচয়, থার্মাল রসিদ হেডার, ভ্যাট হার এবং এসএমএস নোটিফিকেশন গেটওয়ে।')}
                   </p>
                 </div>
                 <Button
@@ -6682,16 +6706,16 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('Settings Saved', 'Supermarket parameters updated successfully.')}
                   className="font-bold text-xs"
                 >
-                  Save Changes
+                  {t('Save Changes', 'পরিবর্তন সংরক্ষণ করুন')}
                 </Button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4">
-                  <h4 className="font-black text-sm text-neutral-900 dark:text-white">Store Identity & Legal</h4>
+                  <h4 className="font-black text-sm text-neutral-900 dark:text-white">{t('Store Identity & Legal', 'দোকানের পরিচয় ও আইনগত তথ্য')}</h4>
                   <div className="space-y-3 text-xs">
                     <div>
-                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">Store Legal Name</label>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">{t('Store Legal Name', 'প্রতিষ্ঠানের নাম')}</label>
                       <input
                         type="text"
                         value={storeSettings.storeName}
@@ -6700,7 +6724,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       />
                     </div>
                     <div>
-                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">NBR Business Identification Number (BIN)</label>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">{t('NBR Business Identification Number (BIN)', 'এনবিআর বিজনেস আইডেন্টিফিকেশন নম্বর (BIN)')}</label>
                       <input
                         type="text"
                         value={storeSettings.binNumber}
@@ -6709,7 +6733,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       />
                     </div>
                     <div>
-                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">Standard Supermarket VAT Rate (%)</label>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">{t('Standard Supermarket VAT Rate (%)', 'স্ট্যান্ডার্ড সুপারমার্কেট ভ্যাট হার (%)')}</label>
                       <input
                         type="number"
                         value={storeSettings.vatPercent}
@@ -6721,10 +6745,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </Card>
 
                 <Card className="p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4">
-                  <h4 className="font-black text-sm text-neutral-900 dark:text-white">Communication & Automation</h4>
+                  <h4 className="font-black text-sm text-neutral-900 dark:text-white">{t('Communication & Automation', 'যোগাযোগ ও স্বয়ংক্রিয় বার্তা')}</h4>
                   <div className="space-y-3 text-xs">
                     <div>
-                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">Helpline Phone</label>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">{t('Helpline Phone', 'হেল্পলাইন ফোন')}</label>
                       <input
                         type="text"
                         value={storeSettings.contactPhone}
@@ -6733,7 +6757,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       />
                     </div>
                     <div>
-                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">Support Email</label>
+                      <label className="font-bold text-neutral-700 dark:text-neutral-300 block mb-1">{t('Support Email', 'সাপোর্ট ইমেইল')}</label>
                       <input
                         type="email"
                         value={storeSettings.contactEmail}
@@ -6749,7 +6773,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           onChange={(e) => setStoreSettings({ ...storeSettings, enableSmsAlerts: e.target.checked })}
                           className="rounded text-primary-green focus:ring-primary-green h-4 w-4"
                         />
-                        <span>Send Automated SMS Order Tracking to Customers</span>
+                        <span>{t('Send Automated SMS Order Tracking to Customers', 'গ্রাহকদের কাছে স্বয়ংক্রিয় এসএমএস অর্ডার ট্র্যাকিং পাঠান')}</span>
                       </label>
                     </div>
                   </div>
@@ -6767,10 +6791,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <History className="h-7 w-7 text-primary-green" />
-                    <span>Immutable Audit Log Trail & Security</span>
+                    <span>{t('Immutable Audit Log Trail & Security', 'অপরিবর্তনীয় অডিট লগ ও নিরাপত্তা ট্রেইল')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    System activity, price changes, cashier tenders, and administrative operations log.
+                    {t(
+                      'System activity, price changes, cashier tenders, and administrative operations log.',
+                      'সিস্টেম কার্যক্রম, মূল্য পরিবর্তন, ক্যাশিয়ার ট্রানজ্যাকশন এবং প্রশাসনিক কার্যক্রমের বিবরণী।'
+                    )}
                   </p>
                 </div>
                 <Button
@@ -6780,7 +6807,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('Audit Log Exported', 'Security audit trail CSV downloaded.')}
                   className="font-bold text-xs"
                 >
-                  Export Audit Log
+                  {t('Export Audit Log', 'অডিট লগ এক্সপোর্ট')}
                 </Button>
               </div>
 
@@ -6789,11 +6816,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <table className="w-full text-xs text-left">
                     <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-500 uppercase font-black text-[10px]">
                       <tr>
-                        <th className="py-3 px-4">Timestamp</th>
-                        <th className="py-3 px-3">Actor / Staff</th>
-                        <th className="py-3 px-3">Branch Scope</th>
-                        <th className="py-3 px-3">Action Type</th>
-                        <th className="py-3 px-4">Event Details</th>
+                        <th className="py-3 px-4">{t('Timestamp', 'সময়')}</th>
+                        <th className="py-3 px-3">{t('Actor / Staff', 'অপারেটর / স্টাফ')}</th>
+                        <th className="py-3 px-3">{t('Branch Scope', 'শাখা')}</th>
+                        <th className="py-3 px-3">{t('Action Type', 'অ্যাকশন টাইপ')}</th>
+                        <th className="py-3 px-4">{t('Event Details', 'ঘটনার বিবরণ')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
@@ -6831,10 +6858,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <ShieldCheck className="h-7 w-7 text-primary-green" />
-                    <span>Role-Based Access Control (RBAC)</span>
+                    <span>{t('Role-Based Access Control (RBAC)', 'রোল-ভিত্তিক অ্যাক্সেস নিয়ন্ত্রণ (RBAC)')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Manage administrative privileges, price modification rights, and cashier register permissions.
+                    {t(
+                      'Manage administrative privileges, price modification rights, and cashier register permissions.',
+                      'প্রশাসনিক সুবিধা, মূল্য পরিবর্তন অধিকার এবং ক্যাশ কাউন্টার অনুমতি পরিচালনা করুন।'
+                    )}
                   </p>
                 </div>
               </div>
@@ -6878,7 +6908,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   onClick={() => toast.success('Operation Executed', `${activeRouteId} refreshed.`)}
                   className="font-bold text-xs"
                 >
-                  Refresh Feed
+                  {t('Refresh Feed', 'ফিড রিফ্রেশ')}
                 </Button>
               </div>
 
@@ -6913,10 +6943,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2.5">
                     <Mail className="h-7 w-7 text-primary-green" />
-                    <span>Email Outbox & Live SMTP Dispatch</span>
+                    <span>{t('Email Outbox & Live SMTP Dispatch', 'ইমেইল আউটবক্স ও লাইভ এসএমটিপি প্রেরণ')}</span>
                   </h1>
                   <p className="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
-                    Manage real-time email delivery (Gmail, Outlook, Brevo) for customer order invoices and job applicant confirmation letters.
+                    {t('Manage real-time email delivery (Gmail, Outlook, Brevo) for customer order invoices and job applicant confirmation letters.', 'গ্রাহকের অর্ডার ইনভয়েস এবং চাকরির আবেদনকারী নিশ্চিতকরণ চিঠির রিয়েল-টাইম ইমেইল ডেলিভারি।')}
                   </p>
                 </div>
                 <div className="flex items-center gap-2.5">
@@ -6927,7 +6957,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={fetchEmailData}
                     className="text-xs font-semibold"
                   >
-                    Refresh Outbox
+                    {t('Refresh Outbox', 'আউটবক্স রিফ্রেশ')}
                   </Button>
                 </div>
               </div>
@@ -6938,7 +6968,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5 shrink-0" />
                   <div>
                     <h4 className="text-sm font-bold text-emerald-950 dark:text-emerald-200">
-                      Live SMTP Dispatch is Active & Operational
+                      {t('Live SMTP Dispatch is Active & Operational', 'লাইভ এসএমটিপি ইমেইল প্রেরণ সক্রিয় ও কার্যকর')}
                     </h4>
                     <p className="text-xs text-emerald-800 dark:text-emerald-300 mt-0.5">
                       Emails are being sent across the internet to real inboxes via <strong>{emailSettings.smtpHost}</strong> (Sender: {emailSettings.senderName} &lt;{emailSettings.senderEmail || emailSettings.smtpUser}&gt;).
@@ -6950,7 +6980,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
                   <div>
                     <h4 className="text-sm font-bold text-amber-950 dark:text-amber-200">
-                      Live Email Dispatch is in Simulation / Pending Setup
+                      {t('Live Email Dispatch is in Simulation / Pending Setup', 'ইমেইল প্রেরণ বর্তমানে সিমুলেশন / সেটআপ অপেক্ষমাণ')}
                     </h4>
                     <p className="text-xs text-amber-800 dark:text-amber-300 mt-0.5 leading-relaxed">
                       All customer order invoices and job application letters are currently generated and stored in the <strong>Outbox below</strong>. To deliver them directly to real recipient inboxes (@gmail.com, etc.), enter your Gmail address and 16-character <strong>App Password</strong> in the form below.
@@ -6966,7 +6996,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
                       <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
                         <Settings className="h-4 w-4 text-primary-green" />
-                        <span>SMTP Dispatch Settings</span>
+                        <span>{t('SMTP Dispatch Settings', 'এসএমটিপি প্রেরণ সেটিংস')}</span>
                       </h3>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
                         emailSettings.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-100 text-neutral-500'
@@ -7479,7 +7509,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                        Product Name (English) *
+                        {t('Product Name (English) *', 'পণ্যের নাম (ইংরেজি) *')}
                       </label>
                       <input
                         type="text"
@@ -7492,7 +7522,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                     <div>
                       <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                        Product Name (বাংলা / Bangla)
+                        {t('Product Name (Bangla)', 'পণ্যের নাম (বাংলা)')}
                       </label>
                       <input
                         type="text"
@@ -7507,7 +7537,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                        Brand / Producer
+                        {t('Brand / Producer', 'ব্র্যান্ড / প্রস্তুতকারক')}
                       </label>
                       <input
                         type="text"
@@ -7520,7 +7550,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                     <div>
                       <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                        Region / Origin
+                        {t('Region / Origin', 'অঞ্চল / উৎস')}
                       </label>
                       <input
                         type="text"
@@ -7542,7 +7572,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                        Department / Category *
+                        {t('Department / Category *', 'বিভাগ / ক্যাটাগরি *')}
                       </label>
                       <select
                         value={productForm.categorySlug}
@@ -7652,7 +7682,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
                       <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                        Active Selling Price (৳ BDT) *
+                        {t('Active Selling', 'চলমান বিক্রি')} Price (৳ BDT) *
                       </label>
                       <div className="relative">
                         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 font-bold">
@@ -7673,7 +7703,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                     <div>
                       <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                        Regular / Original Price (৳ BDT)
+                        {t('Regular / Original Price (৳ BDT)', 'রেগুলার / আগের মূল্য (৳)')}
                       </label>
                       <div className="relative">
                         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 font-bold">
@@ -7900,7 +7930,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       onClick={handleAddManualImageUrl}
                       className="px-4 py-2 rounded-xl bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 font-bold text-xs hover:bg-emerald-600 dark:hover:bg-emerald-500 transition shrink-0"
                     >
-                      + Add to Gallery
+                      {t('+ Add', '+ যোগ করুন')} to Gallery
                     </button>
                   </div>
                 </div>
@@ -8514,7 +8544,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </div>
               <div>
                 <label className="font-bold text-neutral-700 dark:text-neutral-200 block mb-1">
-                  Category Name (বাংলা / Bangla)
+                  {t('Category Name (Bangla)', 'ক্যাটাগরির নাম (বাংলা)')}
                 </label>
                 <input
                   type="text"
@@ -8709,10 +8739,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <UserPlus className="h-5 w-5 text-primary-green" />
-            <span>Post New Superstore Job Opening</span>
+            <span>{t('Post New Superstore Job Opening', 'নতুন চাকরির বিজ্ঞপ্তি পোস্ট করুন')}</span>
           </DialogTitle>
           <DialogDescription>
-            Publish a live vacancy across ECOBAZAR branches. Candidates will see this immediately on the Careers page.
+            {t('Publish a live vacancy across ECOBAZAR branches. Candidates will see this immediately on the Careers page.', 'ইকোবাজার শাখাসমূহের জন্য নিয়োগ বিজ্ঞপ্তি প্রকাশ করুন। প্রার্থীরা ক্যারিয়ার পাতায় তাৎক্ষণিক দেখতে পাবেন।')}
           </DialogDescription>
         </DialogHeader>
         <DialogBody className="space-y-4 max-h-[70vh] overflow-y-auto">
@@ -8720,7 +8750,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
-                  Job Title (English) *
+                  {t('Job Title (English) *', 'পদের নাম (ইংরেজি) *')}
                 </label>
                 <input
                   type="text"
@@ -8734,7 +8764,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
               <div>
                 <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
-                  Job Title (Bengali)
+                  {t('Job Title (Bengali)', 'পদের নাম (বাংলা)')}
                 </label>
                 <input
                   type="text"
@@ -8908,7 +8938,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
             disabled={isSavingJob}
             className="font-bold"
           >
-            {isSavingJob ? 'Publishing...' : 'Publish Job Opening'}
+            {isSavingJob ? t('Publishing...', 'প্রকাশ করা হচ্ছে...') : t('Publish Job Opening', 'বিজ্ঞপ্তি প্রকাশ করুন')}
           </Button>
         </DialogFooter>
       </Dialog>
@@ -8921,7 +8951,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <UserCheck className="h-5 w-5 text-primary-green" />
-              <span>Candidate Profile: {selectedApplicant.fullName}</span>
+              <span>{t('Candidate Profile:', 'প্রার্থীর প্রোফাইল:')} {selectedApplicant.fullName}</span>
             </DialogTitle>
             <DialogDescription>
               Application reference #{selectedApplicant.id} • Applied for {selectedApplicant.jobTitle} ({selectedApplicant.branch})
