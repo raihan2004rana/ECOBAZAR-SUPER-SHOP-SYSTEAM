@@ -23,6 +23,7 @@ import {
   Home,
   LayoutGrid,
   Globe,
+  ShieldCheck,
 } from 'lucide-react';
 import { Logo } from '@ecobazar/ui';
 import { useCart } from '../context/cart-context';
@@ -189,6 +190,16 @@ export const SiteHeader: React.FC = () => {
               className="hidden sm:inline text-white/90 hover:text-white transition-colors font-medium"
             >
               {t('Help & Contact', 'সাহায্য')}
+            </Link>
+
+            <span className="hidden sm:inline text-white/40">|</span>
+
+            <Link
+              href="/admin"
+              className="hidden sm:inline text-emerald-300 hover:text-white transition-colors font-bold flex items-center gap-1"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>{t('Staff & Admin', 'এডমিন পোর্টাল')}</span>
             </Link>
           </div>
         </div>
@@ -684,6 +695,20 @@ export const SiteHeader: React.FC = () => {
                     )}
                   </Link>
                 ))}
+
+                <Link
+                  href="/admin"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center justify-between py-2.5 text-sm font-bold text-emerald-700 hover:text-[#21A366] border-t border-[#E5ECE7]/60 mt-1"
+                >
+                  <span className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                    <span>{t('Staff & Operations Hub', 'এডমিন ও স্টাফ পোর্টাল')}</span>
+                  </span>
+                  <span className="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black">
+                    HQ
+                  </span>
+                </Link>
               </div>
 
               {/* Categories */}

@@ -27,7 +27,7 @@ export const FloatingCartTab: React.FC = () => {
       <button
         type="button"
         onClick={() => setIsCartDrawerOpen(true)}
-        className={`group relative flex flex-col items-center justify-center py-3 px-2 sm:px-2.5 rounded-l-2xl bg-[#E87027] hover:bg-[#D55F18] text-white shadow-2xl border-l-2 border-y-2 border-amber-300/40 transition-all duration-200 hover:-translate-x-1 active:scale-95 cursor-pointer ${
+        className={`group relative flex flex-col items-center justify-center py-3 px-2 sm:px-2.5 rounded-l-2xl bg-[#22a367] hover:bg-[#1b8a56] text-white shadow-2xl border-l-2 border-y-2 border-emerald-300/40 transition-all duration-200 hover:-translate-x-1 active:scale-95 cursor-pointer ${
           animateBounce ? 'animate-bounce' : ''
         }`}
         title={language === 'bn' ? 'শপিং ব্যাগ দেখুন' : 'View Shopping Cart'}
@@ -56,7 +56,7 @@ export const FloatingCartTab: React.FC = () => {
         </span>
 
         {/* Amount Pill */}
-        <div className="mt-1 px-1.5 py-0.5 rounded-md bg-[#123C2D]/90 text-emerald-300 text-[10px] sm:text-[11px] font-black tracking-tight whitespace-nowrap shadow-xs group-hover:bg-[#123C2D]">
+        <div className="mt-1 px-1.5 py-0.5 rounded-md bg-[#123C2D]/90 text-white text-[10px] sm:text-[11px] font-black tracking-tight whitespace-nowrap shadow-xs group-hover:bg-[#123C2D]">
           ৳{isHydrated ? cartGrandTotal.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'}
         </div>
       </button>

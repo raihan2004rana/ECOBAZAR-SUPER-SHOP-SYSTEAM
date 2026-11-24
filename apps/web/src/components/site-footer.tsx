@@ -143,6 +143,12 @@ export const SiteFooter: React.FC = () => {
               <Link href="/contact" className="hover:text-[#2EBD70] transition-colors">
                 Contact & Support
               </Link>
+              <Link href="/admin" className="hover:text-[#2EBD70] transition-colors flex items-center gap-1.5 font-bold text-white pt-1">
+                <span>Staff & Admin Hub</span>
+                <span className="text-[9px] bg-emerald-500 text-neutral-900 font-black px-1.5 py-0.2 rounded-full uppercase">
+                  HQ
+                </span>
+              </Link>
             </div>
           </div>
         </div>
