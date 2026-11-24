@@ -14,6 +14,7 @@ export const Logo: React.FC<LogoProps> = ({
   ...props
 }) => {
   const isLight = variant === 'light';
+  const uid = React.useId().replace(/:/g, '');
 
   const sizeDimensions = {
     sm: { height: 32, width: 120 },
@@ -35,19 +36,19 @@ export const Logo: React.FC<LogoProps> = ({
         {...props}
       >
         <defs>
-          <linearGradient id="basketGrad" x1="10" y1="45" x2="90" y2="85" gradientUnits="userSpaceOnUse">
+          <linearGradient id={`basketGrad_${uid}`} x1="10" y1="45" x2="90" y2="85" gradientUnits="userSpaceOnUse">
             <stop stopColor="#2EBD70" />
             <stop offset="1" stopColor="#123C2D" />
           </linearGradient>
-          <linearGradient id="carrotGrad" x1="30" y1="20" x2="45" y2="45" gradientUnits="userSpaceOnUse">
+          <linearGradient id={`carrotGrad_${uid}`} x1="30" y1="20" x2="45" y2="45" gradientUnits="userSpaceOnUse">
             <stop stopColor="#F97316" />
             <stop offset="1" stopColor="#EA580C" />
           </linearGradient>
-          <linearGradient id="tomatoGrad" x1="18" y1="22" x2="38" y2="42" gradientUnits="userSpaceOnUse">
+          <linearGradient id={`tomatoGrad_${uid}`} x1="18" y1="22" x2="38" y2="42" gradientUnits="userSpaceOnUse">
             <stop stopColor="#EF4444" />
             <stop offset="1" stopColor="#B91C1C" />
           </linearGradient>
-          <linearGradient id="appleGrad" x1="62" y1="20" x2="82" y2="40" gradientUnits="userSpaceOnUse">
+          <linearGradient id={`appleGrad_${uid}`} x1="62" y1="20" x2="82" y2="40" gradientUnits="userSpaceOnUse">
             <stop stopColor="#DC2626" />
             <stop offset="1" stopColor="#991B1B" />
           </linearGradient>
@@ -59,7 +60,7 @@ export const Logo: React.FC<LogoProps> = ({
         <path d="M50 20C50 20 60 12 68 18C76 24 64 32 64 32" fill="#16A34A" />
 
         {/* Tomato Left */}
-        <circle cx="28" cy="34" r="14" fill="url(#tomatoGrad)" />
+        <circle cx="28" cy="34" r="14" fill={`url(#tomatoGrad_${uid})`} />
         <path d="M28 20C28 20 26 15 28 12C30 15 28 20 28 20Z" fill="#15803D" stroke="#15803D" strokeWidth="2" strokeLinecap="round" />
         <path d="M25 18C25 18 20 17 18 19C21 20 25 18 25 18Z" fill="#15803D" />
         <path d="M31 18C31 18 36 17 38 19C35 20 31 18 31 18Z" fill="#15803D" />
@@ -67,10 +68,10 @@ export const Logo: React.FC<LogoProps> = ({
         {/* Carrot Center-Right */}
         <path d="M46 18C44 14 42 8 38 6C42 10 46 14 46 18Z" fill="#22C55E" />
         <path d="M48 18C50 14 54 8 58 6C54 10 50 14 48 18Z" fill="#16A34A" />
-        <path d="M38 24L56 22L50 48L44 48Z" fill="url(#carrotGrad)" />
+        <path d="M38 24L56 22L50 48L44 48Z" fill={`url(#carrotGrad_${uid})`} />
 
         {/* Red Ripe Apple Right */}
-        <circle cx="72" cy="34" r="13" fill="url(#appleGrad)" />
+        <circle cx="72" cy="34" r="13" fill={`url(#appleGrad_${uid})`} />
         <path d="M72 21C74 17 78 15 80 16C78 19 75 22 72 21Z" fill="#15803D" />
 
         {/* Yellow Lemon / Citrus */}
@@ -79,7 +80,7 @@ export const Logo: React.FC<LogoProps> = ({
         {/* Shopping Basket Body with Slits */}
         <path
           d="M12 44C12 40.6863 14.6863 38 18 38H82C85.3137 38 88 40.6863 88 44L80 78C79.2 81.5 76.2 84 72.6 84H27.4C23.8 84 20.8 81.5 20 78L12 44Z"
-          fill="url(#basketGrad)"
+          fill={`url(#basketGrad_${uid})`}
         />
 
         {/* Basket Rim */}

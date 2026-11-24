@@ -182,25 +182,6 @@ export const SiteHeader: React.FC = () => {
                 {selectedBranch.area.split(',')[0]}
               </span>
             </button>
-
-            <span className="hidden sm:inline text-white/40">|</span>
-
-            <Link
-              href="/contact"
-              className="hidden sm:inline text-white/90 hover:text-white transition-colors font-medium"
-            >
-              {t('Help & Contact', 'সাহায্য')}
-            </Link>
-
-            <span className="hidden sm:inline text-white/40">|</span>
-
-            <Link
-              href="/faq"
-              className="hidden sm:inline text-white/90 hover:text-white transition-colors font-medium flex items-center gap-1"
-            >
-              <HelpCircle className="w-3.5 h-3.5 text-[#2EBD70]" />
-              <span>{t('FAQs', 'প্রশ্নোত্তর')}</span>
-            </Link>
           </div>
         </div>
       </div>
@@ -220,8 +201,7 @@ export const SiteHeader: React.FC = () => {
             </button>
 
             <Link href="/" className="flex items-center shrink-0">
-              <Logo size="sm" className="sm:hidden" />
-              <Logo size="md" className="hidden sm:inline-flex" />
+              <Logo size="md" className="scale-90 sm:scale-100 origin-left" />
             </Link>
           </div>
 
@@ -695,17 +675,6 @@ export const SiteHeader: React.FC = () => {
                     )}
                   </Link>
                 ))}
-
-                <Link
-                  href="/faq"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2.5 text-sm font-bold text-[#17251F] hover:text-[#21A366] border-t border-[#E5ECE7]/60 mt-1"
-                >
-                  <span className="flex items-center gap-2">
-                    <HelpCircle className="w-4 h-4 text-[#21A366]" />
-                    <span>{t('FAQs & Help Center', 'সাধারণ জিজ্ঞাসা ও সহায়তা')}</span>
-                  </span>
-                </Link>
               </div>
 
               {/* Categories */}

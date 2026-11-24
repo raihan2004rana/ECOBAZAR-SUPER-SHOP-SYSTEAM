@@ -27,6 +27,7 @@ import {
   getCategoryBySlug,
   getProductsByCategorySlug,
   categoryDefinitions,
+  categoryRealisticThumbnails,
   ProductItem,
 } from '../../../data/catalog';
 import { useCatalog } from '../../../context/catalog-context';
@@ -649,9 +650,13 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
                     className="p-5 sm:p-6 rounded-2xl border border-[#E5ECE7] hover:border-[#21A366] bg-[#F7F9F5] hover:bg-white transition-all flex items-start justify-between gap-4 group shadow-xs hover:shadow-md"
                   >
                     <div className="flex items-start gap-4 flex-1 min-w-0">
-                      {/* Icon Tile with Breathing Room */}
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white border border-[#E5ECE7] flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-xs group-hover:scale-105 group-hover:border-[#21A366]/40 transition-all">
-                        {rc.icon}
+                      {/* Authentic Photographic Thumbnail (No AI Emoji) */}
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-[#E5ECE7] overflow-hidden flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:border-[#21A366]/40 transition-all p-1">
+                        <img
+                          src={categoryRealisticThumbnails[rc.slug] || '/images/products/red-apple.webp'}
+                          alt={rc.name}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
                       </div>
 
                       {/* Text with Generous Leading and Spacing */}
