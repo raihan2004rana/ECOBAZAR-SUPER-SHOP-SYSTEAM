@@ -195,21 +195,22 @@ export const SiteHeader: React.FC = () => {
       </div>
 
       {/* 2. MAIN HEADER BAR */}
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-        <div className="flex items-center justify-between gap-4 md:gap-8">
+      <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 md:gap-8">
           {/* Logo & Mobile/Tablet Menu Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-1.5 -ml-1 text-[#17251F] hover:text-[#21A366] xl:hidden"
+              className="p-1 -ml-1 text-[#17251F] hover:text-[#21A366] xl:hidden"
               aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
 
             <Link href="/" className="flex items-center shrink-0">
-              <Logo size="md" />
+              <Logo size="sm" className="sm:hidden" />
+              <Logo size="md" className="hidden sm:inline-flex" />
             </Link>
           </div>
 
@@ -288,7 +289,7 @@ export const SiteHeader: React.FC = () => {
           </div>
 
           {/* Right Header Controls: Branch, Account, Wishlist, Cart */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
             {/* Branch Hub Selector */}
             <button
               type="button"
@@ -310,7 +311,7 @@ export const SiteHeader: React.FC = () => {
             <button
               type="button"
               onClick={toggleLanguage}
-              className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl border border-[#E5ECE7] hover:border-[#21A366] bg-[#F7F9F5] hover:bg-white text-xs font-bold text-[#17251F] transition-all cursor-pointer shadow-2xs"
+              className="flex items-center gap-1 px-1.5 sm:px-2.5 py-1 sm:py-1.5 rounded-xl border border-[#E5ECE7] hover:border-[#21A366] bg-[#F7F9F5] hover:bg-white text-[11px] sm:text-xs font-bold text-[#17251F] transition-all cursor-pointer shadow-2xs shrink-0"
               title={language === 'en' ? 'বাংলায় দেখতে ক্লিক করুন' : 'Switch to English'}
               aria-label="Toggle language"
             >
@@ -404,16 +405,16 @@ export const SiteHeader: React.FC = () => {
               </div>
             </button>
 
-            {/* Mobile-Only Clean Cart Icon with Badge (like Ghorer Bazar Image 1) */}
+            {/* Mobile-Only Clean Cart Icon with Badge (Compact, non-overflowing) */}
             <button
               type="button"
               onClick={() => setIsCartDrawerOpen(true)}
-              className="relative p-2 text-[#17251F] hover:text-[#21A366] md:hidden transition-colors"
+              className="relative p-1.5 text-[#17251F] hover:text-[#21A366] md:hidden transition-colors shrink-0"
               aria-label="Shopping Cart"
             >
-              <ShoppingBag className="w-6 h-6" />
+              <ShoppingBag className="w-5 h-5" />
               {isHydrated && totalCartCount > 0 && (
-                <span className="absolute top-0.5 right-0.5 w-5 h-5 rounded-full bg-[#F4A340] text-[#17251F] text-[10px] font-black flex items-center justify-center shadow-xs">
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#F4A340] text-[#17251F] text-[9px] font-black flex items-center justify-center shadow-xs">
                   {totalCartCount}
                 </span>
               )}

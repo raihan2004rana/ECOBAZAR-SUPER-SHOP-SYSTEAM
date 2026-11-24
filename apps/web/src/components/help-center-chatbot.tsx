@@ -291,19 +291,19 @@ export const HelpCenterChatbot: React.FC = () => {
 
   return (
     <>
-      {/* FLOATING CHATBOT LAUNCHER BUTTON */}
+      {/* FLOATING CHATBOT LAUNCHER BUTTON (Positioned cleanly above mobile bottom nav bar) */}
       {!isOpen && (
-        <div className="fixed bottom-5 right-5 z-40 animate-in fade-in zoom-in duration-300">
+        <div className="fixed bottom-20 right-3.5 sm:bottom-6 sm:right-6 z-40 animate-in fade-in zoom-in duration-300">
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="group relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#123C2D] text-white shadow-2xl hover:bg-[#164B38] border-2 border-[#2EBD70]/60 transition-all active:scale-95 cursor-pointer"
+            className="group relative flex items-center gap-2 p-2.5 sm:px-4 sm:py-3 rounded-full bg-[#123C2D] text-white shadow-2xl hover:bg-[#164B38] border-2 border-[#2EBD70]/70 transition-all active:scale-95 cursor-pointer"
             aria-label="Open Help Center"
           >
             {/* Pulsing Green Online Indicator */}
-            <span className="relative flex h-3 w-3">
+            <span className="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2EBD70] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#2EBD70]"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-[#2EBD70]"></span>
             </span>
 
             <MessageSquare className="w-5 h-5 text-[#2EBD70] transition-transform group-hover:scale-110" />
@@ -322,7 +322,7 @@ export const HelpCenterChatbot: React.FC = () => {
 
       {/* CHATBOT WINDOW DIALOG */}
       {isOpen && (
-        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-[calc(100vw-32px)] sm:w-[400px] h-[550px] max-h-[85vh] bg-white rounded-3xl shadow-2xl border border-neutral-200/90 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-20 right-3 sm:bottom-6 sm:right-6 w-[calc(100vw-24px)] sm:w-[400px] h-[520px] max-h-[75vh] sm:max-h-[85vh] bg-white rounded-3xl shadow-2xl border border-neutral-200/90 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
           {/* Header */}
           <div className="bg-[#123C2D] text-white px-4 py-3.5 flex items-center justify-between shrink-0 border-b border-emerald-600/30">
             <div className="flex items-center gap-3">

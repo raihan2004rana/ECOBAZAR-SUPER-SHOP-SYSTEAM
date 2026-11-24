@@ -8,6 +8,7 @@ import { LanguageProvider } from '../context/language-context';
 import { UserProvider } from '../context/user-context';
 import { PWAInstaller } from './pwa-installer';
 import { HelpCenterChatbot } from './help-center-chatbot';
+import { FloatingCartTab } from './floating-cart-tab';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +19,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <CartProvider>
               {children}
               <PWAInstaller />
+              <FloatingCartTab />
               <HelpCenterChatbot />
             </CartProvider>
           </UserProvider>

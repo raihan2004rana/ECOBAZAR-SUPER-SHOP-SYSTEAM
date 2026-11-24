@@ -42,11 +42,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       className={`group relative bg-white rounded-2xl border border-[#E5ECE7] hover:border-[#21A366]/40 hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden ${className}`}
     >
       {/* Top Badges & Actions */}
-      <div className="absolute top-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
-        <div className="flex flex-col gap-1">
+      <div className="absolute top-2.5 left-2.5 right-2.5 z-10 flex items-center justify-between pointer-events-none">
+        <div className="pointer-events-auto">
           {product.badge && (
             <span
-              className={`text-[11px] font-bold tracking-wide uppercase px-2.5 py-0.5 rounded-full shadow-sm ${
+              className={`text-[10px] sm:text-[11px] font-black tracking-wide uppercase px-2 py-0.5 rounded-md shadow-xs ${
                 product.badgeColor === 'red' || product.badge.includes('OFF')
                   ? 'bg-rose-500 text-white'
                   : product.badgeColor === 'orange'
@@ -59,29 +59,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
 
-        <div className="flex items-center gap-1.5 pointer-events-auto">
-          {/* Wishlist Button */}
+        {/* Wishlist Button - Always strictly pinned to top-right corner */}
+        <div className="pointer-events-auto ml-auto">
           <button
             type="button"
             onClick={(e) => toggleWishlist(product, e)}
             aria-label="Save to wishlist"
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
               isWishlisted
-                ? 'bg-rose-50 text-rose-500 shadow-sm'
-                : 'bg-white/90 backdrop-blur-sm text-gray-500 hover:text-rose-500 hover:bg-white shadow-sm'
+                ? 'bg-rose-50 text-rose-500 shadow-sm ring-1 ring-rose-200'
+                : 'bg-white/90 backdrop-blur-sm text-gray-500 hover:text-rose-500 hover:bg-white shadow-xs'
             }`}
           >
-            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
+            <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
           </button>
-
-          {/* Quick Details View Link */}
-          <Link
-            href={`/products/${product.id}`}
-            aria-label="View product details"
-            className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm text-gray-500 hover:text-[#21A366] hover:bg-white flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200"
-          >
-            <Eye className="w-4 h-4" />
-          </Link>
         </div>
       </div>
 

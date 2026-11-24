@@ -7451,7 +7451,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
         className="max-w-6xl w-full p-0 overflow-hidden rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 shadow-2xl flex flex-col max-h-[92vh]"
       >
         {/* Studio Top Header */}
-        <div className="bg-neutral-50/90 dark:bg-neutral-800/80 border-b border-neutral-200 dark:border-neutral-800 px-6 py-5 sm:py-6 flex flex-col gap-3.5">
+        <div className="bg-neutral-50/90 dark:bg-neutral-800/80 border-b border-neutral-200 dark:border-neutral-800 px-6 pt-6 pb-5 sm:pt-7 sm:pb-6 flex flex-col gap-3.5">
           <div className="flex items-center justify-between pr-8">
             <div className="flex items-center gap-3.5">
               <div className="h-11 w-11 rounded-2xl bg-[#16A36A] text-white flex items-center justify-center shadow-md shadow-emerald-700/20 shrink-0">
@@ -8007,8 +8007,16 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         }}
                         className="p-1.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:border-emerald-400 text-center transition"
                       >
-                        <div className="h-11 w-full rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-700 mb-1">
-                          <img src={preset.url} alt={preset.label} className="h-full w-full object-cover" />
+                        <div className="h-11 w-full rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-700 mb-1 flex items-center justify-center">
+                          <img
+                            src={preset.url}
+                            alt={preset.label}
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              // If specific image format fails, fallback gracefully
+                              (e.currentTarget as HTMLImageElement).style.display = 'none';
+                            }}
+                          />
                         </div>
                         <span className="text-[9px] font-bold text-neutral-700 dark:text-neutral-300 line-clamp-1">
                           + {preset.label}
