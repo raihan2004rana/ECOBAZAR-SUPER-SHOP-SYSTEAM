@@ -143,11 +143,14 @@ export const SiteFooter: React.FC = () => {
               <Link href="/contact" className="hover:text-[#2EBD70] transition-colors">
                 Contact & Support
               </Link>
-              <Link href="/admin" className="hover:text-[#2EBD70] transition-colors flex items-center gap-1.5 font-bold text-white pt-1">
-                <span>Staff & Admin Hub</span>
-                <span className="text-[9px] bg-emerald-500 text-neutral-900 font-black px-1.5 py-0.2 rounded-full uppercase">
-                  HQ
-                </span>
+              <Link href="/faq" className="hover:text-[#2EBD70] transition-colors">
+                FAQs & Help Center
+              </Link>
+              <Link href="/privacy" className="hover:text-[#2EBD70] transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-[#2EBD70] transition-colors">
+                Terms & Conditions
               </Link>
             </div>
           </div>
@@ -155,7 +158,16 @@ export const SiteFooter: React.FC = () => {
 
         {/* Bottom Bar: Copyright & Payment methods */}
         <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/70 text-center sm:text-left">
-          <p>© 2026 ECOBAZAR Supermarket Ltd. All rights reserved.</p>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <p>© 2026 ECOBAZAR Supermarket Ltd. All rights reserved.</p>
+            <div className="flex items-center gap-2.5 text-[11px] text-white/60">
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <span>•</span>
+              <Link href="/terms" className="hover:text-white transition-colors">Terms of Use</Link>
+              <span>•</span>
+              <Link href="/faq" className="hover:text-white transition-colors">FAQs</Link>
+            </div>
+          </div>
           <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="text-white/90 font-bold text-[11px] mr-1">Accepted Payments:</span>
             

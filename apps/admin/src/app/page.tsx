@@ -516,7 +516,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       if (savedLang === 'bn' || savedLang === 'en') {
         setAdminLang(savedLang as 'en' | 'bn');
       }
-    } catch { }
+    } catch {}
   }, []);
 
   // Operational Checklist states
@@ -1098,10 +1098,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
         broadcastTargetTier === 'GOLD'
           ? 'Gold VIP Members'
           : broadcastTargetTier === 'PLATINUM'
-            ? 'Platinum Elite Members'
-            : broadcastTargetTier === 'SILVER'
-              ? 'Silver Members'
-              : 'All Customers';
+          ? 'Platinum Elite Members'
+          : broadcastTargetTier === 'SILVER'
+          ? 'Silver Members'
+          : 'All Customers';
 
       const payload = {
         targetTier: broadcastTargetTier,
@@ -1120,8 +1120,8 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
             ? broadcastRelatedProduct === 'mf-7'
               ? 'Fresh River Katla Fish Head & Steaks (1kg)'
               : broadcastRelatedProduct === 'mf-1'
-                ? 'Premium Fresh Deshi Beef Meat (1kg)'
-                : 'Featured Organic Harvest'
+              ? 'Premium Fresh Deshi Beef Meat (1kg)'
+              : 'Featured Organic Harvest'
             : undefined,
         relatedProductPrice: broadcastType === 'RESTOCK_ALERT' ? 450 : undefined,
         branch: broadcastBranch,
@@ -1642,15 +1642,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       description: productForm.includeDescription ? productForm.description.trim() : '',
       keyFeatures: productForm.includeFeatures && productForm.keyFeaturesText.trim()
         ? productForm.keyFeaturesText
-          .split('\n')
-          .map((s) => s.trim())
-          .filter(Boolean)
+            .split('\n')
+            .map((s) => s.trim())
+            .filter(Boolean)
         : [],
       healthBenefits: productForm.includeBenefits && productForm.healthBenefitsText.trim()
         ? productForm.healthBenefitsText
-          .split('\n')
-          .map((s) => s.trim())
-          .filter(Boolean)
+            .split('\n')
+            .map((s) => s.trim())
+            .filter(Boolean)
         : [],
       howToUse: productForm.includeHowToUse ? productForm.howToUse.trim() : '',
       storageInstructions: productForm.includeStorage ? productForm.storageInstructions.trim() : '',
@@ -1703,10 +1703,10 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
         field === 'isHotDeal'
           ? 'Best Deal'
           : field === 'isNewArrival'
-            ? 'New Arrival'
-            : field === 'isOffer'
-              ? 'Special Offer'
-              : 'Advertisement';
+          ? 'New Arrival'
+          : field === 'isOffer'
+          ? 'Special Offer'
+          : 'Advertisement';
       toast.success(`${label} Updated`, `Marked as ${nextValue ? 'ACTIVE' : 'INACTIVE'} for store.`);
     } catch {
       toast.error('Sync Error', 'Failed to update flag');
@@ -1949,12 +1949,12 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       if (next) {
         document.documentElement.classList.add('dark');
         document.body.classList.add('dark');
-        try { localStorage.setItem('admin_theme', 'dark'); } catch { }
+        try { localStorage.setItem('admin_theme', 'dark'); } catch {}
         toast.info(adminLang === 'bn' ? 'থিম পরিবর্তিত হয়েছে' : 'Theme Changed', adminLang === 'bn' ? 'ডার্ক মোড সক্রিয় করা হয়েছে।' : 'Switched to Dark Mode theme.');
       } else {
         document.documentElement.classList.remove('dark');
         document.body.classList.remove('dark');
-        try { localStorage.setItem('admin_theme', 'light'); } catch { }
+        try { localStorage.setItem('admin_theme', 'light'); } catch {}
         toast.info(adminLang === 'bn' ? 'থিম পরিবর্তিত হয়েছে' : 'Theme Changed', adminLang === 'bn' ? 'লাইট মোড সক্রিয় করা হয়েছে।' : 'Switched to Light Mode theme.');
       }
       return next;
@@ -1965,7 +1965,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
   const toggleLanguage = () => {
     setAdminLang((prev) => {
       const next = prev === 'en' ? 'bn' : 'en';
-      try { localStorage.setItem('admin_lang', next); } catch { }
+      try { localStorage.setItem('admin_lang', next); } catch {}
       toast.success(
         next === 'bn' ? 'ভাষা পরিবর্তন সফল' : 'Language Changed',
         next === 'bn' ? 'ড্যাশবোর্ড সম্পূর্ণ বাংলায় প্রদর্শিত হচ্ছে।' : 'Dashboard switched to English.'
@@ -2117,8 +2117,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
       {/* ========================================================= */}
       <aside
         style={{ backgroundColor: '#123C2D' }}
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col text-white transition-all duration-300 ease-in-out shadow-2xl lg:static ${isSidebarCollapsed ? 'w-20' : 'w-64'
-          } ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col text-white transition-all duration-300 ease-in-out shadow-2xl lg:static ${
+          isSidebarCollapsed ? 'w-20' : 'w-64'
+        } ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Brand & Collapse Header */}
         <div className="h-16 px-4 border-b border-emerald-900/60 flex items-center justify-between shrink-0">
@@ -2167,11 +2168,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     key={item.id}
                     type="button"
                     onClick={() => handleNavigationClick(item)}
-                    className={`w-full flex items-center rounded-xl text-xs font-semibold transition-all group ${isSidebarCollapsed ? 'justify-center p-3' : 'justify-between px-3 py-2.5'
-                      } ${isActive
+                    className={`w-full flex items-center rounded-xl text-xs font-semibold transition-all group ${
+                      isSidebarCollapsed ? 'justify-center p-3' : 'justify-between px-3 py-2.5'
+                    } ${
+                      isActive
                         ? 'bg-primary-green text-white font-black shadow-md shadow-emerald-950/40'
                         : 'text-emerald-100/90 hover:bg-emerald-800/40 hover:text-white'
-                      }`}
+                    }`}
                     title={isSidebarCollapsed ? displayLabel : undefined}
                   >
                     <div className="flex items-center gap-3 truncate">
@@ -2181,14 +2184,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                     {!isSidebarCollapsed && displayBadge && (
                       <span
-                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${item.badgeVariant === 'danger'
-                          ? 'bg-rose-500 text-white'
-                          : item.badgeVariant === 'warning'
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                          item.badgeVariant === 'danger'
+                            ? 'bg-rose-500 text-white'
+                            : item.badgeVariant === 'warning'
                             ? 'bg-amber-400 text-neutral-950'
                             : item.badgeVariant === 'success'
-                              ? 'bg-emerald-400 text-emerald-950'
-                              : 'bg-emerald-800/80 text-emerald-200'
-                          }`}
+                            ? 'bg-emerald-400 text-emerald-950'
+                            : 'bg-emerald-800/80 text-emerald-200'
+                        }`}
                       >
                         {displayBadge}
                       </span>
@@ -2245,8 +2249,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
         {/* ========================================================= */}
         {/* TOPBAR NAVIGATION */}
         {/* ========================================================= */}
-        <header className={`h-16 px-4 sm:px-6 border-b flex items-center justify-between sticky top-0 z-30 transition-colors ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
-          }`}>
+        <header className={`h-16 px-4 sm:px-6 border-b flex items-center justify-between sticky top-0 z-30 transition-colors ${
+          isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
+        }`}>
           {/* Left: Mobile hamburger & Global Search */}
           <div className="flex items-center gap-3 flex-1 max-w-lg">
             <button
@@ -2286,8 +2291,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </button>
 
               {isBranchDropdownOpen && (
-                <div className={`absolute right-0 mt-2 w-72 rounded-2xl shadow-xl border p-2 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
-                  }`}>
+                <div className={`absolute right-0 mt-2 w-72 rounded-2xl shadow-xl border p-2 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${
+                  isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
+                }`}>
                   <p className="px-3 py-2 text-[10px] font-extrabold uppercase tracking-wider text-neutral-400">
                     {adminLang === 'bn' ? 'অপারেটিং শাখা পরিবর্তন করুন' : 'Switch Operating Branch Scope'}
                   </p>
@@ -2297,10 +2303,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         key={b.id}
                         type="button"
                         onClick={() => handleBranchSelect(b)}
-                        className={`w-full text-left p-2.5 rounded-xl text-xs transition flex flex-col ${selectedBranch.id === b.id
-                          ? 'bg-primary-green text-white font-bold'
-                          : 'hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-200'
-                          }`}
+                        className={`w-full text-left p-2.5 rounded-xl text-xs transition flex flex-col ${
+                          selectedBranch.id === b.id
+                            ? 'bg-primary-green text-white font-bold'
+                            : 'hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-200'
+                        }`}
                       >
                         <span className="font-bold">{b.name}</span>
                         <span className={`text-[10px] ${selectedBranch.id === b.id ? 'text-emerald-100' : 'text-neutral-400'}`}>
@@ -2350,8 +2357,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </button>
 
               {isNotifPanelOpen && (
-                <div className={`absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl shadow-2xl border p-4 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
-                  }`}>
+                <div className={`absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl shadow-2xl border p-4 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${
+                  isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
+                }`}>
                   <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
                     <div className="flex items-center gap-2">
                       <h4 className="text-sm font-bold text-neutral-900 dark:text-white">{adminLang === 'bn' ? 'লাইভ সিস্টেম সতর্কতা' : 'Live System Alerts'}</h4>
@@ -2369,10 +2377,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     {notifications.map((n) => (
                       <div
                         key={n.id}
-                        className={`p-3 rounded-xl border text-left transition ${n.isRead
-                          ? 'bg-transparent border-transparent opacity-60'
-                          : 'bg-neutral-50 dark:bg-neutral-800/60 border-neutral-200 dark:border-neutral-700/60'
-                          }`}
+                        className={`p-3 rounded-xl border text-left transition ${
+                          n.isRead
+                            ? 'bg-transparent border-transparent opacity-60'
+                            : 'bg-neutral-50 dark:bg-neutral-800/60 border-neutral-200 dark:border-neutral-700/60'
+                        }`}
                       >
                         <div className="flex items-start justify-between gap-2">
                           <p className="text-xs font-bold text-neutral-900 dark:text-white">{n.title}</p>
@@ -2426,8 +2435,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
               </button>
 
               {isUserMenuOpen && (
-                <div className={`absolute right-0 mt-2 w-64 rounded-2xl shadow-2xl border py-1.5 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
-                  }`}>
+                <div className={`absolute right-0 mt-2 w-64 rounded-2xl shadow-2xl border py-1.5 z-50 animate-in fade-in-0 zoom-in-95 duration-100 ${
+                  isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'
+                }`}>
                   <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-neutral-800 text-left">
                     <p className="text-xs font-bold text-neutral-900 dark:text-white">
                       {adminUser?.name || 'Raihan Hasan Rana'}
@@ -2797,10 +2807,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       key={flag.id}
                       type="button"
                       onClick={() => setSelectedProductFlag(flag.id as any)}
-                      className={`px-3 py-1 rounded-xl text-xs font-bold transition ${selectedProductFlag === flag.id
-                        ? 'bg-emerald-600 text-white shadow-xs'
-                        : 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200'
-                        }`}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition ${
+                        selectedProductFlag === flag.id
+                          ? 'bg-emerald-600 text-white shadow-xs'
+                          : 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200'
+                      }`}
                     >
                       {flag.label}
                     </button>
@@ -2918,12 +2929,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                               {/* Stock */}
                               <td className="py-3 px-3 text-center">
                                 <span
-                                  className={`inline-block px-2.5 py-1 rounded-full font-mono font-bold text-xs ${p.stock <= 0
-                                    ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                                    : p.stock < 20
+                                  className={`inline-block px-2.5 py-1 rounded-full font-mono font-bold text-xs ${
+                                    p.stock <= 0
+                                      ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                                      : p.stock < 20
                                       ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
                                       : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                                    }`}
+                                  }`}
                                 >
                                   {p.stock} units
                                 </span>
@@ -2937,10 +2949,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     type="button"
                                     onClick={() => handleToggleProductFlag(p.id, 'isHotDeal', !!p.isHotDeal)}
                                     title="Click to toggle Best Deal (Home & Deals page)"
-                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${p.isHotDeal
-                                      ? 'bg-rose-600 text-white shadow-xs'
-                                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
-                                      }`}
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${
+                                      p.isHotDeal
+                                        ? 'bg-rose-600 text-white shadow-xs'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
+                                    }`}
                                   >
                                     <Flame className={`h-3 w-3 ${p.isHotDeal ? 'fill-white' : ''}`} />
                                     <span>{t('Best Deal', 'হট ডিল')}</span>
@@ -2951,10 +2964,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     type="button"
                                     onClick={() => handleToggleProductFlag(p.id, 'isNewArrival', !!p.isNewArrival)}
                                     title="Click to toggle New Arrival (Home & New Arrivals page)"
-                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${p.isNewArrival
-                                      ? 'bg-cyan-600 text-white shadow-xs'
-                                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
-                                      }`}
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${
+                                      p.isNewArrival
+                                        ? 'bg-cyan-600 text-white shadow-xs'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
+                                    }`}
                                   >
                                     <Sparkles className="h-3 w-3" />
                                     <span>{t('New', 'নতুন')}</span>
@@ -2965,10 +2979,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     type="button"
                                     onClick={() => handleToggleProductFlag(p.id, 'isOffer', !!p.isOffer)}
                                     title="Click to toggle Special Offer (Offers page)"
-                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${p.isOffer || (p.badge && p.badge.includes('OFF'))
-                                      ? 'bg-amber-500 text-white shadow-xs'
-                                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
-                                      }`}
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${
+                                      p.isOffer || (p.badge && p.badge.includes('OFF'))
+                                        ? 'bg-amber-500 text-white shadow-xs'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
+                                    }`}
                                   >
                                     <Percent className="h-3 w-3" />
                                     <span>{t('Offer', 'অফার')}</span>
@@ -2981,10 +2996,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                       handleToggleProductFlag(p.id, 'isAdvertisement', !!p.isAdvertisement)
                                     }
                                     title="Click to toggle Frontpage Advertisement Banner"
-                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${p.isAdvertisement || p.isFeatured
-                                      ? 'bg-purple-600 text-white shadow-xs'
-                                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
-                                      }`}
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-extrabold flex items-center gap-1 transition ${
+                                      p.isAdvertisement || p.isFeatured
+                                        ? 'bg-purple-600 text-white shadow-xs'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 hover:text-neutral-700'
+                                    }`}
                                   >
                                     <Megaphone className="h-3 w-3" />
                                     <span>{t('Ad', 'বিজ্ঞাপন')}</span>
@@ -3697,25 +3713,29 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   </div>
 
                   {/* Card 4: Review Alerts */}
-                  <div className={`p-4 rounded-xl bg-white dark:bg-neutral-900 border shadow-xs flex items-center justify-between ${badReviewsCount > 0 ? 'border-rose-200 dark:border-rose-900/60' : 'border-neutral-200/90 dark:border-neutral-800'
-                    }`}>
+                  <div className={`p-4 rounded-xl bg-white dark:bg-neutral-900 border shadow-xs flex items-center justify-between ${
+                    badReviewsCount > 0 ? 'border-rose-200 dark:border-rose-900/60' : 'border-neutral-200/90 dark:border-neutral-800'
+                  }`}>
                     <div>
                       <span className="text-[11px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">
                         {adminLang === 'bn' ? 'রিভিউ পর্যালোচনা' : 'Review Alerts'}
                       </span>
-                      <strong className={`text-xl font-black mt-0.5 block tracking-tight ${badReviewsCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-neutral-900 dark:text-white'
-                        }`}>
+                      <strong className={`text-xl font-black mt-0.5 block tracking-tight ${
+                        badReviewsCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-neutral-900 dark:text-white'
+                      }`}>
                         {badReviewsCount > 0 ? `${badReviewsCount} Flagged` : (adminLang === 'bn' ? '০ সমস্যা' : '0 Flagged')}
                       </strong>
-                      <span className={`text-[10px] font-medium ${badReviewsCount > 0 ? 'text-rose-500' : 'text-emerald-600 dark:text-emerald-400'
-                        }`}>
+                      <span className={`text-[10px] font-medium ${
+                        badReviewsCount > 0 ? 'text-rose-500' : 'text-emerald-600 dark:text-emerald-400'
+                      }`}>
                         {badReviewsCount > 0 ? (adminLang === 'bn' ? 'মনোযোগ প্রয়োজন' : 'Needs attention') : (adminLang === 'bn' ? 'সব গ্রাহক সন্তুষ্ট' : '100% Satisfaction')}
                       </span>
                     </div>
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0 ${badReviewsCount > 0
-                      ? 'bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 text-rose-600'
-                      : 'bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-800/60 text-[#16A36A]'
-                      }`}>
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0 ${
+                      badReviewsCount > 0
+                        ? 'bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 text-rose-600'
+                        : 'bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-800/60 text-[#16A36A]'
+                    }`}>
                       {badReviewsCount > 0 ? <AlertTriangle className="w-5 h-5" /> : <CheckCircle2 className="w-5 h-5" />}
                     </div>
                   </div>
@@ -3934,10 +3954,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             setSalesChartPeriod(period);
                             toast.info('Time Window Updated', `Sales graph adjusted to ${period.toUpperCase()}`);
                           }}
-                          className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${salesChartPeriod === period
-                            ? 'bg-emerald-600 text-white shadow-xs'
-                            : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
-                            }`}
+                          className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                            salesChartPeriod === period
+                              ? 'bg-emerald-600 text-white shadow-xs'
+                              : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                          }`}
                         >
                           {period === 'today' ? 'Today' : period === '7d' ? '7 Days' : period === '30d' ? '30 Days' : 'Q4 2026'}
                         </button>
@@ -4350,10 +4371,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             <span className="font-mono font-bold text-neutral-900 dark:text-white">
                               {order.id}
                             </span>
-                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-black ${order.channel === 'POS_STORE'
-                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                              : 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
-                              }`}>
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-black ${
+                              order.channel === 'POS_STORE'
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                : 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
+                            }`}>
                               {order.channel === 'POS_STORE' ? 'POS Store' : 'App Express'}
                             </span>
                           </div>
@@ -4369,12 +4391,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                         <div className="flex items-center justify-between pt-1 border-t border-neutral-200/40 dark:border-neutral-700/40 text-[10px]">
                           <span className="text-neutral-400">{order.branch}</span>
-                          <span className={`font-bold ${order.status === 'COMPLETED'
-                            ? 'text-emerald-600 dark:text-emerald-400'
-                            : order.status === 'PROCESSING'
+                          <span className={`font-bold ${
+                            order.status === 'COMPLETED'
+                              ? 'text-emerald-600 dark:text-emerald-400'
+                              : order.status === 'PROCESSING'
                               ? 'text-amber-600 dark:text-amber-400'
                               : 'text-cyan-600 dark:text-cyan-400'
-                            }`}>
+                          }`}>
                             ● {order.status.replace('_', ' ')}
                           </span>
                         </div>
@@ -4455,8 +4478,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         }}
                         className="flex items-start gap-2.5 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition select-none"
                       >
-                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${taskVerificationStatus === 'verified' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
-                          }`}>
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${
+                          taskVerificationStatus === 'verified' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
+                        }`}>
                           {taskVerificationStatus === 'verified' && <Check className="h-3 w-3" />}
                         </div>
                         <span className={taskVerificationStatus === 'verified' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
@@ -4472,8 +4496,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         }}
                         className="flex items-start gap-2.5 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition select-none"
                       >
-                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${taskReceivingStatus === 'received' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
-                          }`}>
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${
+                          taskReceivingStatus === 'received' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
+                        }`}>
                           {taskReceivingStatus === 'received' && <Check className="h-3 w-3" />}
                         </div>
                         <span className={taskReceivingStatus === 'received' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
@@ -4489,8 +4514,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         }}
                         className="flex items-start gap-2.5 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition select-none"
                       >
-                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${taskAuditStatus === 'completed' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
-                          }`}>
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${
+                          taskAuditStatus === 'completed' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
+                        }`}>
                           {taskAuditStatus === 'completed' && <Check className="h-3 w-3" />}
                         </div>
                         <span className={taskAuditStatus === 'completed' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
@@ -4506,8 +4532,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         }}
                         className="flex items-start gap-2.5 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition select-none"
                       >
-                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${taskSensorStatus === 'verified' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
-                          }`}>
+                        <div className={`h-4 w-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 ${
+                          taskSensorStatus === 'verified' ? 'bg-primary-green border-primary-green text-white' : 'border-neutral-300 dark:border-neutral-600'
+                        }`}>
                           {taskSensorStatus === 'verified' && <Check className="h-3 w-3" />}
                         </div>
                         <span className={taskSensorStatus === 'verified' ? 'line-through text-neutral-400 font-medium' : 'font-bold text-neutral-700 dark:text-neutral-200'}>
@@ -4707,10 +4734,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     key={t.id}
                     type="button"
                     onClick={() => setSalesReportTab(t.id as any)}
-                    className={`py-2 px-3.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${salesReportTab === t.id
-                      ? 'bg-primary-green text-white shadow-sm'
-                      : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
-                      }`}
+                    className={`py-2 px-3.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+                      salesReportTab === t.id
+                        ? 'bg-primary-green text-white shadow-sm'
+                        : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                    }`}
                   >
                     <span>{t.label}</span>
                   </button>
@@ -4751,14 +4779,15 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                               >
                                 <div className="flex items-center justify-between text-xs">
                                   <div className="flex items-center gap-3">
-                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 ${index === 0
-                                      ? 'bg-amber-400 text-neutral-900 shadow-sm'
-                                      : index === 1
+                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 ${
+                                      index === 0
+                                        ? 'bg-amber-400 text-neutral-900 shadow-sm'
+                                        : index === 1
                                         ? 'bg-slate-300 text-neutral-900'
                                         : index === 2
-                                          ? 'bg-amber-600 text-white'
-                                          : 'bg-neutral-200 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300'
-                                      }`}>
+                                        ? 'bg-amber-600 text-white'
+                                        : 'bg-neutral-200 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300'
+                                    }`}>
                                       #{index + 1}
                                     </span>
                                     <div className="h-10 w-10 rounded-xl overflow-hidden bg-neutral-200 shrink-0 border border-neutral-300 dark:border-neutral-700">
@@ -4791,12 +4820,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                 {/* Animated Velocity Progress Bar */}
                                 <div className="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2.5 overflow-hidden">
                                   <div
-                                    className={`h-full rounded-full transition-all duration-700 ${index === 0
-                                      ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
-                                      : index === 1
+                                    className={`h-full rounded-full transition-all duration-700 ${
+                                      index === 0
+                                        ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
+                                        : index === 1
                                         ? 'bg-gradient-to-r from-emerald-600 to-green-500'
                                         : 'bg-gradient-to-r from-teal-600 to-cyan-500'
-                                      }`}
+                                    }`}
                                     style={{ width: `${Math.max(percent, 8)}%` }}
                                   />
                                 </div>
@@ -4997,10 +5027,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                     ৳{(p.totalRevenue || 0).toLocaleString()}
                                   </td>
                                   <td className="py-3 px-3 text-center">
-                                    <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${isLowStock
-                                      ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                                      : 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200'
-                                      }`}>
+                                    <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
+                                      isLowStock
+                                        ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                                        : 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200'
+                                    }`}>
                                       {p.stock || 0} left
                                     </span>
                                   </td>
@@ -5073,25 +5104,27 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             <span className="text-xs text-neutral-400 font-medium">•</span>
                             <span className="text-xs text-neutral-500 font-bold">{o.formattedDate || 'Today'} at {o.formattedTime}</span>
                             <span className="text-xs text-neutral-400 font-medium">•</span>
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${o.paymentMethod === 'cod'
-                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                              : o.paymentMethod === 'bkash'
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                              o.paymentMethod === 'cod'
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                : o.paymentMethod === 'bkash'
                                 ? 'bg-pink-100 text-pink-800 dark:bg-pink-950 dark:text-pink-300'
                                 : o.paymentMethod === 'nagad'
-                                  ? 'bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300'
-                                  : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
-                              }`}>
+                                ? 'bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300'
+                                : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+                            }`}>
                               {o.paymentMethod === 'cod' ? 'Cash on Delivery' : o.paymentMethod?.toUpperCase()}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <span className={`px-2.5 py-0.5 rounded-full text-xs font-black uppercase ${o.status === 'DELIVERED'
-                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                              : o.status === 'RIDER_ASSIGNED'
+                            <span className={`px-2.5 py-0.5 rounded-full text-xs font-black uppercase ${
+                              o.status === 'DELIVERED'
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                : o.status === 'RIDER_ASSIGNED'
                                 ? 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
                                 : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
-                              }`}>
+                            }`}>
                               ● {o.status || 'PROCESSING'}
                             </span>
                             {o.status !== 'DELIVERED' && (
@@ -5192,10 +5225,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                 {[...Array(5)].map((_, i) => (
                                   <Star
                                     key={i}
-                                    className={`w-4 h-4 ${i < rev.rating
-                                      ? 'fill-amber-400 text-amber-400'
-                                      : 'text-neutral-300 dark:text-neutral-700'
-                                      }`}
+                                    className={`w-4 h-4 ${
+                                      i < rev.rating
+                                        ? 'fill-amber-400 text-amber-400'
+                                        : 'text-neutral-300 dark:text-neutral-700'
+                                    }`}
                                   />
                                 ))}
                               </div>
@@ -5205,10 +5239,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             </div>
 
                             <div className="flex items-center gap-2">
-                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${rev.status === 'RESOLVED'
-                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                                : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                                }`}>
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                                rev.status === 'RESOLVED'
+                                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                  : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                              }`}>
                                 {rev.status || 'UNRESOLVED'}
                               </span>
                               {rev.status !== 'RESOLVED' && (
@@ -5361,12 +5396,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           <td className="py-3 px-3 text-right font-bold">৳{item.price}</td>
                           <td className="py-3 px-3 text-right font-black text-emerald-600">৳{(item.stock * item.price).toLocaleString()}</td>
                           <td className="py-3 px-4 text-center">
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${item.status === 'CRITICAL_LOW'
-                              ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                              : item.status === 'REORDER_SOON'
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                              item.status === 'CRITICAL_LOW'
+                                ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                                : item.status === 'REORDER_SOON'
                                 ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
                                 : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                              }`}>
+                            }`}>
                               {item.status.replace('_', ' ')}
                             </span>
                           </td>
@@ -5419,12 +5455,13 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         <span className="text-neutral-400">•</span>
                         <span className="font-bold text-primary-green">{tr.from} → {tr.to}</span>
                       </div>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${tr.status === 'DELIVERED'
-                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                        : tr.status === 'IN_TRANSIT'
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                        tr.status === 'DELIVERED'
+                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                          : tr.status === 'IN_TRANSIT'
                           ? 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
                           : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
-                        }`}>
+                      }`}>
                         ● {tr.status.replace('_', ' ')}
                       </span>
                     </div>
@@ -6250,10 +6287,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <button
                     type="button"
                     onClick={() => setCareersTab('jobs')}
-                    className={`pb-3 px-3 text-xs font-bold flex items-center gap-2 border-b-2 transition ${careersTab === 'jobs'
-                      ? 'border-primary-green text-primary-green'
-                      : 'border-transparent text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
-                      }`}
+                    className={`pb-3 px-3 text-xs font-bold flex items-center gap-2 border-b-2 transition ${
+                      careersTab === 'jobs'
+                        ? 'border-primary-green text-primary-green'
+                        : 'border-transparent text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    }`}
                   >
                     <Briefcase className="h-4 w-4" />
                     <span>Job Openings</span>
@@ -6265,10 +6303,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   <button
                     type="button"
                     onClick={() => setCareersTab('applicants')}
-                    className={`pb-3 px-3 text-xs font-bold flex items-center gap-2 border-b-2 transition ${careersTab === 'applicants'
-                      ? 'border-primary-green text-primary-green'
-                      : 'border-transparent text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
-                      }`}
+                    className={`pb-3 px-3 text-xs font-bold flex items-center gap-2 border-b-2 transition ${
+                      careersTab === 'applicants'
+                        ? 'border-primary-green text-primary-green'
+                        : 'border-transparent text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    }`}
                   >
                     <Users className="h-4 w-4" />
                     <span>Job Applicants & Candidates</span>
@@ -6384,10 +6423,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                 )}
                               </div>
                               <span
-                                className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${job.status === 'ACTIVE'
-                                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300/40'
-                                  : 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400'
-                                  }`}
+                                className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                  job.status === 'ACTIVE'
+                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300/40'
+                                    : 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400'
+                                }`}
                               >
                                 {job.status}
                               </span>
@@ -6525,16 +6565,17 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                                 <select
                                   value={app.status}
                                   onChange={(e) => handleUpdateApplicantStatus(app.id, e.target.value)}
-                                  className={`text-[10px] font-black uppercase rounded-lg px-2 py-1 border focus:outline-none ${app.status === 'HIRED'
-                                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300'
-                                    : app.status === 'SHORTLISTED'
+                                  className={`text-[10px] font-black uppercase rounded-lg px-2 py-1 border focus:outline-none ${
+                                    app.status === 'HIRED'
+                                      ? 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300'
+                                      : app.status === 'SHORTLISTED'
                                       ? 'bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-950 dark:text-purple-300'
                                       : app.status === 'REVIEWED'
-                                        ? 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950 dark:text-blue-300'
-                                        : app.status === 'REJECTED'
-                                          ? 'bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950 dark:text-rose-300'
-                                          : 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300'
-                                    }`}
+                                      ? 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950 dark:text-blue-300'
+                                      : app.status === 'REJECTED'
+                                      ? 'bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950 dark:text-rose-300'
+                                      : 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300'
+                                  }`}
                                 >
                                   <option value="PENDING">PENDING</option>
                                   <option value="REVIEWED">REVIEWED</option>
@@ -6995,8 +7036,9 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         <Settings className="h-4 w-4 text-primary-green" />
                         <span>{t('SMTP Dispatch Settings', 'এসএমটিপি প্রেরণ সেটিংস')}</span>
                       </h3>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${emailSettings.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-100 text-neutral-500'
-                        }`}>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                        emailSettings.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-100 text-neutral-500'
+                      }`}>
                         {emailSettings.isActive ? 'Enabled' : 'Disabled'}
                       </span>
                     </div>
@@ -7185,18 +7227,20 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           <div key={mail.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-neutral-50 dark:hover:bg-neutral-800/40 p-2.5 rounded-xl transition">
                             <div className="space-y-1 min-w-0">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${mail.type === 'ORDER_CONFIRMATION'
-                                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                                  : 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300'
-                                  }`}>
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                                  mail.type === 'ORDER_CONFIRMATION'
+                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                    : 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300'
+                                }`}>
                                   {mail.type === 'ORDER_CONFIRMATION' ? 'Order Invoice' : 'Career Letter'}
                                 </span>
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${mail.status === 'DELIVERED'
-                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-300'
-                                  : mail.status === 'FAILED'
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                  mail.status === 'DELIVERED'
+                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-300'
+                                    : mail.status === 'FAILED'
                                     ? 'bg-rose-50 text-rose-700 border border-rose-300'
                                     : 'bg-amber-50 text-amber-700 border border-amber-300'
-                                  }`}>
+                                }`}>
                                   ● {mail.status}
                                 </span>
                                 <span className="text-[10px] text-neutral-400 font-mono">
@@ -7266,10 +7310,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     key={method}
                     type="button"
                     onClick={() => setPosPaymentMethod(method)}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold border transition ${posPaymentMethod === method
-                      ? 'bg-forest-900 dark:bg-emerald-600 text-white border-forest-900 dark:border-emerald-600 shadow-xs'
-                      : 'border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800'
-                      }`}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold border transition ${
+                      posPaymentMethod === method
+                        ? 'bg-forest-900 dark:bg-emerald-600 text-white border-forest-900 dark:border-emerald-600 shadow-xs'
+                        : 'border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+                    }`}
                   >
                     {method}
                   </button>
@@ -7478,10 +7523,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     key={tab.id}
                     type="button"
                     onClick={() => setProductModalTab(tab.id as any)}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold transition shrink-0 ${isActive
-                      ? 'bg-white dark:bg-neutral-900 text-emerald-700 dark:text-emerald-400 shadow-sm border border-neutral-200/60 dark:border-neutral-700'
-                      : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
-                      }`}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold transition shrink-0 ${
+                      isActive
+                        ? 'bg-white dark:bg-neutral-900 text-emerald-700 dark:text-emerald-400 shadow-sm border border-neutral-200/60 dark:border-neutral-700'
+                        : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    }`}
                   >
                     <IconComponent className={`h-3.5 w-3.5 ${isActive ? 'text-emerald-600' : 'text-neutral-400'}`} />
                     <span>{tab.label}</span>
@@ -7612,10 +7658,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                           key={u}
                           type="button"
                           onClick={() => setProductForm((prev) => ({ ...prev, unit: u }))}
-                          className={`px-2 py-1 rounded-lg text-[10px] font-bold border transition ${productForm.unit === u
-                            ? 'bg-emerald-600 text-white border-emerald-600'
-                            : 'bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700 hover:border-emerald-400'
-                            }`}
+                          className={`px-2 py-1 rounded-lg text-[10px] font-bold border transition ${
+                            productForm.unit === u
+                              ? 'bg-emerald-600 text-white border-emerald-600'
+                              : 'bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700 hover:border-emerald-400'
+                          }`}
                         >
                           {u}
                         </button>
@@ -7729,7 +7776,7 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                         {Math.round(
                           ((Number(productForm.originalPrice) - Number(productForm.price)) /
                             Number(productForm.originalPrice)) *
-                          100
+                            100
                         )}
                         % OFF)
                       </strong>
@@ -7772,10 +7819,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                             key={c.id}
                             type="button"
                             onClick={() => setProductForm((prev) => ({ ...prev, badgeColor: c.id as any }))}
-                            className={`py-1.5 px-2 rounded-xl border flex items-center justify-center gap-1.5 transition ${productForm.badgeColor === c.id
-                              ? 'border-neutral-900 dark:border-white ring-2 ring-emerald-500/30 font-black'
-                              : 'border-neutral-200 dark:border-neutral-700 opacity-70 hover:opacity-100'
-                              }`}
+                            className={`py-1.5 px-2 rounded-xl border flex items-center justify-center gap-1.5 transition ${
+                              productForm.badgeColor === c.id
+                                ? 'border-neutral-900 dark:border-white ring-2 ring-emerald-500/30 font-black'
+                                : 'border-neutral-200 dark:border-neutral-700 opacity-70 hover:opacity-100'
+                            }`}
                           >
                             <span className={`h-2.5 w-2.5 rounded-full ${c.bg}`}></span>
                             <span className="text-[10px] font-bold">{c.label}</span>
@@ -7799,10 +7847,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   }}
                   onDragLeave={() => setIsDraggingFile(false)}
                   onDrop={handleFileDrop}
-                  className={`p-6 rounded-3xl border-2 border-dashed transition-all text-center space-y-3 ${isDraggingFile
-                    ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 scale-[1.01]'
-                    : 'border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/20 hover:border-emerald-500'
-                    }`}
+                  className={`p-6 rounded-3xl border-2 border-dashed transition-all text-center space-y-3 ${
+                    isDraggingFile
+                      ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 scale-[1.01]'
+                      : 'border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/20 hover:border-emerald-500'
+                  }`}
                 >
                   {/* Hidden Native File Input supporting multiple files */}
                   <input
@@ -7862,10 +7911,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                       {productForm.images.map((imgUrl, index) => (
                         <div
                           key={index}
-                          className={`relative rounded-2xl border p-2 bg-neutral-50 dark:bg-neutral-800/60 overflow-hidden group transition ${index === 0
-                            ? 'border-emerald-500 ring-2 ring-emerald-500/20'
-                            : 'border-neutral-200 dark:border-neutral-700 hover:border-emerald-300'
-                            }`}
+                          className={`relative rounded-2xl border p-2 bg-neutral-50 dark:bg-neutral-800/60 overflow-hidden group transition ${
+                            index === 0
+                              ? 'border-emerald-500 ring-2 ring-emerald-500/20'
+                              : 'border-neutral-200 dark:border-neutral-700 hover:border-emerald-300'
+                          }`}
                         >
                           <div className="h-28 w-full rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center mb-2">
                             <img src={imgUrl} alt={`Gallery ${index + 1}`} className="h-full w-full object-contain" />
@@ -7987,10 +8037,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {/* Hot Deal */}
-                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${productForm.isHotDeal
-                    ? 'border-rose-400 bg-rose-50/40 dark:bg-rose-950/30 shadow-xs'
-                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
-                    }`}>
+                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    productForm.isHotDeal
+                      ? 'border-rose-400 bg-rose-50/40 dark:bg-rose-950/30 shadow-xs'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={productForm.isHotDeal}
@@ -8009,10 +8060,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   </label>
 
                   {/* New Arrival */}
-                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${productForm.isNewArrival
-                    ? 'border-cyan-400 bg-cyan-50/40 dark:bg-cyan-950/30 shadow-xs'
-                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
-                    }`}>
+                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    productForm.isNewArrival
+                      ? 'border-cyan-400 bg-cyan-50/40 dark:bg-cyan-950/30 shadow-xs'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={productForm.isNewArrival}
@@ -8031,10 +8083,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   </label>
 
                   {/* Special Offer */}
-                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${productForm.isOffer
-                    ? 'border-amber-400 bg-amber-50/40 dark:bg-amber-950/30 shadow-xs'
-                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
-                    }`}>
+                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    productForm.isOffer
+                      ? 'border-amber-400 bg-amber-50/40 dark:bg-amber-950/30 shadow-xs'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={productForm.isOffer}
@@ -8053,10 +8106,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                   </label>
 
                   {/* Frontpage Ad */}
-                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${productForm.isAdvertisement
-                    ? 'border-purple-400 bg-purple-50/40 dark:bg-purple-950/30 shadow-xs'
-                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
-                    }`}>
+                  <label className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    productForm.isAdvertisement
+                      ? 'border-purple-400 bg-purple-50/40 dark:bg-purple-950/30 shadow-xs'
+                      : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800 hover:border-neutral-300'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={productForm.isAdvertisement}
@@ -8176,10 +8230,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 </div>
 
                 {/* 4. How to Use Section (OPTIONAL - Turn OFF for Fruits/Vegetables!) */}
-                <div className={`p-4 rounded-2xl border transition ${productForm.includeHowToUse
-                  ? 'border-emerald-500/50 bg-emerald-50/30 dark:bg-emerald-950/20'
-                  : 'border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50'
-                  } space-y-3`}>
+                <div className={`p-4 rounded-2xl border transition ${
+                  productForm.includeHowToUse
+                    ? 'border-emerald-500/50 bg-emerald-50/30 dark:bg-emerald-950/20'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50'
+                } space-y-3`}>
                   <div className="flex items-center justify-between">
                     <div>
                       <label className="font-black text-neutral-900 dark:text-white flex items-center gap-2">
@@ -8266,22 +8321,23 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                 {/* Promo Badge on Card */}
                 {(productForm.badge || Number(productForm.originalPrice) > Number(productForm.price)) && (
                   <div
-                    className={`absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase text-white shadow-xs ${productForm.badgeColor === 'green'
-                      ? 'bg-emerald-600'
-                      : productForm.badgeColor === 'orange'
+                    className={`absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase text-white shadow-xs ${
+                      productForm.badgeColor === 'green'
+                        ? 'bg-emerald-600'
+                        : productForm.badgeColor === 'orange'
                         ? 'bg-amber-500'
                         : productForm.badgeColor === 'purple'
-                          ? 'bg-purple-600'
-                          : 'bg-rose-500'
-                      }`}
+                        ? 'bg-purple-600'
+                        : 'bg-rose-500'
+                    }`}
                   >
                     {productForm.badge ||
                       (Number(productForm.originalPrice) > Number(productForm.price)
                         ? `${Math.round(
-                          ((Number(productForm.originalPrice) - Number(productForm.price)) /
-                            Number(productForm.originalPrice)) *
-                          100
-                        )}% OFF`
+                            ((Number(productForm.originalPrice) - Number(productForm.price)) /
+                              Number(productForm.originalPrice)) *
+                              100
+                          )}% OFF`
                         : 'HOT DEAL')}
                   </div>
                 )}
@@ -8316,10 +8372,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     {productForm.images.map((thumb, idx) => (
                       <div
                         key={idx}
-                        className={`h-10 w-10 rounded-lg overflow-hidden border shrink-0 bg-neutral-100 dark:bg-neutral-800 p-0.5 ${(productForm.image || productForm.images[0]) === thumb
-                          ? 'border-emerald-600 ring-1 ring-emerald-500'
-                          : 'border-neutral-200 dark:border-neutral-700 opacity-60'
-                          }`}
+                        className={`h-10 w-10 rounded-lg overflow-hidden border shrink-0 bg-neutral-100 dark:bg-neutral-800 p-0.5 ${
+                          (productForm.image || productForm.images[0]) === thumb
+                            ? 'border-emerald-600 ring-1 ring-emerald-500'
+                            : 'border-neutral-200 dark:border-neutral-700 opacity-60'
+                        }`}
                       >
                         <img src={thumb} alt={`Thumb ${idx + 1}`} className="h-full w-full object-cover rounded-md" />
                       </div>
@@ -9026,10 +9083,11 @@ function AdminDashboardShell({ adminUser, onLogout }: AdminDashboardShellProps =
                     onClick={() => {
                       handleUpdateApplicantStatus(selectedApplicant.id, st, applicantNotesDraft);
                     }}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border ${selectedApplicant.status === st
-                      ? 'bg-primary-green text-white border-primary-green'
-                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-transparent hover:border-neutral-300'
-                      }`}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border ${
+                      selectedApplicant.status === st
+                        ? 'bg-primary-green text-white border-primary-green'
+                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-transparent hover:border-neutral-300'
+                    }`}
                   >
                     {st}
                   </button>
